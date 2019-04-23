@@ -1,0 +1,18 @@
+export default [
+  'Animals',
+  'Cars',
+  'Cooking',
+  'Fashion',
+  'Future',
+  'Lifestyle',
+  'Love',
+  'Medicine',
+  'News',
+  'Poetry',
+  'Politics',
+  'Religion',
+  'Sports',
+  'Technology',
+  'Travel',
+  'Other',
+];
