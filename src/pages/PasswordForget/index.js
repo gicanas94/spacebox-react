@@ -6,9 +6,7 @@ import PasswordForgetForm from '../../forms/PasswordForget';
 
 const PasswordForgetPage = () => (
   <Box size="small">
-    <Helmet>
-      <title>Forgot password - Spacebox</title>
-    </Helmet>
+    <Helmet title="Forgot password - Spacebox" />
 
     <p>Please enter the e-mail address of your account.</p>
     <PasswordForgetForm />

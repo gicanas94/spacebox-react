@@ -6,7 +6,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Box from '../../components/Box';
-import { font } from '../../styles';
 import Hr from '../../components/Hr';
 import { ROUTES } from '../../constants';
 import SignInForm from '../../forms/SignIn';
@@ -15,7 +14,7 @@ import SignInGoogleForm from '../../forms/SignInGoogle';
 import SignInTwitterForm from '../../forms/SignInTwitter';
 
 const StyledLink = styled(Link)`
-  font-size: ${font.size.xs};
+  font-size: ${props => props.theme.pages.SignIn.forgotPasswordLink.fontSize};
 `;
 
 const PasswordForgetLink = () => (
@@ -27,9 +26,7 @@ const SignInPage = ({ authUser }) => (
     ? <Redirect to={ROUTES.HOME} />
     : (
       <Box size="small">
-        <Helmet>
-          <title>Sign in - Spacebox</title>
-        </Helmet>
+        <Helmet title="Sign in - Spacebox" />
 
         <h2>Welcome back!</h2>
         <SignInForm />

@@ -5,13 +5,15 @@ import styled from 'styled-components';
 import { color } from '../../styles';
 
 const StyledHr = styled.hr`
-  border: 2px solid ${props => (
+  border-color: ${props => (
     props.color
       ? color.palette[props.color]
-      : props.theme.components.hr.color.default
+      : props.theme.components.Hr.color.default
   )};
-  border-radius: 4px;
-  display: inline-block;
+  border-style: solid;
+  border-width: ${props => props.theme.components.Hr.borderWidth};
+  border-radius: ${props => props.theme.global.borderRadius};
+  display: inline-flex;
   margin: 0;
   width: 100%;
 

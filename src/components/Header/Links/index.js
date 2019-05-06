@@ -40,7 +40,9 @@ const Links = ({ authUser, firebase, onLinkClickHandler }) => (
 
 const CommonLinks = ({ onLinkClickHandler }) => (
   <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.HOME}>
-    <Button color="punch" fullWidth noBorder rounded size="small">HOME</Button>
+    <Button color="punch" fullWidth rounded size="small" styleType="unbordered">
+      {'Home'}
+    </Button>
   </StyledLink>
 );
 
@@ -56,6 +58,7 @@ const AuthLinks = ({ authUser, firebase, onLinkClickHandler }) => (
           fullWidth
           rounded
           size="small"
+          styleType="bordered"
         >
           {'Create Spacebox'}
         </Button>
@@ -63,12 +66,16 @@ const AuthLinks = ({ authUser, firebase, onLinkClickHandler }) => (
     )}
 
     <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.ACCOUNT}>
-      <Button color="flax" fullWidth noBorder rounded size="small">Account</Button>
+      <Button color="flax" fullWidth rounded size="small" styleType="unbordered">
+        {'Account'}
+      </Button>
     </StyledLink>
 
     {authUser.isAdmin && (
       <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.ADMIN}>
-        <Button color="flax" fullWidth noBorder rounded size="small">Admin</Button>
+        <Button color="flax" fullWidth rounded size="small" styleType="unbordered">
+          {'Admin'}
+        </Button>
       </StyledLink>
     )}
 
@@ -77,9 +84,9 @@ const AuthLinks = ({ authUser, firebase, onLinkClickHandler }) => (
         color="salmon"
         fullWidth
         onClick={firebase.doSignOut}
-        noBorder
         rounded
         size="small"
+        styleType="unbordered"
       >
         {'Sign out'}
       </Button>
@@ -91,15 +98,21 @@ const AuthLinks = ({ authUser, firebase, onLinkClickHandler }) => (
 const NonAuthLinks = ({ onLinkClickHandler }) => (
   <Fragment>
     <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.FAQ}>
-      <Button color="flax" fullWidth noBorder rounded size="small">WT#?</Button>
+      <Button color="flax" fullWidth rounded size="small" styleType="unbordered">
+        {'WT#?'}
+      </Button>
     </StyledLink>
 
     <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.SIGN_UP}>
-      <Button color="tea" fullWidth rounded size="small">Sign up</Button>
+      <Button color="tea" fullWidth rounded size="small" styleType="bordered">
+        {'Sign up'}
+      </Button>
     </StyledLink>
 
     <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.SIGN_IN}>
-      <Button color="emerald" fullWidth rounded size="small">Sign in</Button>
+      <Button color="emerald" fullWidth rounded size="small" styleType="bordered">
+        {'Sign in'}
+      </Button>
     </StyledLink>
   </Fragment>
 );

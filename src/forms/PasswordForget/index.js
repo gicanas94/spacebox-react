@@ -80,7 +80,13 @@ class PasswordForgetForm extends Component {
             />
 
             <StyledButtonWrapper>
-              <Button disabled={isSubmitting} rounded type="submit">
+              <Button
+                disabled={isSubmitting}
+                fullWidth
+                rounded
+                styleType="filled"
+                type="submit"
+              >
                 {'Send'}
               </Button>
             </StyledButtonWrapper>

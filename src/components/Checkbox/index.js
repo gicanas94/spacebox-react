@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { font } from '../../styles';
-
 const StyledCheckbox = styled.span`
   background-color: transparent;
-  border: 2px solid ${props => props.theme.components.checkbox.color.unchecked};
+  border-color: ${props => props.theme.components.Checkbox.color.unchecked};
+  border-style: solid;
+  border-width: ${props => props.theme.components.Checkbox.borderWidth};
   display: flex;
   height: 25px;
   justify-content: center;
@@ -14,22 +14,22 @@ const StyledCheckbox = styled.span`
   width: 25px;
 
   ${props => props.checked && `
-    border-color: ${props.theme.components.checkbox.color.checked};
-    color: ${props.theme.components.checkbox.color.checked};
+    border-color: ${props.theme.components.Checkbox.color.checked};
+    color: ${props.theme.components.Checkbox.color.checked};
 
     &:after {
       content: '✔';
-      font-size: ${font.size.xs};
+      font-size: ${props.theme.components.Checkbox.fontSize};
     }
   `}
 
   ${props => props.rounded && `
-    border-radius: 4px;
+    border-radius: ${props.theme.global.borderRadius};
   `}
 `;
 
 const StyledLabel = styled.span`
-  font-size: ${font.size.xs};
+  font-size: ${props => props.theme.components.Checkbox.fontSize};
 `;
 
 const StyledWrapper = styled.div`
@@ -41,12 +41,12 @@ const StyledWrapper = styled.div`
 
   ${props => props.disabled && `
     ${StyledCheckbox} {
-      border-color: ${props.theme.components.checkbox.color.disabled};
-      color: ${props.theme.components.checkbox.color.disabled};
+      border-color: ${props.theme.components.Checkbox.color.disabled};
+      color: ${props.theme.components.Checkbox.color.disabled};
     }
 
     ${StyledLabel} {
-      color: ${props.theme.components.checkbox.color.disabled};
+      color: ${props.theme.components.Checkbox.color.disabled};
     }
   `}
 

@@ -9,10 +9,20 @@ const StyledBox = styled.div`
   background-color: ${props => (
     props.bgColor
       ? color.palette[props.bgColor]
-      : props.theme.components.box.bgColor.default
+      : props.theme.components.Box.defaultBgColor
   )};
+  border-color: ${props => (
+    Color(
+      props.bgColor
+        ? color.palette[props.bgColor]
+        : props.theme.components.Box.defaultBgColor,
+    ).darken(0.2).hex()
+  )};
+  border-style: solid;
+  border-width: ${props => props.theme.components.Box.borderWidth};
   margin: auto;
   padding: 25px;
+  position: relative;
 
   ${props => props.fullHeight && `
     height: 100%;
@@ -31,12 +41,16 @@ const StyledBox = styled.div`
     max-width: ${props.minMaxWidth[1]} !important;
   `}
 
+  ${props => props.noBorder && `
+    border-width: 0;
+  `}
+
   ${props => props.padding && `
     padding: ${props.padding};
   `}
 
   ${props => props.rounded && `
-    border-radius: 4px;
+    border-radius: ${props.theme.global.borderRadius};
   `}
 
   ${props => props.size === 'small' && `
@@ -62,14 +76,6 @@ const StyledBox = styled.div`
       max-width: 1050px;
     }
   `}
-
-  ${props => props.withBorder && `
-    border: 1px solid ${Color(
-      props.bgColor
-        ? color.palette[props.bgColor]
-        : props.theme.components.box.bgColor.default
-    ).darken(0.3).hex()};
-  `}
 `;
 
 const Box = ({ children, ...props }) => (
@@ -83,10 +89,10 @@ Box.propTypes = {
   fullWidth: PropTypes.bool,
   margin: PropTypes.string,
   minMaxWidth: PropTypes.arrayOf(PropTypes.string),
+  noBorder: PropTypes.bool,
   padding: PropTypes.string,
   rounded: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'medium', 'large']),
-  withBorder: PropTypes.bool,
 };
 
 Box.defaultProps = {
@@ -96,10 +102,10 @@ Box.defaultProps = {
   fullWidth: false,
   margin: undefined,
   minMaxWidth: undefined,
+  noBorder: false,
   padding: undefined,
   rounded: false,
   size: undefined,
-  withBorder: false,
 };
 
 export default Box;

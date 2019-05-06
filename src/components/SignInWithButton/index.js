@@ -5,17 +5,23 @@ import React from 'react';
 import styled from 'styled-components';
 import { Twitter } from 'styled-icons/fa-brands/Twitter';
 
-import { font, transition } from '../../styles';
+import { transition } from '../../styles';
 
 const StyledButton = styled.button`
   align-items: center;
   border: 0;
+  cursor: pointer;
   display: flex;
-  font-weight: ${font.weight.medium};
+  font-weight: ${props => props.theme.components.SignInWithButton.fontWeight};
   padding: 10px;
   padding-left: 13px;
   transition: all ${transition.speed.superfast} linear;
+  user-select: none;
   width: 270px;
+
+  &:focus {
+    outline: none;
+  }
 
   &:focus,
   &:hover {
@@ -46,7 +52,7 @@ const StyledButton = styled.button`
   `}
 
   ${props => props.rounded && `
-    border-radius: 4px;
+    border-radius: ${props.theme.global.borderRadius};
   `}
 `;
 

@@ -4,15 +4,16 @@ import { Menu } from 'styled-icons/boxicons-regular/Menu';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { cambalache, device } from '../../styles';
+import { device } from '../../styles';
 import largeLogo from '../../assets/images/logo-with-name.png';
 import Links from './Links';
 import { ROUTES } from '../../constants';
+import SearchBar from './SearchBar';
 import smallLogo from '../../assets/images/logo.png';
 
 const StyledWrapper = styled.div`
-  background-color: ${props => props.theme.components.header.bgColor};
-  color: ${props => props.theme.components.header.color};
+  background-color: ${props => props.theme.components.Header.bgColor};
+  color: ${props => props.theme.components.Header.color};
   position: sticky;
   top: 0;
   width: 100%;
@@ -20,49 +21,45 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledHeader = styled.header`
+  margin: auto;
+  max-width: ${props => props.theme.components.Header.maxWidth};
+  padding: 10px;
+  width: ${props => props.theme.components.Header.mobileWidth};
+
+  @media ${device.laptop} {
+    padding: 10px 0;
+    width: ${props => props.theme.components.Header.laptopWidth};
+  }
+`;
+
+const StyledMobileView = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin: auto;
-  padding: 10px;
-  width: ${cambalache.maxWidth.mobile};
 
   img {
     height: 40px;
   }
 
   @media ${device.laptop} {
-    padding: 10px 0;
-    width: ${cambalache.maxWidth.laptop};
-
-    img {
-      height: 30px;
-    }
-  }
-`;
-
-const StyledSmallLogoLink = styled(Link)`
-  line-height: 0;
-  z-index: 600;
-
-  @media ${device.laptop} {
     display: none;
   }
 `;
 
-const StyledLargeLogoLink = styled(Link)`
-  display: none;
-  line-height: 0;
+const StyledSpan = styled.span`
+  display: flex;
+`;
 
-  @media ${device.laptop} {
-    display: block;
-    margin-right: 25px;
-  }
+const StyledSmallLogoLink = styled(Link)`
+  line-height: 0;
+  margin-right: 10px;
+  user-select: none;
+  z-index: 600;
 `;
 
 const StyledOverlay = styled.div`
   align-items: center;
-  background-color: ${props => props.theme.components.header.bgColor};
+  background-color: ${props => props.theme.components.Header.bgColor};
   display: flex;
   height: 100vh;
   justify-content: center;
@@ -84,6 +81,7 @@ const StyledCloserOnClick = styled.div`
 `;
 
 const StyledCrossIcon = styled(Cross)`
+  cursor: pointer;
   position: absolute;
   right: 15px;
   top: 15px;
@@ -103,33 +101,42 @@ const StyledMobileViewNav = styled.nav`
   > *:last-child {
     margin-bottom: 0;
   }
-
-  @media ${device.laptop} {
-    display: none;
-  }
 `;
 
 const StyledMenuIcon = styled(Menu)`
+  cursor: pointer;
   width: 40px;
-
-  @media ${device.laptop} {
-    display: none;
-  }
 `;
 
-const StyledLaptopViewNav = styled.nav`
+const StyledLaptopView = styled.div`
+  align-items: center;
   display: none;
+  justify-content: space-between;
+
+  img {
+    height: 30px;
+  }
 
   @media ${device.laptop} {
     display: flex;
+  }
+`;
 
-    > * {
-      margin-right: 25px;
-    }
+const StyledLargeLogoLink = styled(Link)`
+  line-height: 0;
+  margin-right: 25px;
+  user-select: none;
+`;
 
-    > *:last-child {
-      margin-right: 0;
-    }
+const StyledLaptopViewNav = styled.nav`
+  display: flex;
+
+  > * {
+    margin-right: 25px;
+  }
+
+  > *:last-child {
+    margin-right: 0;
   }
 `;
 
@@ -139,31 +146,41 @@ const Header = () => {
   return (
     <StyledWrapper>
       <StyledHeader>
-        <StyledSmallLogoLink to={ROUTES.HOME}>
-          <img alt="Spacebox logo" src={smallLogo} />
-        </StyledSmallLogoLink>
+        <StyledMobileView>
+          <StyledSpan>
+            <StyledSmallLogoLink to={ROUTES.HOME}>
+              <img alt="Spacebox logo" src={smallLogo} />
+            </StyledSmallLogoLink>
 
-        <StyledLargeLogoLink to={ROUTES.HOME}>
-          <img alt="Spacebox logo" src={largeLogo} />
-        </StyledLargeLogoLink>
+            <SearchBar />
+          </StyledSpan>
 
-        {mobileNavIsOpen
-          ? (
-            <StyledOverlay>
-              <StyledCloserOnClick onClick={() => setMobileNavIsOpen(false)} />
-              <StyledCrossIcon onClick={() => setMobileNavIsOpen(false)} />
+          {mobileNavIsOpen
+            ? (
+              <StyledOverlay>
+                <StyledCloserOnClick onClick={() => setMobileNavIsOpen(false)} />
+                <StyledCrossIcon onClick={() => setMobileNavIsOpen(false)} />
 
-              <StyledMobileViewNav>
-                <Links onLinkClickHandler={setMobileNavIsOpen} />
-              </StyledMobileViewNav>
-            </StyledOverlay>
-          )
-          : <StyledMenuIcon onClick={() => setMobileNavIsOpen(true)} />
-        }
+                <StyledMobileViewNav>
+                  <Links onLinkClickHandler={setMobileNavIsOpen} />
+                </StyledMobileViewNav>
+              </StyledOverlay>
+            )
+            : <StyledMenuIcon onClick={() => setMobileNavIsOpen(true)} />
+          }
+        </StyledMobileView>
 
-        <StyledLaptopViewNav>
-          <Links onLinkClickHandler={setMobileNavIsOpen} />
-        </StyledLaptopViewNav>
+        <StyledLaptopView>
+          <StyledLargeLogoLink to={ROUTES.HOME}>
+            <img alt="Spacebox logo" src={largeLogo} />
+          </StyledLargeLogoLink>
+
+          <StyledLaptopViewNav>
+            <Links onLinkClickHandler={setMobileNavIsOpen} />
+
+            <SearchBar rounded />
+          </StyledLaptopViewNav>
+        </StyledLaptopView>
       </StyledHeader>
     </StyledWrapper>
   );

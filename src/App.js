@@ -9,8 +9,8 @@ import AccountPage from './pages/Account';
 import AdminPage from './pages/Admin';
 import Alert from './components/Alert';
 import { alertSet } from './Redux/actions';
-import { cambalache, device } from './styles';
 import CreateSpaceboxPage from './pages/CreateSpacebox';
+import { device } from './styles';
 import FaqPage from './pages/Faq';
 import Header from './components/Header';
 import HomePage from './pages/Home';
@@ -18,29 +18,32 @@ import PasswordForgetPage from './pages/PasswordForget';
 import { ROUTES } from './constants';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
+import SpacePage from './pages/Space';
+import PostPage from './pages/Post';
 import VerifyEmailPage from './pages/VerifyEmail';
 import { withAuthentication } from './Session';
 
 const StyledRoutesContainer = styled.div`
   margin: auto;
+  max-width: ${props => props.theme.components.App.maxWidth};
   padding: 10px;
-  width: ${cambalache.maxWidth.mobile};
+  width: ${props => props.theme.components.App.mobileWidth};
 
   @media ${device.laptop} {
     padding: 20px 0;
-    width: ${cambalache.maxWidth.laptop};
+    width: ${props => props.theme.components.App.laptopWidth};
   }
 `;
 
-const App = ({ alertState, alertSetAction }) => (
+const App = ({ activeAlert, alertSetAction }) => (
   <Fragment>
     <Header />
 
-    {alertState && alertState.alert && (
+    {activeAlert && (
       <Alert
         onAlertCloseHandler={() => alertSetAction(null)}
-        text={alertState.alert.text}
-        type={alertState.alert.type}
+        text={activeAlert.text}
+        type={activeAlert.type}
       />
     )}
 
@@ -54,6 +57,8 @@ const App = ({ alertState, alertSetAction }) => (
         <Route component={PasswordForgetPage} path={ROUTES.PASSWORD_FORGET} />
         <Route component={SignInPage} path={ROUTES.SIGN_IN} />
         <Route component={SignUpPage} path={ROUTES.SIGN_UP} />
+        <Route component={SpacePage} exact path={ROUTES.SPACE_WITH_SLUG} />
+        <Route component={PostPage} exact path={ROUTES.SPACE_POST} />
         <Route component={VerifyEmailPage} path={ROUTES.VERIFY_EMAIL} />
       </Switch>
     </StyledRoutesContainer>
@@ -61,15 +66,15 @@ const App = ({ alertState, alertSetAction }) => (
 );
 
 App.propTypes = {
+  activeAlert: PropTypes.objectOf(PropTypes.string),
   alertSetAction: PropTypes.func.isRequired,
-  alertState: PropTypes.objectOf(PropTypes.any),
 };
 
 App.defaultProps = {
-  alertState: null,
+  activeAlert: null,
 };
 
-const mapStateToProps = state => ({ alertState: state.alert });
+const mapStateToProps = state => ({ activeAlert: state.activeAlert });
 
 const mapDispatchToProps = { alertSetAction: alertSet };
 

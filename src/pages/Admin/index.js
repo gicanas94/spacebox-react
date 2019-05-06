@@ -63,9 +63,7 @@ const AdminPage = () => {
 
   return (
     <StyledGrid>
-      <Helmet>
-        <title>Admin - Spacebox</title>
-      </Helmet>
+      <Helmet title="Admin - Spacebox" />
 
       <Sidebar content={sidebarContent} />
 

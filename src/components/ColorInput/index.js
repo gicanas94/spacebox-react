@@ -2,8 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { font } from '../../styles';
-
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -15,7 +13,7 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledLabel = styled.span`
-  font-size: ${font.size.xs};
+  font-size: ${props => props.theme.components.ColorInput.fontSize};
   margin-bottom: 7px;
   word-break: break-all;
 `;
@@ -38,7 +36,7 @@ const StyledInput = styled.input`
   }
 
   ${props => props.rounded && `
-    border-radius: 4px;
+    border-radius: ${props.theme.global.borderRadius};
   `}
 `;
 

@@ -23,19 +23,6 @@ class Wizard extends Component {
     };
   }
 
-  next = (values) => {
-    const { children } = this.props;
-
-    this.setState(state => ({
-      page: Math.min(state.page + 1, children.length - 1),
-      values,
-    }));
-  }
-
-  previous = () => this.setState(state => ({
-    page: Math.max(state.page - 1, 0),
-  }));
-
   handleSubmit = (values, actions) => {
     const { children, onSubmit } = this.props;
     const { page } = this.state;
@@ -46,9 +33,22 @@ class Wizard extends Component {
     } else {
       actions.setTouched({});
       actions.setSubmitting(false);
-      this.next(values);
+      this.nextStep(values);
     }
   };
+
+  nextStep = (values) => {
+    const { children } = this.props;
+
+    this.setState(state => ({
+      page: Math.min(state.page + 1, children.length - 1),
+      values,
+    }));
+  }
+
+  previousStep = () => this.setState(state => ({
+    page: Math.max(state.page - 1, 0),
+  }));
 
   render() {
     const { children, validationSchema } = this.props;
@@ -72,19 +72,26 @@ class Wizard extends Component {
               {page > 0 && (
                 <Button
                   color="lava"
-                  onClick={this.previous}
+                  onClick={this.previousStep}
                   margin="0 25px 0 0"
-                  noBorder
                   rounded
-                  type="button"
+                  styleType="unbordered"
                 >
                   {'Back'}
                 </Button>
               )}
 
-              {!isLastPage && <Button rounded type="submit">Next</Button>}
+              {!isLastPage && (
+                <Button rounded styleType="bordered" type="submit">
+                  {'Next'}
+                </Button>
+              )}
 
-              {isLastPage && <Button rounded type="submit">Finish</Button>}
+              {isLastPage && (
+                <Button rounded styleType="bordered" type="submit">
+                  {'Finish'}
+                </Button>
+              )}
             </StyledButtonsWrapper>
           </Form>
         )}

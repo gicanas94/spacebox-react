@@ -48,6 +48,7 @@ class PasswordLoginToggle extends Component {
         disabled={onlyOneLeft}
         onClick={() => onUnlinkHandler(signInMethod.id)}
         rounded
+        styleType="bordered"
       >
         {`Unlink ${signInMethod.displayName}`}
       </Button>
@@ -71,7 +72,7 @@ class PasswordLoginToggle extends Component {
           value={passwordTwo}
         />
 
-        <Button color="green" rounded type="submit">
+        <Button color="green" rounded styleType="bordered" type="submit">
           {`Link ${signInMethod.displayName}`}
         </Button>
       </form>

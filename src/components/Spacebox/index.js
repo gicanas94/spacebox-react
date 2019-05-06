@@ -1,15 +1,15 @@
 import Color from 'color';
 import { Heart } from 'styled-icons/fa-solid/Heart';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { color, font, transition } from '../../styles';
+import { color, transition } from '../../styles';
 
 const StyledTitle = styled.div`
-  font-family: ${font.family.AlegreyaSans};
-  font-size: ${font.size.lm};
-  font-weight: ${font.weight.bold};
+  font-size: ${props => props.theme.components.Spacebox.title.fontSize};
+  font-weight: ${props => props.theme.components.Spacebox.title.fontWeight};
   line-height: 1em;
   max-height: 4em;
   overflow: hidden;
@@ -41,8 +41,10 @@ const StyledTitle = styled.div`
 `;
 
 const StyledDescription = styled.div`
-  font-size: ${font.size.xs};
-  font-weight: ${font.weight.medium};
+  font-size: ${props => props.theme.components.Spacebox.description.fontSize};
+  font-weight: ${props => (
+    props.theme.components.Spacebox.description.fontWeight
+  )};
   line-height: 1em;
   max-height: 8em;
   opacity: 0;
@@ -86,16 +88,18 @@ const StyledBubblesWrapper = styled.div`
 
 const StyledBubble = styled.div`
   align-items: center;
-  border-radius: 3px;
+  border-radius: ${props => (
+    props.theme.components.Spacebox.bubble.borderRadius
+  )};
   display: flex;
-  font-size: ${font.size.xxs};
-  font-weight: ${font.weight.bold};
+  font-size: ${props => props.theme.components.Spacebox.bubble.fontSize};
+  font-weight: ${props => props.theme.components.Spacebox.bubble.fontWeight};
   height: 25px;
   padding: 0 5px;
 `;
 
 const StyledHeart = styled(Heart)`
-  color: ${color.palette.red};
+  color: ${props => props.theme.components.Spacebox.heartColor};
   filter: none !important;
   width: 16px;
   margin-right: 5px;
@@ -105,15 +109,17 @@ const StyledSpacebox = styled.div`
   align-items: flex-end;
   background: ${props => `
     linear-gradient(
-      ${Color(props.bgColor).lighten(0.2).hex()},
+      ${Color(props.bgColor).lighten(0.3).hex()},
       ${Color(props.bgColor).hex()}
     )
   `};
-  border: 1px solid ${props => (
+  border-color: ${props => (
     Color(props.bgColor).isDark()
       ? Color(props.bgColor).lighten(0.3).hex()
       : Color(props.bgColor).darken(0.3).hex()
   )};
+  border-style: solid;
+  border-width: ${props => props.theme.components.Spacebox.borderWidth};
   display: flex;
   height: 220px;
   justify-content: center;
@@ -122,21 +128,42 @@ const StyledSpacebox = styled.div`
   position: relative;
   width: 100%;
 
-  ${props => props.rounded && `
-    border-radius: 4px;
+  &:hover {
+    ${props => props.description && `
+      ${StyledTitle} {
+        filter: blur(4px);
+        opacity: 0.2;
+      }
+
+      ${StyledDescription} {
+        opacity: 1;
+        visibility: visible;
+      }
+    `}
+  }
+
+  ${props => props.authUserIsTheOwner && `
+    border: ${props.theme.components.Spacebox.authUserIsTheOwner.border};
   `}
 
-  &:hover {
-    ${StyledTitle} {
-      filter: blur(4px);
-      opacity: 0.2;
-    }
+  ${props => props.informative && `
+    background: linear-gradient(
+      ${Color(
+        props.theme.components.Spacebox.informative.bgColor,
+      ).lighten(0.3).hex()},
+      ${Color(props.theme.components.Spacebox.informative.bgColor).hex()}
+    );
+    border: ${props.theme.components.Spacebox.informative.border};
+    color: ${props.theme.components.Spacebox.informative.color};
+  `}
 
-    ${StyledDescription} {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
+  ${props => props.order && `
+    order: ${props.order};
+  `}
+
+  ${props => props.rounded && `
+    border-radius: ${props.theme.global.borderRadius};
+  `}
 
   ${StyledBubble} {
     background-color: ${props => (
@@ -155,7 +182,11 @@ const StyledSpacebox = styled.div`
     color: ${props => props.color};
 
     &:after {
-      background-color: ${props => props.bgColor};
+      background-color: ${props => (
+        props.informative
+          ? props.theme.components.Spacebox.informative.bgColor
+          : props.bgColor
+      )};
     }
   }
 
@@ -163,46 +194,84 @@ const StyledSpacebox = styled.div`
     color: ${props => props.color};
 
     &:after {
-      background-color: ${props => props.bgColor};
+      background-color: ${props => (
+        props.informative
+          ? props.theme.components.Spacebox.informative.bgColor
+          : props.bgColor
+      )};
     }
   }
+`;
+
+const StyledLink = styled(Link)`
+  order: ${props => props.order};
 `;
 
 const Spacebox = ({
   category,
   description,
+  order,
   likes,
+  link,
   title,
   ...props
-}) => (
-  <StyledSpacebox {...props}>
-    <StyledBubblesWrapper>
-      <StyledBubble>
-        <StyledHeart />
-        {likes}
-      </StyledBubble>
+}) => {
+  const box = (
+    <StyledSpacebox
+      description={description}
+      order={!link ? order : undefined}
+      {...props}
+    >
+      <StyledBubblesWrapper>
+        {likes !== undefined && (
+          <StyledBubble>
+            <StyledHeart />
+            {likes}
+          </StyledBubble>
+        )}
 
-      <StyledBubble>{category}</StyledBubble>
-    </StyledBubblesWrapper>
+        {category && <StyledBubble>{category}</StyledBubble>}
+      </StyledBubblesWrapper>
 
-    <StyledTitle>{title}</StyledTitle>
+      {title && <StyledTitle>{title}</StyledTitle>}
 
-    {description && <StyledDescription>{description}</StyledDescription>}
-  </StyledSpacebox>
-);
+      {description && <StyledDescription>{description}</StyledDescription>}
+    </StyledSpacebox>
+  );
+
+  return (
+    link
+      ? <StyledLink order={order} to={link}>{box}</StyledLink>
+      : box
+  );
+};
 
 Spacebox.propTypes = {
-  bgColor: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  likes: PropTypes.number.isRequired,
+  authUserIsTheOwner: PropTypes.bool,
+  bgColor: PropTypes.string,
+  category: PropTypes.string,
+  color: PropTypes.string,
+  description: PropTypes.string,
+  informative: PropTypes.bool,
+  likes: PropTypes.number,
+  link: PropTypes.string,
+  order: PropTypes.number,
   rounded: PropTypes.bool,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 Spacebox.defaultProps = {
+  authUserIsTheOwner: false,
+  bgColor: undefined,
+  color: undefined,
+  description: undefined,
+  category: undefined,
+  informative: false,
+  likes: undefined,
+  link: undefined,
+  order: undefined,
   rounded: false,
+  title: undefined,
 };
 
 export default Spacebox;

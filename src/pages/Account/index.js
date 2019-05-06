@@ -54,13 +54,11 @@ const AccountPage = ({ alertSetAction, authUser }) => {
 
   return (
     <StyledGrid>
-      <Helmet>
-        <title>Account - Spacebox</title>
-      </Helmet>
+      <Helmet title="Account - Spacebox" />
 
       <Sidebar content={sidebarContent} />
 
-      <Box fullWidth padding="0">
+      <Box fullWidth noBorder padding="0">
         <Switch>
           <Route
             component={ChangePasswordSubpage}

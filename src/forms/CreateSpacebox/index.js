@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Field } from 'formik';
@@ -8,6 +9,7 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
 import { alertSet } from '../../Redux/actions';
+import Button from '../../components/Button';
 import { CATEGORIES, ROUTES } from '../../constants';
 import Checkbox from '../../components/Checkbox';
 import ColorInput from '../../components/ColorInput';
@@ -99,7 +101,25 @@ const StyledP2n3Inputs = styled.div`
   }
 `;
 
+const mixes = [
+  {
+    bgColor: '#5c0c07',
+    color: '#fecebe',
+  },
+  {
+    bgColor: '#06385e',
+    color: '#bddeff',
+  },
+];
+
 class CreateSpaceboxForm extends Component {
+  handleMixerClick = (form) => {
+    const randomMix = mixes[Math.floor(Math.random() * mixes.length)];
+
+    form.setFieldValue('bgColor', randomMix.bgColor);
+    form.setFieldValue('color', randomMix.color);
+  }
+
   handleSubmit = (values, actions) => {
     const {
       alertSetAction,
@@ -126,7 +146,9 @@ class CreateSpaceboxForm extends Component {
       color,
       createdAt: firebase.serverValue.TIMESTAMP,
       description,
-      title,
+      likes: 0,
+      slug: `${_.kebabCase(title)}-${_.kebabCase(authUser.uid.slice(-3))}`,
+      title: title.toUpperCase(),
       userId: authUser.uid,
       visible,
     })
@@ -217,6 +239,22 @@ class CreateSpaceboxForm extends Component {
               </Field>
             </StyledP1Inputs>
           </StyledPageWrapper>
+
+          <Field name="autoMix">
+            {({ form }) => (
+              <Button
+                color="lime"
+                fullWidth
+                margin="25px 0 0 0"
+                onClick={() => this.handleMixerClick(form)}
+                size="large"
+                styleType="filled"
+                type="button"
+              >
+                {'Auto-Mix'}
+              </Button>
+            )}
+          </Field>
         </Wizard.Page>
 
         <Wizard.Page>

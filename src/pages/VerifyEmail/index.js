@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import { alertSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import Button from '../../components/Button';
-import { font } from '../../styles';
 import { ROUTES } from '../../constants';
 import { withFirebase } from '../../Firebase';
 
@@ -19,7 +18,7 @@ const StyledButtonWrapper = styled.div`
 `;
 
 const StyledEmail = styled.span`
-  font-weight: ${font.weight.bold};
+  font-weight: ${props => props.theme.pages.VerifyEmail.email.fontWeight};
 `;
 
 class VerifyEmailPage extends Component {
@@ -63,9 +62,7 @@ class VerifyEmailPage extends Component {
         ? <Redirect to={ROUTES.HOME} />
         : (
           <Box size="small">
-            <Helmet>
-              <title>Verify e-mail - Spacebox</title>
-            </Helmet>
+            <Helmet title="Verify e-mail - Spacebox" />
 
             <h2>Verify your e-mail</h2>
             <p>
@@ -80,7 +77,13 @@ class VerifyEmailPage extends Component {
             </p>
 
             <StyledButtonWrapper>
-              <Button disabled={emailSent} onClick={this.handleClick} rounded>
+              <Button
+                disabled={emailSent}
+                fullWidth
+                onClick={this.handleClick}
+                rounded
+                styleType="filled"
+              >
                 {'Send'}
               </Button>
             </StyledButtonWrapper>

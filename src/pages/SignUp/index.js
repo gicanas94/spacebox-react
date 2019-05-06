@@ -6,12 +6,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Box from '../../components/Box';
-import { font } from '../../styles';
 import { ROUTES } from '../../constants';
 import SignUpForm from '../../forms/SignUp';
 
 const StyledLink = styled(Link)`
-  font-size: ${font.size.xs};
+  font-size: ${props => props.theme.pages.SignUp.signInLink.fontSize};
 `;
 
 const SignInLink = () => (
@@ -23,9 +22,7 @@ const SignUpPage = ({ authUser }) => (
     ? <Redirect to={ROUTES.HOME} />
     : (
       <Box size="medium">
-        <Helmet>
-          <title>Sign up - Spacebox</title>
-        </Helmet>
+        <Helmet title="Sign up - Spacebox" />
 
         <h2>Good choice.</h2>
         <SignUpForm />

@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { font } from '.';
 import theme from './theme';
 
 const GlobalStyle = createGlobalStyle`
@@ -10,7 +9,8 @@ const GlobalStyle = createGlobalStyle`
 
   a {
     color: ${theme.htmlTags.a.color};
-    font-weight: ${font.weight.medium}
+    cursor: pointer !important;
+    font-weight: ${theme.htmlTags.a.fontWeight}
     text-decoration: none;
 
     &:hover {
@@ -20,10 +20,11 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     @import url('https://fonts.googleapis.com/css?family=Alegreya+Sans:100,300,400,500,700,800,900');
-    background-color: ${theme.htmlTags.body.bgColor};
+    background: ${theme.htmlTags.body.background};
     color: ${theme.htmlTags.body.color};
-    font-family: ${font.family.AlegreyaSans};
-    font-size: ${font.size.s};
+    font-family: ${theme.htmlTags.body.fontFamily};
+    font-size: ${theme.htmlTags.body.fontSize};
+    height: 100vh;
   }
 
   h1, h2, h3, h4, h5, h6 {

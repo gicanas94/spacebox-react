@@ -116,7 +116,12 @@ class SignInForm extends Component {
             <StyledBottomWrapper>
               <PasswordForgetLink />
 
-              <Button disabled={isSubmitting} rounded type="submit">
+              <Button
+                disabled={isSubmitting}
+                rounded
+                styleType="bordered"
+                type="submit"
+              >
                 {'Sign in'}
               </Button>
             </StyledBottomWrapper>

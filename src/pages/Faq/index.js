@@ -8,9 +8,7 @@ import { ROUTES } from '../../constants';
 
 const FaqPage = () => (
   <Box size="medium">
-    <Helmet>
-      <title>WT#? - Spacebox</title>
-    </Helmet>
+    <Helmet title="WT#? - Spacebox" />
 
     <h2>What is this all about?</h2>
 

@@ -75,9 +75,10 @@ class Firebase {
   });
 
   // Spacebox API
-  spacebox = uid => this.db.ref(`spaceboxes/${uid}`);
-
   spaceboxes = () => this.db.ref('spaceboxes');
+
+  // Post API
+  posts = () => this.db.ref('posts');
 
   // User API
   user = uid => this.db.ref(`users/${uid}`);

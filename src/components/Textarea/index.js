@@ -1,4 +1,3 @@
-import { KeyboardArrowDown } from 'styled-icons/material/KeyboardArrowDown';
 import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -21,17 +20,15 @@ const StyledLabel = styled.label`
   `}
 `;
 
-const StyledSelect = styled.select`
-  appearance: none;
+const StyledTextarea = styled.textarea`
   background-color: transparent;
   border: 0;
   border-color: ${props => props.theme.components.Input.color.default};
   border-style: solid;
   border-width: ${props => props.theme.components.Input.borderWidth};
-  cursor: pointer;
-  padding: 0 10px;
-  padding-top: 5px;
-  height: 45px;
+  height: 189px;
+  padding: 10px;
+  resize: none;
   transition: border ${transition.speed.superfast} linear;
   width: 100%;
 
@@ -48,30 +45,19 @@ const StyledSelect = styled.select`
   `}
 `;
 
-const StyledOption = styled.option``;
-
-const StyledKeyboardArrowDownIcon = styled(KeyboardArrowDown)`
-  position: absolute;
-  right: 10px;
-  top: 35%;
-  width: 30px;
-`;
-
 const StyledErrorIcon = styled(ErrorOutline)`
   animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
+  bottom: 30px;
   color: ${props => props.theme.components.Input.color.error};
   position: absolute;
-  right: 40px;
-  top: 35%;
+  right: 10px;
   width: 30px;
 `;
 
 const StyledErrorMessage = styled.div`
   color: ${props => props.theme.components.Input.color.error};
   font-size: ${props => props.theme.components.Input.errorMessage.fontSize};
-  font-weight: ${props => (
-    props.theme.components.Input.errorMessage.fontWeight
-  )};
+  font-weight: ${props => props.theme.components.Input.errorMessage.fontWeight};
   overflow: hidden;
   padding-top: 5px;
   text-overflow: ellipsis;
@@ -81,7 +67,7 @@ const StyledErrorMessage = styled.div`
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 92px;
+  height: 236px;
   justify-content: flex-start;
   position: relative;
 
@@ -90,9 +76,8 @@ const StyledWrapper = styled.div`
       color: ${props.theme.components.Input.color.error};
     }
 
-    ${StyledSelect} {
+    ${StyledTextarea} {
       border-color: ${props.theme.components.Input.color.error};
-      padding-right: 40px;
     }
   `}
 
@@ -105,51 +90,40 @@ const StyledWrapper = styled.div`
       color: ${props.theme.components.Input.color.success};
     }
 
-    ${StyledSelect} {
+    ${StyledTextarea} {
       border-color: ${props.theme.components.Input.color.success};
     }
   `}
 `;
 
-const Select = ({
+const Textarea = ({
   disabled,
   error,
   name,
   label,
   margin,
-  options,
   success,
   ...props
 }) => (
   <StyledWrapper error={error} margin={margin} success={success}>
     <StyledLabel disabled={disabled} htmlFor={name}>{label}</StyledLabel>
-
-    <StyledSelect disabled={disabled} id={name} {...props}>
-      <StyledOption value="">-</StyledOption>
-
-      {options.map(value => (
-        <StyledOption key={value} value={value}>{value}</StyledOption>
-      ))}
-    </StyledSelect>
-
-    {!disabled && <StyledKeyboardArrowDownIcon />}
+    <StyledTextarea disabled={disabled} id={name} {...props} />
     {!disabled && error && <StyledErrorIcon />}
     {!disabled && error && <StyledErrorMessage>{error}</StyledErrorMessage>}
   </StyledWrapper>
 );
 
-Select.propTypes = {
+Textarea.propTypes = {
   disabled: PropTypes.bool,
   error: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   margin: PropTypes.string,
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
   rounded: PropTypes.bool,
   success: PropTypes.bool,
 };
 
-Select.defaultProps = {
+Textarea.defaultProps = {
   disabled: false,
   error: undefined,
   margin: undefined,
@@ -157,4 +131,4 @@ Select.defaultProps = {
   success: false,
 };
 
-export default Select;
+export default Textarea;

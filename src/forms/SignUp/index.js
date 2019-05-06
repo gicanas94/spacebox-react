@@ -183,7 +183,12 @@ class SignUpForm extends Component {
             <StyledBottomWrapper>
               <SignInLink />
 
-              <Button disabled={isSubmitting} rounded type="submit">
+              <Button
+                disabled={isSubmitting}
+                rounded
+                styleType="bordered"
+                type="submit"
+              >
                 {'Sign up'}
               </Button>
             </StyledBottomWrapper>

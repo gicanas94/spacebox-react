@@ -4,8 +4,8 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
 import Box from '../Box';
+import { device } from '../../styles';
 import Hr from '../Hr';
-import { device, font } from '../../styles';
 
 const StyledMobileView = styled.div`
   display: flex;
@@ -43,7 +43,7 @@ const StyledSections = styled.div`
 `;
 
 const StyledTitle = styled.div`
-  font-weight: ${font.weight.bold};
+  font-weight: ${props => props.theme.components.Sidebar.title.fontWeight};
   margin-bottom: 15px;
 `;
 
@@ -62,11 +62,13 @@ const StyledUl = styled.ul`
 const StyledNavLink = styled(NavLink).attrs({
   activeClassName: 'active',
 })`
-  font-size: ${font.size.xs};
-  font-weight: ${font.weight.regular};
+  font-size: ${props => props.theme.components.Sidebar.link.fontSize};
+  font-weight: ${props => props.theme.components.Sidebar.link.fontWeight};
 
   &.active {
-    font-weight: ${font.weight.bold};
+    font-weight: ${props => (
+      props.theme.components.Sidebar.activeLink.fontWeight
+    )};
   }
 `;
 

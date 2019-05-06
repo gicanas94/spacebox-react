@@ -1,11 +1,16 @@
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import Box from '../../components/Box';
+import { alertSet, loadingSet, spaceboxesSet } from '../../Redux/actions';
 import { device } from '../../styles';
+import { ROUTES } from '../../constants';
+import searchSpaceboxSelector from '../../Redux/selectors';
 import Spacebox from '../../components/Spacebox';
+import { withFirebase } from '../../Firebase';
 
 const StyledWrapper = styled.div`
   display: grid;
@@ -22,34 +27,155 @@ const StyledWrapper = styled.div`
   }
 
   @media ${device.laptop} {
+    grid-gap: 20px;
     grid-template-columns: repeat(4, auto);
   }
 
   @media ${device.laptopL} {
     grid-template-columns: repeat(5, auto);
   }
-
-  @media ${device.desktop} {
-    grid-template-columns: repeat(6, auto);
-  }
-
-  @media ${device.desktopL} {
-    grid-template-columns: repeat(8, auto);
-  }
 `;
 
-const HomePage = ({ spaceboxes }) => (
-  <Box size="small">
-    <Helmet>
-      <title>Home - Spacebox</title>
-    </Helmet>
+class HomePage extends Component {
+  componentDidMount() {
+    const {
+      alertSetAction,
+      firebase,
+      loadingSetAction,
+      spaceboxesSetAction,
+    } = this.props;
 
-    😍
-  </Box>
-);
+    loadingSetAction(true);
 
-// HomePage.propTypes = {
-//   spaceboxes: PropTypes.arrayOf(PropTypes.object).isRequired,
-// };
+    try {
+      firebase.spaceboxes().on('value', (snapshot) => {
+        spaceboxesSetAction(snapshot.val());
+        loadingSetAction(false);
+      });
+    } catch (error) {
+      alertSetAction({
+        text: error.message,
+        type: 'danger',
+      });
 
-export default HomePage;
+      loadingSetAction(false);
+    }
+  }
+
+  componentWillUnmount() {
+    const { firebase } = this.props;
+
+    firebase.spaceboxes().off();
+  }
+
+  render() {
+    const {
+      authUser,
+      allSpaceboxes,
+      isLoading,
+      spaceboxToSearch,
+    } = this.props;
+
+    return (
+      <StyledWrapper>
+        <Helmet
+          title={
+            `${spaceboxToSearch === '' ? 'Home' : 'Search results'} - Spacebox`
+          }
+        />
+
+        {authUser
+          && spaceboxToSearch === ''
+          && authUser.isSpaceboxOwner
+          && !isLoading
+          && (
+            <Spacebox
+              informative
+              link="/"
+              order={1}
+              title="Edit my Spacebox"
+            />
+          )
+        }
+
+        {spaceboxToSearch !== '' && (
+          <Spacebox
+            informative
+            order={1}
+            title={
+              allSpaceboxes.length === 0
+                ? 'No results'
+                : `Results: ${allSpaceboxes.length}`
+            }
+          />
+        )}
+
+        {isLoading && (
+          <Spacebox informative order={1} title="Loading..." />
+        )}
+
+        {allSpaceboxes
+          && !isLoading
+          && Object.values(allSpaceboxes).map((spacebox, index) => (
+            spacebox.visible && (
+              <Spacebox
+                authUserIsTheOwner={
+                  authUser && authUser.uid === spacebox.userId
+                }
+                bgColor={spacebox.bgColor}
+                category={spacebox.category}
+                color={spacebox.color}
+                description={spacebox.description}
+                key={spacebox.slug}
+                likes={spacebox.likes}
+                link={`${ROUTES.SPACE_BASE}/${spacebox.slug}`}
+                order={
+                  authUser && authUser.uid === spacebox.userId
+                    ? -1
+                    : index + 10
+                }
+                title={spacebox.title}
+              />
+            )
+          ))
+        }
+      </StyledWrapper>
+    );
+  }
+}
+
+HomePage.propTypes = {
+  alertSetAction: PropTypes.func.isRequired,
+  allSpaceboxes: PropTypes.arrayOf(PropTypes.object),
+  authUser: PropTypes.objectOf(PropTypes.any),
+  firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  isLoading: PropTypes.bool,
+  loadingSetAction: PropTypes.func.isRequired,
+  spaceboxesSetAction: PropTypes.func.isRequired,
+  spaceboxToSearch: PropTypes.string,
+};
+
+HomePage.defaultProps = {
+  allSpaceboxes: null,
+  authUser: null,
+  isLoading: false,
+  spaceboxToSearch: '',
+};
+
+const mapStateToProps = state => ({
+  allSpaceboxes: state.spacebox.all && searchSpaceboxSelector(state),
+  authUser: state.session.authUser,
+  isLoading: state.isLoading,
+  spaceboxToSearch: state.spaceboxToSearch,
+});
+
+const mapDispatchToProps = {
+  alertSetAction: alertSet,
+  loadingSetAction: loadingSet,
+  spaceboxesSetAction: spaceboxesSet,
+};
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withFirebase,
+)(HomePage);

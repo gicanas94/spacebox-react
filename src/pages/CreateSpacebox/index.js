@@ -1,11 +1,12 @@
+import { compose } from 'recompose';
 import { Helmet } from 'react-helmet';
 import React from 'react';
 import styled from 'styled-components';
 
 import Box from '../../components/Box';
 import CreateSpaceboxForm from '../../forms/CreateSpacebox';
-import { font, device } from '../../styles';
-import { withAuthorization } from '../../Session';
+import { device } from '../../styles';
+import { withAuthorization, withEmailVerification } from '../../Session';
 
 const StyledGrid = styled.div`
   align-items: start;
@@ -26,7 +27,7 @@ const StyledGrid = styled.div`
 `;
 
 const StyledText = styled.p`
-  font-size: ${font.size.xs};
+  font-size: ${props => props.theme.pages.CreateSpacebox.infoText.fontSize};
 
   &:last-of-type {
     margin-bottom: 0;
@@ -35,9 +36,7 @@ const StyledText = styled.p`
 
 const CreateSpaceboxPage = () => (
   <StyledGrid>
-    <Helmet>
-      <title>Create Spacebox - Spacebox</title>
-    </Helmet>
+    <Helmet title="Create Spacebox - Spacebox" />
 
     <Box fullWidth margin="0">
       <StyledText>
@@ -77,4 +76,7 @@ const CreateSpaceboxPage = () => (
 
 const condition = authUser => authUser && !authUser.isSpaceboxOwner;
 
-export default withAuthorization(condition)(CreateSpaceboxPage);
+export default compose(
+  withAuthorization(condition),
+  withEmailVerification,
+)(CreateSpaceboxPage);

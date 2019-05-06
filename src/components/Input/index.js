@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { font, keyframe, transition } from '../../styles';
+import { keyframe, transition } from '../../styles';
 
 const StyledLabel = styled.label`
-  color: ${props => props.theme.components.input.color.default};
-  font-size: ${font.size.xs};
-  font-weight: ${font.weight.bold};
+  color: ${props => props.theme.components.Input.color.default};
+  font-size: ${props => props.theme.components.Input.label.fontSize};
+  font-weight: ${props => props.theme.components.Input.label.fontWeight};
   overflow: hidden;
   padding-bottom: 2px;
   text-overflow: ellipsis;
@@ -16,14 +16,16 @@ const StyledLabel = styled.label`
   white-space: nowrap;
 
   ${props => props.disabled && `
-    color: ${props.theme.components.input.color.disabled} !important;
+    color: ${props.theme.components.Input.color.disabled} !important;
   `}
 `;
 
 const StyledInput = styled.input`
   background-color: transparent;
   border: 0;
-  border: 2px solid ${props => props.theme.components.input.color.default};
+  border-color: ${props => props.theme.components.Input.color.default};
+  border-style: solid;
+  border-width: ${props => props.theme.components.Input.borderWidth};
   padding: 0 10px;
   padding-top: 5px;
   height: 45px;
@@ -35,17 +37,17 @@ const StyledInput = styled.input`
   }
 
   ${props => props.disabled && `
-    border-color: ${props.theme.components.input.color.disabled} !important;
+    border-color: ${props.theme.components.Input.color.disabled} !important;
   `}
 
   ${props => props.rounded && `
-    border-radius: 4px;
+    border-radius: ${props.theme.global.borderRadius};
   `}
 `;
 
 const StyledErrorIcon = styled(ErrorOutline)`
   animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
-  color: ${props => props.theme.components.input.color.error};
+  color: ${props => props.theme.components.Input.color.error};
   position: absolute;
   right: 10px;
   top: 35%;
@@ -53,9 +55,9 @@ const StyledErrorIcon = styled(ErrorOutline)`
 `;
 
 const StyledErrorMessage = styled.div`
-  color: ${props => props.theme.components.input.color.error};
-  font-size: ${font.size.xxs};
-  font-weight: ${font.weight.bold};
+  color: ${props => props.theme.components.Input.color.error};
+  font-size: ${props => props.theme.components.Input.errorMessage.fontSize};
+  font-weight: ${props => props.theme.components.Input.errorMessage.fontWeight};
   overflow: hidden;
   padding-top: 5px;
   text-overflow: ellipsis;
@@ -71,11 +73,11 @@ const StyledWrapper = styled.div`
 
   ${props => props.error && `
     ${StyledLabel} {
-      color: ${props.theme.components.input.color.error};
+      color: ${props.theme.components.Input.color.error};
     }
 
     ${StyledInput} {
-      border-color: ${props.theme.components.input.color.error};
+      border-color: ${props.theme.components.Input.color.error};
       padding-right: 40px;
     }
   `}
@@ -86,11 +88,11 @@ const StyledWrapper = styled.div`
 
   ${props => props.success && `
     ${StyledLabel} {
-      color: ${props.theme.components.input.color.success};
+      color: ${props.theme.components.Input.color.success};
     }
 
     ${StyledInput} {
-      border-color: ${props.theme.components.input.color.success};
+      border-color: ${props.theme.components.Input.color.success};
     }
   `}
 `;

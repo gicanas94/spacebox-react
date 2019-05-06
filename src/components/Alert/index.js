@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { cambalache, device, font } from '../../styles';
+import { device } from '../../styles';
 
 const StyledAlert = styled.div`
   bottom: 0;
+  cursor: pointer;
   display: flex;
-  font-weight: ${font.weight.medium};
+  font-weight: ${props => props.theme.components.Alert.fontWeight};
   height: fit-content;
   justify-content: center;
   left: 0;
@@ -17,7 +18,7 @@ const StyledAlert = styled.div`
   position: fixed;
   text-align: justify;
   width: 100%;
-  z-index: 1000;
+  z-index: 900;
 
   @media ${device.laptop} {
     padding: 5px 0;
@@ -25,15 +26,15 @@ const StyledAlert = styled.div`
   }
 
   ${props => props.type && `
-    background-color: ${props.theme.components.alert.type[props.type].bgColor};
+    background-color: ${props.theme.components.Alert.type[props.type].bgColor};
   `}
 
   ${props => props.withBorder && `
     border-bottom: 0;
-    border-top: 1px solid ${props.theme.components.alert.type[props.type].bdrColor};
+    border-top: ${props.theme.components.Alert.type[props.type].border};
 
     @media ${device.laptop} {
-      border-bottom: 1px solid ${props.theme.components.alert.type[props.type].bdrColor};
+      border-bottom: ${props.theme.components.Alert.type[props.type].border};
       border-top: 0;
     }
   `}
@@ -44,10 +45,11 @@ const StyledWrapper = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  width: ${cambalache.maxWidth.mobile};
+  max-width: ${props => props.theme.components.Alert.maxWidth};
+  width: ${props => props.theme.components.Alert.mobileWidth};
 
   @media ${device.laptop} {
-    width: ${cambalache.maxWidth.laptop};
+    width: ${props => props.theme.components.Alert.laptopWidth};
   }
 `;
 

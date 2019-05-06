@@ -107,7 +107,13 @@ class PasswordChangeForm extends Component {
             />
 
             <StyledButtonWrapper>
-              <Button disabled={isSubmitting} rounded type="submit">
+              <Button
+                disabled={isSubmitting}
+                fullWidth
+                rounded
+                styleType="filled"
+                type="submit"
+              >
                 {'Update'}
               </Button>
             </StyledButtonWrapper>
