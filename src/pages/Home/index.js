@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -116,7 +117,7 @@ class HomePage extends Component {
 
         {allSpaceboxes
           && !isLoading
-          && Object.values(allSpaceboxes).map((spacebox, index) => (
+          && _.map(allSpaceboxes, (spacebox, index) => (
             spacebox.visible && (
               <Spacebox
                 authUserIsTheOwner={
@@ -128,7 +129,7 @@ class HomePage extends Component {
                 description={spacebox.description}
                 key={spacebox.slug}
                 likes={spacebox.likes}
-                link={`${ROUTES.SPACE_BASE}/${spacebox.slug}`}
+                link={[`${ROUTES.SPACE_BASE}/${spacebox.slug}`, spacebox]}
                 order={
                   authUser && authUser.uid === spacebox.userId
                     ? -1

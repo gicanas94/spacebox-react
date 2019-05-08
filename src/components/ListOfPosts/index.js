@@ -14,21 +14,18 @@ const StyledWrapper = styled.div`
   }
 `;
 
-const ListOfPosts = ({ posts, spacebox }) => (
+const ListOfPosts = ({ posts, spacebox, user }) => (
   <StyledWrapper>
     {posts.map(post => (
-      <Post key={post.createdAt} post={post} spacebox={spacebox} />
+      <Post key={post.createdAt} post={post} spacebox={spacebox} user={user} />
     ))}
   </StyledWrapper>
 );
 
 ListOfPosts.propTypes = {
   posts: PropTypes.arrayOf(PropTypes.object).isRequired,
-  spacebox: PropTypes.objectOf(PropTypes.any),
-};
-
-ListOfPosts.defaultProps = {
-  spacebox: null,
+  spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default ListOfPosts;

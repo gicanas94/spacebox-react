@@ -1,13 +1,18 @@
+import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 
 import { alertSet, loadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
+import defaultUserImage from '../../assets/images/default-user-image.png';
 import { device } from '../../styles';
+import Hr from '../../components/Hr';
 import ListOfPosts from '../../components/ListOfPosts';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import PostForm from '../../forms/Post';
@@ -24,10 +29,35 @@ const StyledGrid = styled.div`
   @media ${device.tablet} {
     grid-template-columns: 230px 1fr;
   }
+`;
 
-  @media ${device.laptop} {
-    grid-gap: 20px;
+const StyledImgWrapper = styled.div`
+  background-color: ${props => props.theme.pages.Space.userImage.bgColor};
+  border-radius: ${props => props.theme.global.borderRadius};
+  height: 200px;
+  margin-bottom: 25px;
+  overflow: hidden;
+  width: 200px;
+
+  img {
+    height: inherit;
+    width: inherit;
   }
+`;
+
+const StyledPostsHistoryYear = styled.div`
+  font-size: ${props => props.theme.pages.Space.postsHistory.year.fontSize};
+  font-weight: ${props => props.theme.pages.Space.postsHistory.year.fontWeight};
+`;
+
+const StyledPostsHistoryMonth = styled.div`
+  font-size: ${props => props.theme.pages.Space.postsHistory.month.fontSize};
+  margin: 5px 0;
+`;
+
+const StyledPostsHistoryLink = styled(Link)`
+  font-size: ${props => props.theme.pages.Space.postsHistory.link.fontSize};
+  margin-left: 10px;
 `;
 
 class SpacePage extends Component {
@@ -35,7 +65,9 @@ class SpacePage extends Component {
     super(props);
 
     this.state = {
+      allPosts: null,
       posts: null,
+      postsHistory: null,
       postsLimit: 5,
       spacebox: null,
       spaceboxId: null,
@@ -44,11 +76,26 @@ class SpacePage extends Component {
   }
 
   componentDidMount() {
-    const { loadingSetAction, match } = this.props;
+    const { loadingSetAction, match, location } = this.props;
 
     loadingSetAction(true);
-    this.getSpacebox(match.params.spaceboxSlug);
     window.addEventListener('scroll', this.getMorePostsIfScrollIsAtTheEnd);
+
+    if (location.state) {
+      this.setState(
+        {
+          spacebox: location.state.spacebox,
+          spaceboxId: location.state.spacebox.myId,
+        },
+        () => {
+          this.getUser(location.state.spacebox.userId);
+          this.getSomePosts(location.state.spacebox.myId);
+          this.getAllPosts(location.state.spacebox.myId);
+        },
+      );
+    } else {
+      this.getSpacebox(match.params.spaceboxSlug);
+    }
   }
 
   componentWillUnmount() {
@@ -67,14 +114,15 @@ class SpacePage extends Component {
       .once('value')
       .then((snapshot) => {
         if (snapshot.val()) {
-          const spacebox = snapshot.val()[Object.keys(snapshot.val())[0]];
-          const spaceboxId = Object.getOwnPropertyNames(snapshot.val())[0];
+          const spaceboxId = _.keys(snapshot.val())[0];
+          const spacebox = snapshot.val()[spaceboxId];
 
           this.setState(
             { spacebox, spaceboxId },
             () => {
               this.getUser(spacebox.userId);
-              this.getPosts(spaceboxId);
+              this.getSomePosts(spaceboxId);
+              this.getAllPosts(spaceboxId);
             },
           );
         } else {
@@ -104,7 +152,7 @@ class SpacePage extends Component {
       ));
   }
 
-  getPosts = (spaceboxId) => {
+  getSomePosts = (spaceboxId) => {
     const { alertSetAction, firebase, loadingSetAction } = this.props;
     const { postsLimit } = this.state;
 
@@ -117,9 +165,7 @@ class SpacePage extends Component {
           this.setState(
             {
               posts: snapshot.val()
-                ? Object.values(snapshot.val()).sort(
-                  (a, b) => b.createdAt - a.createdAt,
-                )
+                ? _.orderBy(snapshot.val(), ['createdAt'], ['desc'])
                 : [],
             },
             () => {
@@ -136,6 +182,71 @@ class SpacePage extends Component {
 
       loadingSetAction(false);
     }
+  };
+
+  getAllPosts = (spaceboxId) => {
+    const { alertSetAction, firebase, loadingSetAction } = this.props;
+
+    try {
+      firebase.posts()
+        .orderByChild('spaceboxId')
+        .equalTo(spaceboxId)
+        .on('value', snapshot => (
+          this.setState(
+            { allPosts: snapshot.val() },
+            () => {
+              this.composePostsHistory();
+              loadingSetAction(false);
+            },
+          )
+        ));
+    } catch (error) {
+      alertSetAction({
+        text: error.message,
+        type: 'danger',
+      });
+
+      loadingSetAction(false);
+    }
+  };
+
+  composePostsHistory = () => {
+    const { allPosts } = this.state;
+    const postsOrderedByYearAndMonth = {};
+
+    _.map(allPosts, (post) => {
+      postsOrderedByYearAndMonth[moment(post.createdAt).get('year')] = {};
+    });
+
+    _.map(allPosts, post => (
+      _.map(postsOrderedByYearAndMonth, (yearValue, yearKey) => (
+        moment(post.createdAt).get('year').toString() === yearKey && (
+          Object.defineProperty(
+            yearValue,
+            moment(post.createdAt).get('month'),
+            {
+              value: [],
+              configurable: true,
+              enumerable: true,
+            },
+          )
+        )
+      ))
+    ));
+
+    _.map(allPosts, post => (
+      _.map(postsOrderedByYearAndMonth, (yearValue, yearKey) => {
+        if (moment(post.createdAt).get('year').toString() === yearKey) {
+          _.map(yearValue, (monthValue, monthKey) => {
+            if (moment(post.createdAt).get('month').toString() === monthKey) {
+              monthValue.push(post);
+            }
+          });
+        }
+      })
+    ));
+
+    this.setState({ postsHistory: postsOrderedByYearAndMonth });
   };
 
   getMorePostsIfScrollIsAtTheEnd = () => {
@@ -162,7 +273,7 @@ class SpacePage extends Component {
         ? (
           this.setState(
             { postsLimit: postsLimit + 5 },
-            () => this.getPosts(spaceboxId),
+            () => this.getSomePosts(spaceboxId),
           )
         ) : (
           window.removeEventListener(
@@ -175,7 +286,14 @@ class SpacePage extends Component {
 
   render() {
     const { authUser, isLoading } = this.props;
-    const { posts, spacebox, spaceboxId } = this.state;
+
+    const {
+      posts,
+      postsHistory,
+      spacebox,
+      spaceboxId,
+      user,
+    } = this.state;
 
     return (
       <Fragment>
@@ -184,15 +302,50 @@ class SpacePage extends Component {
 
         {!isLoading && (
           <StyledGrid>
-            <Box margin="0">
-              {authUser && spacebox && authUser.uid === spacebox.userId && (
-                <PostForm spaceboxId={spaceboxId} />
-              )}
-            </Box>
+
+
+            <div>
+              <Box margin="0 0 10px 0" padding="15px">
+                <StyledImgWrapper>
+                  <img alt="User" src={defaultUserImage} />
+                </StyledImgWrapper>
+
+                {authUser && spacebox && authUser.uid === spacebox.userId && (
+                  <PostForm spaceboxId={spaceboxId} />
+                )}
+              </Box>
+
+              <Box margin="0" padding="15px">
+                <h3>Posts history</h3>
+                {_.map(_.keys(postsHistory).reverse(), year => (
+                  <Fragment key={year}>
+                    <StyledPostsHistoryYear>
+                      {year}
+                    </StyledPostsHistoryYear>
+
+                    {_.map(_.keys(postsHistory[year]), month => (
+                      <Fragment key={month}>
+                        <StyledPostsHistoryMonth>
+                          {moment(parseInt(month, 10) + 1, 'MM').format('MMMM')}
+                        </StyledPostsHistoryMonth>
+
+                        {_.map(postsHistory[year][month], post => (
+                          <StyledPostsHistoryLink key={post.createdAt} to="/">
+                            {post.title}
+                          </StyledPostsHistoryLink>
+                        ))}
+                      </Fragment>
+                    ))}
+
+                    <Hr margin="10px 0"/>
+                  </Fragment>
+                ))}
+              </Box>
+            </div>
 
             <div>
               {posts && posts.length > 0
-                ? <ListOfPosts posts={posts} spacebox={spacebox} />
+                ? <ListOfPosts posts={posts} spacebox={spacebox} user={user} />
                 : <div>No posts.</div>
               }
             </div>
@@ -209,6 +362,7 @@ SpacePage.propTypes = {
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool,
   loadingSetAction: PropTypes.func.isRequired,
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

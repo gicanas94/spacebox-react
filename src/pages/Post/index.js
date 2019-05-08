@@ -18,6 +18,7 @@ class PostPage extends Component {
     this.state = {
       post: null,
       spacebox: null,
+      user: null,
     };
   }
 
@@ -28,6 +29,7 @@ class PostPage extends Component {
       this.setState({
         post: location.state.post,
         spacebox: location.state.spacebox,
+        user: location.state.user,
       });
     } else {
       loadingSetAction(true);
@@ -44,14 +46,14 @@ class PostPage extends Component {
       .once('value')
       .then((snapshot) => {
         if (snapshot.val()) {
-          const spacebox = snapshot.val()[Object.keys(snapshot.val())[0]];
-          const spaceboxId = Object.getOwnPropertyNames(snapshot.val())[0];
+          const spaceboxId = _.keys(snapshot.val())[0];
+          const spacebox = snapshot.val()[spaceboxId];
 
           this.setState(
             { spacebox, spaceboxId },
             () => {
               this.getUser(spacebox.userId);
-              this.getPost(Object.getOwnPropertyNames(snapshot.val())[0]);
+              this.getPost(spaceboxId);
             },
           );
         } else {

@@ -241,7 +241,17 @@ const Spacebox = ({
 
   return (
     link
-      ? <StyledLink order={order} to={link}>{box}</StyledLink>
+      ? (
+        <StyledLink
+          order={order}
+          to={{
+            pathname: link[0],
+            state: { spacebox: link[1] },
+          }}
+        >
+          {box}
+        </StyledLink>
+      )
       : box
   );
 };
@@ -254,7 +264,10 @@ Spacebox.propTypes = {
   description: PropTypes.string,
   informative: PropTypes.bool,
   likes: PropTypes.number,
-  link: PropTypes.string,
+  link: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+  ]),
   order: PropTypes.number,
   rounded: PropTypes.bool,
   title: PropTypes.string,

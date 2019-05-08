@@ -15,6 +15,7 @@ const StyledTitleAndDateWrapper = styled.div`
 const StyledContent = styled.p`
   margin-bottom: 0;
   white-space: pre-wrap;
+  word-break: break-all;
 `;
 
 const StyledDate = styled.div`
@@ -22,7 +23,6 @@ const StyledDate = styled.div`
   font-size: ${props => props.theme.components.Post.createdAtDate.fontSize};
   font-weight: ${props => props.theme.components.Post.createdAtDate.fontWeight};
   text-align: right;
-  width: 200px;
 `;
 
 class Post extends Component {
@@ -52,7 +52,7 @@ class Post extends Component {
   }
 
   render() {
-    const { post, spacebox } = this.props;
+    const { post, spacebox, user } = this.props;
     const { createdAt } = this.state;
 
     return (
@@ -62,7 +62,7 @@ class Post extends Component {
             ? (
               <Link to={{
                 pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
-                state: { post, spacebox },
+                state: { post, spacebox, user },
               }}
               >
                 <h3>{post.title}</h3>
@@ -87,10 +87,12 @@ class Post extends Component {
 Post.propTypes = {
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any),
+  user: PropTypes.objectOf(PropTypes.any),
 };
 
 Post.defaultProps = {
   spacebox: null,
+  user: null,
 };
 
 export default Post;

@@ -144,6 +144,11 @@ export default {
       },
     },
   },
+  forms: {
+    Post: {
+      bgColor: 'rgba(0, 0, 0, 0.8)',
+    },
+  },
   global: {
     borderRadius: '4px',
   },
@@ -179,6 +184,23 @@ export default {
     SignUp: {
       signInLink: {
         fontSize: font.size.xs,
+      },
+    },
+    Space: {
+      postsHistory: {
+        link: {
+          fontSize: font.size.xs,
+        },
+        month: {
+          fontSize: font.size.xs,
+        },
+        year: {
+          fontSize: font.size.m,
+          fontWeight: font.weight.bold,
+        },
+      },
+      userImage: {
+        bgColor: Color(themeMainColor).lighten(0.6).hex(),
       },
     },
     VerifyEmail: {
