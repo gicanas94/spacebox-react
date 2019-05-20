@@ -10,13 +10,16 @@ import styled from 'styled-components';
 
 import { alertSet, loadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
-import defaultUserImage from '../../assets/images/default-user-image.png';
 import { device } from '../../styles';
 import Hr from '../../components/Hr';
 import ListOfPosts from '../../components/ListOfPosts';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import PostForm from '../../forms/Post';
+import { ROUTES } from '../../constants';
+import Tooltip from '../../components/Tooltip';
+import UserInfoSection from './UserInfoSection';
 import { withFirebase } from '../../Firebase';
+
+const StyledUserInfoSection = styled(UserInfoSection)``;
 
 const StyledGrid = styled.div`
   align-items: start;
@@ -27,21 +30,15 @@ const StyledGrid = styled.div`
   width: 100%;
 
   @media ${device.tablet} {
-    grid-template-columns: 230px 1fr;
+    grid-template-columns: 270px 1fr;
   }
-`;
 
-const StyledImgWrapper = styled.div`
-  background-color: ${props => props.theme.pages.Space.userImage.bgColor};
-  border-radius: ${props => props.theme.global.borderRadius};
-  height: 200px;
-  margin-bottom: 25px;
-  overflow: hidden;
-  width: 200px;
+  @media ${device.laptop} {
+    grid-gap: 20px;
 
-  img {
-    height: inherit;
-    width: inherit;
+    ${StyledUserInfoSection} {
+      margin-bottom: 20px;
+    }
   }
 `;
 
@@ -52,12 +49,20 @@ const StyledPostsHistoryYear = styled.div`
 
 const StyledPostsHistoryMonth = styled.div`
   font-size: ${props => props.theme.pages.Space.postsHistory.month.fontSize};
-  margin: 5px 0;
+  font-weight: ${props => props.theme.pages.Space.postsHistory.month.fontWeight};
+  margin-left: 7px;
+  margin-top: 5px;
 `;
 
 const StyledPostsHistoryLink = styled(Link)`
   font-size: ${props => props.theme.pages.Space.postsHistory.link.fontSize};
-  margin-left: 10px;
+  display: block;
+  margin-left: 15px;
+  margin-top: 10px;
+`;
+
+const StyledNoPostsWrapper = styled.div`
+  text-align: center;
 `;
 
 class SpacePage extends Component {
@@ -76,7 +81,12 @@ class SpacePage extends Component {
   }
 
   componentDidMount() {
-    const { loadingSetAction, match, location } = this.props;
+    const {
+      alertSetAction,
+      loadingSetAction,
+      match,
+      location,
+    } = this.props;
 
     loadingSetAction(true);
     window.addEventListener('scroll', this.getMorePostsIfScrollIsAtTheEnd);
@@ -85,12 +95,27 @@ class SpacePage extends Component {
       this.setState(
         {
           spacebox: location.state.spacebox,
-          spaceboxId: location.state.spacebox.myId,
+          spaceboxId: location.state.spacebox.myId || location.state.spaceboxId,
         },
         () => {
-          this.getUser(location.state.spacebox.userId);
-          this.getSomePosts(location.state.spacebox.myId);
-          this.getAllPosts(location.state.spacebox.myId);
+          Promise.all([
+            this.getUser(location.state.spacebox.userId),
+            this.getSomePosts(
+              location.state.spacebox.myId || location.state.spaceboxId,
+            ),
+            this.getAllPosts(
+              location.state.spacebox.myId || location.state.spaceboxId,
+            ),
+          ])
+            .then(() => loadingSetAction(false))
+            .catch((error) => {
+              alertSetAction({
+                text: error.message,
+                type: 'danger',
+              });
+
+              loadingSetAction(false);
+            });
         },
       );
     } else {
@@ -106,7 +131,7 @@ class SpacePage extends Component {
   }
 
   getSpacebox = (spaceboxSlug) => {
-    const { alertSetAction, firebase, loadingSetAction } = this.props;
+    const { alertSetAction, loadingSetAction, firebase } = this.props;
 
     firebase.spaceboxes()
       .orderByChild('slug')
@@ -120,13 +145,23 @@ class SpacePage extends Component {
           this.setState(
             { spacebox, spaceboxId },
             () => {
-              this.getUser(spacebox.userId);
-              this.getSomePosts(spaceboxId);
-              this.getAllPosts(spaceboxId);
+              Promise.all([
+                this.getUser(spacebox.userId),
+                this.getSomePosts(spaceboxId),
+                this.getAllPosts(spaceboxId),
+              ])
+                .then(() => loadingSetAction(false))
+                .catch((error) => {
+                  alertSetAction({
+                    text: error.message,
+                    type: 'danger',
+                  });
+
+                  loadingSetAction(false);
+                });
             },
           );
         } else {
-          loadingSetAction(false);
           console.log('Spacebox no existe, ir a 404');
         }
       })
@@ -139,78 +174,69 @@ class SpacePage extends Component {
   }
 
   getUser = (userId) => {
-    const { alertSetAction, firebase } = this.props;
+    const { firebase } = this.props;
 
-    firebase.user(userId)
-      .once('value')
-      .then(snapshot => this.setState({ user: snapshot.val() }))
-      .catch(error => (
-        alertSetAction({
-          text: error.message,
-          type: 'danger',
-        })
-      ));
+    return new Promise((resolvePromise, rejectPromise) => {
+      firebase.user(userId)
+        .once('value')
+        .then(snapshot => this.setState(
+          { user: snapshot.val() },
+          resolvePromise(),
+        ))
+        .catch(error => rejectPromise(error));
+    });
   }
 
   getSomePosts = (spaceboxId) => {
-    const { alertSetAction, firebase, loadingSetAction } = this.props;
+    const { firebase } = this.props;
     const { postsLimit } = this.state;
 
-    try {
-      firebase.posts()
-        .orderByChild('spaceboxId')
-        .equalTo(spaceboxId)
-        .limitToLast(postsLimit)
-        .on('value', snapshot => (
-          this.setState(
-            {
-              posts: snapshot.val()
-                ? _.orderBy(snapshot.val(), ['createdAt'], ['desc'])
-                : [],
-            },
-            () => {
-              this.getMorePostsIfScrollIsAtTheEnd();
-              loadingSetAction(false);
-            },
-          )
-        ));
-    } catch (error) {
-      alertSetAction({
-        text: error.message,
-        type: 'danger',
-      });
-
-      loadingSetAction(false);
-    }
+    return new Promise((resolvePromise, rejectPromise) => {
+      try {
+        firebase.posts()
+          .orderByChild('spaceboxId')
+          .equalTo(spaceboxId)
+          .limitToLast(postsLimit)
+          .on('value', snapshot => (
+            this.setState(
+              {
+                posts: snapshot.val()
+                  ? _.orderBy(snapshot.val(), ['createdAt'], ['desc'])
+                  : [],
+              },
+              () => {
+                this.getMorePostsIfScrollIsAtTheEnd();
+                resolvePromise();
+              },
+            )
+          ));
+      } catch (error) {
+        rejectPromise(error);
+      }
+    });
   };
 
   getAllPosts = (spaceboxId) => {
-    const { alertSetAction, firebase, loadingSetAction } = this.props;
+    const { firebase } = this.props;
 
-    try {
-      firebase.posts()
-        .orderByChild('spaceboxId')
-        .equalTo(spaceboxId)
-        .on('value', snapshot => (
-          this.setState(
-            { allPosts: snapshot.val() },
-            () => {
-              this.composePostsHistory();
-              loadingSetAction(false);
-            },
-          )
-        ));
-    } catch (error) {
-      alertSetAction({
-        text: error.message,
-        type: 'danger',
-      });
-
-      loadingSetAction(false);
-    }
+    return new Promise((resolvePromise, rejectPromise) => {
+      try {
+        firebase.posts()
+          .orderByChild('spaceboxId')
+          .equalTo(spaceboxId)
+          .on('value', snapshot => (
+            this.setState(
+              { allPosts: snapshot.val() },
+              () => this.composePostsHistory(resolvePromise),
+            )
+          ));
+      } catch (error) {
+        rejectPromise(error);
+      }
+    });
   };
 
-  composePostsHistory = () => {
+  composePostsHistory = (resolveGetAllPostsPromise) => {
     const { allPosts } = this.state;
     const postsOrderedByYearAndMonth = {};
 
@@ -246,7 +272,10 @@ class SpacePage extends Component {
       })
     ));
 
-    this.setState({ postsHistory: postsOrderedByYearAndMonth });
+    this.setState(
+      { postsHistory: postsOrderedByYearAndMonth },
+      () => resolveGetAllPostsPromise(),
+    );
   };
 
   getMorePostsIfScrollIsAtTheEnd = () => {
@@ -302,53 +331,96 @@ class SpacePage extends Component {
 
         {!isLoading && (
           <StyledGrid>
-
-
             <div>
-              <Box margin="0 0 10px 0" padding="15px">
-                <StyledImgWrapper>
-                  <img alt="User" src={defaultUserImage} />
-                </StyledImgWrapper>
+              {spacebox && spaceboxId && user && (
+                <StyledUserInfoSection
+                  authUser={authUser}
+                  page="space"
+                  spacebox={spacebox}
+                  spaceboxId={spaceboxId}
+                  user={user}
+                />
+              )}
 
-                {authUser && spacebox && authUser.uid === spacebox.userId && (
-                  <PostForm spaceboxId={spaceboxId} />
-                )}
-              </Box>
+              {posts && posts.length > 0 && (
+                <Box margin="0" padding="15px">
+                  <h2>Posts history</h2>
 
-              <Box margin="0" padding="15px">
-                <h3>Posts history</h3>
-                {_.map(_.keys(postsHistory).reverse(), year => (
-                  <Fragment key={year}>
-                    <StyledPostsHistoryYear>
-                      {year}
-                    </StyledPostsHistoryYear>
+                  {_.map(_.keys(postsHistory).reverse(), (year, index) => (
+                    <Fragment key={year}>
+                      <StyledPostsHistoryYear>
+                        {year}
+                      </StyledPostsHistoryYear>
 
-                    {_.map(_.keys(postsHistory[year]), month => (
-                      <Fragment key={month}>
-                        <StyledPostsHistoryMonth>
-                          {moment(parseInt(month, 10) + 1, 'MM').format('MMMM')}
-                        </StyledPostsHistoryMonth>
+                      {_.map(_.keys(postsHistory[year]), month => (
+                        <Fragment key={month}>
+                          <StyledPostsHistoryMonth>
+                            {moment(
+                              parseInt(month, 10) + 1, 'MM',
+                            ).format('MMMM')}
+                          </StyledPostsHistoryMonth>
 
-                        {_.map(postsHistory[year][month], post => (
-                          <StyledPostsHistoryLink key={post.createdAt} to="/">
-                            {post.title}
-                          </StyledPostsHistoryLink>
-                        ))}
-                      </Fragment>
-                    ))}
+                          {_.map(postsHistory[year][month], post => (
+                            <StyledPostsHistoryLink
+                              key={post.createdAt}
+                              to={{
+                                pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
+                                state: {
+                                  post,
+                                  spacebox,
+                                  spaceboxId,
+                                  user,
+                                },
+                              }}
+                            >
+                              <span
+                                data-for={(post.createdAt + 1).toString()}
+                                data-tip={moment(post.createdAt).format(
+                                  'dddd, MMMM Do YYYY, h:mm',
+                                )}
+                              >
+                                {post.title}
+                              </span>
 
-                    <Hr margin="10px 0"/>
-                  </Fragment>
-                ))}
-              </Box>
+                              <Tooltip
+                                effect="solid"
+                                delayShow={500}
+                                id={(post.createdAt + 1).toString()}
+                                place="right"
+                              />
+                            </StyledPostsHistoryLink>
+                          ))}
+                        </Fragment>
+                      ))}
+
+                      {Object.keys(postsHistory).length > (index + 1) && (
+                        <Hr margin="10px 0" />
+                      )}
+                    </Fragment>
+                  ))}
+                </Box>
+              )}
             </div>
 
-            <div>
-              {posts && posts.length > 0
-                ? <ListOfPosts posts={posts} spacebox={spacebox} user={user} />
-                : <div>No posts.</div>
-              }
-            </div>
+            {posts && posts.length > 0
+              ? (
+                <ListOfPosts
+                  posts={posts}
+                  spacebox={spacebox}
+                  spaceboxId={spaceboxId}
+                  user={user}
+                />
+              ) : (
+                <Box fullWidth margin="0">
+                  <StyledNoPostsWrapper>
+                    {authUser && spacebox && authUser.uid === spacebox.userId
+                      ? 'You haven\'t made any post yet.'
+                      : 'The writer of this Spacebox hasn\'t made any post yet.'
+                    }
+                  </StyledNoPostsWrapper>
+                </Box>
+              )
+            }
           </StyledGrid>
         )}
       </Fragment>

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import Box from '../Box';
 import { ROUTES } from '../../constants';
+import Tooltip from '../Tooltip';
 
 const StyledTitleAndDateWrapper = styled.div`
   display: flex;
@@ -20,8 +21,10 @@ const StyledContent = styled.p`
 
 const StyledDate = styled.div`
   color: ${props => props.theme.components.Post.createdAtDate.color};
+  cursor: help;
   font-size: ${props => props.theme.components.Post.createdAtDate.fontSize};
   font-weight: ${props => props.theme.components.Post.createdAtDate.fontWeight};
+  height: fit-content;
   text-align: right;
 `;
 
@@ -52,17 +55,28 @@ class Post extends Component {
   }
 
   render() {
-    const { post, spacebox, user } = this.props;
+    const {
+      post,
+      spacebox,
+      spaceboxId,
+      user,
+    } = this.props;
+
     const { createdAt } = this.state;
 
     return (
-      <Box>
+      <Box fullWidth margin="0">
         <StyledTitleAndDateWrapper>
           {spacebox
             ? (
               <Link to={{
                 pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
-                state: { post, spacebox, user },
+                state: {
+                  post,
+                  spacebox,
+                  spaceboxId,
+                  user,
+                },
               }}
               >
                 <h3>{post.title}</h3>
@@ -71,8 +85,17 @@ class Post extends Component {
             : <h3>{post.title}</h3>
           }
 
-          <StyledDate>
+          <StyledDate
+            data-for={post.createdAt.toString()}
+            data-tip={moment(post.createdAt).format('dddd, MMMM Do YYYY, h:mm')}
+          >
             {createdAt}
+
+            <Tooltip
+              effect="solid"
+              id={post.createdAt.toString()}
+              place="top"
+            />
           </StyledDate>
         </StyledTitleAndDateWrapper>
 
@@ -87,11 +110,13 @@ class Post extends Component {
 Post.propTypes = {
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any),
+  spaceboxId: PropTypes.string,
   user: PropTypes.objectOf(PropTypes.any),
 };
 
 Post.defaultProps = {
   spacebox: null,
+  spaceboxId: null,
   user: null,
 };
 

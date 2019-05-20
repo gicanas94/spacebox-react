@@ -19,7 +19,7 @@ import { ROUTES } from './constants';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 import SpacePage from './pages/Space';
-import PostPage from './pages/Post';
+import PostPage from './pages/Space/Post';
 import VerifyEmailPage from './pages/VerifyEmail';
 import { withAuthentication } from './Session';
 

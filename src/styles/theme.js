@@ -143,6 +143,10 @@ export default {
         fontWeight: font.weight.bold,
       },
     },
+    Tooltip: {
+      fontSize: font.size.xs,
+      fontWeight: font.weight.regular,
+    },
   },
   forms: {
     Post: {
@@ -192,11 +196,12 @@ export default {
           fontSize: font.size.xs,
         },
         month: {
-          fontSize: font.size.xs,
+          fontSize: font.size.m,
+          fontWeight: font.weight.thin,
         },
         year: {
-          fontSize: font.size.m,
-          fontWeight: font.weight.bold,
+          fontSize: font.size.sm,
+          fontWeight: font.weight.regular,
         },
       },
       userImage: {
