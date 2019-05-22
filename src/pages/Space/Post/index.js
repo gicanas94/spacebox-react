@@ -64,6 +64,12 @@ class PostPage extends Component {
     }
   }
 
+  componentWillUnmount() {
+    const { firebase } = this.props;
+
+    firebase.posts().off();
+  }
+
   getSpacebox = (spaceboxSlug) => {
     const { alertSetAction, firebase, loadingSetAction } = this.props;
 

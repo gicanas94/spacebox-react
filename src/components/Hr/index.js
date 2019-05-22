@@ -10,7 +10,7 @@ const StyledHr = styled.hr`
       ? color.palette[props.color]
       : props.theme.components.Hr.color.default
   )};
-  border-style: solid;
+  border-style: ${props => (props.dashed ? 'dashed' : 'solid')};
   border-width: ${props => props.theme.components.Hr.borderWidth};
   border-radius: ${props => props.theme.global.borderRadius};
   display: inline-flex;
@@ -20,18 +20,26 @@ const StyledHr = styled.hr`
   ${props => props.margin && `
     margin: ${props.margin};
   `}
+
+  ${props => props.width && `
+    width: ${props.width};
+  `}
 `;
 
 const Hr = ({ ...props }) => <StyledHr {...props} />;
 
 Hr.propTypes = {
   color: PropTypes.string,
+  dashed: PropTypes.bool,
   margin: PropTypes.string,
+  width: PropTypes.string,
 };
 
 Hr.defaultProps = {
   color: undefined,
+  dashed: false,
   margin: undefined,
+  width: undefined,
 };
 
 export default Hr;

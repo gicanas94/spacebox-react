@@ -25,7 +25,6 @@ const StyledTitleAndDateWrapper = styled.div`
 
 const StyledContent = styled.p`
   margin-bottom: 0;
-  padding-right: 50px;
   white-space: pre-wrap;
   word-break: break-all;
 `;
@@ -41,36 +40,29 @@ const StyledDate = styled.div`
 `;
 
 const StyledActionsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: center;
-  padding-top: 15px;
-  position: absolute;
-  right: 25px;
-  top: 0;
+  padding-top: 10px;
   user-select: none;
 `;
 
 const StyledHeart = styled(Heart)`
   color: ${props => props.theme.components.Post.heart.noLikeColor};
   cursor: pointer;
-  width: 30px;
+  width: 33px;
+
+  &:active {
+    transform: scale(0.9);
+  }
 
   ${props => props.authUserLike && `
     color: ${props.theme.components.Post.heart.likeColor};
   `}
 
+  ${props => props.disabled && `
+    cursor: auto;
+  `}
+
   ${props => !props.disabled && `
     transition: transform ${transition.speed.superfast} linear;
-
-    &:hover {
-      transform: scale(1.1);
-    }
-
-    &:active {
-      transform: scale(0.8);
-    }
   `}
 `;
 
@@ -166,14 +158,14 @@ class Post extends Component {
           delayShow={500}
           effect="solid"
           id={post.createdAt.toString()}
-          place="top"
+          place="left"
         />
 
         {(!authUser || !authUser.emailVerified) && (
           <Tooltip
             effect="solid"
             id={`like-${post.slug}`}
-            place="left"
+            place="right"
           />
         )}
       </StyledBox>

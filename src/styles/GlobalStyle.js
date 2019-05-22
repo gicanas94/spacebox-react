@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 import theme from './theme';
+import { transition } from '.';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -12,6 +13,11 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer !important;
     font-weight: ${theme.htmlTags.a.fontWeight}
     text-decoration: none;
+    transition: transform ${transition.speed.superfast} linear;
+
+    &:active {
+      transform: translateY(4px);
+    }
 
     &:hover {
       text-decoration: underline;

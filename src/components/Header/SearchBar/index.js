@@ -5,6 +5,7 @@ import { SearchAlt } from 'styled-icons/boxicons-regular/SearchAlt';
 import styled from 'styled-components';
 
 import { searchBarChange } from '../../../Redux/actions';
+import Tooltip from '../../Tooltip';
 import { transition } from '../../../styles';
 
 const StyledWrapper = styled.div`
@@ -49,11 +50,24 @@ const SearchBar = ({ searchBarChangeAction, ...props }) => {
       <StyledSearchIcon onClick={() => textInput.focus()} />
 
       <StyledInput
+        data-for="search"
+        data-tip="Search by name, for example: Best pasta recipes<br>
+          Or by category, for example: Poetry"
         onChange={event => searchBarChangeAction(event.target.value)}
         placeholder="Search"
         ref={(input) => { textInput = input; }}
         type="text"
         {...props}
+      />
+
+      <Tooltip
+        className="search-tooltip"
+        effect="solid"
+        event="focus"
+        eventOff="blur"
+        id="search"
+        multiline
+        place="bottom"
       />
     </StyledWrapper>
   );

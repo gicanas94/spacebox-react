@@ -14,9 +14,14 @@ const StyledButton = styled.button`
   line-height: 1;
   padding: 0 15px;
   position: relative;
-  transition: background-color ${transition.speed.superfast} linear;
+  transition: background-color ${transition.speed.superfast} linear,
+    transform ${transition.speed.ultrafast} linear;
   user-select: none;
   width: fit-content;
+
+  &:active {
+    transform: scale(0.97);
+  }
 
   &:focus {
     outline: none;
@@ -116,7 +121,9 @@ const StyledButton = styled.button`
         ? color.palette[props.color]
         : props.theme.components.Button.color.default
     };
-    border: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: ${props.theme.components.Button.borderWidth};
     color: ${
       Color(
         props.color
@@ -141,7 +148,9 @@ const StyledButton = styled.button`
   `}
 
   ${props => props.styleType === 'unbordered' && `
-    border-width: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: ${props.theme.components.Button.borderWidth};
   `}
 
   ${props => (props.styleType === 'unbordered' && props.disabled) && `

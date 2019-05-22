@@ -183,7 +183,7 @@ class SpacePage extends Component {
         .once('value')
         .then(snapshot => this.setState(
           { user: snapshot.val() },
-          resolvePromise(),
+          () => resolvePromise(),
         ))
         .catch(error => rejectPromise(error));
     });

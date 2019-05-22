@@ -12,6 +12,10 @@ const StyledReactTooltipWrapper = styled.div`
     &.show {
       opacity: 0.7;
     }
+
+    &.search-tooltip {
+      margin-top: 25px;
+    }
   }
 `;
 
