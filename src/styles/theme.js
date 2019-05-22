@@ -95,6 +95,10 @@ export default {
         fontSize: font.size.xs,
         fontWeight: font.weight.bold,
       },
+      heart: {
+        likeColor: color.palette.red,
+        noLikeColor: color.palette.harborGray,
+      },
     },
     SearchBar: {
       bgColor: color.palette.cloud,
@@ -144,7 +148,7 @@ export default {
       },
     },
     Tooltip: {
-      fontSize: font.size.xs,
+      fontSize: '18px',
       fontWeight: font.weight.regular,
     },
   },

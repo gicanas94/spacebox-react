@@ -2,7 +2,6 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { Cross } from 'styled-icons/icomoon/Cross';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -22,7 +21,7 @@ const PostFormSchema = Yup.object().shape({
     .required('This field is required!'),
 });
 
-const StyledBackround = styled.div`
+const StyledBackground = styled.div`
   align-items: center;
   background-color: ${props => props.theme.forms.Post.bgColor};
   display: flex;
@@ -35,12 +34,11 @@ const StyledBackround = styled.div`
   z-index: 400;
 `;
 
-const StyledCrossIcon = styled(Cross)`
-  cursor: pointer;
+const StyledCloserOnClick = styled.div`
+  height: 100%;
   position: absolute;
-  right: 25px;
-  top: 25px;
-  width: 25px;
+  width: 100%;
+  z-index: -1;
 `;
 
 const StyledButtonsWrapper = styled.div`
@@ -57,8 +55,10 @@ class PostForm extends Component {
   }
 
   componentDidMount() {
-    this.backgroundRef = React.createRef();
+    this.closerOnClickRef = React.createRef();
   }
+
+  handleKeydown = event => event.key === 'Escape' && this.closeForm();
 
   handleSubmit = (values, actions) => {
     const { alertSetAction, firebase, spaceboxId } = this.props;
@@ -76,7 +76,7 @@ class PostForm extends Component {
     })
       .then(() => {
         actions.resetForm();
-        this.toggleFormIsOpenState(false);
+        this.closeForm();
       })
       .catch(error => (
         alertSetAction({
@@ -88,7 +88,22 @@ class PostForm extends Component {
     actions.setSubmitting(false);
   };
 
-  toggleFormIsOpenState = state => this.setState({ formIsOpen: state });
+  openForm = () => {
+    this.setState({ formIsOpen: true });
+    document.addEventListener('keydown', this.handleKeydown);
+  }
+
+  closeForm = () => {
+    const close = () => {
+      document.removeEventListener('keydown', this.handleKeydown);
+      this.setState({ formIsOpen: false });
+    };
+
+    return document.getElementById('title').value === ''
+      && document.getElementById('content').value === ''
+      ? close()
+      : window.confirm('Are you sure you want to exit?') && close();
+  }
 
   render() {
     const { formIsOpen } = this.state;
@@ -97,7 +112,7 @@ class PostForm extends Component {
       <Fragment>
         <Button
           fullWidth
-          onClick={() => this.toggleFormIsOpenState(true)}
+          onClick={() => this.openForm()}
           rounded
           styleType="filled"
         >
@@ -105,7 +120,12 @@ class PostForm extends Component {
         </Button>
 
         {formIsOpen && (
-          <StyledBackround>
+          <StyledBackground>
+            <StyledCloserOnClick
+              onClick={() => this.closeForm()}
+              ref={this.closerOnClickRef}
+            />
+
             <Box size="small">
               <h2>New post</h2>
 
@@ -157,7 +177,7 @@ class PostForm extends Component {
                       <Button
                         color="lava"
                         disabled={isSubmitting}
-                        onClick={() => this.toggleFormIsOpenState(false)}
+                        onClick={() => this.closeForm()}
                         rounded
                         styleType="unbordered"
                         type="button"
@@ -178,9 +198,7 @@ class PostForm extends Component {
                 )}
               />
             </Box>
-
-            <StyledCrossIcon />
-          </StyledBackround>
+          </StyledBackground>
         )}
       </Fragment>
     );

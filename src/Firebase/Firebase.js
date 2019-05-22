@@ -75,9 +75,13 @@ class Firebase {
   });
 
   // Spacebox API
+  spacebox = sid => this.db.ref(`spaceboxes/${sid}`);
+
   spaceboxes = () => this.db.ref('spaceboxes');
 
   // Post API
+  post = pid => this.db.ref(`posts/${pid}`);
+
   posts = () => this.db.ref('posts');
 
   // User API

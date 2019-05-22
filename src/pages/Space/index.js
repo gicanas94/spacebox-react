@@ -12,6 +12,7 @@ import { alertSet, loadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import { device } from '../../styles';
 import Hr from '../../components/Hr';
+import { likePost } from './commonFunctions';
 import ListOfPosts from '../../components/ListOfPosts';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { ROUTES } from '../../constants';
@@ -19,7 +20,7 @@ import Tooltip from '../../components/Tooltip';
 import UserInfoSection from './UserInfoSection';
 import { withFirebase } from '../../Firebase';
 
-const StyledUserInfoSection = styled(UserInfoSection)``;
+const StyledUserInfoSectionWrapper = styled.div``;
 
 const StyledGrid = styled.div`
   align-items: start;
@@ -36,7 +37,7 @@ const StyledGrid = styled.div`
   @media ${device.laptop} {
     grid-gap: 20px;
 
-    ${StyledUserInfoSection} {
+    ${StyledUserInfoSectionWrapper} {
       margin-bottom: 20px;
     }
   }
@@ -71,6 +72,7 @@ class SpacePage extends Component {
 
     this.state = {
       allPosts: null,
+      likeInProgress: false,
       posts: null,
       postsHistory: null,
       postsLimit: 5,
@@ -236,6 +238,23 @@ class SpacePage extends Component {
     });
   };
 
+  handleLikeClick = (likedPost) => {
+    const { alertSetAction, authUser, firebase } = this.props;
+
+    this.setState({ likeInProgress: true });
+
+    likePost(authUser, firebase, likedPost)
+      .then(() => this.setState({ likeInProgress: false }))
+      .catch((error) => {
+        alertSetAction({
+          text: error.message,
+          type: 'danger',
+        });
+
+        this.setState({ likeInProgress: false });
+      });
+  }
+
   composePostsHistory = (resolveGetAllPostsPromise) => {
     const { allPosts } = this.state;
     const postsOrderedByYearAndMonth = {};
@@ -317,6 +336,7 @@ class SpacePage extends Component {
     const { authUser, isLoading } = this.props;
 
     const {
+      likeInProgress,
       posts,
       postsHistory,
       spacebox,
@@ -333,13 +353,15 @@ class SpacePage extends Component {
           <StyledGrid>
             <div>
               {spacebox && spaceboxId && user && (
-                <StyledUserInfoSection
-                  authUser={authUser}
-                  page="space"
-                  spacebox={spacebox}
-                  spaceboxId={spaceboxId}
-                  user={user}
-                />
+                <StyledUserInfoSectionWrapper>
+                  <UserInfoSection
+                    authUser={authUser}
+                    page="space"
+                    spacebox={spacebox}
+                    spaceboxId={spaceboxId}
+                    user={user}
+                  />
+                </StyledUserInfoSectionWrapper>
               )}
 
               {posts && posts.length > 0 && (
@@ -405,6 +427,9 @@ class SpacePage extends Component {
             {posts && posts.length > 0
               ? (
                 <ListOfPosts
+                  authUser={authUser}
+                  likeInProgress={likeInProgress}
+                  onLikeClickHandler={this.handleLikeClick}
                   posts={posts}
                   spacebox={spacebox}
                   spaceboxId={spaceboxId}

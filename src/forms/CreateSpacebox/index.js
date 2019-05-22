@@ -17,6 +17,7 @@ import { device } from '../../styles';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
 import Spacebox from '../../components/Spacebox';
+import Tooltip from '../../components/Tooltip';
 import { withFirebase } from '../../Firebase';
 import Wizard from '../../components/Wizard';
 
@@ -244,6 +245,8 @@ class CreateSpaceboxForm extends Component {
             {({ form }) => (
               <Button
                 color="lime"
+                data-for="autoMix"
+                data-tip="Generates a random combination of colors"
                 fullWidth
                 margin="25px 0 0 0"
                 onClick={() => this.handleMixerClick(form)}
@@ -255,6 +258,8 @@ class CreateSpaceboxForm extends Component {
               </Button>
             )}
           </Field>
+
+          <Tooltip delayShow={500} effect="solid" id="autoMix" place="bottom" />
         </Wizard.Page>
 
         <Wizard.Page>

@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import { alertSet, loadingSet } from '../../../Redux/actions';
 import { device } from '../../../styles';
+import { likePost } from '../commonFunctions';
 import Post from '../../../components/Post';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import UserInfoSection from '../UserInfoSection';
@@ -41,6 +42,7 @@ class PostPage extends Component {
     super(props);
 
     this.state = {
+      likeInProgress: false,
       post: null,
       spacebox: null,
       user: null,
@@ -158,10 +160,28 @@ class PostPage extends Component {
     });
   };
 
+  handleLikeClick = (likedPost) => {
+    const { alertSetAction, authUser, firebase } = this.props;
+
+    this.setState({ likeInProgress: true });
+
+    likePost(authUser, firebase, likedPost)
+      .then(() => this.setState({ likeInProgress: false }))
+      .catch((error) => {
+        alertSetAction({
+          text: error.message,
+          type: 'danger',
+        });
+
+        this.setState({ likeInProgress: false });
+      });
+  }
+
   render() {
     const { authUser, isLoading } = this.props;
 
     const {
+      likeInProgress,
       post,
       spacebox,
       spaceboxId,
@@ -185,7 +205,12 @@ class PostPage extends Component {
               />
             )}
 
-            <Post post={post} />
+            <Post
+              authUser={authUser}
+              likeInProgress={likeInProgress}
+              onLikeClickHandler={() => this.handleLikeClick(post)}
+              post={post}
+            />
           </StyledGrid>
         )}
       </Fragment>
