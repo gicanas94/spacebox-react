@@ -7,13 +7,13 @@ const StyledWrapper = styled.div`
   flex-direction: column;
   width: 95px;
 
-  ${props => props.margin && `
-    margin: ${props.margin};
+  ${({ margin }) => margin && `
+    margin: ${margin};
   `}
 `;
 
 const StyledLabel = styled.span`
-  font-size: ${props => props.theme.components.ColorInput.fontSize};
+  font-size: ${({ theme }) => theme.components.ColorInput.fontSize};
   margin-bottom: 7px;
   word-break: break-all;
 `;
@@ -35,8 +35,8 @@ const StyledInput = styled.input`
     padding: 0;
   }
 
-  ${props => props.rounded && `
-    border-radius: ${props.theme.global.borderRadius};
+  ${({ rounded, theme }) => rounded && `
+    border-radius: ${theme.global.borderRadius};
   `}
 `;
 

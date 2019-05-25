@@ -16,6 +16,7 @@ const SocialLoginToggle = ({
     onClick={() => onUnlinkHandler(signInMethod.id)}
     rounded
     styleType="bordered"
+    type="button"
   >
     {`Unlink ${signInMethod.displayName}`}
   </Button>
@@ -25,6 +26,7 @@ const SocialLoginToggle = ({
     onClick={() => onLinkHandler(signInMethod.provider)}
     rounded
     styleType="bordered"
+    type="button"
   >
     {`Link ${signInMethod.displayName}`}
   </Button>

@@ -154,14 +154,6 @@ class CreateSpaceboxForm extends Component {
       visible,
     })
       .then(() => {
-        firebase.user(authUser.uid).once('value', snapshot => (
-          firebase.user(authUser.uid).set({
-            ...snapshot.val(),
-            isSpaceboxOwner: true,
-          })
-        ));
-      })
-      .then(() => {
         history.push(ROUTES.HOME);
 
         alertSetAction({

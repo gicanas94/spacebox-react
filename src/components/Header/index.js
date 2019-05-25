@@ -12,8 +12,8 @@ import SearchBar from './SearchBar';
 import smallLogo from '../../assets/images/logo.png';
 
 const StyledWrapper = styled.div`
-  background-color: ${props => props.theme.components.Header.bgColor};
-  color: ${props => props.theme.components.Header.color};
+  background-color: ${({ theme }) => theme.components.Header.bgColor};
+  color: ${({ theme }) => theme.components.Header.color};
   position: sticky;
   top: 0;
   width: 100%;
@@ -22,13 +22,13 @@ const StyledWrapper = styled.div`
 
 const StyledHeader = styled.header`
   margin: auto;
-  max-width: ${props => props.theme.components.Header.maxWidth};
+  max-width: ${({ theme }) => theme.components.Header.maxWidth};
   padding: 10px;
-  width: ${props => props.theme.components.Header.mobileWidth};
+  width: ${({ theme }) => theme.components.Header.mobileWidth};
 
   @media ${device.laptop} {
     padding: 10px 0;
-    width: ${props => props.theme.components.Header.laptopWidth};
+    width: ${({ theme }) => theme.components.Header.laptopWidth};
   }
 `;
 
@@ -59,7 +59,7 @@ const StyledSmallLogoLink = styled(Link)`
 
 const StyledOverlay = styled.div`
   align-items: center;
-  background-color: ${props => props.theme.components.Header.bgColor};
+  background-color: ${({ theme }) => theme.components.Header.bgColor};
   display: flex;
   height: 100vh;
   justify-content: center;
@@ -148,7 +148,10 @@ const Header = () => {
       <StyledHeader>
         <StyledMobileView>
           <StyledSpan>
-            <StyledSmallLogoLink to={ROUTES.HOME}>
+            <StyledSmallLogoLink
+              onClick={() => setMobileNavIsOpen(false)}
+              to={ROUTES.HOME}
+            >
               <img alt="Spacebox logo" src={smallLogo} />
             </StyledSmallLogoLink>
 

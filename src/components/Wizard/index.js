@@ -37,21 +37,21 @@ class Wizard extends Component {
     }
   };
 
-  nextStep = (values) => {
-    const { children } = this.props;
-
-    this.setState(state => ({
-      page: Math.min(state.page + 1, children.length - 1),
+  nextStep = values => (
+    this.setState(prevState => ({
+      page: prevState.page + 1,
       values,
-    }));
-  }
+    }))
+  )
 
-  previousStep = () => this.setState(state => ({
-    page: Math.max(state.page - 1, 0),
-  }));
+  previousStep = () => (
+    this.setState(prevState => ({
+      page: prevState.page - 1,
+    }))
+  )
 
   render() {
-    const { children, validationSchema } = this.props;
+    const { children, validationSchema, withStartPage } = this.props;
     const { page, values } = this.state;
     const activePage = Children.toArray(children)[page];
     const isLastPage = page === Children.count(children) - 1;
@@ -76,12 +76,20 @@ class Wizard extends Component {
                   margin="0 25px 0 0"
                   rounded
                   styleType="unbordered"
+                  type="button"
                 >
                   {'Back'}
                 </Button>
               )}
 
-              {!isLastPage && (
+              {page === 0 && withStartPage && (
+                <Button rounded styleType="bordered" type="submit">
+                  {'Start'}
+                </Button>
+              )}
+
+              {((!isLastPage && !withStartPage)
+                || (withStartPage && page > 0)) && (
                 <Button rounded styleType="bordered" type="submit">
                   {'Next'}
                 </Button>
@@ -105,6 +113,11 @@ Wizard.propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   onSubmit: PropTypes.func.isRequired,
   validationSchema: PropTypes.arrayOf(PropTypes.object).isRequired,
+  withStartPage: PropTypes.bool,
+};
+
+Wizard.defaultProps = {
+  withStartPage: false,
 };
 
 export default Wizard;

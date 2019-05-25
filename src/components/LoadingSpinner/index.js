@@ -5,7 +5,7 @@ import { keyframe } from '../../styles';
 
 const StyledWrapper = styled.div`
   align-items: center;
-  background-color: ${props => props.theme.components.LoadingSpinner.bgColor};
+  background-color: ${({ theme }) => theme.components.LoadingSpinner.bgColor};
   display: flex;
   height: 100vh;
   left: 0;
@@ -25,7 +25,7 @@ const StyledHeart = styled.div`
   width: 200px !important;
 
   div {
-    background: ${props => props.theme.components.LoadingSpinner.spinnerColor};
+    background: ${({ theme }) => theme.components.LoadingSpinner.spinnerColor};
     height: 80px;
     left: 60px;
     position: absolute;
@@ -36,7 +36,7 @@ const StyledHeart = styled.div`
 
   div:after,
   div:before {
-    background: ${props => props.theme.components.LoadingSpinner.spinnerColor};
+    background: ${({ theme }) => theme.components.LoadingSpinner.spinnerColor};
     content: "";
     display: block;
     height: 80px;

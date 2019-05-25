@@ -23,7 +23,7 @@ const PostFormSchema = Yup.object().shape({
 
 const StyledBackground = styled.div`
   align-items: center;
-  background-color: ${props => props.theme.forms.Post.bgColor};
+  background-color: ${({ theme }) => theme.forms.Post.bgColor};
   display: flex;
   height: 100%;
   justify-content: center;
@@ -115,6 +115,7 @@ class PostForm extends Component {
           onClick={() => this.openForm()}
           rounded
           styleType="filled"
+          type="button"
         >
           {'New post'}
         </Button>

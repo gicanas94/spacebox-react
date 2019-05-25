@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
     transition: transform ${transition.speed.superfast} linear;
 
     &:active {
-      transform: translateY(4px);
+      transform: translateY(2px);
     }
 
     &:hover {

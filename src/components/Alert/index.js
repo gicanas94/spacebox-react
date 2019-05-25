@@ -9,7 +9,7 @@ const StyledAlert = styled.div`
   bottom: 0;
   cursor: pointer;
   display: flex;
-  font-weight: ${props => props.theme.components.Alert.fontWeight};
+  font-weight: ${({ theme }) => theme.components.Alert.fontWeight};
   height: fit-content;
   justify-content: center;
   left: 0;
@@ -25,16 +25,16 @@ const StyledAlert = styled.div`
     top: 0;
   }
 
-  ${props => props.type && `
-    background-color: ${props.theme.components.Alert.type[props.type].bgColor};
+  ${({ type, theme }) => type && `
+    background-color: ${theme.components.Alert.type[type].bgColor};
   `}
 
-  ${props => props.withBorder && `
+  ${({ withBorder, type, theme }) => withBorder && `
     border-bottom: 0;
-    border-top: ${props.theme.components.Alert.type[props.type].border};
+    border-top: ${theme.components.Alert.type[type].border};
 
     @media ${device.laptop} {
-      border-bottom: ${props.theme.components.Alert.type[props.type].border};
+      border-bottom: ${theme.components.Alert.type[type].border};
       border-top: 0;
     }
   `}
@@ -45,11 +45,11 @@ const StyledWrapper = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  max-width: ${props => props.theme.components.Alert.maxWidth};
-  width: ${props => props.theme.components.Alert.mobileWidth};
+  max-width: ${({ theme }) => theme.components.Alert.maxWidth};
+  width: ${({ theme }) => theme.components.Alert.mobileWidth};
 
   @media ${device.laptop} {
-    width: ${props => props.theme.components.Alert.laptopWidth};
+    width: ${({ theme }) => theme.components.Alert.laptopWidth};
   }
 `;
 

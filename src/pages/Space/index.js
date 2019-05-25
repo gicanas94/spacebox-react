@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -13,8 +13,8 @@ import Box from '../../components/Box';
 import { device } from '../../styles';
 import Hr from '../../components/Hr';
 import { likePost } from './commonFunctions';
-import ListOfPosts from '../../components/ListOfPosts';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import Post from '../../components/Post';
 import { ROUTES } from '../../constants';
 import Tooltip from '../../components/Tooltip';
 import UserInfoSection from './UserInfoSection';
@@ -30,6 +30,10 @@ const StyledGrid = styled.div`
   margin: auto;
   width: 100%;
 
+  ${StyledUserInfoSectionWrapper} {
+    margin-bottom: 10px;
+  }
+
   @media ${device.tablet} {
     grid-template-columns: 270px 1fr;
   }
@@ -44,19 +48,19 @@ const StyledGrid = styled.div`
 `;
 
 const StyledPostsHistoryYear = styled.div`
-  font-size: ${props => props.theme.pages.Space.postsHistory.year.fontSize};
-  font-weight: ${props => props.theme.pages.Space.postsHistory.year.fontWeight};
+  font-size: ${({ theme }) => theme.pages.Space.postsHistory.year.fontSize};
+  font-weight: ${({ theme }) => theme.pages.Space.postsHistory.year.fontWeight};
 `;
 
 const StyledPostsHistoryMonth = styled.div`
-  font-size: ${props => props.theme.pages.Space.postsHistory.month.fontSize};
-  font-weight: ${props => props.theme.pages.Space.postsHistory.month.fontWeight};
+  font-size: ${({ theme }) => theme.pages.Space.postsHistory.month.fontSize};
+  font-weight: ${({ theme }) => theme.pages.Space.postsHistory.month.fontWeight};
   margin-left: 7px;
   margin-top: 5px;
 `;
 
 const StyledPostsHistoryLink = styled(Link)`
-  font-size: ${props => props.theme.pages.Space.postsHistory.link.fontSize};
+  font-size: ${({ theme }) => theme.pages.Space.postsHistory.link.fontSize};
   display: block;
   margin-left: 15px;
   margin-top: 10px;
@@ -133,7 +137,12 @@ class SpacePage extends Component {
   }
 
   getSpacebox = (spaceboxSlug) => {
-    const { alertSetAction, loadingSetAction, firebase } = this.props;
+    const {
+      alertSetAction,
+      firebase,
+      history,
+      loadingSetAction,
+    } = this.props;
 
     firebase.spaceboxes()
       .orderByChild('slug')
@@ -164,7 +173,9 @@ class SpacePage extends Component {
             },
           );
         } else {
-          console.log('Spacebox no existe, ir a 404');
+          // Spacebox does not exist
+          loadingSetAction(false);
+          history.push(ROUTES.NOT_FOUND);
         }
       })
       .catch(error => (
@@ -365,8 +376,13 @@ class SpacePage extends Component {
               )}
 
               {posts && posts.length > 0 && (
-                <Box margin="0" padding="15px">
-                  <h2>Posts history</h2>
+                <Box
+                  collapsed
+                  collapseTitle={<h3>Posts history</h3>}
+                  margin="0"
+                  padding="15px"
+                >
+                  <h3>Posts history</h3>
 
                   {_.map(_.keys(postsHistory).reverse(), (year, index) => (
                     <Fragment key={year}>
@@ -426,15 +442,21 @@ class SpacePage extends Component {
 
             {posts && posts.length > 0
               ? (
-                <ListOfPosts
-                  authUser={authUser}
-                  likeInProgress={likeInProgress}
-                  onLikeClickHandler={this.handleLikeClick}
-                  posts={posts}
-                  spacebox={spacebox}
-                  spaceboxId={spaceboxId}
-                  user={user}
-                />
+                <div>
+                  {posts.map((post, index) => (
+                    <Post
+                      authUser={authUser}
+                      key={post.createdAt}
+                      lastPost={posts.length === (index + 1)}
+                      likeInProgress={likeInProgress}
+                      onLikeClickHandler={() => this.handleLikeClick(post)}
+                      page="space"
+                      post={post}
+                      spacebox={spacebox}
+                      user={user}
+                    />
+                  ))}
+                </div>
               ) : (
                 <Box fullWidth margin="0">
                   <StyledNoPostsWrapper>
@@ -457,6 +479,7 @@ SpacePage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.objectOf(PropTypes.any),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool,
   loadingSetAction: PropTypes.func.isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -481,4 +504,5 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withFirebase,
+  withRouter,
 )(SpacePage);

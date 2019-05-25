@@ -18,9 +18,8 @@ const FaqPage = () => (
     </p>
 
     <p>
-      On the <Link to={ROUTES.HOME}>home page</Link> you can filter the spaces
-      depending on what you want to read, the idea is that you always find
-      content that you find interesting.
+      On the home page you can filter the spaces depending on what you want to
+      read, the idea is that you always find content that you find interesting.
     </p>
 
     <p>

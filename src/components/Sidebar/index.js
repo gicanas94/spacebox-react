@@ -43,7 +43,7 @@ const StyledSections = styled.div`
 `;
 
 const StyledTitle = styled.div`
-  font-weight: ${props => props.theme.components.Sidebar.title.fontWeight};
+  font-weight: ${({ theme }) => theme.components.Sidebar.title.fontWeight};
   margin-bottom: 15px;
 `;
 
@@ -62,12 +62,12 @@ const StyledUl = styled.ul`
 const StyledNavLink = styled(NavLink).attrs({
   activeClassName: 'active',
 })`
-  font-size: ${props => props.theme.components.Sidebar.link.fontSize};
-  font-weight: ${props => props.theme.components.Sidebar.link.fontWeight};
+  font-size: ${({ theme }) => theme.components.Sidebar.link.fontSize};
+  font-weight: ${({ theme }) => theme.components.Sidebar.link.fontWeight};
 
   &.active {
-    font-weight: ${props => (
-      props.theme.components.Sidebar.activeLink.fontWeight
+    font-weight: ${({ theme }) => (
+      theme.components.Sidebar.activeLink.fontWeight
     )};
   }
 `;

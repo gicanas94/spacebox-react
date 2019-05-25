@@ -14,6 +14,7 @@ import { device } from './styles';
 import FaqPage from './pages/Faq';
 import Header from './components/Header';
 import HomePage from './pages/Home';
+import NotFoundPage from './pages/NotFound';
 import PasswordForgetPage from './pages/PasswordForget';
 import { ROUTES } from './constants';
 import SignInPage from './pages/SignIn';
@@ -25,13 +26,13 @@ import { withAuthentication } from './Session';
 
 const StyledRoutesContainer = styled.div`
   margin: auto;
-  max-width: ${props => props.theme.components.App.maxWidth};
+  max-width: ${({ theme }) => theme.components.App.maxWidth};
   padding: 10px;
-  width: ${props => props.theme.components.App.mobileWidth};
+  width: ${({ theme }) => theme.components.App.mobileWidth};
 
   @media ${device.laptop} {
     padding: 20px 0;
-    width: ${props => props.theme.components.App.laptopWidth};
+    width: ${({ theme }) => theme.components.App.laptopWidth};
   }
 `;
 
@@ -54,12 +55,14 @@ const App = ({ activeAlert, alertSetAction }) => (
         <Route component={CreateSpaceboxPage} path={ROUTES.CREATE_SPACEBOX} />
         <Route component={FaqPage} path={ROUTES.FAQ} />
         <Route component={HomePage} exact path={ROUTES.HOME} />
+        <Route component={NotFoundPage} exact path={ROUTES.NOT_FOUND} />
         <Route component={PasswordForgetPage} path={ROUTES.PASSWORD_FORGET} />
         <Route component={SignInPage} path={ROUTES.SIGN_IN} />
         <Route component={SignUpPage} path={ROUTES.SIGN_UP} />
         <Route component={SpacePage} exact path={ROUTES.SPACE_WITH_SLUG} />
         <Route component={PostPage} exact path={ROUTES.SPACE_POST} />
         <Route component={VerifyEmailPage} path={ROUTES.VERIFY_EMAIL} />
+        <Route component={NotFoundPage} />
       </Switch>
     </StyledRoutesContainer>
   </Fragment>

@@ -6,6 +6,7 @@ export default {
   FAQ: '/faq',
   HOME: '/',
   LOGIN_MANAGEMENT: '/account/login-management',
+  NOT_FOUND: '/404',
   PASSWORD_FORGET: '/pw-forget',
   SIGN_IN: '/signin',
   SIGN_UP: '/signup',

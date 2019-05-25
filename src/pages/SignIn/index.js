@@ -14,7 +14,7 @@ import SignInGoogleForm from '../../forms/SignInGoogle';
 import SignInTwitterForm from '../../forms/SignInTwitter';
 
 const StyledLink = styled(Link)`
-  font-size: ${props => props.theme.pages.SignIn.forgotPasswordLink.fontSize};
+  font-size: ${({ theme }) => theme.pages.SignIn.forgotPasswordLink.fontSize};
 `;
 
 const PasswordForgetLink = () => (

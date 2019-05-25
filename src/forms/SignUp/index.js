@@ -65,7 +65,6 @@ class SignUpForm extends Component {
             createdAt: firebase.serverValue.TIMESTAMP,
             email,
             isAdmin: false,
-            isSpaceboxOwner: false,
             username,
           })
       ))

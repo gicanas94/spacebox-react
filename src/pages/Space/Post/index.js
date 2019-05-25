@@ -5,12 +5,14 @@ import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 
 import { alertSet, loadingSet } from '../../../Redux/actions';
 import { device } from '../../../styles';
 import { likePost } from '../commonFunctions';
-import Post from '../../../components/Post';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import { ROUTES } from '../../../constants';
+import Post from '../../../components/Post';
 import UserInfoSection from '../UserInfoSection';
 import { withFirebase } from '../../../Firebase';
 
@@ -50,15 +52,34 @@ class PostPage extends Component {
   }
 
   componentDidMount() {
-    const { location, match } = this.props;
+    const {
+      alertSetAction,
+      loadingSetAction,
+      location,
+      match,
+    } = this.props;
 
     if (location.state) {
-      this.setState({
-        post: location.state.post,
-        spacebox: location.state.spacebox,
-        spaceboxId: location.state.spaceboxId,
-        user: location.state.user,
-      });
+      this.setState(
+        {
+          spacebox: location.state.spacebox,
+          spaceboxId: location.state.spaceboxId,
+          user: location.state.user,
+        }, () => {
+          loadingSetAction(true);
+
+          this.getPost(location.state.spaceboxId)
+            .then(() => loadingSetAction(false))
+            .catch((error) => {
+              alertSetAction({
+                text: error.message,
+                type: 'danger',
+              });
+
+              loadingSetAction(false);
+            });
+        },
+      );
     } else {
       this.getSpacebox(match.params.spaceboxSlug);
     }
@@ -71,7 +92,12 @@ class PostPage extends Component {
   }
 
   getSpacebox = (spaceboxSlug) => {
-    const { alertSetAction, firebase, loadingSetAction } = this.props;
+    const {
+      alertSetAction,
+      firebase,
+      history,
+      loadingSetAction,
+    } = this.props;
 
     loadingSetAction(true);
 
@@ -103,8 +129,9 @@ class PostPage extends Component {
             },
           );
         } else {
+          // Spacebox does not exist
           loadingSetAction(false);
-          console.log('Spacebox no existe, ir a 404');
+          history.push(ROUTES.NOT_FOUND);
         }
       })
       .catch((error) => {
@@ -132,7 +159,12 @@ class PostPage extends Component {
   }
 
   getPost = (spaceboxId) => {
-    const { firebase, loadingSetAction, match } = this.props;
+    const {
+      firebase,
+      history,
+      loadingSetAction,
+      match,
+    } = this.props;
 
     return new Promise((resolvePromise, rejectPromise) => {
       try {
@@ -152,12 +184,14 @@ class PostPage extends Component {
                   () => resolvePromise(),
                 );
               } else {
+                // Post does not exist
                 loadingSetAction(false);
-                console.log('Post no existe, ir a 404');
+                history.push(ROUTES.NOT_FOUND);
               }
             } else {
+              // Spacebox has no posts
               loadingSetAction(false);
-              console.log('El Spacebox no tiene posts, ir a 404');
+              history.push(ROUTES.NOT_FOUND);
             }
           });
       } catch (error) {
@@ -213,9 +247,13 @@ class PostPage extends Component {
 
             <Post
               authUser={authUser}
+              lastPost
               likeInProgress={likeInProgress}
               onLikeClickHandler={() => this.handleLikeClick(post)}
+              page="post"
               post={post}
+              spacebox={spacebox}
+              user={user}
             />
           </StyledGrid>
         )}
@@ -228,6 +266,7 @@ PostPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.objectOf(PropTypes.any),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool,
   loadingSetAction: PropTypes.func.isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -252,4 +291,5 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withFirebase,
+  withRouter,
 )(PostPage);

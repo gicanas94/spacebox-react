@@ -10,7 +10,7 @@ import { ROUTES } from '../../constants';
 import SignUpForm from '../../forms/SignUp';
 
 const StyledLink = styled(Link)`
-  font-size: ${props => props.theme.pages.SignUp.signInLink.fontSize};
+  font-size: ${({ theme }) => theme.pages.SignUp.signInLink.fontSize};
 `;
 
 const SignInLink = () => (

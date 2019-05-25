@@ -5,22 +5,23 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { color, transition } from '../../styles';
+import colors from '../../styles/color';
+import { transition } from '../../styles';
 
 const StyledTitle = styled.div`
-  font-size: ${props => props.theme.components.Spacebox.title.fontSize};
-  font-weight: ${props => props.theme.components.Spacebox.title.fontWeight};
+  font-size: ${({ theme }) => theme.components.Spacebox.title.fontSize};
+  font-weight: ${({ theme }) => theme.components.Spacebox.title.fontWeight};
   line-height: 1em;
   max-height: 4em;
   overflow: hidden;
   padding-left: 15px;
   padding-right: 45px;
-  position: absolute;
-  text-align: justify;
+  position: absolute
   text-transform: uppercase;
-  transition: blur ${transition.speed.fast} linear,
-  opacity ${transition.speed.fast} linear;
+  transition: blur ${transition.speed.superfast} linear,
+              opacity ${transition.speed.superfast} linear;
   width: 100%;
+  word-spacing: 5px;
   word-wrap: break-word;
 
   &:before {
@@ -41,9 +42,9 @@ const StyledTitle = styled.div`
 `;
 
 const StyledDescription = styled.div`
-  font-size: ${props => props.theme.components.Spacebox.description.fontSize};
-  font-weight: ${props => (
-    props.theme.components.Spacebox.description.fontWeight
+  font-size: ${({ theme }) => theme.components.Spacebox.description.fontSize};
+  font-weight: ${({ theme }) => (
+    theme.components.Spacebox.description.fontWeight
   )};
   line-height: 1em;
   max-height: 8em;
@@ -52,9 +53,8 @@ const StyledDescription = styled.div`
   padding-left: 10px;
   padding-right: 25px;
   position: absolute;
-  text-align: justify;
-  transition: opacity ${transition.speed.fast} linear,
-  visibility ${transition.speed.fast} linear;
+  transition: opacity ${transition.speed.superfast} linear,
+              visibility ${transition.speed.superfast} linear;
   visibility: hidden;
   width: 100%;
   word-wrap: break-word;
@@ -88,18 +88,18 @@ const StyledBubblesWrapper = styled.div`
 
 const StyledBubble = styled.div`
   align-items: center;
-  border-radius: ${props => (
-    props.theme.components.Spacebox.bubble.borderRadius
+  border-radius: ${({ theme }) => (
+    theme.components.Spacebox.bubble.borderRadius
   )};
   display: flex;
-  font-size: ${props => props.theme.components.Spacebox.bubble.fontSize};
-  font-weight: ${props => props.theme.components.Spacebox.bubble.fontWeight};
+  font-size: ${({ theme }) => theme.components.Spacebox.bubble.fontSize};
+  font-weight: ${({ theme }) => theme.components.Spacebox.bubble.fontWeight};
   height: 25px;
   padding: 0 5px;
 `;
 
 const StyledHeart = styled(Heart)`
-  color: ${props => props.theme.components.Spacebox.heartColor};
+  color: ${({ theme }) => theme.components.Spacebox.heartColor};
   filter: none !important;
   width: 16px;
   margin-right: 5px;
@@ -107,19 +107,19 @@ const StyledHeart = styled(Heart)`
 
 const StyledSpacebox = styled.div`
   align-items: flex-end;
-  background: ${props => `
+  background: ${({ bgColor }) => `
     linear-gradient(
-      ${Color(props.bgColor).lighten(0.3).hex()},
-      ${Color(props.bgColor).hex()}
+      ${Color(bgColor).lighten(0.3).hex()},
+      ${Color(bgColor).hex()}
     )
   `};
-  border-color: ${props => (
-    Color(props.bgColor).isDark()
-      ? Color(props.bgColor).lighten(0.3).hex()
-      : Color(props.bgColor).darken(0.3).hex()
+  border-color: ${({ bgColor }) => (
+    Color(bgColor).isDark()
+      ? Color(bgColor).lighten(0.3).hex()
+      : Color(bgColor).darken(0.3).hex()
   )};
   border-style: solid;
-  border-width: ${props => props.theme.components.Spacebox.borderWidth};
+  border-width: ${({ theme }) => theme.components.Spacebox.borderWidth};
   display: flex;
   height: 220px;
   justify-content: center;
@@ -129,7 +129,7 @@ const StyledSpacebox = styled.div`
   width: 100%;
 
   &:hover {
-    ${props => props.description && `
+    ${({ description }) => description && `
       ${StyledTitle} {
         filter: blur(4px);
         opacity: 0.2;
@@ -142,69 +142,69 @@ const StyledSpacebox = styled.div`
     `}
   }
 
-  ${props => props.authUserIsTheOwner && `
-    border: ${props.theme.components.Spacebox.authUserIsTheOwner.border};
+  ${({ authUserIsTheOwner, theme }) => authUserIsTheOwner && `
+    border: ${theme.components.Spacebox.authUserIsTheOwner.border};
   `}
 
-  ${props => props.informative && `
+  ${({ informative, theme }) => informative && `
     background: linear-gradient(
       ${Color(
-        props.theme.components.Spacebox.informative.bgColor,
+        theme.components.Spacebox.informative.bgColor,
       ).lighten(0.3).hex()},
-      ${Color(props.theme.components.Spacebox.informative.bgColor).hex()}
+      ${Color(theme.components.Spacebox.informative.bgColor).hex()}
     );
-    border: ${props.theme.components.Spacebox.informative.border};
-    color: ${props.theme.components.Spacebox.informative.color};
+    border: ${theme.components.Spacebox.informative.border};
+    color: ${theme.components.Spacebox.informative.color};
   `}
 
-  ${props => props.order && `
-    order: ${props.order};
+  ${({ order }) => order && `
+    order: ${order};
   `}
 
-  ${props => props.rounded && `
-    border-radius: ${props.theme.global.borderRadius};
+  ${({ rounded, theme }) => rounded && `
+    border-radius: ${theme.global.borderRadius};
   `}
 
   ${StyledBubble} {
-    background-color: ${props => (
-      Color(props.bgColor).isDark()
+    background-color: ${({ bgColor }) => (
+      Color(bgColor).isDark()
         ? 'rgba(255, 255, 255, 0.5)'
         : 'rgba(0, 0, 0, 0.3)'
     )};
-    color: ${props => (
-      Color(props.bgColor).isDark()
-        ? color.palette.asphalt
-        : color.palette.cloud
+    color: ${({ bgColor }) => (
+      Color(bgColor).isDark()
+        ? colors.palette.asphalt
+        : colors.palette.cloud
     )};
   }
 
   ${StyledTitle} {
-    color: ${props => props.color};
+    color: ${({ color }) => color};
 
     &:after {
-      background-color: ${props => (
-        props.informative
-          ? props.theme.components.Spacebox.informative.bgColor
-          : props.bgColor
+      background-color: ${({ bgColor, informative, theme }) => (
+        informative
+          ? theme.components.Spacebox.informative.bgColor
+          : bgColor
       )};
     }
   }
 
   ${StyledDescription} {
-    color: ${props => props.color};
+    color: ${({ color }) => color};
 
     &:after {
-      background-color: ${props => (
-        props.informative
-          ? props.theme.components.Spacebox.informative.bgColor
-          : props.bgColor
+      background-color: ${({ bgColor, informative, theme }) => (
+        informative
+          ? theme.components.Spacebox.informative.bgColor
+          : bgColor
       )};
     }
   }
 `;
 
 const StyledLink = styled(Link)`
-  order: ${props => props.order};
+  order: ${({ order }) => order};
 `;
 
 const Spacebox = ({

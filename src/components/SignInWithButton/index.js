@@ -12,7 +12,7 @@ const StyledButton = styled.button`
   border: 0;
   cursor: pointer;
   display: flex;
-  font-weight: ${props => props.theme.components.SignInWithButton.fontWeight};
+  font-weight: ${({ theme }) => theme.components.SignInWithButton.fontWeight};
   padding: 10px;
   padding-left: 13px;
   transition: all ${transition.speed.superfast} linear;
@@ -28,31 +28,31 @@ const StyledButton = styled.button`
     transform: scale(1.03);
   }
 
-  ${props => (props.account === 'Google') && `
+  ${({ account }) => (account === 'Google') && `
     background-color: #db4437;
     color: #ffffff;
   `}
 
-  ${props => props.account === 'Facebook' && `
+  ${({ account }) => account === 'Facebook' && `
     background-color: #3b5998;
     color: #ffffff;
   `}
 
-  ${props => props.account === 'Twitter' && `
+  ${({ account }) => account === 'Twitter' && `
     background-color: #00acee;
     color: #ffffff;
   `}
 
-  ${props => props.fullWidth && `
+  ${({ fullWidth }) => fullWidth && `
     width: 100%;
   `}
 
-  ${props => props.margin && `
-    margin: ${props.margin};
+  ${({ margin }) => margin && `
+    margin: ${margin};
   `}
 
-  ${props => props.rounded && `
-    border-radius: ${props.theme.global.borderRadius};
+  ${({ rounded, theme }) => rounded && `
+    border-radius: ${theme.global.borderRadius};
   `}
 `;
 

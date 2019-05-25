@@ -14,13 +14,13 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledInput = styled.input`
-  background-color: ${props => props.theme.components.SearchBar.bgColor};
-  border: ${props => props.theme.components.SearchBar.border};
-  color: ${props => props.theme.components.SearchBar.color};
-  font-size: ${props => props.theme.components.SearchBar.fontSize};
+  background-color: ${({ theme }) => theme.components.SearchBar.bgColor};
+  border: ${({ theme }) => theme.components.SearchBar.border};
+  color: ${({ theme }) => theme.components.SearchBar.color};
+  font-size: ${({ theme }) => theme.components.SearchBar.fontSize};
   height: 40px;
   padding: 5px 35px 0 10px;
-  transition: width ${transition.speed.superfast} linear;
+  transition: width ${transition.speed.fast} linear;
   width: 140px;
 
   &:focus {
@@ -28,13 +28,13 @@ const StyledInput = styled.input`
     outline: none;
   }
 
-  ${props => props.rounded && `
-    border-radius: ${props.theme.global.borderRadius};
+  ${({ rounded, theme }) => rounded && `
+    border-radius: ${theme.global.borderRadius};
   `}
 `;
 
 const StyledSearchIcon = styled(SearchAlt)`
-  color: ${props => props.theme.components.SearchBar.searchIconColor};
+  color: ${({ theme }) => theme.components.SearchBar.searchIconColor};
   cursor: pointer;
   position: absolute;
   right: 5px;

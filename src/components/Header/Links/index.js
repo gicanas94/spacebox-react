@@ -64,6 +64,7 @@ const CommonLinks = ({ history, onLinkClickHandler }) => (
         ? 'filled'
         : 'unbordered'
       }
+      type="button"
     >
       {'Home'}
     </Button>
@@ -77,25 +78,24 @@ const AuthLinks = ({
   onLinkClickHandler,
 }) => (
   <Fragment>
-    {!authUser.isSpaceboxOwner && (
-      <StyledLink
-        onClick={() => onLinkClickHandler(false)}
-        to={ROUTES.CREATE_SPACEBOX}
+    <StyledLink
+      onClick={() => onLinkClickHandler(false)}
+      to={ROUTES.CREATE_SPACEBOX}
+    >
+      <Button
+        color="emerald"
+        fullWidth
+        rounded
+        size="small"
+        styleType={history.location.pathname === ROUTES.CREATE_SPACEBOX
+          ? 'filled'
+          : 'bordered'
+        }
+        type="button"
       >
-        <Button
-          color="emerald"
-          fullWidth
-          rounded
-          size="small"
-          styleType={history.location.pathname === ROUTES.CREATE_SPACEBOX
-            ? 'filled'
-            : 'bordered'
-          }
-        >
-          {'Create Spacebox'}
-        </Button>
-      </StyledLink>
-    )}
+        {'Create Spacebox'}
+      </Button>
+    </StyledLink>
 
     <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.ACCOUNT}>
       <Button
@@ -107,6 +107,7 @@ const AuthLinks = ({
           ? 'filled'
           : 'unbordered'
         }
+        type="button"
       >
         {'Account'}
       </Button>
@@ -123,6 +124,7 @@ const AuthLinks = ({
             ? 'filled'
             : 'unbordered'
           }
+          type="button"
         >
           {'Admin'}
         </Button>
@@ -137,6 +139,7 @@ const AuthLinks = ({
         rounded
         size="small"
         styleType="unbordered"
+        type="button"
       >
         {'Sign out'}
       </Button>
@@ -157,6 +160,7 @@ const NonAuthLinks = ({ history, onLinkClickHandler }) => (
           ? 'filled'
           : 'unbordered'
         }
+        type="button"
       >
         {'WT#?'}
       </Button>
@@ -172,6 +176,7 @@ const NonAuthLinks = ({ history, onLinkClickHandler }) => (
           ? 'filled'
           : 'unbordered'
         }
+        type="button"
       >
         {'Sign up'}
       </Button>
@@ -187,6 +192,7 @@ const NonAuthLinks = ({ history, onLinkClickHandler }) => (
           ? 'filled'
           : 'bordered'
         }
+        type="button"
       >
         {'Sign in'}
       </Button>

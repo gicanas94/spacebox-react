@@ -28,7 +28,6 @@ class SignInGoogleForm extends Component {
                 createdAt: firebase.serverValue.TIMESTAMP,
                 email: socialAuthUser.additionalUserInfo.profile.email,
                 isAdmin: false,
-                isSpaceboxOwner: false,
                 username: socialAuthUser.additionalUserInfo.profile.name,
               });
             } else {
@@ -36,7 +35,6 @@ class SignInGoogleForm extends Component {
                 createdAt: snapshot.val().createdAt,
                 email: socialAuthUser.additionalUserInfo.profile.email,
                 isAdmin: snapshot.val().isAdmin,
-                isSpaceboxOwner: snapshot.val().isSpaceboxOwner,
                 username: snapshot.val().username,
               });
             }

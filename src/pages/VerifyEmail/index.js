@@ -18,7 +18,7 @@ const StyledButtonWrapper = styled.div`
 `;
 
 const StyledEmail = styled.span`
-  font-weight: ${props => props.theme.pages.VerifyEmail.email.fontWeight};
+  font-weight: ${({ theme }) => theme.pages.VerifyEmail.email.fontWeight};
 `;
 
 class VerifyEmailPage extends Component {
@@ -83,6 +83,7 @@ class VerifyEmailPage extends Component {
                 onClick={this.handleClick}
                 rounded
                 styleType="filled"
+                type="submit"
               >
                 {'Send'}
               </Button>

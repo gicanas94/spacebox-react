@@ -6,26 +6,26 @@ import styled from 'styled-components';
 import { keyframe, transition } from '../../styles';
 
 const StyledLabel = styled.label`
-  color: ${props => props.theme.components.Input.color.default};
-  font-size: ${props => props.theme.components.Input.label.fontSize};
-  font-weight: ${props => props.theme.components.Input.label.fontWeight};
+  color: ${({ theme }) => theme.components.Input.color.default};
+  font-size: ${({ theme }) => theme.components.Input.label.fontSize};
+  font-weight: ${({ theme }) => theme.components.Input.label.fontWeight};
   overflow: hidden;
   padding-bottom: 2px;
   text-overflow: ellipsis;
   transition: color ${transition.speed.superfast} linear;
   white-space: nowrap;
 
-  ${props => props.disabled && `
-    color: ${props.theme.components.Input.color.disabled} !important;
+  ${({ disabled, theme }) => disabled && `
+    color: ${theme.components.Input.color.disabled} !important;
   `}
 `;
 
 const StyledTextarea = styled.textarea`
   background-color: transparent;
   border: 0;
-  border-color: ${props => props.theme.components.Input.color.default};
+  border-color: ${({ theme }) => theme.components.Input.color.default};
   border-style: solid;
-  border-width: ${props => props.theme.components.Input.borderWidth};
+  border-width: ${({ theme }) => theme.components.Input.borderWidth};
   height: 189px;
   padding: 10px;
   resize: none;
@@ -36,28 +36,28 @@ const StyledTextarea = styled.textarea`
     outline: none;
   }
 
-  ${props => props.disabled && `
-    border-color: ${props.theme.components.Input.color.disabled} !important;
+  ${({ disabled, theme }) => disabled && `
+    border-color: ${theme.components.Input.color.disabled} !important;
   `}
 
-  ${props => props.rounded && `
-    border-radius: ${props.theme.global.borderRadius};
+  ${({ rounded, theme }) => rounded && `
+    border-radius: ${theme.global.borderRadius};
   `}
 `;
 
 const StyledErrorIcon = styled(ErrorOutline)`
   animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
   bottom: 30px;
-  color: ${props => props.theme.components.Input.color.error};
+  color: ${({ theme }) => theme.components.Input.color.error};
   position: absolute;
   right: 10px;
   width: 30px;
 `;
 
 const StyledErrorMessage = styled.div`
-  color: ${props => props.theme.components.Input.color.error};
-  font-size: ${props => props.theme.components.Input.errorMessage.fontSize};
-  font-weight: ${props => props.theme.components.Input.errorMessage.fontWeight};
+  color: ${({ theme }) => theme.components.Input.color.error};
+  font-size: ${({ theme }) => theme.components.Input.errorMessage.fontSize};
+  font-weight: ${({ theme }) => theme.components.Input.errorMessage.fontWeight};
   overflow: hidden;
   padding-top: 5px;
   text-overflow: ellipsis;
@@ -71,27 +71,27 @@ const StyledWrapper = styled.div`
   justify-content: flex-start;
   position: relative;
 
-  ${props => props.error && `
+  ${({ error, theme }) => error && `
     ${StyledLabel} {
-      color: ${props.theme.components.Input.color.error};
+      color: ${theme.components.Input.color.error};
     }
 
     ${StyledTextarea} {
-      border-color: ${props.theme.components.Input.color.error};
+      border-color: ${theme.components.Input.color.error};
     }
   `}
 
-  ${props => props.margin && `
-    margin: ${props.margin};
+  ${({ margin }) => margin && `
+    margin: ${margin};
   `}
 
-  ${props => props.success && `
+  ${({ success, theme }) => success && `
     ${StyledLabel} {
-      color: ${props.theme.components.Input.color.success};
+      color: ${theme.components.Input.color.success};
     }
 
     ${StyledTextarea} {
-      border-color: ${props.theme.components.Input.color.success};
+      border-color: ${theme.components.Input.color.success};
     }
   `}
 `;

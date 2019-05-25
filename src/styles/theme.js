@@ -2,7 +2,8 @@ import Color from 'color';
 
 import { color, font } from '.';
 
-export const themeMainColor = color.palette.mulberry;
+const themeMainColor = color.palette.mulberry;
+const heartColor = color.palette.ferrari;
 
 export default {
   components: {
@@ -32,6 +33,7 @@ export default {
       laptopWidth: '80%',
     },
     Box: {
+      arrowColor: color.palette.harborGray,
       borderWidth: '1px',
       defaultBgColor: color.palette.white,
     },
@@ -96,7 +98,7 @@ export default {
         fontWeight: font.weight.bold,
       },
       heart: {
-        likeColor: color.palette.red,
+        likeColor: heartColor,
         noLikeColor: color.palette.harborGray,
       },
     },
@@ -124,7 +126,7 @@ export default {
     },
     Spacebox: {
       authUserIsTheOwner: {
-        border: `5px solid ${color.palette.gold}`,
+        border: `3px solid ${color.palette.gold}`,
       },
       borderWidth: '2px',
       bubble: {
@@ -136,10 +138,10 @@ export default {
         fontSize: font.size.xs,
         fontWeight: font.weight.medium,
       },
-      heartColor: color.palette.red,
+      heartColor,
       informative: {
         bgColor: color.palette.asphalt,
-        border: `5px solid ${color.palette.gold}`,
+        border: `3px solid ${color.palette.gold}`,
         color: color.palette.gold,
       },
       title: {
@@ -184,6 +186,11 @@ export default {
         fontSize: font.size.xs,
       },
     },
+    NotFound: {
+      content: {
+        fontWeight: font.weight.bold,
+      },
+    },
     SignIn: {
       forgotPasswordLink: {
         fontSize: font.size.xs,
@@ -208,8 +215,16 @@ export default {
           fontWeight: font.weight.regular,
         },
       },
-      userImage: {
-        bgColor: Color(themeMainColor).lighten(0.6).hex(),
+      UserInfoSection: {
+        spaceboxDescription: {
+          fontSize: font.size.xs,
+        },
+        spaceboxTitle: {
+          fontWeight: font.weight.bold,
+        },
+        userImage: {
+          bgColor: Color(themeMainColor).lighten(0.6).hex(),
+        },
       },
     },
     VerifyEmail: {

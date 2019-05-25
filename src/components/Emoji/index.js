@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledSpan = styled.span`
-  font-size: ${props => props.fontSize};
+  font-size: ${({ fontSize }) => fontSize};
 `;
 
 const Emoji = ({ label, fontSize, symbol }) => (

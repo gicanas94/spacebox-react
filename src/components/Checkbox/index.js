@@ -4,32 +4,32 @@ import styled from 'styled-components';
 
 const StyledCheckbox = styled.span`
   background-color: transparent;
-  border-color: ${props => props.theme.components.Checkbox.color.unchecked};
+  border-color: ${({ theme }) => theme.components.Checkbox.color.unchecked};
   border-style: solid;
-  border-width: ${props => props.theme.components.Checkbox.borderWidth};
+  border-width: ${({ theme }) => theme.components.Checkbox.borderWidth};
   display: flex;
   height: 25px;
   justify-content: center;
   margin-right: 7px;
   width: 25px;
 
-  ${props => props.checked && `
-    border-color: ${props.theme.components.Checkbox.color.checked};
-    color: ${props.theme.components.Checkbox.color.checked};
+  ${({ checked, theme }) => checked && `
+    border-color: ${theme.components.Checkbox.color.checked};
+    color: ${theme.components.Checkbox.color.checked};
 
     &:after {
       content: '✔';
-      font-size: ${props.theme.components.Checkbox.fontSize};
+      font-size: ${theme.components.Checkbox.fontSize};
     }
   `}
 
-  ${props => props.rounded && `
-    border-radius: ${props.theme.global.borderRadius};
+  ${({ rounded, theme }) => rounded && `
+    border-radius: ${theme.global.borderRadius};
   `}
 `;
 
 const StyledLabel = styled.span`
-  font-size: ${props => props.theme.components.Checkbox.fontSize};
+  font-size: ${({ theme }) => theme.components.Checkbox.fontSize};
 `;
 
 const StyledWrapper = styled.div`
@@ -39,19 +39,19 @@ const StyledWrapper = styled.div`
   position: relative;
   user-select: none;
 
-  ${props => props.disabled && `
+  ${({ disabled, theme }) => disabled && `
     ${StyledCheckbox} {
-      border-color: ${props.theme.components.Checkbox.color.disabled};
-      color: ${props.theme.components.Checkbox.color.disabled};
+      border-color: ${theme.components.Checkbox.color.disabled};
+      color: ${theme.components.Checkbox.color.disabled};
     }
 
     ${StyledLabel} {
-      color: ${props.theme.components.Checkbox.color.disabled};
+      color: ${theme.components.Checkbox.color.disabled};
     }
   `}
 
-  ${props => props.margin && `
-    margin: ${props.margin};
+  ${({ margin }) => margin && `
+    margin: ${margin};
   `}
 `;
 

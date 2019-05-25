@@ -16,6 +16,10 @@ const StyledBox = styled(Box)`
   @media ${device.laptop} {
     margin-bottom: 20px;
   }
+
+  ${({ lastPost }) => lastPost && `
+    margin-bottom: 0 !important;
+  `}
 `;
 
 const StyledTitleAndDateWrapper = styled.div`
@@ -24,16 +28,14 @@ const StyledTitleAndDateWrapper = styled.div`
 `;
 
 const StyledContent = styled.p`
-  margin-bottom: 0;
   white-space: pre-wrap;
-  word-break: break-all;
 `;
 
 const StyledDate = styled.div`
-  color: ${props => props.theme.components.Post.createdAtDate.color};
+  color: ${({ theme }) => theme.components.Post.createdAtDate.color};
   cursor: help;
-  font-size: ${props => props.theme.components.Post.createdAtDate.fontSize};
-  font-weight: ${props => props.theme.components.Post.createdAtDate.fontWeight};
+  font-size: ${({ theme }) => theme.components.Post.createdAtDate.fontSize};
+  font-weight: ${({ theme }) => theme.components.Post.createdAtDate.fontWeight};
   height: fit-content;
   text-align: right;
   z-index: 1;
@@ -45,23 +47,23 @@ const StyledActionsWrapper = styled.div`
 `;
 
 const StyledHeart = styled(Heart)`
-  color: ${props => props.theme.components.Post.heart.noLikeColor};
+  color: ${({ theme }) => theme.components.Post.heart.noLikeColor};
   cursor: pointer;
   width: 33px;
 
-  &:active {
-    transform: scale(0.9);
-  }
-
-  ${props => props.authUserLike && `
-    color: ${props.theme.components.Post.heart.likeColor};
+  ${({ authUserLike, theme }) => authUserLike && `
+    color: ${theme.components.Post.heart.likeColor};
   `}
 
-  ${props => props.disabled && `
+  ${({ disabled }) => disabled && `
     cursor: auto;
   `}
 
-  ${props => !props.disabled && `
+  ${({ disabled }) => !disabled && `
+    &:active {
+      transform: scale(0.9);
+    }
+
     transition: transform ${transition.speed.superfast} linear;
   `}
 `;
@@ -78,7 +80,7 @@ class Post extends Component {
   componentDidMount() {
     this.updateCreatedAtDateInterval = setInterval(
       this.updateCreatedAtDate,
-      1000,
+      60000,
     );
   }
 
@@ -95,36 +97,36 @@ class Post extends Component {
   render() {
     const {
       authUser,
+      lastPost,
       likeInProgress,
       onLikeClickHandler,
+      page,
       post,
       spacebox,
-      spaceboxId,
       user,
     } = this.props;
 
     const { createdAt } = this.state;
 
     return (
-      <StyledBox fullWidth margin="0">
+      <StyledBox fullWidth lastPost={lastPost}>
         <StyledTitleAndDateWrapper>
-          {spacebox
-            ? (
-              <Link to={{
-                pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
-                state: {
-                  post,
-                  spacebox,
-                  spaceboxId,
-                  user,
-                },
-              }}
-              >
-                <h3>{post.title}</h3>
-              </Link>
-            )
-            : <h3>{post.title}</h3>
-          }
+          {page === 'space' && (
+            <Link to={{
+              pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
+              state: {
+                post,
+                spacebox,
+                spaceboxId: post.spaceboxId,
+                user,
+              },
+            }}
+            >
+              <h3>{post.title}</h3>
+            </Link>
+          )}
+
+          {page === 'post' && <h3>{post.title}</h3>}
 
           <StyledDate
             data-for={post.createdAt.toString()}
@@ -175,18 +177,18 @@ class Post extends Component {
 
 Post.propTypes = {
   authUser: PropTypes.objectOf(PropTypes.any),
+  lastPost: PropTypes.bool.isRequired,
   likeInProgress: PropTypes.bool.isRequired,
   onLikeClickHandler: PropTypes.func.isRequired,
+  page: PropTypes.oneOf(['space', 'post']).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any),
-  spaceboxId: PropTypes.string,
   user: PropTypes.objectOf(PropTypes.any),
 };
 
 Post.defaultProps = {
   authUser: null,
   spacebox: null,
-  spaceboxId: null,
   user: null,
 };
 

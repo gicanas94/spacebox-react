@@ -3,19 +3,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { color, transition } from '../../styles';
+import colors from '../../styles/color';
+import { transition } from '../../styles';
 
 const StyledButton = styled.button`
   align-items: center;
   display: flex;
-  font-weight: ${props => props.theme.components.Button.fontWeight};
+  font-weight: ${({ theme }) => theme.components.Button.fontWeight};
   height: 45px;
   justify-content: center;
   line-height: 1;
   padding: 0 15px;
   position: relative;
   transition: background-color ${transition.speed.superfast} linear,
-    transform ${transition.speed.ultrafast} linear;
+              transform ${transition.speed.ultrafast} linear;
   user-select: none;
   width: fit-content;
 
@@ -27,134 +28,145 @@ const StyledButton = styled.button`
     outline: none;
   }
 
-  ${props => !props.disabled && `
+  ${({
+    color,
+    disabled,
+    styleType,
+    theme,
+  }) => !disabled && `
     cursor: pointer;
 
     &:hover {
-      ${(props.styleType === 'bordered' || props.styleType === 'unbordered') && `
+      ${(styleType === 'bordered' || styleType === 'unbordered') && `
         background-color: ${
-          props.color
-            ? color.palette[props.color]
-            : props.theme.components.Button.color.default
+          color
+            ? colors.palette[color]
+            : theme.components.Button.color.default
         };
         color: ${
           Color(
-            props.color
-              ? color.palette[props.color]
-              : props.theme.components.Button.color.default
+            color
+              ? colors.palette[color]
+              : theme.components.Button.color.default
           ).isDark()
             ? Color(
-              props.color
-                ? color.palette[props.color]
-                : props.theme.components.Button.color.default
+              color
+                ? colors.palette[color]
+                : theme.components.Button.color.default
             ).lighten(0.8).hex()
             : Color(
-              props.color
-                ? color.palette[props.color]
-                : props.theme.components.Button.color.default
+              color
+                ? colors.palette[color]
+                : theme.components.Button.color.default
             ).darken(0.7).hex()
         };
       `};
 
-      ${props.styleType === 'filled' && `
+      ${styleType === 'filled' && `
         background-color: ${
           Color(
-            props.color
-              ? color.palette[props.color]
-              : props.theme.components.Button.color.default
+            color
+              ? colors.palette[color]
+              : theme.components.Button.color.default
           ).darken(0.2).hex()
         };
       `}
     }
   `}
 
-  ${props => props.fullWidth && `
+  ${({ fullWidth }) => fullWidth && `
     width: 100%;
   `}
 
-  ${props => props.margin && `
-    margin: ${props.margin};
+  ${({ margin }) => margin && `
+    margin: ${margin};
   `}
 
-  ${props => props.rounded && `
-    border-radius: ${props.theme.global.borderRadius};
+  ${({ rounded, theme }) => rounded && `
+    border-radius: ${theme.global.borderRadius};
   `}
 
-  ${props => props.size === 'small' && `
+  ${({ size }) => size === 'small' && `
     height: 40px;
     padding: 0 10px;
   `}
 
-  ${props => props.size === 'large' && `
+  ${({ size }) => size === 'large' && `
     height: 50px;
   `}
 
-  ${props => (
-    props.styleType === 'bordered' || props.styleType === 'unbordered'
+  ${({ styleType, color, theme }) => (
+    styleType === 'bordered' || styleType === 'unbordered'
   ) && `
     background-color: transparent;
     color: ${
-      props.color
-        ? color.palette[props.color]
-        : props.theme.components.Button.color.default
+      color
+        ? colors.palette[color]
+        : theme.components.Button.color.default
     };
   `}
 
-  ${props => props.styleType === 'bordered' && `
+  ${({ styleType, color, theme }) => styleType === 'bordered' && `
     border-color: ${
-      props.color
-        ? color.palette[props.color]
-        : props.theme.components.Button.color.default
+      color
+        ? colors.palette[color]
+        : theme.components.Button.color.default
     };
     border-style: solid;
-    border-width: ${props.theme.components.Button.borderWidth};
+    border-width: ${theme.components.Button.borderWidth};
   `}
 
-  ${props => (props.styleType === 'bordered' && props.disabled) && `
-    border-color: ${props.theme.components.Button.color.disabled};
-    color: ${props.theme.components.Button.color.disabled};
+  ${({ styleType, disabled, theme }) => (
+    styleType === 'bordered' && disabled
+  ) && `
+    border-color: ${theme.components.Button.color.disabled};
+    color: ${theme.components.Button.color.disabled};
   `}
 
-  ${props => props.styleType === 'filled' && `
+  ${({ styleType, color, theme }) => styleType === 'filled' && `
     background-color: ${
-      props.color
-        ? color.palette[props.color]
-        : props.theme.components.Button.color.default
+      color
+        ? colors.palette[color]
+        : theme.components.Button.color.default
     };
     border-color: transparent;
     border-style: solid;
-    border-width: ${props.theme.components.Button.borderWidth};
+    border-width: ${theme.components.Button.borderWidth};
     color: ${
       Color(
-        props.color
-          ? color.palette[props.color]
-          : props.theme.components.Button.color.default
+        color
+          ? colors.palette[color]
+          : theme.components.Button.color.default
       ).isDark()
         ? Color(
-          props.color
-            ? color.palette[props.color]
-            : props.theme.components.Button.color.default
+          color
+            ? colors.palette[color]
+            : theme.components.Button.color.default
         ).lighten(0.8).hex()
         : Color(
-          props.color
-            ? color.palette[props.color]
-            : props.theme.components.Button.color.default
+          color
+            ? colors.palette[color]
+            : theme.components.Button.color.default
         ).darken(0.7).hex()
     };
   `}
 
-  ${props => (props.styleType === 'filled' && props.disabled) && `
-    background-color: ${props.theme.components.Button.color.disabled};
+  ${({ styleType, disabled, theme }) => (
+    styleType === 'filled' && disabled
+  ) && `
+    background-color: ${theme.components.Button.color.disabled};
   `}
 
-  ${props => props.styleType === 'unbordered' && `
+  ${({ styleType, theme }) => styleType === 'unbordered' && `
     border-color: transparent;
     border-style: solid;
-    border-width: ${props.theme.components.Button.borderWidth};
+    border-width: ${theme.components.Button.borderWidth};
   `}
 
-  ${props => (props.styleType === 'unbordered' && props.disabled) && `
-    color: ${props.theme.components.Button.color.disabled};
+  ${({ styleType, disabled, theme }) => (
+    styleType === 'unbordered' && disabled
+  ) && `
+    color: ${theme.components.Button.color.disabled};
   `}
 `;
 

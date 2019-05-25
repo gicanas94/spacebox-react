@@ -62,8 +62,6 @@ class Firebase {
             email: authUser.email,
             emailVerified: authUser.emailVerified,
             isAdmin: (snapshot.val() && snapshot.val().isAdmin) || false,
-            isSpaceboxOwner: (snapshot.val() && snapshot.val().isSpaceboxOwner)
-              || false,
             providerData: authUser.providerData,
             uid: authUser.uid,
             username: (snapshot.val() && snapshot.val().username) || '',

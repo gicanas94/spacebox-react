@@ -27,7 +27,7 @@ const StyledGrid = styled.div`
 `;
 
 const StyledText = styled.p`
-  font-size: ${props => props.theme.pages.CreateSpacebox.infoText.fontSize};
+  font-size: ${({ theme }) => theme.pages.CreateSpacebox.infoText.fontSize};
 
   &:last-of-type {
     margin-bottom: 0;
@@ -40,7 +40,7 @@ const CreateSpaceboxPage = () => (
 
     <Box fullWidth margin="0">
       <StyledText>
-        Hello there! The creation of your Spacebox is divided into three steps.
+        You can create your own Spacebox in just three steps!
       </StyledText>
 
       <h4>Step 1: colors</h4>
@@ -74,7 +74,7 @@ const CreateSpaceboxPage = () => (
   </StyledGrid>
 );
 
-const condition = authUser => authUser && !authUser.isSpaceboxOwner;
+const condition = authUser => !!authUser;
 
 export default compose(
   withAuthorization(condition),

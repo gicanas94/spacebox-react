@@ -1,26 +1,72 @@
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import Box from '../../../components/Box';
 import Button from '../../../components/Button';
 import defaultUserImage from '../../../assets/images/default-user-image.png';
+import { device } from '../../../styles';
 import PostForm from '../../../forms/Post';
 import { ROUTES } from '../../../constants';
 
-const StyledImgWrapper = styled.div`
-  background-color: ${props => props.theme.pages.Space.userImage.bgColor};
-  border-radius: ${props => props.theme.global.borderRadius};
-  height: 240px;
-  margin-bottom: 25px;
-  overflow: hidden;
-  width: 240px;
+const StyledFlexWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
 
-  img {
-    height: inherit;
-    width: inherit;
+  @media ${device.mobileL} {
+    flex-direction: row;
   }
+
+  @media ${device.tablet} {
+    flex-direction: column;
+  }
+`;
+
+const StyledUserImage = styled.img`
+  background-color: ${({ theme }) => (
+    theme.pages.Space.UserInfoSection.userImage.bgColor
+  )};
+  border-radius: ${({ theme }) => theme.global.borderRadius};
+  height: auto;
+  margin-bottom: 15px;
+  overflow: hidden;
+  width: 100%;
+
+  @media ${device.mobileL} {
+    height: 50%;
+    margin-bottom: 0;
+    margin-right: 15px;
+    max-height: 200px;
+    max-width: 200px;
+  }
+
+  @media ${device.tablet} {
+    height: unset;
+    margin-bottom: 15px;
+    margin-right: 0;
+    max-height: unset;
+    max-width: unset;
+    width: 100%;
+  }
+`;
+
+const StyledSpaceboxTitle = styled.p`
+  font-weight: ${({ theme }) => (
+    theme.pages.Space.UserInfoSection.spaceboxTitle.fontWeight
+  )};
+  margin-bottom: 5px;
+`;
+
+const StyledSpaceboxDescription = styled.p`
+  font-size: ${({ theme }) => (
+    theme.pages.Space.UserInfoSection.spaceboxDescription.fontSize
+  )};
+  margin-bottom: 0;
+`;
+
+const StyledButtonWrapper = styled.div`
+  margin-top: 15px;
 `;
 
 const StyledLink = styled(Link)`
@@ -36,20 +82,32 @@ const UserInfoSection = ({
   spaceboxId,
   user,
 }) => (
-  <Box margin="0 0 10px 0" padding="15px">
-    <StyledImgWrapper>
-      <img alt="User" src={defaultUserImage} />
-    </StyledImgWrapper>
+  <Box padding="15px">
+    <StyledFlexWrapper>
+      <StyledUserImage alt="User" src={defaultUserImage} />
+
+      <div>
+        <StyledSpaceboxTitle>
+          {spacebox.title}
+        </StyledSpaceboxTitle>
+
+        <StyledSpaceboxDescription>
+          {spacebox.description}
+        </StyledSpaceboxDescription>
+      </div>
+    </StyledFlexWrapper>
 
     {page === 'space'
       && authUser
       && authUser.uid === spacebox.userId
       && (
-        <PostForm spaceboxId={spaceboxId} />
+        <StyledButtonWrapper>
+          <PostForm spaceboxId={spaceboxId} />
+        </StyledButtonWrapper>
       )}
 
     {page === 'post' && (
-      <Fragment>
+      <StyledButtonWrapper>
         {location.state
           ? (
             <Button
@@ -57,6 +115,7 @@ const UserInfoSection = ({
               onClick={() => history.goBack()}
               rounded
               styleType="filled"
+              type="button"
             >
               {'Go back to Spacebox'}
             </Button>
@@ -70,13 +129,14 @@ const UserInfoSection = ({
                 fullWidth
                 rounded
                 styleType="filled"
+                type="button"
               >
                 {'Go to Spacebox'}
               </Button>
             </StyledLink>
           )
         }
-      </Fragment>
+      </StyledButtonWrapper>
     )}
   </Box>
 );

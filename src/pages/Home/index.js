@@ -85,20 +85,6 @@ class HomePage extends Component {
           }
         />
 
-        {authUser
-          && spaceboxToSearch === ''
-          && authUser.isSpaceboxOwner
-          && !isLoading
-          && (
-            <Spacebox
-              informative
-              link="/"
-              order={1}
-              title="Edit my Spacebox"
-            />
-          )
-        }
-
         {spaceboxToSearch !== '' && (
           <Spacebox
             informative
