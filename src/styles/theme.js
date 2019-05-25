@@ -109,6 +109,39 @@ export default {
       fontSize: font.size.xs,
       searchIconColor: themeMainColor,
     },
+    Select: {
+      borderWidth: '2px',
+      color: {
+        default: color.palette.lava,
+        disabled: color.palette.pearlRiver,
+        error: color.palette.chili,
+        success: color.palette.green,
+      },
+      errorMessage: {
+        fontSize: font.size.xxs,
+        fontWeight: font.weight.bold,
+      },
+      label: {
+        fontSize: font.size.xs,
+        fontWeight: font.weight.bold,
+      },
+      li: {
+        hoverColor: Color(themeMainColor).lighten(0.7).hex(),
+      },
+      ul: {
+        bgColor: color.palette.white,
+        boxShadow: `0 0px 5px 1px ${color.palette.lava}`,
+        scrollBar: {
+          thumb: {
+            bgColor: color.palette.lava,
+          },
+          track: {
+            bgColor: color.palette.white,
+            border: `1px solid ${color.palette.lava}`,
+          },
+        },
+      },
+    },
     Sidebar: {
       title: {
         fontWeight: font.weight.bold,

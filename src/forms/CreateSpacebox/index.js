@@ -148,7 +148,7 @@ class CreateSpaceboxForm extends Component {
       createdAt: firebase.serverValue.TIMESTAMP,
       description,
       likes: 0,
-      slug: `${_.kebabCase(title)}-${_.kebabCase(authUser.uid.slice(-3))}`,
+      slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,
       title: title.toUpperCase(),
       userId: authUser.uid,
       visible,
@@ -342,24 +342,23 @@ class CreateSpaceboxForm extends Component {
 
             <StyledP2n3Inputs>
               <Field name="category">
-                {({ field, form }) => (
+                {({ form }) => (
                   <Select
                     autoFocus
                     disabled={form.isSubmitting}
-                    error={
-                      form.errors.category
+                    error={form.errors.category
                       && form.touched.category
                       && form.errors.category
                     }
                     label="Category"
                     margin="0 0 25px 0"
-                    name="category"
-                    onBlur={field.onBlur}
-                    onChange={field.onChange}
+                    onChangeHandler={(event) => {
+                      form.setFieldValue('category', event);
+                      form.setFieldTouched('category');
+                    }}
                     options={CATEGORIES}
                     rounded
                     success={!form.errors.category && form.touched.category}
-                    value={form.values.category}
                   />
                 )}
               </Field>
@@ -371,8 +370,9 @@ class CreateSpaceboxForm extends Component {
                     disabled={form.isSubmitting}
                     label="Visible on home page"
                     name="visible"
-                    onChangeHandler={() => (
-                      form.setFieldValue('visible', !form.values.visible)
+                    onChangeHandler={() => form.setFieldValue(
+                      'visible',
+                      !form.values.visible,
                     )}
                     rounded
                   />

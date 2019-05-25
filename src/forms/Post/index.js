@@ -70,7 +70,7 @@ class PostForm extends Component {
     firebase.posts().push({
       content,
       createdAt: firebase.serverValue.TIMESTAMP,
-      slug: `${_.kebabCase(title)}-${Math.random().toString().slice(-3)}`,
+      slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,
       spaceboxId,
       title,
     })
