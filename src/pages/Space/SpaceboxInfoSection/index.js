@@ -5,51 +5,51 @@ import styled from 'styled-components';
 
 import Box from '../../../components/Box';
 import Button from '../../../components/Button';
-import defaultUserImage from '../../../assets/images/default-user-image.png';
-import { device } from '../../../styles';
+// import defaultUserImage from '../../../assets/images/default-user-image.png';
+// import { device } from '../../../styles';
 import PostForm from '../../../forms/Post';
 import { ROUTES } from '../../../constants';
 
-const StyledFlexWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+// const StyledFlexWrapper = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//
+//   @media ${device.mobileL} {
+//     flex-direction: row;
+//   }
+//
+//   @media ${device.tablet} {
+//     flex-direction: column;
+//   }
+// `;
 
-  @media ${device.mobileL} {
-    flex-direction: row;
-  }
-
-  @media ${device.tablet} {
-    flex-direction: column;
-  }
-`;
-
-const StyledUserImage = styled.img`
-  background-color: ${({ theme }) => (
-    theme.pages.Space.SpaceboxInfoSection.userImage.bgColor
-  )};
-  border-radius: ${({ theme }) => theme.global.borderRadius};
-  height: auto;
-  margin-bottom: 15px;
-  overflow: hidden;
-  width: 100%;
-
-  @media ${device.mobileL} {
-    height: 50%;
-    margin-bottom: 0;
-    margin-right: 15px;
-    max-height: 200px;
-    max-width: 200px;
-  }
-
-  @media ${device.tablet} {
-    height: unset;
-    margin-bottom: 15px;
-    margin-right: 0;
-    max-height: unset;
-    max-width: unset;
-    width: 100%;
-  }
-`;
+// const StyledUserImage = styled.img`
+//   background-color: ${({ theme }) => (
+//     theme.pages.Space.SpaceboxInfoSection.userImage.bgColor
+//   )};
+//   border-radius: ${({ theme }) => theme.global.borderRadius};
+//   height: auto;
+//   margin-bottom: 15px;
+//   overflow: hidden;
+//   width: 100%;
+//
+//   @media ${device.mobileL} {
+//     height: 50%;
+//     margin-bottom: 0;
+//     margin-right: 15px;
+//     max-height: 200px;
+//     max-width: 200px;
+//   }
+//
+//   @media ${device.tablet} {
+//     height: unset;
+//     margin-bottom: 15px;
+//     margin-right: 0;
+//     max-height: unset;
+//     max-width: unset;
+//     width: 100%;
+//   }
+// `;
 
 const StyledSpaceboxTitle = styled.p`
   font-weight: ${({ theme }) => (
@@ -83,19 +83,13 @@ const SpaceboxInfoSection = ({
   user,
 }) => (
   <Box padding="15px" margin="0">
-    <StyledFlexWrapper>
-      <StyledUserImage alt="User" src={defaultUserImage} />
+    <StyledSpaceboxTitle>
+      {spacebox.title}
+    </StyledSpaceboxTitle>
 
-      <div>
-        <StyledSpaceboxTitle>
-          {spacebox.title}
-        </StyledSpaceboxTitle>
-
-        <StyledSpaceboxDescription>
-          {spacebox.description}
-        </StyledSpaceboxDescription>
-      </div>
-    </StyledFlexWrapper>
+    <StyledSpaceboxDescription>
+      {spacebox.description}
+    </StyledSpaceboxDescription>
 
     {page === 'space'
       && authUser

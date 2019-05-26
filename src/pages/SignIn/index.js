@@ -27,8 +27,6 @@ const SignInPage = ({ authUser }) => (
     : (
       <Box size="small">
         <Helmet title="Sign in - Spacebox" />
-
-        <h2>Welcome back!</h2>
         <SignInForm />
         <Hr margin="25px 0" />
         <SignInGoogleForm />
