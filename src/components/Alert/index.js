@@ -27,6 +27,7 @@ const StyledAlert = styled.div`
 
   ${({ type, theme }) => type && `
     background-color: ${theme.components.Alert.type[type].bgColor};
+    color: ${theme.components.Alert.type[type].color};
   `}
 
   ${({ withBorder, type, theme }) => withBorder && `

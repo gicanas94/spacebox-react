@@ -16,7 +16,7 @@ const StyledButton = styled.button`
   padding: 0 15px;
   position: relative;
   transition: background-color ${transition.speed.superfast} linear,
-              transform ${transition.speed.ultrafast} linear;
+              transform ${transition.speed.superfast} linear;
   user-select: none;
   width: fit-content;
 

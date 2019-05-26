@@ -55,10 +55,6 @@ const StyledHeart = styled(Heart)`
     color: ${theme.components.Post.heart.likeColor};
   `}
 
-  ${({ disabled }) => disabled && `
-    cursor: auto;
-  `}
-
   ${({ disabled }) => !disabled && `
     &:active {
       transform: scale(0.9);
@@ -108,6 +104,25 @@ class Post extends Component {
 
     const { createdAt } = this.state;
 
+    const likeHeart = (
+      <StyledHeart
+        authUserLike={
+          authUser && post.likes && post.likes.includes(authUser.uid)
+        }
+        data-for={post.slug}
+        data-tip={!authUser
+          ? 'You need to be logged in to like a post'
+          : 'You need to validate your e-mail to like a post'
+        }
+        disabled={likeInProgress || !authUser || !authUser.emailVerified}
+        onClick={
+          likeInProgress || !authUser || !authUser.emailVerified
+            ? null
+            : onLikeClickHandler
+        }
+      />
+    );
+
     return (
       <StyledBox fullWidth lastPost={lastPost}>
         <StyledTitleAndDateWrapper>
@@ -141,34 +156,19 @@ class Post extends Component {
         </StyledContent>
 
         <StyledActionsWrapper>
-          <StyledHeart
-            authUserLike={
-              authUser && post.likes && post.likes.includes(authUser.uid)
-            }
-            data-for={`like-${post.slug}`}
-            data-tip="You need to be logged in to like a post"
-            disabled={likeInProgress || !authUser || !authUser.emailVerified}
-            onClick={
-              likeInProgress || !authUser || !authUser.emailVerified
-                ? null
-                : onLikeClickHandler
-            }
-          />
+          {!authUser && <Link to={ROUTES.SIGN_IN}>{likeHeart}</Link>}
+
+          {authUser && !authUser.emailVerified && (
+            <Link to={ROUTES.VERIFY_EMAIL}>{likeHeart}</Link>
+          )}
+
+          {authUser && authUser.emailVerified && likeHeart}
         </StyledActionsWrapper>
 
-        <Tooltip
-          delayShow={500}
-          effect="solid"
-          id={post.createdAt.toString()}
-          place="left"
-        />
+        <Tooltip effect="solid" id={post.createdAt.toString()} place="left" />
 
         {(!authUser || !authUser.emailVerified) && (
-          <Tooltip
-            effect="solid"
-            id={`like-${post.slug}`}
-            place="right"
-          />
+          <Tooltip effect="solid" id={post.slug} place="right" />
         )}
       </StyledBox>
     );

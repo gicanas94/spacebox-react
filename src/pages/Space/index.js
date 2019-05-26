@@ -17,10 +17,10 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import Post from '../../components/Post';
 import { ROUTES } from '../../constants';
 import Tooltip from '../../components/Tooltip';
-import UserInfoSection from './UserInfoSection';
+import SpaceboxInfoSection from './SpaceboxInfoSection';
 import { withFirebase } from '../../Firebase';
 
-const StyledUserInfoSectionWrapper = styled.div``;
+const StyledSpaceboxInfoSectionWrapper = styled.div``;
 
 const StyledGrid = styled.div`
   align-items: start;
@@ -30,7 +30,7 @@ const StyledGrid = styled.div`
   margin: auto;
   width: 100%;
 
-  ${StyledUserInfoSectionWrapper} {
+  ${StyledSpaceboxInfoSectionWrapper} {
     margin-bottom: 10px;
   }
 
@@ -41,7 +41,7 @@ const StyledGrid = styled.div`
   @media ${device.laptop} {
     grid-gap: 20px;
 
-    ${StyledUserInfoSectionWrapper} {
+    ${StyledSpaceboxInfoSectionWrapper} {
       margin-bottom: 20px;
     }
   }
@@ -364,15 +364,15 @@ class SpacePage extends Component {
           <StyledGrid>
             <div>
               {spacebox && spaceboxId && user && (
-                <StyledUserInfoSectionWrapper>
-                  <UserInfoSection
+                <StyledSpaceboxInfoSectionWrapper>
+                  <SpaceboxInfoSection
                     authUser={authUser}
                     page="space"
                     spacebox={spacebox}
                     spaceboxId={spaceboxId}
                     user={user}
                   />
-                </StyledUserInfoSectionWrapper>
+                </StyledSpaceboxInfoSectionWrapper>
               )}
 
               {posts && posts.length > 0 && (

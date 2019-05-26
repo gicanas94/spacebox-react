@@ -50,7 +50,7 @@ const SearchBar = ({ searchBarChangeAction, ...props }) => {
       <StyledSearchIcon onClick={() => textInput.focus()} />
 
       <StyledInput
-        data-for="search"
+        data-for="searchbar"
         data-tip="Search by name, for example: Best pasta recipes<br>
           Or by category, for example: Poetry"
         onChange={event => searchBarChangeAction(event.target.value)}
@@ -65,7 +65,7 @@ const SearchBar = ({ searchBarChangeAction, ...props }) => {
         effect="solid"
         event="focus"
         eventOff="blur"
-        id="search"
+        id="searchbar"
         multiline
         place="bottom"
       />

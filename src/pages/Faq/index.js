@@ -25,7 +25,7 @@ const FaqPage = () => (
     <p>
       If you want to create your own space and start writing or maybe just make
       a comment in the space of another person, you
-      can <Link to={ROUTES.SIGN_UP}>create an account</Link> (don't worry, is
+      can <span><Link to={ROUTES.SIGN_UP}>create an account</Link></span> (don't worry, is
       free) or <Link to={ROUTES.SIGN_IN}>sign in</Link> using your favorite
       social media account.
     </p>

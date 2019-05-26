@@ -178,17 +178,17 @@ class Select extends Component {
   }
 
   componentWillMount() {
-    document.addEventListener('click', this.closeList);
-    document.addEventListener('keydown', this.handleKeydown);
-  }
-
-  componentWillUnmount() {
     const { disabled } = this.props;
 
     if (!disabled) {
-      document.removeEventListener('click', this.closeList);
-      document.removeEventListener('keydown', this.handleKeydown);
+      document.addEventListener('click', this.closeList);
+      document.addEventListener('keydown', this.handleKeydown);
     }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.closeList);
+    document.removeEventListener('keydown', this.handleKeydown);
   }
 
   closeList = (event) => {

@@ -16,7 +16,7 @@ const StyledWrapper = styled.div`
 
   @media ${device.tablet} {
     flex-direction: row;
-    width: 400px;
+    width: 435px;
   }
 `;
 
@@ -34,17 +34,34 @@ const StyledBoldFragment = styled.span`
   font-weight: ${({ theme }) => theme.pages.NotFound.content.fontWeight};
 `;
 
-const NotFoundPage = () => (
-  <StyledWrapper>
-    <Helmet title="404 - Spacebox" />
+const NotFoundPage = () => {
+  const emojisToRandom = [
+    '😶',
+    '😧',
+    '😬',
+    '😔',
+    '😵',
+    '😱',
+  ];
 
-    <Emoji fontSize="120px" label="anguished face" symbol="😧" />
+  return (
+    <StyledWrapper>
+      <Helmet title="404 - Spacebox" />
 
-    <StyledContent>
-      This is embarrassing but...
-      <StyledBoldFragment> this page was not found.</StyledBoldFragment>
-    </StyledContent>
-  </StyledWrapper>
-);
+      <Emoji
+        fontSize="120px"
+        label="anguished face"
+        symbol={emojisToRandom[
+          Math.floor(Math.random() * emojisToRandom.length)
+        ]}
+      />
+
+      <StyledContent>
+        This is embarrassing but...
+        <StyledBoldFragment> this page was not found.</StyledBoldFragment>
+      </StyledContent>
+    </StyledWrapper>
+  );
+};
 
 export default NotFoundPage;

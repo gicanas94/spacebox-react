@@ -33,12 +33,13 @@ const SignUpFormSchema = Yup.object().shape({
 
 const StyledGrid = styled.div`
   display: grid;
-  grid-gap: 25px;
+  grid-column-gap: 25px;
   grid-template-columns: 1fr;
   width: inherit;
 
   @media ${device.mobileL} {
     grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
   }
 `;
 
@@ -110,73 +111,70 @@ class SignUpForm extends Component {
         }) => (
           <Form>
             <StyledGrid>
-              <div>
-                <Input
-                  autoFocus
-                  disabled={isSubmitting}
-                  error={errors.username && touched.username && errors.username}
-                  label="Name or Username"
-                  margin="0 0 25px 0"
-                  name="username"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  rounded
-                  success={!errors.username && touched.username}
-                  type="text"
-                  value={values.username}
-                />
+              <Input
+                autoFocus
+                disabled={isSubmitting}
+                error={errors.username && touched.username && errors.username}
+                label="Name or Username"
+                margin="0 0 25px 0"
+                name="username"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                rounded
+                success={!errors.username && touched.username}
+                type="text"
+                value={values.username}
+              />
 
-                <Input
-                  disabled={isSubmitting}
-                  error={errors.email && touched.email && errors.email}
-                  label="E-mail"
-                  name="email"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  rounded
-                  success={!errors.email && touched.email}
-                  type="text"
-                  value={values.email}
-                />
-              </div>
+              <Input
+                disabled={isSubmitting}
+                error={errors.email && touched.email && errors.email}
+                label="E-mail"
+                margin="0 0 25px 0"
+                name="email"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                rounded
+                success={!errors.email && touched.email}
+                type="text"
+                value={values.email}
+              />
 
-              <div>
-                <Input
-                  disabled={isSubmitting}
-                  error={
-                    errors.passwordOne
-                    && touched.passwordOne
-                    && errors.passwordOne
-                  }
-                  label="Password"
-                  margin="0 0 25px 0"
-                  name="passwordOne"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  rounded
-                  success={!errors.passwordOne && touched.passwordOne}
-                  type="password"
-                  value={values.passwordOne}
-                />
+              <Input
+                disabled={isSubmitting}
+                error={
+                  errors.passwordOne
+                  && touched.passwordOne
+                  && errors.passwordOne
+                }
+                label="Password"
+                margin="0 0 25px 0"
+                name="passwordOne"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                rounded
+                success={!errors.passwordOne && touched.passwordOne}
+                type="password"
+                value={values.passwordOne}
+              />
 
-                <Input
-                  disabled={isSubmitting}
-                  error={
-                    errors.passwordTwo
-                    && touched.passwordTwo
-                    && errors.passwordTwo
-                  }
-                  label="Confirm your password"
-                  margin="0 0 25px 0"
-                  name="passwordTwo"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  rounded
-                  success={!errors.passwordTwo && touched.passwordTwo}
-                  type="password"
-                  value={values.passwordTwo}
-                />
-              </div>
+              <Input
+                disabled={isSubmitting}
+                error={
+                  errors.passwordTwo
+                  && touched.passwordTwo
+                  && errors.passwordTwo
+                }
+                label="Confirm your password"
+                margin="0 0 25px 0"
+                name="passwordTwo"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                rounded
+                success={!errors.passwordTwo && touched.passwordTwo}
+                type="password"
+                value={values.passwordTwo}
+              />
             </StyledGrid>
 
             <StyledBottomWrapper>

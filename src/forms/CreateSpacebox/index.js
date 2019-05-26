@@ -237,7 +237,7 @@ class CreateSpaceboxForm extends Component {
             {({ form }) => (
               <Button
                 color="lime"
-                data-for="autoMix"
+                data-for="auto-mix"
                 data-tip="Generates a random combination of colors"
                 fullWidth
                 margin="25px 0 0 0"
@@ -251,7 +251,7 @@ class CreateSpaceboxForm extends Component {
             )}
           </Field>
 
-          <Tooltip delayShow={500} effect="solid" id="autoMix" place="bottom" />
+          <Tooltip delayShow={500} effect="solid" id="auto-mix" place="bottom" />
         </Wizard.Page>
 
         <Wizard.Page>

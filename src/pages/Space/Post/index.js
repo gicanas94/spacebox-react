@@ -13,10 +13,8 @@ import { likePost } from '../commonFunctions';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { ROUTES } from '../../../constants';
 import Post from '../../../components/Post';
-import UserInfoSection from '../UserInfoSection';
+import SpaceboxInfoSection from '../SpaceboxInfoSection';
 import { withFirebase } from '../../../Firebase';
-
-const StyledUserInfoSection = styled(UserInfoSection)``;
 
 const StyledGrid = styled.div`
   align-items: start;
@@ -32,10 +30,6 @@ const StyledGrid = styled.div`
 
   @media ${device.laptop} {
     grid-gap: 20px;
-
-    ${StyledUserInfoSection} {
-      margin-bottom: 20px;
-    }
   }
 `;
 
@@ -236,7 +230,7 @@ class PostPage extends Component {
         {!isLoading && post && (
           <StyledGrid>
             {spacebox && spaceboxId && user && (
-              <StyledUserInfoSection
+              <SpaceboxInfoSection
                 authUser={authUser}
                 page="post"
                 spacebox={spacebox}

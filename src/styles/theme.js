@@ -16,14 +16,17 @@ export default {
         danger: {
           bgColor: color.palette.salmon,
           border: `1px solid ${Color(color.palette.salmon).darken(0.2).hex()}`,
+          color: color.palette.mahogany,
         },
         success: {
           bgColor: color.palette.green,
           border: `1px solid ${Color(color.palette.green).darken(0.2).hex()}`,
+          color: color.palette.tea,
         },
         warning: {
           bgColor: color.palette.tuscany,
           border: `1px solid ${Color(color.palette.tuscany).darken(0.2).hex()}`,
+          color: color.palette.cinnamon,
         },
       },
     },
@@ -50,6 +53,7 @@ export default {
       color: {
         checked: themeMainColor,
         disabled: color.palette.pearlRiver,
+        error: color.palette.chili,
         unchecked: color.palette.lava,
       },
       fontSize: font.size.xs,
@@ -159,13 +163,14 @@ export default {
     },
     Spacebox: {
       authUserIsTheOwner: {
-        border: `3px solid ${color.palette.gold}`,
+        backgroundBorder: `linear-gradient(${color.gradient.pastelRainbow})`,
+        border: '1px solid rgba(0, 0, 0, 0.5)',
       },
       borderWidth: '2px',
       bubble: {
         borderRadius: '3px',
         fontSize: font.size.xxs,
-        fontWeight: font.weight.bold,
+        fontWeight: font.weight.medium,
       },
       description: {
         fontSize: font.size.xs,
@@ -194,6 +199,7 @@ export default {
   },
   global: {
     borderRadius: '4px',
+    textSelectionColor: Color(themeMainColor).lighten(0.5).hex(),
   },
   htmlTags: {
     a: {
@@ -248,7 +254,7 @@ export default {
           fontWeight: font.weight.regular,
         },
       },
-      UserInfoSection: {
+      SpaceboxInfoSection: {
         spaceboxDescription: {
           fontSize: font.size.xs,
         },

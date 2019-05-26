@@ -25,7 +25,7 @@ const StyledFlexWrapper = styled.div`
 
 const StyledUserImage = styled.img`
   background-color: ${({ theme }) => (
-    theme.pages.Space.UserInfoSection.userImage.bgColor
+    theme.pages.Space.SpaceboxInfoSection.userImage.bgColor
   )};
   border-radius: ${({ theme }) => theme.global.borderRadius};
   height: auto;
@@ -53,14 +53,14 @@ const StyledUserImage = styled.img`
 
 const StyledSpaceboxTitle = styled.p`
   font-weight: ${({ theme }) => (
-    theme.pages.Space.UserInfoSection.spaceboxTitle.fontWeight
+    theme.pages.Space.SpaceboxInfoSection.spaceboxTitle.fontWeight
   )};
   margin-bottom: 5px;
 `;
 
 const StyledSpaceboxDescription = styled.p`
   font-size: ${({ theme }) => (
-    theme.pages.Space.UserInfoSection.spaceboxDescription.fontSize
+    theme.pages.Space.SpaceboxInfoSection.spaceboxDescription.fontSize
   )};
   margin-bottom: 0;
 `;
@@ -73,7 +73,7 @@ const StyledLink = styled(Link)`
   text-decoration: none !important;
 `;
 
-const UserInfoSection = ({
+const SpaceboxInfoSection = ({
   authUser,
   history,
   location,
@@ -82,7 +82,7 @@ const UserInfoSection = ({
   spaceboxId,
   user,
 }) => (
-  <Box padding="15px">
+  <Box padding="15px" margin="0">
     <StyledFlexWrapper>
       <StyledUserImage alt="User" src={defaultUserImage} />
 
@@ -141,7 +141,7 @@ const UserInfoSection = ({
   </Box>
 );
 
-UserInfoSection.propTypes = {
+SpaceboxInfoSection.propTypes = {
   authUser: PropTypes.objectOf(PropTypes.any),
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -151,8 +151,8 @@ UserInfoSection.propTypes = {
   user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-UserInfoSection.defaultProps = {
+SpaceboxInfoSection.defaultProps = {
   authUser: null,
 };
 
-export default withRouter(UserInfoSection);
+export default withRouter(SpaceboxInfoSection);

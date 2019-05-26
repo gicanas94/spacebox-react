@@ -8,6 +8,14 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  ::selection {
+    background: ${theme.global.textSelectionColor};
+  }
+
+  ::-moz-selection {
+    background: ${theme.global.textSelectionColor};
+  }
+
   a {
     color: ${theme.htmlTags.a.color};
     cursor: pointer !important;

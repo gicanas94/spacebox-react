@@ -15,7 +15,7 @@ const withAuthorization = condition => (Component) => {
       this.listener = firebase.onAuthUserListener(
         (authUser) => {
           if (!condition(authUser)) {
-            history.push(ROUTES.HOME);
+            history.push(ROUTES.NOT_FOUND);
           }
         },
         () => history.push(ROUTES.SIGN_IN),

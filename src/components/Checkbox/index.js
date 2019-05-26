@@ -50,6 +50,16 @@ const StyledWrapper = styled.div`
     }
   `}
 
+  ${({ error, theme }) => error && `
+    ${StyledCheckbox} {
+      border-color: ${theme.components.Checkbox.color.error};
+    }
+
+    ${StyledLabel} {
+      color: ${theme.components.Checkbox.color.error};
+    }
+  `}
+
   ${({ margin }) => margin && `
     margin: ${margin};
   `}
@@ -58,6 +68,7 @@ const StyledWrapper = styled.div`
 const Checkbox = ({
   checked,
   disabled,
+  error,
   label,
   margin,
   onChangeHandler,
@@ -65,6 +76,7 @@ const Checkbox = ({
 }) => (
   <StyledWrapper
     disabled={disabled}
+    error={error}
     margin={margin}
     onClick={!disabled ? onChangeHandler : undefined}
   >
@@ -76,6 +88,7 @@ const Checkbox = ({
 Checkbox.propTypes = {
   checked: PropTypes.bool.isRequired,
   disabled: PropTypes.bool,
+  error: PropTypes.bool,
   label: PropTypes.string.isRequired,
   margin: PropTypes.string,
   onChangeHandler: PropTypes.func.isRequired,
@@ -84,6 +97,7 @@ Checkbox.propTypes = {
 
 Checkbox.defaultProps = {
   disabled: false,
+  error: false,
   margin: undefined,
   rounded: false,
 };

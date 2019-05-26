@@ -144,6 +144,7 @@ const StyledSpacebox = styled.div`
 
   ${({ authUserIsTheOwner, theme }) => authUserIsTheOwner && `
     border: ${theme.components.Spacebox.authUserIsTheOwner.border};
+    height: 208px;
   `}
 
   ${({ informative, theme }) => informative && `
@@ -168,8 +169,8 @@ const StyledSpacebox = styled.div`
   ${StyledBubble} {
     background-color: ${({ bgColor }) => (
       Color(bgColor).isDark()
-        ? 'rgba(255, 255, 255, 0.5)'
-        : 'rgba(0, 0, 0, 0.3)'
+        ? 'rgba(255, 255, 255, 0.7)'
+        : 'rgba(0, 0, 0, 0.5)'
     )};
     color: ${({ bgColor }) => (
       Color(bgColor).isDark()
@@ -207,7 +208,16 @@ const StyledLink = styled(Link)`
   order: ${({ order }) => order};
 `;
 
+const StyledAuthUserIsTheOwnerWrapper = styled.div`
+  background: ${({ theme }) => (
+    theme.components.Spacebox.authUserIsTheOwner.backgroundBorder
+  )};
+  border: ${({ theme }) => theme.components.Spacebox.authUserIsTheOwner.border};
+  padding: 5px;
+`;
+
 const Spacebox = ({
+  authUserIsTheOwner,
   category,
   description,
   order,
@@ -218,6 +228,7 @@ const Spacebox = ({
 }) => {
   const box = (
     <StyledSpacebox
+      authUserIsTheOwner={authUserIsTheOwner}
       description={description}
       order={!link ? order : undefined}
       {...props}
@@ -249,7 +260,12 @@ const Spacebox = ({
             state: { spacebox: link[1] },
           }}
         >
-          {box}
+          {authUserIsTheOwner
+            ? (
+              <StyledAuthUserIsTheOwnerWrapper>
+                {box}
+              </StyledAuthUserIsTheOwnerWrapper>
+            ) : box}
         </StyledLink>
       )
       : box
