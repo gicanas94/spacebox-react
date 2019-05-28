@@ -150,7 +150,7 @@ class CreateSpaceboxForm extends Component {
       likes: 0,
       slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,
       title: title.toUpperCase(),
-      userId: authUser.uid,
+      userId: authUser.userId,
       visible,
     })
       .then(() => {

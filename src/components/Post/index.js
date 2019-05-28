@@ -141,7 +141,7 @@ class Post extends Component {
     const likeHeartIcon = (
       <StyledLikeHeartIcon
         authUserLike={
-          authUser && post.likes && post.likes.includes(authUser.uid)
+          authUser && post.likes && post.likes.includes(authUser.userId)
         }
         data-for={`like-heart-icon-${post.slug}`}
         data-tip={!authUser

@@ -466,7 +466,7 @@ class SpacePage extends Component {
               ) : (
                 <Box fullWidth margin="0">
                   <StyledNoPostsWrapper>
-                    {authUser && spacebox && authUser.uid === spacebox.userId
+                    {authUser && spacebox && authUser.userId === spacebox.userId
                       ? 'You haven\'t made any post yet.'
                       : 'The writer of this Spacebox hasn\'t made any post yet.'
                     }

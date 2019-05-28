@@ -107,7 +107,7 @@ class HomePage extends Component {
             spacebox.visible && (
               <Spacebox
                 authUserIsTheOwner={
-                  authUser && authUser.uid === spacebox.userId
+                  authUser && authUser.userId === spacebox.userId
                 }
                 bgColor={spacebox.bgColor}
                 category={spacebox.category}
@@ -117,7 +117,7 @@ class HomePage extends Component {
                 likes={spacebox.likes}
                 link={[`${ROUTES.SPACE_BASE}/${spacebox.slug}`, spacebox]}
                 order={
-                  authUser && authUser.uid === spacebox.userId
+                  authUser && authUser.userId === spacebox.userId
                     ? -1
                     : index + 10
                 }

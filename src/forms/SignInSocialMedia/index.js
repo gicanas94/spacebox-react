@@ -18,7 +18,7 @@ class SignInSocialMedia extends Component {
 
     doSignInWith()
       .then((socialAuthUser) => {
-        const user = firebase.user(socialAuthUser.user.uid);
+        const user = firebase.user(socialAuthUser.user.userId);
 
         user
           .once('value')

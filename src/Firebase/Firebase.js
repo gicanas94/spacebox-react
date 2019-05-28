@@ -55,7 +55,7 @@ class Firebase {
   // Merge Auth and User API
   onAuthUserListener = (next, fallback) => this.auth.onAuthStateChanged((authUser) => {
     if (authUser) {
-      this.user(authUser.uid)
+      this.user(authUser.userId)
         .on('value', snapshot => (
           next({
             createdAt: (snapshot.val() && snapshot.val().createdAt) || '',
@@ -63,7 +63,7 @@ class Firebase {
             emailVerified: authUser.emailVerified,
             isAdmin: (snapshot.val() && snapshot.val().isAdmin) || false,
             providerData: authUser.providerData,
-            uid: authUser.uid,
+            userId: authUser.uid,
             username: (snapshot.val() && snapshot.val().username) || '',
           })
         ));
@@ -83,7 +83,7 @@ class Firebase {
   posts = () => this.db.ref('posts');
 
   // User API
-  user = uid => this.db.ref(`users/${uid}`);
+  user = userId => this.db.ref(`users/${userId}`);
 
   users = () => this.db.ref('users');
 }

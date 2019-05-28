@@ -62,7 +62,7 @@ class SignUpForm extends Component {
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => (
         firebase
-          .user(authUser.user.uid)
+          .user(authUser.user.userId)
           .set({
             createdAt: firebase.serverValue.TIMESTAMP,
             email,

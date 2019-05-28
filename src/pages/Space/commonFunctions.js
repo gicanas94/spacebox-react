@@ -12,7 +12,7 @@ const updateSpaceboxLikes = (
     .once('value')
     .then((spaceboxSnapshot) => {
       firebase.spacebox(post.spaceboxId).update({
-        likes: post.likes.includes(authUser.uid)
+        likes: post.likes.includes(authUser.userId)
           ? spaceboxSnapshot.val().likes + 1
           : spaceboxSnapshot.val().likes - 1,
       });
@@ -33,11 +33,11 @@ export const likePost = (authUser, firebase, likedPost) => (
         const post = postSnapshot.val()[postId];
 
         if (Array.isArray(post.likes)) {
-          post.likes = post.likes.includes(authUser.uid)
-            ? post.likes.splice(post.likes.indexOf(authUser.uid), 0)
-            : post.likes.concat([authUser.uid]);
+          post.likes = post.likes.includes(authUser.userId)
+            ? post.likes.splice(post.likes.indexOf(authUser.userId), 0)
+            : post.likes.concat([authUser.userId]);
         } else {
-          post.likes = [authUser.uid];
+          post.likes = [authUser.userId];
         }
 
         firebase.post(postId).set({

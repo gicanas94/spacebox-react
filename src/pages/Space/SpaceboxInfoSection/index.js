@@ -142,7 +142,7 @@ const SpaceboxInfoSection = ({
 
       {page === 'space'
         && authUser
-        && authUser.uid === spacebox.userId
+        && authUser.userId === spacebox.userId
         && (
           <StyledSecondChild>
             <PostForm spaceboxId={spaceboxId} />
