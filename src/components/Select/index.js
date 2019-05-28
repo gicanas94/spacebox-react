@@ -139,7 +139,7 @@ const StyledLi = styled.li`
   }
 `;
 
-const StyledKeyboardArrowDownIcon = styled(KeyboardArrowDown)`
+const StyledArrowDownIcon = styled(KeyboardArrowDown)`
   position: absolute;
   right: 10px;
   top: 35%;
@@ -177,7 +177,7 @@ class Select extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { disabled } = this.props;
 
     if (!disabled) {
@@ -265,7 +265,7 @@ class Select extends Component {
           )}
         </StyledSimulatedSelect>
 
-        {!disabled && <StyledKeyboardArrowDownIcon />}
+        {!disabled && <StyledArrowDownIcon />}
         {!disabled && error && <StyledErrorIcon />}
         {!disabled && error && <StyledErrorMessage>{error}</StyledErrorMessage>}
       </StyledWrapper>

@@ -194,7 +194,7 @@ class PostPage extends Component {
     });
   };
 
-  handleLikeClick = (likedPost) => {
+  handleLikeHeartIconClick = (likedPost) => {
     const { alertSetAction, authUser, firebase } = this.props;
 
     this.setState({ likeInProgress: true });
@@ -243,7 +243,9 @@ class PostPage extends Component {
               authUser={authUser}
               lastPost
               likeInProgress={likeInProgress}
-              onLikeClickHandler={() => this.handleLikeClick(post)}
+              onLikeHeartIconClickHandler={
+                () => this.handleLikeHeartIconClick(post)
+              }
               page="post"
               post={post}
               spacebox={spacebox}

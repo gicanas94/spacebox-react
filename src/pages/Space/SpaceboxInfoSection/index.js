@@ -5,68 +5,88 @@ import styled from 'styled-components';
 
 import Box from '../../../components/Box';
 import Button from '../../../components/Button';
-// import defaultUserImage from '../../../assets/images/default-user-image.png';
-// import { device } from '../../../styles';
+import { device } from '../../../styles';
+import Hr from '../../../components/Hr';
 import PostForm from '../../../forms/Post';
 import { ROUTES } from '../../../constants';
 
-// const StyledFlexWrapper = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//
-//   @media ${device.mobileL} {
-//     flex-direction: row;
-//   }
-//
-//   @media ${device.tablet} {
-//     flex-direction: column;
-//   }
-// `;
-
-// const StyledUserImage = styled.img`
-//   background-color: ${({ theme }) => (
-//     theme.pages.Space.SpaceboxInfoSection.userImage.bgColor
-//   )};
-//   border-radius: ${({ theme }) => theme.global.borderRadius};
-//   height: auto;
-//   margin-bottom: 15px;
-//   overflow: hidden;
-//   width: 100%;
-//
-//   @media ${device.mobileL} {
-//     height: 50%;
-//     margin-bottom: 0;
-//     margin-right: 15px;
-//     max-height: 200px;
-//     max-width: 200px;
-//   }
-//
-//   @media ${device.tablet} {
-//     height: unset;
-//     margin-bottom: 15px;
-//     margin-right: 0;
-//     max-height: unset;
-//     max-width: unset;
-//     width: 100%;
-//   }
-// `;
-
-const StyledSpaceboxTitle = styled.p`
+const StyledSpaceboxTitle = styled.h1`
+  color: inherit;
+  font-size: ${({ theme }) => (
+    theme.pages.Space.SpaceboxInfoSection.spaceboxTitle.smallFontSize
+  )};
   font-weight: ${({ theme }) => (
     theme.pages.Space.SpaceboxInfoSection.spaceboxTitle.fontWeight
   )};
+  line-height: 1;
   margin-bottom: 5px;
+
+  @media ${device.mobileL} {
+    font-size: ${({ theme }) => (
+      theme.pages.Space.SpaceboxInfoSection.spaceboxTitle.largeFontSize
+    )};
+  }
+
+  @media ${device.tablet} {
+    font-size: ${({ theme }) => (
+      theme.pages.Space.SpaceboxInfoSection.spaceboxTitle.smallFontSize
+    )};
+  }
 `;
 
 const StyledSpaceboxDescription = styled.p`
   font-size: ${({ theme }) => (
     theme.pages.Space.SpaceboxInfoSection.spaceboxDescription.fontSize
   )};
-  margin-bottom: 0;
+  margin-bottom: 15px;
 `;
 
-const StyledButtonWrapper = styled.div`
+const StyledSpaceboxCategory = styled.p`
+  font-size: ${({ theme }) => (
+    theme.pages.Space.SpaceboxInfoSection.spaceboxCategory.fontSize
+  )};
+  line-height: 1;
+  margin: 0;
+
+  span {
+    font-weight: ${({ theme }) => (
+      theme.pages.Space.SpaceboxInfoSection.spaceboxCategory.titleFontWeight
+    )};
+  }
+`;
+
+const StyledButtonsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  @media ${device.mobileL} {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  @media ${device.tablet} {
+    flex-direction: column;
+  }
+`;
+
+const StyledFirstChild = styled.div`
+  @media ${device.tablet} {
+    width: 100%;
+  }
+`;
+
+const StyledSecondChild = styled.div`
   margin-top: 15px;
+
+  @media ${device.mobileL} {
+    margin-top: 0;
+  }
+
+  @media ${device.tablet} {
+    margin-top: 15px;
+    width: 100%;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -82,7 +102,7 @@ const SpaceboxInfoSection = ({
   spaceboxId,
   user,
 }) => (
-  <Box padding="15px" margin="0">
+  <Box margin="0" padding="15px">
     <StyledSpaceboxTitle>
       {spacebox.title}
     </StyledSpaceboxTitle>
@@ -91,47 +111,78 @@ const SpaceboxInfoSection = ({
       {spacebox.description}
     </StyledSpaceboxDescription>
 
-    {page === 'space'
-      && authUser
-      && authUser.uid === spacebox.userId
-      && (
-        <StyledButtonWrapper>
-          <PostForm spaceboxId={spaceboxId} />
-        </StyledButtonWrapper>
-      )}
+    <StyledSpaceboxCategory>
+      <span>Category: </span>
+      {spacebox.category}
+    </StyledSpaceboxCategory>
 
-    {page === 'post' && (
-      <StyledButtonWrapper>
-        {location.state
-          ? (
-            <Button
-              fullWidth
-              onClick={() => history.goBack()}
-              rounded
-              styleType="filled"
-              type="button"
-            >
-              {'Go back to Spacebox'}
-            </Button>
-          ) : (
-            <StyledLink to={{
-              pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}`,
-              state: { spacebox, spaceboxId },
-            }}
-            >
+    <Hr centered margin="25px 0" width="50%" />
+
+    <StyledButtonsWrapper>
+      <StyledFirstChild>
+        <StyledLink to={{
+          pathname: `${ROUTES.USER_BASE}/${user.slug}`,
+          state: {
+            user,
+            userId: spacebox.userId,
+          },
+        }}
+        >
+          <Button
+            fullWidth
+            rounded
+            size="small"
+            styleType="filled"
+            type="button"
+          >
+            {'Go to user profile'}
+          </Button>
+        </StyledLink>
+      </StyledFirstChild>
+
+      {page === 'space'
+        && authUser
+        && authUser.uid === spacebox.userId
+        && (
+          <StyledSecondChild>
+            <PostForm spaceboxId={spaceboxId} />
+          </StyledSecondChild>
+        )}
+
+      {page === 'post' && (
+        <StyledSecondChild>
+          {location.state
+            ? (
               <Button
                 fullWidth
+                onClick={() => history.goBack()}
                 rounded
+                size="small"
                 styleType="filled"
                 type="button"
               >
-                {'Go to Spacebox'}
+                {'Go back to Spacebox'}
               </Button>
-            </StyledLink>
-          )
-        }
-      </StyledButtonWrapper>
-    )}
+            ) : (
+              <StyledLink to={{
+                pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}`,
+                state: { spacebox, spaceboxId },
+              }}
+              >
+                <Button
+                  fullWidth
+                  rounded
+                  styleType="filled"
+                  type="button"
+                >
+                  {'Go to Spacebox'}
+                </Button>
+              </StyledLink>
+            )
+          }
+        </StyledSecondChild>
+      )}
+    </StyledButtonsWrapper>
   </Box>
 );
 

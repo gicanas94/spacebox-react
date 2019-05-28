@@ -249,7 +249,7 @@ class SpacePage extends Component {
     });
   };
 
-  handleLikeClick = (likedPost) => {
+  handleLikeHeartIconClick = (likedPost) => {
     const { alertSetAction, authUser, firebase } = this.props;
 
     this.setState({ likeInProgress: true });
@@ -402,7 +402,11 @@ class SpacePage extends Component {
                             <StyledPostsHistoryLink
                               key={post.createdAt}
                               to={{
-                                pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
+                                pathname: `
+                                  ${ROUTES.SPACE_BASE}/
+                                  ${spacebox.slug}/
+                                  ${post.slug}
+                                `,
                                 state: {
                                   post,
                                   spacebox,
@@ -449,7 +453,9 @@ class SpacePage extends Component {
                       key={post.createdAt}
                       lastPost={posts.length === (index + 1)}
                       likeInProgress={likeInProgress}
-                      onLikeClickHandler={() => this.handleLikeClick(post)}
+                      onLikeHeartIconClickHandler={
+                        () => this.handleLikeHeartIconClick(post)
+                      }
                       page="space"
                       post={post}
                       spacebox={spacebox}

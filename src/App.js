@@ -21,6 +21,7 @@ import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 import SpacePage from './pages/Space';
 import PostPage from './pages/Space/Post';
+import UserPage from './pages/User';
 import VerifyEmailPage from './pages/VerifyEmail';
 import { withAuthentication } from './Session';
 
@@ -61,6 +62,7 @@ const App = ({ activeAlert, alertSetAction }) => (
         <Route component={SignUpPage} path={ROUTES.SIGN_UP} />
         <Route component={SpacePage} exact path={ROUTES.SPACE_WITH_SLUG} />
         <Route component={PostPage} exact path={ROUTES.SPACE_POST} />
+        <Route component={UserPage} path={ROUTES.USER_WITH_SLUG} />
         <Route component={VerifyEmailPage} path={ROUTES.VERIFY_EMAIL} />
         <Route component={NotFoundPage} />
       </Switch>

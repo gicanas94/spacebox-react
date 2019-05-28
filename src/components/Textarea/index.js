@@ -38,6 +38,18 @@ const StyledTextarea = styled.textarea`
 
   ${({ disabled, theme }) => disabled && `
     border-color: ${theme.components.Input.color.disabled} !important;
+
+    ::placeholder {
+      color: ${theme.components.Input.color.disabled} !important;
+    }
+
+    :-ms-input-placeholder {
+      color: ${theme.components.Input.color.disabled} !important;
+    }
+
+    ::-ms-input-placeholder {
+      color: ${theme.components.Input.color.disabled} !important;
+    }
   `}
 
   ${({ rounded, theme }) => rounded && `

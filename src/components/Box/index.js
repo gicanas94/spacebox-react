@@ -90,7 +90,7 @@ const StyledCollapseTitle = styled.div`
   }
 `;
 
-const StyledArrow = styled(ArrowAltCircleUp)`
+const StyledArrowIcon = styled(ArrowAltCircleUp)`
   color: ${({ theme }) => theme.components.Box.arrowColor};
   cursor: pointer;
   height: 25px;
@@ -128,7 +128,7 @@ const Box = ({
       }
 
       {collapseTitle && (
-        <StyledArrow
+        <StyledArrowIcon
           collapsed={boxIsCollapsed}
           onClick={() => setBoxIsCollapsed(!boxIsCollapsed)}
         />

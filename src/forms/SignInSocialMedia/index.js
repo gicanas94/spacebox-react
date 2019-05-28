@@ -1,7 +1,8 @@
+import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { alertSet } from '../../Redux/actions';
@@ -9,14 +10,13 @@ import { ERRORS, ROUTES } from '../../constants';
 import SignInWithButton from '../../components/SignInWithButton';
 import { withFirebase } from '../../Firebase';
 
-class SignInGoogleForm extends Component {
-  handleSubmit = (event) => {
+class SignInSocialMedia extends Component {
+  handleSignInWithClick = (doSignInWith) => {
     const { alertSetAction, firebase, history } = this.props;
 
     alertSetAction(null);
 
-    firebase
-      .doSignInWithGoogle()
+    doSignInWith()
       .then((socialAuthUser) => {
         const user = firebase.user(socialAuthUser.user.uid);
 
@@ -28,6 +28,9 @@ class SignInGoogleForm extends Component {
                 createdAt: firebase.serverValue.TIMESTAMP,
                 email: socialAuthUser.additionalUserInfo.profile.email,
                 isAdmin: false,
+                slug: _.kebabCase(
+                  socialAuthUser.additionalUserInfo.profile.name,
+                ),
                 username: socialAuthUser.additionalUserInfo.profile.name,
               });
             } else {
@@ -35,6 +38,7 @@ class SignInGoogleForm extends Component {
                 createdAt: snapshot.val().createdAt,
                 email: socialAuthUser.additionalUserInfo.profile.email,
                 isAdmin: snapshot.val().isAdmin,
+                slug: snapshot.val().slug,
                 username: snapshot.val().username,
               });
             }
@@ -49,26 +53,50 @@ class SignInGoogleForm extends Component {
           type: 'danger',
         })
       ));
-
-    event.preventDefault();
   };
 
   render() {
+    const { firebase } = this.props;
+
     return (
-      <form onSubmit={this.handleSubmit}>
+      <Fragment>
         <SignInWithButton
           account="Google"
           fullWidth
           margin="0 0 10px 0"
+          onClick={() => this.handleSignInWithClick(
+            firebase.doSignInWithGoogle,
+          )}
           rounded
-          type="submit"
+          type="button"
         />
-      </form>
+
+        <SignInWithButton
+          account="Facebook"
+          fullWidth
+          margin="0 0 10px 0"
+          onClick={() => this.handleSignInWithClick(
+            firebase.doSignInWithFacebook,
+          )}
+          rounded
+          type="button"
+        />
+
+        <SignInWithButton
+          account="Twitter"
+          fullWidth
+          onClick={() => this.handleSignInWithClick(
+            firebase.doSignInWithTwitter,
+          )}
+          rounded
+          type="button"
+        />
+      </Fragment>
     );
   }
 }
 
-SignInGoogleForm.propTypes = {
+SignInSocialMedia.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -80,4 +108,4 @@ export default compose(
   connect(null, mapDispatchToProps),
   withFirebase,
   withRouter,
-)(SignInGoogleForm);
+)(SignInSocialMedia);

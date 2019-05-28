@@ -9,9 +9,7 @@ import Box from '../../components/Box';
 import Hr from '../../components/Hr';
 import { ROUTES } from '../../constants';
 import SignInForm from '../../forms/SignIn';
-import SignInFacebookForm from '../../forms/SignInFacebook';
-import SignInGoogleForm from '../../forms/SignInGoogle';
-import SignInTwitterForm from '../../forms/SignInTwitter';
+import SignInSocialMediaForm from '../../forms/SignInSocialMedia';
 
 const StyledLink = styled(Link)`
   font-size: ${({ theme }) => theme.pages.SignIn.forgotPasswordLink.fontSize};
@@ -29,9 +27,7 @@ const SignInPage = ({ authUser }) => (
         <Helmet title="Sign in - Spacebox" />
         <SignInForm />
         <Hr margin="25px 0" />
-        <SignInGoogleForm />
-        <SignInFacebookForm />
-        <SignInTwitterForm />
+        <SignInSocialMediaForm />
       </Box>
     )
 );

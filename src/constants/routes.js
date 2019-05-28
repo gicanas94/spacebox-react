@@ -13,5 +13,7 @@ export default {
   SPACE_BASE: '/space',
   SPACE_POST: '/space/:spaceboxSlug/:postSlug',
   SPACE_WITH_SLUG: '/space/:spaceboxSlug',
+  USER_BASE: '/user',
+  USER_WITH_SLUG: '/user/:userSlug',
   VERIFY_EMAIL: '/verify-email',
 };

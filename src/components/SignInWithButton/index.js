@@ -1,9 +1,9 @@
-import { Facebook } from 'styled-icons/fa-brands/Facebook';
-import { Google } from 'styled-icons/fa-brands/Google';
+import { Facebook as FacebookIcon } from 'styled-icons/fa-brands/Facebook';
+import { Google as GoogleIcon } from 'styled-icons/fa-brands/Google';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { Twitter } from 'styled-icons/fa-brands/Twitter';
+import { Twitter as TwitterIcon } from 'styled-icons/fa-brands/Twitter';
 
 import { transition } from '../../styles';
 
@@ -76,9 +76,9 @@ const SignInWithButton = ({ account, ...props }) => (
   <StyledButton account={account} {...props}>
     <StyledIconWrapper>
       <StyledIcon>
-        {account === 'Google' && <Google />}
-        {account === 'Facebook' && <Facebook />}
-        {account === 'Twitter' && <Twitter />}
+        {account === 'Google' && <GoogleIcon />}
+        {account === 'Facebook' && <FacebookIcon />}
+        {account === 'Twitter' && <TwitterIcon />}
       </StyledIcon>
     </StyledIconWrapper>
 

@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
@@ -66,6 +67,7 @@ class SignUpForm extends Component {
             createdAt: firebase.serverValue.TIMESTAMP,
             email,
             isAdmin: false,
+            slug: _.kebabCase(username),
             username,
           })
       ))

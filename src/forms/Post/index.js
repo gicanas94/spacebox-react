@@ -111,10 +111,12 @@ class PostForm extends Component {
     return (
       <Fragment>
         <Button
+          color="emerald"
           fullWidth
           onClick={() => this.openForm()}
           rounded
-          styleType="filled"
+          size="large"
+          styleType="bordered"
           type="button"
         >
           {'New post'}

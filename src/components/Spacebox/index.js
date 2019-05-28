@@ -98,8 +98,8 @@ const StyledBubble = styled.div`
   padding: 0 5px;
 `;
 
-const StyledHeart = styled(Heart)`
-  color: ${({ theme }) => theme.components.Spacebox.heartColor};
+const StyledTotalLikesHeartIcon = styled(Heart)`
+  color: ${({ theme }) => theme.components.Spacebox.totalLikesHeartIconColor};
   filter: none !important;
   width: 16px;
   margin-right: 5px;
@@ -236,7 +236,7 @@ const Spacebox = ({
       <StyledBubblesWrapper>
         {likes !== undefined && (
           <StyledBubble>
-            <StyledHeart />
+            <StyledTotalLikesHeartIcon />
             {likes}
           </StyledBubble>
         )}

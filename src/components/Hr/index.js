@@ -17,6 +17,10 @@ const StyledHr = styled.hr`
   margin: 0;
   width: 100%;
 
+  ${({ centered }) => centered && `
+    margin-left: 25% !important;
+  `}
+
   ${({ margin }) => margin && `
     margin: ${margin};
   `}
@@ -29,6 +33,7 @@ const StyledHr = styled.hr`
 const Hr = ({ ...props }) => <StyledHr {...props} />;
 
 Hr.propTypes = {
+  centered: PropTypes.bool,
   color: PropTypes.string,
   dashed: PropTypes.bool,
   margin: PropTypes.string,
@@ -36,6 +41,7 @@ Hr.propTypes = {
 };
 
 Hr.defaultProps = {
+  centered: false,
   color: undefined,
   dashed: false,
   margin: undefined,

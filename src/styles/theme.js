@@ -2,8 +2,9 @@ import Color from 'color';
 
 import { color, font } from '.';
 
-const themeMainColor = color.palette.mulberry;
 const heartColor = color.palette.ferrari;
+const textColor = color.palette.anchor;
+const themeMainColor = color.palette.mulberry;
 
 export default {
   components: {
@@ -96,12 +97,16 @@ export default {
       spinnerColor: themeMainColor,
     },
     Post: {
+      commentIcon: {
+        disabledColor: color.palette.harborGray,
+        enabledColor: color.palette.harborGray,
+      },
       createdAtDate: {
         color: themeMainColor,
         fontSize: font.size.xs,
         fontWeight: font.weight.bold,
       },
-      heart: {
+      likeHeartIcon: {
         likeColor: heartColor,
         noLikeColor: color.palette.harborGray,
       },
@@ -176,7 +181,6 @@ export default {
         fontSize: font.size.xs,
         fontWeight: font.weight.medium,
       },
-      heartColor,
       informative: {
         bgColor: color.palette.asphalt,
         border: `3px solid ${color.palette.gold}`,
@@ -186,6 +190,7 @@ export default {
         fontSize: font.size.lm,
         fontWeight: font.weight.bold,
       },
+      totalLikesHeartIconColor: heartColor,
     },
     Tooltip: {
       fontSize: '18px',
@@ -193,6 +198,16 @@ export default {
     },
   },
   forms: {
+    Comment: {
+      textarea: {
+        color: {
+          default: color.palette.lava,
+          disabled: color.palette.pearlRiver,
+          focus: themeMainColor,
+        },
+        borderWidth: '2px',
+      },
+    },
     Post: {
       bgColor: 'rgba(0, 0, 0, 0.8)',
     },
@@ -206,17 +221,23 @@ export default {
       color: themeMainColor,
       fontWeight: font.weight.medium,
     },
-    h: {
-      color: themeMainColor,
-    },
     body: {
       background: `linear-gradient(
         ${color.palette.cloud},
         ${Color(color.palette.frenchRose).lighten(0.55).hex()}
       )`,
-      color: color.palette.anchor,
+      color: textColor,
       fontFamily: font.family.AlegreyaSans,
       fontSize: font.size.s,
+    },
+    h: {
+      color: themeMainColor,
+    },
+    input: {
+      color: textColor,
+    },
+    textarea: {
+      color: textColor,
     },
   },
   pages: {
@@ -255,11 +276,17 @@ export default {
         },
       },
       SpaceboxInfoSection: {
+        spaceboxCategory: {
+          fontSize: font.size.xs,
+          titleFontWeight: font.weight.bold,
+        },
         spaceboxDescription: {
           fontSize: font.size.xs,
         },
         spaceboxTitle: {
           fontWeight: font.weight.bold,
+          smallFontSize: font.size.s,
+          largeFontSize: font.size.m,
         },
         userImage: {
           bgColor: Color(themeMainColor).lighten(0.6).hex(),

@@ -47,10 +47,18 @@ const GlobalStyle = createGlobalStyle`
     margin-top: 0;
   }
 
+  input {
+    color: ${theme.htmlTags.input.color};
+  }
+
   p {
     line-height: 1.4;
     margin-bottom: 25px;
     margin-top: 0;
+  }
+
+  textarea {
+    color: ${theme.htmlTags.textarea.color};
   }
 `;
 
