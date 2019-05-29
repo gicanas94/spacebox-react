@@ -75,13 +75,11 @@ class SpacePage extends Component {
     super(props);
 
     this.state = {
-      allPosts: null,
       likeInProgress: false,
       posts: null,
       postsHistory: null,
       postsLimit: 5,
       spacebox: null,
-      spaceboxId: null,
       user: null,
     };
   }
@@ -99,19 +97,11 @@ class SpacePage extends Component {
 
     if (location.state) {
       this.setState(
-        {
-          spacebox: location.state.spacebox,
-          spaceboxId: location.state.spacebox.myId || location.state.spaceboxId,
-        },
+        { spacebox: location.state.spacebox },
         () => {
           Promise.all([
-            this.getUser(location.state.spacebox.userId),
-            this.getSomePosts(
-              location.state.spacebox.myId || location.state.spaceboxId,
-            ),
-            this.getAllPosts(
-              location.state.spacebox.myId || location.state.spaceboxId,
-            ),
+            this.getUser(location.state.spacebox.uid),
+            this.getPosts(location.state.spacebox.slug),
           ])
             .then(() => loadingSetAction(false))
             .catch((error) => {
@@ -132,7 +122,7 @@ class SpacePage extends Component {
   componentWillUnmount() {
     const { firebase } = this.props;
 
-    firebase.posts().off();
+    (firebase.db.collection('posts').onSnapshot(() => {}));
     window.removeEventListener('scroll', this.getMorePostsIfScrollIsAtTheEnd);
   }
 
@@ -144,22 +134,15 @@ class SpacePage extends Component {
       loadingSetAction,
     } = this.props;
 
-    firebase.spaceboxes()
-      .orderByChild('slug')
-      .equalTo(spaceboxSlug)
-      .once('value')
-      .then((snapshot) => {
-        if (snapshot.val()) {
-          const spaceboxId = _.keys(snapshot.val())[0];
-          const spacebox = snapshot.val()[spaceboxId];
-
+    firebase.getSpacebox(spaceboxSlug).get()
+      .then((document) => {
+        if (document.data()) {
           this.setState(
-            { spacebox, spaceboxId },
+            { spacebox: document.data() },
             () => {
               Promise.all([
-                this.getUser(spacebox.userId),
-                this.getSomePosts(spaceboxId),
-                this.getAllPosts(spaceboxId),
+                this.getUser(document.data().uid),
+                this.getPosts(spaceboxSlug),
               ])
                 .then(() => loadingSetAction(false))
                 .catch((error) => {
@@ -186,63 +169,36 @@ class SpacePage extends Component {
       ));
   }
 
-  getUser = (userId) => {
+  getUser = (uid) => {
     const { firebase } = this.props;
 
     return new Promise((resolvePromise, rejectPromise) => {
-      firebase.user(userId)
-        .once('value')
-        .then(snapshot => this.setState(
-          { user: snapshot.val() },
+      firebase.getUser(uid).get()
+        .then(document => this.setState(
+          { user: document.data() },
           () => resolvePromise(),
         ))
         .catch(error => rejectPromise(error));
     });
   }
 
-  getSomePosts = (spaceboxId) => {
-    const { firebase } = this.props;
-    const { postsLimit } = this.state;
-
-    return new Promise((resolvePromise, rejectPromise) => {
-      try {
-        firebase.posts()
-          .orderByChild('spaceboxId')
-          .equalTo(spaceboxId)
-          .limitToLast(postsLimit)
-          .on('value', snapshot => (
-            this.setState(
-              {
-                posts: snapshot.val()
-                  ? _.orderBy(snapshot.val(), ['createdAt'], ['desc'])
-                  : [],
-              },
-              () => {
-                this.getMorePostsIfScrollIsAtTheEnd();
-                resolvePromise();
-              },
-            )
-          ));
-      } catch (error) {
-        rejectPromise(error);
-      }
-    });
-  };
-
-  getAllPosts = (spaceboxId) => {
+  getPosts = (spaceboxSlug) => {
     const { firebase } = this.props;
 
     return new Promise((resolvePromise, rejectPromise) => {
       try {
-        firebase.posts()
-          .orderByChild('spaceboxId')
-          .equalTo(spaceboxId)
-          .on('value', snapshot => (
+        firebase.getSpaceboxPosts(spaceboxSlug)
+          .orderBy('createdAt', 'desc')
+          .onSnapshot((documents) => {
+            const posts = [];
+
+            documents.forEach(document => posts.push(document.data()));
+
             this.setState(
-              { allPosts: snapshot.val() },
+              { posts },
               () => this.composePostsHistory(resolvePromise),
-            )
-          ));
+            );
+          });
       } catch (error) {
         rejectPromise(error);
       }
@@ -266,15 +222,16 @@ class SpacePage extends Component {
       });
   }
 
-  composePostsHistory = (resolveGetAllPostsPromise) => {
-    const { allPosts } = this.state;
+  composePostsHistory = (resolveGetPostsPromise) => {
+    const { posts } = this.state;
     const postsOrderedByYearAndMonth = {};
+    const reversedPosts = [...posts].reverse();
 
-    _.map(allPosts, (post) => {
+    _.map(reversedPosts, (post) => {
       postsOrderedByYearAndMonth[moment(post.createdAt).get('year')] = {};
     });
 
-    _.map(allPosts, post => (
+    _.map(reversedPosts, post => (
       _.map(postsOrderedByYearAndMonth, (yearValue, yearKey) => (
         moment(post.createdAt).get('year').toString() === yearKey && (
           Object.defineProperty(
@@ -290,7 +247,7 @@ class SpacePage extends Component {
       ))
     ));
 
-    _.map(allPosts, post => (
+    _.map(reversedPosts, post => (
       _.map(postsOrderedByYearAndMonth, (yearValue, yearKey) => {
         if (moment(post.createdAt).get('year').toString() === yearKey) {
           _.map(yearValue, (monthValue, monthKey) => {
@@ -304,12 +261,12 @@ class SpacePage extends Component {
 
     this.setState(
       { postsHistory: postsOrderedByYearAndMonth },
-      () => resolveGetAllPostsPromise(),
+      () => resolveGetPostsPromise(),
     );
   };
 
   getMorePostsIfScrollIsAtTheEnd = () => {
-    const { spaceboxId, posts, postsLimit } = this.state;
+    const { posts, postsLimit } = this.state;
 
     const windowHeight = 'innerHeight' in window
       ? window.innerHeight
@@ -330,10 +287,7 @@ class SpacePage extends Component {
     return windowBottom >= docHeight && (
       posts.length >= postsLimit
         ? (
-          this.setState(
-            { postsLimit: postsLimit + 5 },
-            () => this.getSomePosts(spaceboxId),
-          )
+          this.setState({ postsLimit: postsLimit + 1 })
         ) : (
           window.removeEventListener(
             'scroll',
@@ -350,8 +304,8 @@ class SpacePage extends Component {
       likeInProgress,
       posts,
       postsHistory,
+      postsLimit,
       spacebox,
-      spaceboxId,
       user,
     } = this.state;
 
@@ -363,13 +317,12 @@ class SpacePage extends Component {
         {!isLoading && (
           <StyledGrid>
             <div>
-              {spacebox && spaceboxId && user && (
+              {spacebox && user && (
                 <StyledSpaceboxInfoSectionWrapper>
                   <SpaceboxInfoSection
                     authUser={authUser}
                     page="space"
                     spacebox={spacebox}
-                    spaceboxId={spaceboxId}
                     user={user}
                   />
                 </StyledSpaceboxInfoSectionWrapper>
@@ -408,9 +361,7 @@ class SpacePage extends Component {
                                   ${post.slug}
                                 `,
                                 state: {
-                                  post,
                                   spacebox,
-                                  spaceboxId,
                                   user,
                                 },
                               }}
@@ -418,7 +369,7 @@ class SpacePage extends Component {
                               <span
                                 data-for={(post.createdAt + 1).toString()}
                                 data-tip={moment(post.createdAt).format(
-                                  'dddd, MMMM Do YYYY, h:mm',
+                                  'dddd, MMMM Do YYYY, kk:mm',
                                 )}
                               >
                                 {post.title}
@@ -447,7 +398,7 @@ class SpacePage extends Component {
             {posts && posts.length > 0
               ? (
                 <div>
-                  {posts.map((post, index) => (
+                  {posts.slice(0, postsLimit).map((post, index) => (
                     <Post
                       authUser={authUser}
                       key={post.createdAt}
@@ -466,7 +417,7 @@ class SpacePage extends Component {
               ) : (
                 <Box fullWidth margin="0">
                   <StyledNoPostsWrapper>
-                    {authUser && spacebox && authUser.userId === spacebox.userId
+                    {authUser && spacebox && authUser.uid === spacebox.uid
                       ? 'You haven\'t made any post yet.'
                       : 'The writer of this Spacebox hasn\'t made any post yet.'
                     }

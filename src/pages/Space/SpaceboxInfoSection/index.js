@@ -99,7 +99,6 @@ const SpaceboxInfoSection = ({
   location,
   page,
   spacebox,
-  spaceboxId,
   user,
 }) => (
   <Box margin="0" padding="15px">
@@ -124,7 +123,7 @@ const SpaceboxInfoSection = ({
           pathname: `${ROUTES.USER_BASE}/${user.slug}`,
           state: {
             user,
-            userId: spacebox.userId,
+            uid: spacebox.uid,
           },
         }}
         >
@@ -142,10 +141,10 @@ const SpaceboxInfoSection = ({
 
       {page === 'space'
         && authUser
-        && authUser.userId === spacebox.userId
+        && authUser.uid === spacebox.uid
         && (
           <StyledSecondChild>
-            <PostForm spaceboxId={spaceboxId} />
+            <PostForm sid={spacebox.slug} />
           </StyledSecondChild>
         )}
 
@@ -166,7 +165,7 @@ const SpaceboxInfoSection = ({
             ) : (
               <StyledLink to={{
                 pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}`,
-                state: { spacebox, spaceboxId },
+                state: { spacebox },
               }}
               >
                 <Button
@@ -192,7 +191,6 @@ SpaceboxInfoSection.propTypes = {
   location: PropTypes.objectOf(PropTypes.any).isRequired,
   page: PropTypes.oneOf(['space', 'post']).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
-  spaceboxId: PropTypes.string.isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

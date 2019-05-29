@@ -13,6 +13,7 @@ import { ROUTES } from '../../constants';
 import Tooltip from '../Tooltip';
 
 const StyledBox = styled(Box)`
+  margin: 0;
   margin-bottom: 10px;
   width: 100%;
 
@@ -141,7 +142,7 @@ class Post extends Component {
     const likeHeartIcon = (
       <StyledLikeHeartIcon
         authUserLike={
-          authUser && post.likes && post.likes.includes(authUser.userId)
+          authUser && post.likes && post.likes.includes(authUser.uid)
         }
         data-for={`like-heart-icon-${post.slug}`}
         data-tip={!authUser
@@ -178,9 +179,7 @@ class Post extends Component {
             <Link to={{
               pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
               state: {
-                post,
                 spacebox,
-                spaceboxId: post.spaceboxId,
                 user,
               },
             }}
@@ -193,7 +192,7 @@ class Post extends Component {
 
           <StyledDate
             data-for={post.createdAt.toString()}
-            data-tip={moment(post.createdAt).format('dddd, MMMM Do YYYY, h:mm')}
+            data-tip={moment(post.createdAt).format('dddd, MMMM Do YYYY, kk:mm')}
           >
             {createdAt}
           </StyledDate>

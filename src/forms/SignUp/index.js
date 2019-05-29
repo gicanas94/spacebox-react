@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -58,18 +59,15 @@ class SignUpForm extends Component {
     alertSetAction(null);
     actions.setSubmitting(true);
 
-    firebase
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
+    firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => (
-        firebase
-          .user(authUser.user.userId)
-          .set({
-            createdAt: firebase.serverValue.TIMESTAMP,
-            email,
-            isAdmin: false,
-            slug: _.kebabCase(username),
-            username,
-          })
+        firebase.getUser(authUser.user.uid).set({
+          createdAt: moment().valueOf(),
+          email,
+          isAdmin: false,
+          slug: `${_.kebabCase(username)}-${Math.floor(Math.random() * 10000)}`,
+          username,
+        })
       ))
       .then(() => {
         firebase.doSendEmailVerification();

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -57,12 +56,11 @@ class PostPage extends Component {
       this.setState(
         {
           spacebox: location.state.spacebox,
-          spaceboxId: location.state.spaceboxId,
           user: location.state.user,
         }, () => {
           loadingSetAction(true);
 
-          this.getPost(location.state.spaceboxId)
+          this.getPost(match.params.postSlug, location.state.spacebox.slug)
             .then(() => loadingSetAction(false))
             .catch((error) => {
               alertSetAction({
@@ -75,17 +73,17 @@ class PostPage extends Component {
         },
       );
     } else {
-      this.getSpacebox(match.params.spaceboxSlug);
+      this.getSpacebox(match.params.spaceboxSlug, match.params.postSlug);
     }
   }
 
   componentWillUnmount() {
     const { firebase } = this.props;
 
-    firebase.posts().off();
+    (firebase.db.collection('posts').onSnapshot(() => {}));
   }
 
-  getSpacebox = (spaceboxSlug) => {
+  getSpacebox = (spaceboxSlug, postSlug) => {
     const {
       alertSetAction,
       firebase,
@@ -95,21 +93,15 @@ class PostPage extends Component {
 
     loadingSetAction(true);
 
-    firebase.spaceboxes()
-      .orderByChild('slug')
-      .equalTo(spaceboxSlug)
-      .once('value')
-      .then((snapshot) => {
-        if (snapshot.val()) {
-          const spaceboxId = _.keys(snapshot.val())[0];
-          const spacebox = snapshot.val()[spaceboxId];
-
+    firebase.getSpacebox(spaceboxSlug).get()
+      .then((document) => {
+        if (document.data()) {
           this.setState(
-            { spacebox, spaceboxId },
+            { spacebox: document.data() },
             () => {
               Promise.all([
-                this.getUser(spacebox.userId),
-                this.getPost(spaceboxId),
+                this.getUser(document.data().uid),
+                this.getPost(postSlug, spaceboxSlug),
               ])
                 .then(() => loadingSetAction(false))
                 .catch((error) => {
@@ -138,52 +130,33 @@ class PostPage extends Component {
       });
   }
 
-  getUser = (userId) => {
+  getUser = (uid) => {
     const { firebase } = this.props;
 
     return new Promise((resolvePromise, rejectPromise) => {
-      firebase.user(userId)
-        .once('value')
-        .then(snapshot => this.setState(
-          { user: snapshot.val() },
+      firebase.getUser(uid).get()
+        .then(document => this.setState(
+          { user: document.data() },
           () => resolvePromise(),
         ))
         .catch(error => rejectPromise(error));
     });
   }
 
-  getPost = (spaceboxId) => {
-    const {
-      firebase,
-      history,
-      loadingSetAction,
-      match,
-    } = this.props;
+  getPost = (postSlug, spaceboxSlug) => {
+    const { firebase, history, loadingSetAction } = this.props;
 
     return new Promise((resolvePromise, rejectPromise) => {
       try {
-        firebase.posts()
-          .orderByChild('spaceboxId')
-          .equalTo(spaceboxId)
-          .on('value', (snapshot) => {
-            if (snapshot.val()) {
-              const filteredPost = _.filter(
-                snapshot.val(),
-                post => post.slug === match.params.postSlug,
-              )[0];
-
-              if (filteredPost) {
-                this.setState(
-                  { post: filteredPost },
-                  () => resolvePromise(),
-                );
-              } else {
-                // Post does not exist
-                loadingSetAction(false);
-                history.push(ROUTES.NOT_FOUND);
-              }
+        firebase.getPost(postSlug, spaceboxSlug)
+          .onSnapshot((document) => {
+            if (document.data()) {
+              this.setState(
+                { post: document.data() },
+                () => resolvePromise(),
+              );
             } else {
-              // Spacebox has no posts
+              // Post does not exist
               loadingSetAction(false);
               history.push(ROUTES.NOT_FOUND);
             }
@@ -218,7 +191,6 @@ class PostPage extends Component {
       likeInProgress,
       post,
       spacebox,
-      spaceboxId,
       user,
     } = this.state;
 
@@ -229,12 +201,11 @@ class PostPage extends Component {
 
         {!isLoading && post && (
           <StyledGrid>
-            {spacebox && spaceboxId && user && (
+            {spacebox && user && (
               <SpaceboxInfoSection
                 authUser={authUser}
                 page="post"
                 spacebox={spacebox}
-                spaceboxId={spaceboxId}
                 user={user}
               />
             )}

@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/firestore';
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -14,18 +15,17 @@ const config = {
 class Firebase {
   constructor() {
     app.initializeApp(config);
-
-    this.emailAuthProvider = app.auth.EmailAuthProvider;
     this.auth = app.auth();
-    this.db = app.database();
-    this.serverValue = app.database.ServerValue;
-
-    this.googleProvider = new app.auth.GoogleAuthProvider();
+    this.db = app.firestore();
+    this.emailAuthProvider = app.auth.EmailAuthProvider;
     this.facebookProvider = new app.auth.FacebookAuthProvider();
+    this.googleProvider = new app.auth.GoogleAuthProvider();
     this.twitterProvider = new app.auth.TwitterAuthProvider();
   }
 
-  // Auth API
+  // ---------------------------------------------------------------------------
+  // Auth API ------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   doCreateUserWithEmailAndPassword = (email, password) => (
     this.auth.createUserWithEmailAndPassword(email, password)
   )
@@ -52,40 +52,61 @@ class Firebase {
 
   doSignOut = () => this.auth.signOut();
 
-  // Merge Auth and User API
+  // ---------------------------------------------------------------------------
+  // Merge database user and auth user -----------------------------------------
+  // ---------------------------------------------------------------------------
   onAuthUserListener = (next, fallback) => this.auth.onAuthStateChanged((authUser) => {
     if (authUser) {
-      this.user(authUser.userId)
-        .on('value', snapshot => (
-          next({
-            createdAt: (snapshot.val() && snapshot.val().createdAt) || '',
-            email: authUser.email,
-            emailVerified: authUser.emailVerified,
-            isAdmin: (snapshot.val() && snapshot.val().isAdmin) || false,
-            providerData: authUser.providerData,
-            userId: authUser.uid,
-            username: (snapshot.val() && snapshot.val().username) || '',
-          })
-        ));
+      this.getUser(authUser.uid).onSnapshot(document => (
+        next({
+          createdAt: (document.data() && document.data().createdAt) || '',
+          email: authUser.email,
+          emailVerified: authUser.emailVerified,
+          isAdmin: (document.data() && document.data().isAdmin) || false,
+          providerData: authUser.providerData,
+          uid: authUser.uid,
+          username: (document.data() && document.data().username) || '',
+        })
+      ));
     } else {
       fallback();
     }
   });
 
-  // Spacebox API
-  spacebox = sid => this.db.ref(`spaceboxes/${sid}`);
+  // ---------------------------------------------------------------------------
+  // Spacebox API --------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  createSpacebox = spacebox => (
+    this.db.collection('spaceboxes').doc(spacebox.slug).set(spacebox)
+  );
 
-  spaceboxes = () => this.db.ref('spaceboxes');
+  getSpacebox = sid => this.db.collection('spaceboxes').doc(sid);
 
-  // Post API
-  post = pid => this.db.ref(`posts/${pid}`);
+  getAllVisibleSpaceboxes = () => (
+    this.db.collection('spaceboxes').where('visible', '==', true)
+  );
 
-  posts = () => this.db.ref('posts');
+  // ---------------------------------------------------------------------------
+  // Post API ------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  createPost = (post, sid) => (
+    this.getSpacebox(sid).collection('posts').doc(post.slug).set(post)
+  )
 
-  // User API
-  user = userId => this.db.ref(`users/${userId}`);
+  getPost = (pid, sid) => (
+    this.getSpacebox(sid).collection('posts').doc(pid)
+  )
 
-  users = () => this.db.ref('users');
+  getSpaceboxPosts = sid => (
+    this.getSpacebox(sid).collection('posts')
+  );
+
+  // ---------------------------------------------------------------------------
+  // User API ------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  getUser = uid => this.db.collection('users').doc(uid);
+
+  getAllUsers = () => this.db.collection('users');
 }
 
 export default Firebase;

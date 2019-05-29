@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
@@ -61,19 +62,23 @@ class PostForm extends Component {
   handleKeydown = event => event.key === 'Escape' && this.closeForm();
 
   handleSubmit = (values, actions) => {
-    const { alertSetAction, firebase, spaceboxId } = this.props;
+    const { alertSetAction, firebase, sid } = this.props;
     const { title, content } = values;
 
     alertSetAction(null);
     actions.setSubmitting(true);
 
-    firebase.posts().push({
-      content,
-      createdAt: firebase.serverValue.TIMESTAMP,
-      slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,
-      spaceboxId,
-      title,
-    })
+    firebase.createPost(
+      {
+        content,
+        createdAt: moment().valueOf(),
+        likes: [],
+        sid,
+        slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,
+        title,
+      },
+      sid,
+    )
       .then(() => {
         actions.resetForm();
         this.closeForm();
@@ -211,7 +216,7 @@ class PostForm extends Component {
 PostForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  spaceboxId: PropTypes.string.isRequired,
+  sid: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = { alertSetAction: alertSet };

@@ -33,8 +33,7 @@ class PasswordChangeForm extends Component {
     alertSetAction(null);
     actions.setSubmitting(true);
 
-    firebase
-      .doPasswordUpdate(passwordOne)
+    firebase.doPasswordUpdate(passwordOne)
       .then(() => {
         alertSetAction({
           text: 'Your password was successfully updated.',

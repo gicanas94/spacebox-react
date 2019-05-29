@@ -49,8 +49,12 @@ class HomePage extends Component {
     loadingSetAction(true);
 
     try {
-      firebase.spaceboxes().on('value', (snapshot) => {
-        spaceboxesSetAction(snapshot.val());
+      firebase.getAllVisibleSpaceboxes().onSnapshot((documents) => {
+        const spaceboxes = [];
+
+        documents.forEach(document => spaceboxes.push(document.data()));
+
+        spaceboxesSetAction(spaceboxes);
         loadingSetAction(false);
       });
     } catch (error) {
@@ -66,7 +70,7 @@ class HomePage extends Component {
   componentWillUnmount() {
     const { firebase } = this.props;
 
-    firebase.spaceboxes().off();
+    (firebase.db.collection('spaceboxes').onSnapshot(() => {}));
   }
 
   render() {
@@ -107,7 +111,7 @@ class HomePage extends Component {
             spacebox.visible && (
               <Spacebox
                 authUserIsTheOwner={
-                  authUser && authUser.userId === spacebox.userId
+                  authUser && authUser.uid === spacebox.uid
                 }
                 bgColor={spacebox.bgColor}
                 category={spacebox.category}
@@ -117,7 +121,7 @@ class HomePage extends Component {
                 likes={spacebox.likes}
                 link={[`${ROUTES.SPACE_BASE}/${spacebox.slug}`, spacebox]}
                 order={
-                  authUser && authUser.userId === spacebox.userId
+                  authUser && authUser.uid === spacebox.uid
                     ? -1
                     : index + 10
                 }

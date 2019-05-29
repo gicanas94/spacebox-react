@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
@@ -18,28 +19,27 @@ class SignInSocialMedia extends Component {
 
     doSignInWith()
       .then((socialAuthUser) => {
-        const user = firebase.user(socialAuthUser.user.userId);
+        const user = firebase.getUser(socialAuthUser.user.uid);
 
-        user
-          .once('value')
-          .then((snapshot) => {
+        user.get()
+          .then((document) => {
             if (socialAuthUser.additionalUserInfo.isNewUser) {
               user.set({
-                createdAt: firebase.serverValue.TIMESTAMP,
+                createdAt: moment().valueOf(),
                 email: socialAuthUser.additionalUserInfo.profile.email,
                 isAdmin: false,
-                slug: _.kebabCase(
+                slug: `${_.kebabCase(
                   socialAuthUser.additionalUserInfo.profile.name,
-                ),
+                )}-${Math.floor(Math.random() * 10000)}`,
                 username: socialAuthUser.additionalUserInfo.profile.name,
               });
             } else {
               user.set({
-                createdAt: snapshot.val().createdAt,
+                createdAt: document.data().createdAt,
                 email: socialAuthUser.additionalUserInfo.profile.email,
-                isAdmin: snapshot.val().isAdmin,
-                slug: snapshot.val().slug,
-                username: snapshot.val().username,
+                isAdmin: document.data().isAdmin,
+                slug: document.data().slug,
+                username: document.data().username,
               });
             }
           });

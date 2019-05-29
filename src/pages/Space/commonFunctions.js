@@ -1,46 +1,39 @@
-import _ from 'lodash';
-
 const updateSpaceboxLikes = (
   authUser,
   firebase,
   post,
   resolvePromise,
   rejectPromise,
-) => (
-  firebase
-    .spacebox(post.spaceboxId)
-    .once('value')
-    .then((spaceboxSnapshot) => {
-      firebase.spacebox(post.spaceboxId).update({
-        likes: post.likes.includes(authUser.userId)
-          ? spaceboxSnapshot.val().likes + 1
-          : spaceboxSnapshot.val().likes - 1,
+) => {
+  const spaceboxRef = firebase.getSpacebox(post.sid);
+
+  spaceboxRef.get()
+    .then((document) => {
+      spaceboxRef.update({
+        likes: post.likes.includes(authUser.uid)
+          ? document.data().likes + 1
+          : document.data().likes - 1,
       });
     })
     .then(() => resolvePromise())
-    .catch(error => rejectPromise(error))
-);
+    .catch(error => rejectPromise(error));
+};
+
+export const caca = 1;
 
 export const likePost = (authUser, firebase, likedPost) => (
   new Promise((resolvePromise, rejectPromise) => {
-    firebase
-      .posts()
-      .orderByChild('slug')
-      .equalTo(likedPost.slug)
-      .once('value')
-      .then((postSnapshot) => {
-        const postId = _.keys(postSnapshot.val())[0];
-        const post = postSnapshot.val()[postId];
+    const postRef = firebase.getPost(likedPost.slug, likedPost.sid);
 
-        if (Array.isArray(post.likes)) {
-          post.likes = post.likes.includes(authUser.userId)
-            ? post.likes.splice(post.likes.indexOf(authUser.userId), 0)
-            : post.likes.concat([authUser.userId]);
-        } else {
-          post.likes = [authUser.userId];
-        }
+    postRef.get()
+      .then((document) => {
+        const post = document.data();
 
-        firebase.post(postId).set({
+        post.likes = post.likes.includes(authUser.uid)
+          ? post.likes.splice(post.likes.indexOf(authUser.uid), 0)
+          : post.likes.concat([authUser.uid]);
+
+        postRef.set({
           likes: post.likes,
           ...post,
         });

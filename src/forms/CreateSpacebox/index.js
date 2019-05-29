@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Field } from 'formik';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -141,16 +142,16 @@ class CreateSpaceboxForm extends Component {
     alertSetAction(null);
     actions.setSubmitting(true);
 
-    firebase.spaceboxes().push({
+    firebase.createSpacebox({
       bgColor,
       category,
       color,
-      createdAt: firebase.serverValue.TIMESTAMP,
+      createdAt: moment().valueOf(),
       description,
       likes: 0,
       slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,
       title: title.toUpperCase(),
-      userId: authUser.userId,
+      uid: authUser.uid,
       visible,
     })
       .then(() => {
