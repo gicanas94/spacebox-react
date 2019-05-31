@@ -8,7 +8,6 @@ import { withRouter } from 'react-router-dom';
 
 import { alertSet, loadingSet } from '../../../Redux/actions';
 import { device } from '../../../styles';
-import { likePost } from '../commonFunctions';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { ROUTES } from '../../../constants';
 import Post from '../../../components/Post';
@@ -37,7 +36,7 @@ class PostPage extends Component {
     super(props);
 
     this.state = {
-      likeInProgress: false,
+      comments: null,
       post: null,
       spacebox: null,
       user: null,
@@ -52,6 +51,8 @@ class PostPage extends Component {
       match,
     } = this.props;
 
+    this.componentIsMounted = true;
+
     if (location.state) {
       this.setState(
         {
@@ -60,7 +61,10 @@ class PostPage extends Component {
         }, () => {
           loadingSetAction(true);
 
-          this.getPost(match.params.postSlug, location.state.spacebox.slug)
+          Promise.all([
+            this.getPost(location.state.spacebox.slug, match.params.postSlug),
+            this.getComments(location.state.spacebox.slug, match.params.postSlug),
+          ])
             .then(() => loadingSetAction(false))
             .catch((error) => {
               alertSetAction({
@@ -80,6 +84,7 @@ class PostPage extends Component {
   componentWillUnmount() {
     const { firebase } = this.props;
 
+    this.componentIsMounted = false;
     (firebase.db.collection('posts').onSnapshot(() => {}));
   }
 
@@ -101,7 +106,8 @@ class PostPage extends Component {
             () => {
               Promise.all([
                 this.getUser(document.data().uid),
-                this.getPost(postSlug, spaceboxSlug),
+                this.getPost(spaceboxSlug, postSlug),
+                this.getComments(spaceboxSlug, postSlug),
               ])
                 .then(() => loadingSetAction(false))
                 .catch((error) => {
@@ -143,52 +149,53 @@ class PostPage extends Component {
     });
   }
 
-  getPost = (postSlug, spaceboxSlug) => {
+  getPost = (spaceboxSlug, postSlug) => {
     const { firebase, history, loadingSetAction } = this.props;
 
     return new Promise((resolvePromise, rejectPromise) => {
-      try {
-        firebase.getPost(postSlug, spaceboxSlug)
-          .onSnapshot((document) => {
-            if (document.data()) {
+      firebase.getPost(spaceboxSlug, postSlug)
+        .onSnapshot((document) => {
+          if (document.data()) {
+            if (this.componentIsMounted) {
               this.setState(
                 { post: document.data() },
                 () => resolvePromise(),
               );
-            } else {
-              // Post does not exist
-              loadingSetAction(false);
-              history.push(ROUTES.NOT_FOUND);
             }
-          });
-      } catch (error) {
-        rejectPromise(error);
-      }
+          } else {
+            // Post does not exist
+            loadingSetAction(false);
+            history.push(ROUTES.NOT_FOUND);
+          }
+        }, error => rejectPromise(error));
     });
   };
 
-  handleLikeHeartIconClick = (likedPost) => {
-    const { alertSetAction, authUser, firebase } = this.props;
+  getComments = (spaceboxSlug, postSlug) => {
+    const { firebase } = this.props;
 
-    this.setState({ likeInProgress: true });
+    firebase.getComments(postSlug, spaceboxSlug).orderBy('createdAt').get()
+      .then((documents) => {
+        const receivedComments = [];
 
-    likePost(authUser, firebase, likedPost)
-      .then(() => this.setState({ likeInProgress: false }))
-      .catch((error) => {
-        alertSetAction({
-          text: error.message,
-          type: 'danger',
-        });
+        documents.forEach(
+          document => receivedComments.push(document.data()),
+        );
 
-        this.setState({ likeInProgress: false });
+        this.setState({ comments: receivedComments });
       });
   }
 
   render() {
-    const { authUser, isLoading } = this.props;
+    const {
+      alertSetAction,
+      authUser,
+      firebase,
+      isLoading,
+    } = this.props;
 
     const {
-      likeInProgress,
+      comments,
       post,
       spacebox,
       user,
@@ -211,12 +218,11 @@ class PostPage extends Component {
             )}
 
             <Post
+              alertSetAction={alertSetAction}
               authUser={authUser}
+              comments={comments}
+              firebase={firebase}
               lastPost
-              likeInProgress={likeInProgress}
-              onLikeHeartIconClickHandler={
-                () => this.handleLikeHeartIconClick(post)
-              }
               page="post"
               post={post}
               spacebox={spacebox}

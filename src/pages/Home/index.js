@@ -46,29 +46,33 @@ class HomePage extends Component {
       spaceboxesSetAction,
     } = this.props;
 
+    this.componentIsMounted = true;
+
     loadingSetAction(true);
 
-    try {
-      firebase.getAllVisibleSpaceboxes().onSnapshot((documents) => {
-        const spaceboxes = [];
+    firebase.getAllVisibleSpaceboxes().onSnapshot((documents) => {
+      const spaceboxes = [];
 
-        documents.forEach(document => spaceboxes.push(document.data()));
+      documents.forEach(document => spaceboxes.push(document.data()));
 
+      if (this.componentIsMounted) {
         spaceboxesSetAction(spaceboxes);
         loadingSetAction(false);
-      });
-    } catch (error) {
+      }
+    }, (error) => {
       alertSetAction({
         text: error.message,
         type: 'danger',
       });
 
       loadingSetAction(false);
-    }
+    });
   }
 
   componentWillUnmount() {
     const { firebase } = this.props;
+
+    this.componentIsMounted = false;
 
     (firebase.db.collection('spaceboxes').onSnapshot(() => {}));
   }

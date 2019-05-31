@@ -1,12 +1,22 @@
-// import * as Yup from 'yup';
+import * as Yup from 'yup';
+import _ from 'lodash';
 import autosize from 'autosize';
-// import { Form, Formik } from 'formik';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { Form, Formik } from 'formik';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
 import { transition } from '../../styles';
+import { withFirebase } from '../../Firebase';
+
+const CommentFormSchema = Yup.object().shape({
+  comment: Yup.string().required(),
+});
 
 const StyledWrapper = styled.div`
   align-items: flex-end;
@@ -59,26 +69,95 @@ class CommentForm extends Component {
     autosize.destroy(document.querySelectorAll('textarea'));
   }
 
+  handleSubmit = (values, actions) => {
+    const {
+      alertSetAction,
+      firebase,
+      postSlug,
+      sid,
+      uid,
+    } = this.props;
+
+    const { comment } = values;
+
+    alertSetAction(null);
+    actions.setSubmitting(true);
+
+    firebase.createComment(
+      {
+        comment,
+        createdAt: moment().valueOf(),
+        slug: `${_.kebabCase(comment)}-${Math.floor(Math.random() * 10000)}`,
+        uid,
+      },
+      sid,
+      postSlug,
+    )
+      .then(() => actions.resetForm())
+      .catch(error => (
+        alertSetAction({
+          text: error.message,
+          type: 'danger',
+        })
+      ));
+
+    actions.setSubmitting(false);
+  };
+
   render() {
     const { postSlug } = this.props;
 
     return (
-      <StyledWrapper>
-        <StyledTextarea
-          id={postSlug}
-          placeholder="Make a comment..."
-        />
+      <Formik
+        initialValues={{ comment: '' }}
+        onSubmit={this.handleSubmit}
+        validationSchema={CommentFormSchema}
+        render={({
+          handleBlur,
+          handleChange,
+          isSubmitting,
+          values,
+        }) => (
+          <Form>
+            <StyledWrapper>
+              <StyledTextarea
+                disabled={isSubmitting}
+                id={postSlug}
+                name="comment"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                placeholder="Make a comment..."
+                value={values.comment}
+              />
 
-        <Button rounded size="small" styleType="bordered" type="submit">
-          {'Comment'}
-        </Button>
-      </StyledWrapper>
+              <Button
+                disabled={isSubmitting}
+                rounded
+                size="small"
+                styleType="bordered"
+                type="submit"
+              >
+                {'Comment'}
+              </Button>
+            </StyledWrapper>
+          </Form>
+        )}
+      />
     );
   }
 }
 
 CommentForm.propTypes = {
+  alertSetAction: PropTypes.func.isRequired,
+  firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   postSlug: PropTypes.string.isRequired,
+  sid: PropTypes.string.isRequired,
+  uid: PropTypes.string.isRequired,
 };
 
-export default CommentForm;
+const mapDispatchToProps = { alertSetAction: alertSet };
+
+export default compose(
+  connect(null, mapDispatchToProps),
+  withFirebase,
+)(CommentForm);

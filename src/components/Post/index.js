@@ -50,7 +50,6 @@ const StyledActionsWrapper = styled.div`
 `;
 
 const StyledLikeHeartIcon = styled(Heart)`
-  color: ${({ theme }) => theme.components.Post.likeHeartIcon.noLikeColor};
   cursor: pointer;
   margin-right: 20px;
   width: 33px;
@@ -59,12 +58,24 @@ const StyledLikeHeartIcon = styled(Heart)`
     color: ${theme.components.Post.likeHeartIcon.likeColor};
   `}
 
+  ${({ authUserLike, theme }) => !authUserLike && `
+    color: ${theme.components.Post.likeHeartIcon.noLikeColor};
+  `}
+
   ${({ disabled }) => !disabled && `
     &:active {
       transform: scale(0.9);
     }
 
     transition: transform ${transition.speed.superfast} linear;
+  `}
+
+  ${({ userIsLikingOrDisliking, theme }) => userIsLikingOrDisliking === 'like' && `
+    color: ${theme.components.Post.likeHeartIcon.likeColor};
+  `}
+
+  ${({ userIsLikingOrDisliking, theme }) => userIsLikingOrDisliking === 'dislike' && `
+    color: ${theme.components.Post.likeHeartIcon.noLikeColor};
   `}
 `;
 
@@ -96,6 +107,8 @@ class Post extends Component {
     this.state = {
       commentFormIsVisible: false,
       createdAt: moment(post.createdAt).fromNow(),
+      likeInProgress: false,
+      userIsLikingOrDisliking: null,
     };
   }
 
@@ -109,6 +122,53 @@ class Post extends Component {
   componentWillUnmount() {
     clearInterval(this.updateCreatedAtDateInterval);
   }
+
+  handleLikeHeartIconClick = (likedPost) => {
+    const { alertSetAction, authUser, firebase } = this.props;
+    const postRef = firebase.getPost(likedPost.sid, likedPost.slug);
+    const spaceboxRef = firebase.getSpacebox(likedPost.sid);
+
+    // [If like process is in progress,
+    // If user is liking (false) or disliking(true)]
+    this.setState(
+      {
+        likeInProgress: true,
+        userIsLikingOrDisliking: likedPost.likes.includes(authUser.uid)
+          ? 'dislike'
+          : 'like',
+      },
+      () => (
+        firebase.db.runTransaction(async (transaction) => {
+          const postDocument = await transaction.get(postRef);
+          const spaceboxDocument = await transaction.get(spaceboxRef);
+          const post = postDocument.data();
+          const spacebox = spaceboxDocument.data();
+          const postAlreadyLiked = post.likes.includes(authUser.uid);
+
+          post.likes = postAlreadyLiked
+            ? post.likes.splice(post.likes.indexOf(authUser.uid), 0)
+            : post.likes.concat([authUser.uid]);
+
+          transaction.update(postRef, { likes: post.likes });
+
+          transaction.update(spaceboxRef, {
+            likes: postAlreadyLiked ? spacebox.likes - 1 : spacebox.likes + 1,
+          });
+        })
+          .then(() => {
+            this.setState({ likeInProgress: false });
+          })
+          .catch((error) => {
+            alertSetAction({
+              text: error.message,
+              type: 'danger',
+            });
+
+            this.setState({ likeInProgress: false });
+          })
+      ),
+    );
+  };
 
   setCommentFormIsVisibleState = (state) => {
     const { post } = this.props;
@@ -129,15 +189,18 @@ class Post extends Component {
     const {
       authUser,
       lastPost,
-      likeInProgress,
-      onLikeHeartIconClickHandler,
       page,
       post,
       spacebox,
       user,
     } = this.props;
 
-    const { createdAt, commentFormIsVisible } = this.state;
+    const {
+      commentFormIsVisible,
+      createdAt,
+      likeInProgress,
+      userIsLikingOrDisliking,
+    } = this.state;
 
     const likeHeartIcon = (
       <StyledLikeHeartIcon
@@ -150,9 +213,10 @@ class Post extends Component {
           : 'You need to validate your e-mail to like a post'
         }
         disabled={likeInProgress || !authUser || !authUser.emailVerified}
+        userIsLikingOrDisliking={userIsLikingOrDisliking}
         onClick={likeInProgress || !authUser || !authUser.emailVerified
           ? null
-          : onLikeHeartIconClickHandler
+          : () => this.handleLikeHeartIconClick(post)
         }
       />
     );
@@ -227,7 +291,11 @@ class Post extends Component {
 
         {authUser && authUser.emailVerified && commentFormIsVisible && (
           <StyledCommentFormWrapper>
-            <CommentForm postSlug={post.slug} />
+            <CommentForm
+              postSlug={post.slug}
+              uid={authUser.uid}
+              sid={post.sid}
+            />
           </StyledCommentFormWrapper>
         )}
 
@@ -254,10 +322,10 @@ class Post extends Component {
 }
 
 Post.propTypes = {
+  alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.objectOf(PropTypes.any),
+  firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   lastPost: PropTypes.bool.isRequired,
-  likeInProgress: PropTypes.bool.isRequired,
-  onLikeHeartIconClickHandler: PropTypes.func.isRequired,
   page: PropTypes.oneOf(['space', 'post']).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any),

@@ -12,12 +12,11 @@ import { alertSet, loadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import { device } from '../../styles';
 import Hr from '../../components/Hr';
-import { likePost } from './commonFunctions';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Post from '../../components/Post';
 import { ROUTES } from '../../constants';
-import Tooltip from '../../components/Tooltip';
 import SpaceboxInfoSection from './SpaceboxInfoSection';
+import Tooltip from '../../components/Tooltip';
 import { withFirebase } from '../../Firebase';
 
 const StyledSpaceboxInfoSectionWrapper = styled.div``;
@@ -75,7 +74,6 @@ class SpacePage extends Component {
     super(props);
 
     this.state = {
-      likeInProgress: false,
       posts: null,
       postsHistory: null,
       postsLimit: 5,
@@ -92,6 +90,7 @@ class SpacePage extends Component {
       location,
     } = this.props;
 
+    this.componentIsMounted = true;
     loadingSetAction(true);
     window.addEventListener('scroll', this.getMorePostsIfScrollIsAtTheEnd);
 
@@ -122,6 +121,7 @@ class SpacePage extends Component {
   componentWillUnmount() {
     const { firebase } = this.props;
 
+    this.componentIsMounted = false;
     (firebase.db.collection('posts').onSnapshot(() => {}));
     window.removeEventListener('scroll', this.getMorePostsIfScrollIsAtTheEnd);
   }
@@ -186,41 +186,22 @@ class SpacePage extends Component {
     const { firebase } = this.props;
 
     return new Promise((resolvePromise, rejectPromise) => {
-      try {
-        firebase.getSpaceboxPosts(spaceboxSlug)
-          .orderBy('createdAt', 'desc')
-          .onSnapshot((documents) => {
-            const posts = [];
+      firebase.getSpaceboxPosts(spaceboxSlug)
+        .orderBy('createdAt', 'desc')
+        .onSnapshot((documents) => {
+          const posts = [];
 
-            documents.forEach(document => posts.push(document.data()));
+          documents.forEach(document => posts.push(document.data()));
 
+          if (this.componentIsMounted) {
             this.setState(
               { posts },
               () => this.composePostsHistory(resolvePromise),
             );
-          });
-      } catch (error) {
-        rejectPromise(error);
-      }
+          }
+        }, error => rejectPromise(error));
     });
   };
-
-  handleLikeHeartIconClick = (likedPost) => {
-    const { alertSetAction, authUser, firebase } = this.props;
-
-    this.setState({ likeInProgress: true });
-
-    likePost(authUser, firebase, likedPost)
-      .then(() => this.setState({ likeInProgress: false }))
-      .catch((error) => {
-        alertSetAction({
-          text: error.message,
-          type: 'danger',
-        });
-
-        this.setState({ likeInProgress: false });
-      });
-  }
 
   composePostsHistory = (resolveGetPostsPromise) => {
     const { posts } = this.state;
@@ -298,10 +279,14 @@ class SpacePage extends Component {
   }
 
   render() {
-    const { authUser, isLoading } = this.props;
+    const {
+      alertSetAction,
+      authUser,
+      firebase,
+      isLoading,
+    } = this.props;
 
     const {
-      likeInProgress,
       posts,
       postsHistory,
       postsLimit,
@@ -355,11 +340,7 @@ class SpacePage extends Component {
                             <StyledPostsHistoryLink
                               key={post.createdAt}
                               to={{
-                                pathname: `
-                                  ${ROUTES.SPACE_BASE}/
-                                  ${spacebox.slug}/
-                                  ${post.slug}
-                                `,
+                                pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
                                 state: {
                                   spacebox,
                                   user,
@@ -400,13 +381,11 @@ class SpacePage extends Component {
                 <div>
                   {posts.slice(0, postsLimit).map((post, index) => (
                     <Post
+                      alertSetAction={alertSetAction}
                       authUser={authUser}
+                      firebase={firebase}
                       key={post.createdAt}
                       lastPost={posts.length === (index + 1)}
-                      likeInProgress={likeInProgress}
-                      onLikeHeartIconClickHandler={
-                        () => this.handleLikeHeartIconClick(post)
-                      }
                       page="space"
                       post={post}
                       spacebox={spacebox}
