@@ -69,6 +69,12 @@ const StyledNoPostsWrapper = styled.div`
   text-align: center;
 `;
 
+const StyledPostsWrapper = styled.div`
+  div:last-child {
+    margin-bottom: 0;
+  }
+`;
+
 class SpacePage extends Component {
   constructor(props) {
     super(props);
@@ -123,6 +129,7 @@ class SpacePage extends Component {
 
     this.componentIsMounted = false;
     (firebase.db.collection('posts').onSnapshot(() => {}));
+    (firebase.db.collection('comments').onSnapshot(() => {}));
     window.removeEventListener('scroll', this.getMorePostsIfScrollIsAtTheEnd);
   }
 
@@ -240,10 +247,8 @@ class SpacePage extends Component {
       })
     ));
 
-    this.setState(
-      { postsHistory: postsOrderedByYearAndMonth },
-      () => resolveGetPostsPromise(),
-    );
+    this.setState({ postsHistory: postsOrderedByYearAndMonth });
+    resolveGetPostsPromise();
   };
 
   getMorePostsIfScrollIsAtTheEnd = () => {
@@ -378,21 +383,20 @@ class SpacePage extends Component {
 
             {posts && posts.length > 0
               ? (
-                <div>
-                  {posts.slice(0, postsLimit).map((post, index) => (
+                <StyledPostsWrapper>
+                  {posts.slice(0, postsLimit).map(post => (
                     <Post
                       alertSetAction={alertSetAction}
                       authUser={authUser}
                       firebase={firebase}
                       key={post.createdAt}
-                      lastPost={posts.length === (index + 1)}
                       page="space"
                       post={post}
                       spacebox={spacebox}
                       user={user}
                     />
                   ))}
-                </div>
+                </StyledPostsWrapper>
               ) : (
                 <Box fullWidth margin="0">
                   <StyledNoPostsWrapper>

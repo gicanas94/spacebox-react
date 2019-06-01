@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -31,12 +32,17 @@ const StyledGrid = styled.div`
   }
 `;
 
+const StyledPostsWrapper = styled.div`
+  div:last-child {
+    margin-bottom: 0 !important;
+  }
+`;
+
 class PostPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      comments: null,
       post: null,
       spacebox: null,
       user: null,
@@ -61,10 +67,7 @@ class PostPage extends Component {
         }, () => {
           loadingSetAction(true);
 
-          Promise.all([
-            this.getPost(location.state.spacebox.slug, match.params.postSlug),
-            this.getComments(location.state.spacebox.slug, match.params.postSlug),
-          ])
+          this.getPost(location.state.spacebox.slug, match.params.postSlug)
             .then(() => loadingSetAction(false))
             .catch((error) => {
               alertSetAction({
@@ -86,6 +89,7 @@ class PostPage extends Component {
 
     this.componentIsMounted = false;
     (firebase.db.collection('posts').onSnapshot(() => {}));
+    (firebase.db.collection('comments').onSnapshot(() => {}));
   }
 
   getSpacebox = (spaceboxSlug, postSlug) => {
@@ -107,7 +111,6 @@ class PostPage extends Component {
               Promise.all([
                 this.getUser(document.data().uid),
                 this.getPost(spaceboxSlug, postSlug),
-                this.getComments(spaceboxSlug, postSlug),
               ])
                 .then(() => loadingSetAction(false))
                 .catch((error) => {
@@ -171,21 +174,6 @@ class PostPage extends Component {
     });
   };
 
-  getComments = (spaceboxSlug, postSlug) => {
-    const { firebase } = this.props;
-
-    firebase.getComments(postSlug, spaceboxSlug).orderBy('createdAt').get()
-      .then((documents) => {
-        const receivedComments = [];
-
-        documents.forEach(
-          document => receivedComments.push(document.data()),
-        );
-
-        this.setState({ comments: receivedComments });
-      });
-  }
-
   render() {
     const {
       alertSetAction,
@@ -194,12 +182,7 @@ class PostPage extends Component {
       isLoading,
     } = this.props;
 
-    const {
-      comments,
-      post,
-      spacebox,
-      user,
-    } = this.state;
+    const { post, spacebox, user } = this.state;
 
     return (
       <Fragment>
@@ -217,17 +200,17 @@ class PostPage extends Component {
               />
             )}
 
-            <Post
-              alertSetAction={alertSetAction}
-              authUser={authUser}
-              comments={comments}
-              firebase={firebase}
-              lastPost
-              page="post"
-              post={post}
-              spacebox={spacebox}
-              user={user}
-            />
+            <StyledPostsWrapper>
+              <Post
+                alertSetAction={alertSetAction}
+                authUser={authUser}
+                firebase={firebase}
+                page="post"
+                post={post}
+                spacebox={spacebox}
+                user={user}
+              />
+            </StyledPostsWrapper>
           </StyledGrid>
         )}
       </Fragment>

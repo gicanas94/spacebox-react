@@ -74,22 +74,6 @@ class Firebase {
   });
 
   // ---------------------------------------------------------------------------
-  // Comment API ---------------------------------------------------------------
-  // ---------------------------------------------------------------------------
-  createComment = (comment, sid, pid) => (
-    this.getSpacebox(sid)
-      .collection('posts')
-      .doc(pid)
-      .collection('comments')
-      .doc(comment.slug)
-      .set(comment)
-  )
-
-  getComments = (sid, pid) => (
-    this.getSpacebox(sid).collection('posts').doc(pid).collection('comments')
-  )
-
-  // ---------------------------------------------------------------------------
   // Spacebox API --------------------------------------------------------------
   // ---------------------------------------------------------------------------
   createSpacebox = spacebox => (

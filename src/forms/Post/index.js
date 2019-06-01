@@ -70,6 +70,7 @@ class PostForm extends Component {
 
     firebase.createPost(
       {
+        comments: [],
         content,
         createdAt: moment().valueOf(),
         likes: [],

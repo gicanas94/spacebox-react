@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { CommentAlt } from 'styled-icons/fa-solid/CommentAlt';
 import { Heart } from 'styled-icons/fa-solid/Heart';
 import { Link } from 'react-router-dom';
@@ -7,6 +8,7 @@ import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 
 import Box from '../Box';
+import Comment from './Comment';
 import CommentForm from '../../forms/Comment';
 import { device, transition } from '../../styles';
 import { ROUTES } from '../../constants';
@@ -15,15 +17,12 @@ import Tooltip from '../Tooltip';
 const StyledBox = styled(Box)`
   margin: 0;
   margin-bottom: 10px;
+  padding: 20px;
   width: 100%;
 
   @media ${device.laptop} {
     margin-bottom: 20px;
   }
-
-  ${({ lastPost }) => lastPost && `
-    margin-bottom: 0 !important;
-  `}
 `;
 
 const StyledTitleAndDateWrapper = styled.div`
@@ -98,6 +97,29 @@ const StyledCommentFormWrapper = styled.div`
   margin-top: 25px;
 `;
 
+const StyledCommentsWrapper = styled.div`
+  margin-top: 25px;
+
+  div:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const StyledSeeMoreCommentsSpan = styled.span`
+  color: ${({ theme }) => theme.components.Comment.seeMoreComments.color};
+  cursor: pointer
+  font-size: ${({ theme }) => (
+    theme.components.Comment.seeMoreComments.fontSize
+  )};
+  font-weight: ${({ theme }) => (
+    theme.components.Comment.seeMoreComments.fontWeight
+  )};
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 class Post extends Component {
   constructor(props) {
     super(props);
@@ -105,22 +127,23 @@ class Post extends Component {
     const { post } = this.props;
 
     this.state = {
+      commentsLimit: 3,
       commentFormIsVisible: false,
-      createdAt: moment(post.createdAt).fromNow(),
       likeInProgress: false,
+      postCreatedAt: moment(post.createdAt).fromNow(),
       userIsLikingOrDisliking: null,
     };
   }
 
   componentDidMount() {
-    this.updateCreatedAtDateInterval = setInterval(
-      this.updateCreatedAtDate,
+    this.updatePostCreatedAtDateInterval = setInterval(
+      this.updatePostCreatedAtDate,
       60000,
     );
   }
 
   componentWillUnmount() {
-    clearInterval(this.updateCreatedAtDateInterval);
+    clearInterval(this.updatePostCreatedAtDateInterval);
   }
 
   handleLikeHeartIconClick = (likedPost) => {
@@ -170,6 +193,10 @@ class Post extends Component {
     );
   };
 
+  handleSeeMoreCommentsClick = () => (
+    this.setState(prevState => ({ commentsLimit: prevState.commentsLimit + 3 }))
+  )
+
   setCommentFormIsVisibleState = (state) => {
     const { post } = this.props;
 
@@ -179,16 +206,15 @@ class Post extends Component {
     );
   };
 
-  updateCreatedAtDate = () => {
+  updatePostCreatedAtDate = () => {
     const { post } = this.props;
 
-    this.setState({ createdAt: moment(post.createdAt).fromNow() });
+    this.setState({ postCreatedAt: moment(post.createdAt).fromNow() });
   }
 
   render() {
     const {
       authUser,
-      lastPost,
       page,
       post,
       spacebox,
@@ -196,9 +222,10 @@ class Post extends Component {
     } = this.props;
 
     const {
+      commentsLimit,
       commentFormIsVisible,
-      createdAt,
       likeInProgress,
+      postCreatedAt,
       userIsLikingOrDisliking,
     } = this.state;
 
@@ -237,7 +264,7 @@ class Post extends Component {
     );
 
     return (
-      <StyledBox lastPost={lastPost}>
+      <StyledBox>
         <StyledTitleAndDateWrapper>
           {page === 'space' && (
             <Link to={{
@@ -258,7 +285,7 @@ class Post extends Component {
             data-for={post.createdAt.toString()}
             data-tip={moment(post.createdAt).format('dddd, MMMM Do YYYY, kk:mm')}
           >
-            {createdAt}
+            {postCreatedAt}
           </StyledDate>
         </StyledTitleAndDateWrapper>
 
@@ -293,10 +320,28 @@ class Post extends Component {
           <StyledCommentFormWrapper>
             <CommentForm
               postSlug={post.slug}
-              uid={authUser.uid}
               sid={post.sid}
+              user={{ username: authUser.username, uid: authUser.uid }}
             />
           </StyledCommentFormWrapper>
+        )}
+
+        {post.comments && post.comments.length > 0 && (
+          <StyledCommentsWrapper>
+            {_.orderBy(post.comments, 'createdAt', 'desc')
+              .slice(0, commentsLimit).map(comment => (
+                <Comment comment={comment} key={comment.slug} />
+              ))
+            }
+
+            {post.comments.length > commentsLimit && (
+              <StyledSeeMoreCommentsSpan
+                onClick={() => this.handleSeeMoreCommentsClick()}
+              >
+                {'See more comments...'}
+              </StyledSeeMoreCommentsSpan>
+            )}
+          </StyledCommentsWrapper>
         )}
 
         <Tooltip effect="solid" id={post.createdAt.toString()} place="left" />
@@ -325,17 +370,14 @@ Post.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.objectOf(PropTypes.any),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  lastPost: PropTypes.bool.isRequired,
   page: PropTypes.oneOf(['space', 'post']).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
-  spacebox: PropTypes.objectOf(PropTypes.any),
-  user: PropTypes.objectOf(PropTypes.any),
+  spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 Post.defaultProps = {
   authUser: null,
-  spacebox: null,
-  user: null,
 };
 
 export default Post;

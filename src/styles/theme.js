@@ -62,6 +62,25 @@ export default {
     ColorInput: {
       fontSize: font.size.xs,
     },
+    Comment: {
+      borderWidth: '2px',
+      content: {
+        fontSize: font.size.xs,
+      },
+      date: {
+        color: color.palette.mink,
+        fontSize: font.size.xs,
+      },
+      seeMoreComments: {
+        color: themeMainColor,
+        fontSize: font.size.xs,
+        fontWeight: font.weight.medium,
+      },
+      username: {
+        fontSize: font.size.xs,
+        fontWeight: font.weight.medium,
+      },
+    },
     Header: {
       maxWidth: '1280px',
       mobileWidth: '100%',

@@ -11,11 +11,11 @@ import styled from 'styled-components';
 
 import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
-import { transition } from '../../styles';
+import { color, transition } from '../../styles';
 import { withFirebase } from '../../Firebase';
 
 const CommentFormSchema = Yup.object().shape({
-  comment: Yup.string().required(),
+  content: Yup.string().required(),
 });
 
 const StyledWrapper = styled.div`
@@ -75,24 +75,32 @@ class CommentForm extends Component {
       firebase,
       postSlug,
       sid,
-      uid,
+      user,
     } = this.props;
 
-    const { comment } = values;
+    const { content } = values;
+
+    const postRef = firebase.getPost(sid, postSlug);
 
     alertSetAction(null);
     actions.setSubmitting(true);
 
-    firebase.createComment(
-      {
-        comment,
-        createdAt: moment().valueOf(),
-        slug: `${_.kebabCase(comment)}-${Math.floor(Math.random() * 10000)}`,
-        uid,
-      },
-      sid,
-      postSlug,
-    )
+    postRef.get()
+      .then((document) => {
+        const postComments = document.data().comments;
+
+        postComments.push({
+          bgColor: color.specific.commentBgColor[
+            Math.floor(Math.random() * color.specific.commentBgColor.length)
+          ],
+          content,
+          createdAt: moment().valueOf(),
+          slug: `${_.kebabCase(content)}-${Math.floor(Math.random() * 10000)}`,
+          user,
+        });
+
+        postRef.update({ comments: postComments });
+      })
       .then(() => actions.resetForm())
       .catch(error => (
         alertSetAction({
@@ -109,7 +117,7 @@ class CommentForm extends Component {
 
     return (
       <Formik
-        initialValues={{ comment: '' }}
+        initialValues={{ content: '' }}
         onSubmit={this.handleSubmit}
         validationSchema={CommentFormSchema}
         render={({
@@ -123,11 +131,11 @@ class CommentForm extends Component {
               <StyledTextarea
                 disabled={isSubmitting}
                 id={postSlug}
-                name="comment"
+                name="content"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 placeholder="Make a comment..."
-                value={values.comment}
+                value={values.content}
               />
 
               <Button
@@ -152,7 +160,7 @@ CommentForm.propTypes = {
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   postSlug: PropTypes.string.isRequired,
   sid: PropTypes.string.isRequired,
-  uid: PropTypes.string.isRequired,
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapDispatchToProps = { alertSetAction: alertSet };
