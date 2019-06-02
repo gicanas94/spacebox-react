@@ -28,6 +28,11 @@ const StyledBox = styled(Box)`
 const StyledTitleAndDateWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 25px;
+`;
+
+const StyledTitle = styled.h3`
+  margin-bottom: 0;
 `;
 
 const StyledContent = styled.p`
@@ -61,8 +66,18 @@ const StyledLongDate = styled.span`
   )};
 `;
 
-const StyledActionsWrapper = styled.div`
+const StyledActionsAndStatsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StyledActions = styled.div`
   user-select: none;
+`;
+
+const StyledStats = styled.div`
+  color: ${({ theme }) => theme.components.Post.stats.color};
+  font-size: ${({ theme }) => theme.components.Post.stats.fontSize};
 `;
 
 const StyledLikeHeartIcon = styled(Heart)`
@@ -213,6 +228,32 @@ class Post extends Component {
     this.setState(prevState => ({ commentsLimit: prevState.commentsLimit + 3 }))
   )
 
+  composeLikesAndCommentsString = (likesCount, commentsCount) => {
+    const likesString = () => {
+      switch (likesCount) {
+        case 0:
+          return 'No likes';
+        case 1:
+          return '1 like';
+        default:
+          return `${likesCount} likes`;
+      }
+    };
+
+    const commentsString = () => {
+      switch (commentsCount) {
+        case 0:
+          return 'No comments';
+        case 1:
+          return '1 comment';
+        default:
+          return `${commentsCount} comments`;
+      }
+    };
+
+    return `${likesString()} - ${commentsString()}`;
+  }
+
   setCommentFormIsVisibleState = (state) => {
     const { post } = this.props;
 
@@ -291,11 +332,11 @@ class Post extends Component {
               },
             }}
             >
-              <h3>{post.title}</h3>
+              <StyledTitle>{post.title}</StyledTitle>
             </Link>
           )}
 
-          {page === 'post' && <h3>{post.title}</h3>}
+          {page === 'post' && <StyledTitle>{post.title}</StyledTitle>}
 
           <StyledCreatedAtDate>
             <StyledDateFromNow>{createdAt}</StyledDateFromNow>
@@ -310,28 +351,37 @@ class Post extends Component {
           {post.content}
         </StyledContent>
 
-        <StyledActionsWrapper>
-          {!authUser && (
-            <Fragment>
-              <Link to={ROUTES.SIGN_IN}>{likeHeartIcon}</Link>
-              <Link to={ROUTES.SIGN_IN}>{commentIcon}</Link>
-            </Fragment>
-          )}
+        <StyledActionsAndStatsWrapper>
+          <StyledActions>
+            {!authUser && (
+              <Fragment>
+                <Link to={ROUTES.SIGN_IN}>{likeHeartIcon}</Link>
+                <Link to={ROUTES.SIGN_IN}>{commentIcon}</Link>
+              </Fragment>
+            )}
 
-          {authUser && !authUser.emailVerified && (
-            <Fragment>
-              <Link to={ROUTES.VERIFY_EMAIL}>{likeHeartIcon}</Link>
-              <Link to={ROUTES.VERIFY_EMAIL}>{commentIcon}</Link>
-            </Fragment>
-          )}
+            {authUser && !authUser.emailVerified && (
+              <Fragment>
+                <Link to={ROUTES.VERIFY_EMAIL}>{likeHeartIcon}</Link>
+                <Link to={ROUTES.VERIFY_EMAIL}>{commentIcon}</Link>
+              </Fragment>
+            )}
 
-          {authUser && authUser.emailVerified && (
-            <Fragment>
-              {likeHeartIcon}
-              {commentIcon}
-            </Fragment>
-          )}
-        </StyledActionsWrapper>
+            {authUser && authUser.emailVerified && (
+              <Fragment>
+                {likeHeartIcon}
+                {commentIcon}
+              </Fragment>
+            )}
+          </StyledActions>
+
+          <StyledStats>
+            {this.composeLikesAndCommentsString(
+              post.likes.length,
+              post.comments.length,
+            )}
+          </StyledStats>
+        </StyledActionsAndStatsWrapper>
 
         {authUser && authUser.emailVerified && commentFormIsVisible && (
           <StyledCommentFormWrapper>
@@ -355,7 +405,7 @@ class Post extends Component {
               <StyledSeeMoreCommentsSpan
                 onClick={() => this.handleSeeMoreCommentsClick()}
               >
-                {'See more comments...'}
+                {`See more comments (${post.comments.length - commentsLimit})...`}
               </StyledSeeMoreCommentsSpan>
             )}
           </StyledCommentsWrapper>

@@ -134,6 +134,10 @@ export default {
         likeColor: heartColor,
         noLikeColor: themeMainGreyColor,
       },
+      stats: {
+        color: themeSecondaryGreyColor,
+        fontSize: font.size.xs,
+      },
     },
     SearchBar: {
       bgColor: color.palette.cloud,
