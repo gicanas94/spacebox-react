@@ -45,6 +45,7 @@ const StyledTextarea = styled.textarea`
 
   ${({ disabled, theme }) => disabled && `
     border-color: ${theme.forms.Comment.textarea.color.disabled} !important;
+    color: ${theme.forms.Comment.textarea.color.disabled} !important;
 
     ::placeholder {
       color: ${theme.forms.Comment.textarea.color.disabled} !important;
@@ -110,6 +111,7 @@ class CommentForm extends Component {
       ));
 
     actions.setSubmitting(false);
+    autosize.destroy(document.querySelectorAll('textarea'));
   };
 
   render() {

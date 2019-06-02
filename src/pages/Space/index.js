@@ -54,14 +54,14 @@ const StyledPostsHistoryYear = styled.div`
 const StyledPostsHistoryMonth = styled.div`
   font-size: ${({ theme }) => theme.pages.Space.postsHistory.month.fontSize};
   font-weight: ${({ theme }) => theme.pages.Space.postsHistory.month.fontWeight};
-  margin-left: 7px;
+  margin-left: 10px;
   margin-top: 5px;
 `;
 
 const StyledPostsHistoryLink = styled(Link)`
   font-size: ${({ theme }) => theme.pages.Space.postsHistory.link.fontSize};
   display: block;
-  margin-left: 15px;
+  margin-left: 20px;
   margin-top: 10px;
 `;
 

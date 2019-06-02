@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';

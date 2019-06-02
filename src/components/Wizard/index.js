@@ -71,7 +71,7 @@ class Wizard extends Component {
             <StyledButtonsWrapper>
               {page > 0 && (
                 <Button
-                  color="lava"
+                  color="abalone"
                   onClick={this.previousStep}
                   margin="0 25px 0 0"
                   rounded

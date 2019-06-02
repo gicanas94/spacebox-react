@@ -34,14 +34,31 @@ const StyledContent = styled.p`
   white-space: pre-wrap;
 `;
 
-const StyledDate = styled.div`
-  color: ${({ theme }) => theme.components.Post.createdAtDate.color};
-  cursor: help;
-  font-size: ${({ theme }) => theme.components.Post.createdAtDate.fontSize};
-  font-weight: ${({ theme }) => theme.components.Post.createdAtDate.fontWeight};
-  height: fit-content;
+const StyledCreatedAtDate = styled.div`
+  display: flex;
+  flex-direction: column;
   text-align: right;
-  z-index: 1;
+`;
+
+const StyledDateFromNow = styled.span`
+  color: ${({ theme }) => (
+    theme.components.Post.createdAtDate.dateFromNow.color
+  )};
+  font-size: ${({ theme }) => (
+    theme.components.Post.createdAtDate.dateFromNow.fontSize
+  )};
+  font-weight: ${({ theme }) => (
+    theme.components.Post.createdAtDate.dateFromNow.fontWeight
+  )};
+`;
+
+const StyledLongDate = styled.span`
+  color: ${({ theme }) => (
+    theme.components.Post.createdAtDate.longDate.color
+  )};
+  font-size: ${({ theme }) => (
+    theme.components.Post.createdAtDate.longDate.fontSize
+  )};
 `;
 
 const StyledActionsWrapper = styled.div`
@@ -50,8 +67,8 @@ const StyledActionsWrapper = styled.div`
 
 const StyledLikeHeartIcon = styled(Heart)`
   cursor: pointer;
-  margin-right: 20px;
-  width: 33px;
+  margin-right: 15px;
+  width: 30px;
 
   ${({ authUserLike, theme }) => authUserLike && `
     color: ${theme.components.Post.likeHeartIcon.likeColor};
@@ -79,12 +96,11 @@ const StyledLikeHeartIcon = styled(Heart)`
 `;
 
 const StyledCommentIcon = styled(CommentAlt)`
-  color: ${({ theme }) => theme.components.Post.commentIcon.disabledColor};
+  color: ${({ theme }) => theme.components.Post.commentIcon.color};
   cursor: pointer;
-  width: 30px;
+  width: 28px;
 
-  ${({ disabled, theme }) => !disabled && `
-    color: ${theme.components.Post.commentIcon.enabledColor};
+  ${({ disabled }) => !disabled && `
     transition: transform ${transition.speed.superfast} linear;
 
     &:active {
@@ -130,20 +146,20 @@ class Post extends Component {
       commentsLimit: 3,
       commentFormIsVisible: false,
       likeInProgress: false,
-      postCreatedAt: moment(post.createdAt).fromNow(),
+      createdAt: moment(post.createdAt).fromNow(),
       userIsLikingOrDisliking: null,
     };
   }
 
   componentDidMount() {
-    this.updatePostCreatedAtDateInterval = setInterval(
-      this.updatePostCreatedAtDate,
+    this.updatecreatedAtDateInterval = setInterval(
+      this.updatecreatedAtDate,
       60000,
     );
   }
 
   componentWillUnmount() {
-    clearInterval(this.updatePostCreatedAtDateInterval);
+    clearInterval(this.updatecreatedAtDateInterval);
   }
 
   handleLikeHeartIconClick = (likedPost) => {
@@ -206,10 +222,10 @@ class Post extends Component {
     );
   };
 
-  updatePostCreatedAtDate = () => {
+  updatecreatedAtDate = () => {
     const { post } = this.props;
 
-    this.setState({ postCreatedAt: moment(post.createdAt).fromNow() });
+    this.setState({ createdAt: moment(post.createdAt).fromNow() });
   }
 
   render() {
@@ -225,7 +241,7 @@ class Post extends Component {
       commentsLimit,
       commentFormIsVisible,
       likeInProgress,
-      postCreatedAt,
+      createdAt,
       userIsLikingOrDisliking,
     } = this.state;
 
@@ -281,12 +297,13 @@ class Post extends Component {
 
           {page === 'post' && <h3>{post.title}</h3>}
 
-          <StyledDate
-            data-for={post.createdAt.toString()}
-            data-tip={moment(post.createdAt).format('dddd, MMMM Do YYYY, kk:mm')}
-          >
-            {postCreatedAt}
-          </StyledDate>
+          <StyledCreatedAtDate>
+            <StyledDateFromNow>{createdAt}</StyledDateFromNow>
+
+            <StyledLongDate>
+              {moment(post.createdAt).format('DD/MM/YY - kk:mm')}
+            </StyledLongDate>
+          </StyledCreatedAtDate>
         </StyledTitleAndDateWrapper>
 
         <StyledContent>
@@ -343,8 +360,6 @@ class Post extends Component {
             )}
           </StyledCommentsWrapper>
         )}
-
-        <Tooltip effect="solid" id={post.createdAt.toString()} place="left" />
 
         {(!authUser || !authUser.emailVerified) && (
           <Fragment>

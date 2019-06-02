@@ -1,6 +1,7 @@
 import { Cross } from 'styled-icons/icomoon/Cross';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Menu } from 'styled-icons/boxicons-regular/Menu';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -140,7 +141,7 @@ const StyledLaptopViewNav = styled.nav`
   }
 `;
 
-const Header = () => {
+const Header = ({ history }) => {
   const [mobileNavIsOpen, setMobileNavIsOpen] = useState(false);
 
   return (
@@ -155,7 +156,7 @@ const Header = () => {
               <img alt="Spacebox logo" src={smallLogo} />
             </StyledSmallLogoLink>
 
-            <SearchBar />
+            {history.location.pathname === '/' && <SearchBar />}
           </StyledSpan>
 
           {mobileNavIsOpen
@@ -181,7 +182,7 @@ const Header = () => {
           <StyledLaptopViewNav>
             <Links onLinkClickHandler={setMobileNavIsOpen} />
 
-            <SearchBar rounded />
+            {history.location.pathname === '/' && <SearchBar rounded />}
           </StyledLaptopViewNav>
         </StyledLaptopView>
       </StyledHeader>
@@ -189,4 +190,8 @@ const Header = () => {
   );
 };
 
-export default Header;
+Header.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+export default withRouter(Header);

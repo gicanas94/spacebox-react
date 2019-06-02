@@ -37,6 +37,7 @@ const StyledTextarea = styled.textarea`
   }
 
   ${({ disabled, theme }) => disabled && `
+    color: ${theme.components.Input.color.disabled} !important;
     border-color: ${theme.components.Input.color.disabled} !important;
 
     ::placeholder {

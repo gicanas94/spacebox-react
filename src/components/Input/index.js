@@ -37,6 +37,7 @@ const StyledInput = styled.input`
   }
 
   ${({ disabled, theme }) => disabled && `
+    color: ${theme.components.Input.color.disabled} !important;
     border-color: ${theme.components.Input.color.disabled} !important;
 
     ::placeholder {

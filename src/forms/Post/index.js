@@ -184,7 +184,7 @@ class PostForm extends Component {
 
                     <StyledButtonsWrapper>
                       <Button
-                        color="lava"
+                        color="abalone"
                         disabled={isSubmitting}
                         onClick={() => this.closeForm()}
                         rounded

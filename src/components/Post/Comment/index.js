@@ -26,11 +26,11 @@ const StyledWrapper = styled.div`
 
 const StyledComment = styled.div`
   background-color: ${({ bgColor }) => bgColor};
+  border: 0;
+  border-bottom-width: ${({ theme }) => theme.components.Comment.borderWidth};
   border-color: ${({ bgColor }) => Color(bgColor).darken(0.2).hex()};
-  border-right: 0;
+  border-left-width: ${({ theme }) => theme.components.Comment.borderWidth};
   border-style: solid;
-  border-top: 0;
-  border-width: ${({ theme }) => theme.components.Comment.borderWidth};
   margin: 0;
   padding: 8px;
 `;
@@ -49,10 +49,10 @@ const StyledUsername = styled(Link)`
   margin-right: 10px;
 `;
 
-const StyledDate = styled.div`
+const StyledCreatedAtDate = styled.div`
   display: flex;
-  color: ${({ theme }) => theme.components.Comment.date.color};
-  font-size: ${({ theme }) => theme.components.Comment.date.fontSize};
+  color: ${({ theme }) => theme.components.Comment.createdAtDate.color};
+  font-size: ${({ theme }) => theme.components.Comment.createdAtDate.fontSize};
   justify-content: space-between;
   padding-left: 4px;
   padding-top: 4px;
@@ -87,13 +87,13 @@ const Comment = ({ comment }) => (
       </StyledP>
     </StyledComment>
 
-    <StyledDate>
+    <StyledCreatedAtDate>
       <span>{moment(comment.createdAt).fromNow()}</span>
 
       <StyledLongDate>
         {moment(comment.createdAt).format('DD/MM/YY - kk:mm')}
       </StyledLongDate>
-    </StyledDate>
+    </StyledCreatedAtDate>
   </StyledWrapper>
 );
 

@@ -5,6 +5,9 @@ import { color, font } from '.';
 const heartColor = color.palette.ferrari;
 const textColor = color.palette.anchor;
 const themeMainColor = color.palette.mulberry;
+const themeDisabledColor = color.palette.pearlRiver;
+const themeMainGreyColor = color.palette.harborGray;
+const themeSecondaryGreyColor = color.palette.lava;
 
 export default {
   components: {
@@ -37,7 +40,7 @@ export default {
       laptopWidth: '80%',
     },
     Box: {
-      arrowColor: color.palette.harborGray,
+      arrowColor: themeMainGreyColor,
       borderWidth: '1px',
       defaultBgColor: color.palette.white,
     },
@@ -45,7 +48,7 @@ export default {
       borderWidth: '2px',
       color: {
         default: themeMainColor,
-        disabled: color.palette.pearlRiver,
+        disabled: themeDisabledColor,
       },
       fontWeight: font.weight.bold,
     },
@@ -53,9 +56,9 @@ export default {
       borderWidth: '2px',
       color: {
         checked: themeMainColor,
-        disabled: color.palette.pearlRiver,
+        disabled: themeDisabledColor,
         error: color.palette.chili,
-        unchecked: color.palette.lava,
+        unchecked: themeSecondaryGreyColor,
       },
       fontSize: font.size.xs,
     },
@@ -64,12 +67,9 @@ export default {
     },
     Comment: {
       borderWidth: '2px',
-      content: {
-        fontSize: font.size.xs,
-      },
-      date: {
-        color: color.palette.mink,
-        fontSize: font.size.xs,
+      createdAtDate: {
+        color: themeSecondaryGreyColor,
+        fontSize: font.size.xxs,
       },
       seeMoreComments: {
         color: themeMainColor,
@@ -97,8 +97,8 @@ export default {
     Input: {
       borderWidth: '2px',
       color: {
-        default: color.palette.lava,
-        disabled: color.palette.pearlRiver,
+        default: themeSecondaryGreyColor,
+        disabled: themeDisabledColor,
         error: color.palette.chili,
         success: color.palette.green,
       },
@@ -117,31 +117,36 @@ export default {
     },
     Post: {
       commentIcon: {
-        disabledColor: color.palette.harborGray,
-        enabledColor: color.palette.harborGray,
+        color: themeMainGreyColor,
       },
       createdAtDate: {
-        color: themeMainColor,
-        fontSize: font.size.xs,
-        fontWeight: font.weight.bold,
+        dateFromNow: {
+          color: themeMainColor,
+          fontSize: font.size.xs,
+          fontWeight: font.weight.bold,
+        },
+        longDate: {
+          color: themeSecondaryGreyColor,
+          fontSize: font.size.xxs,
+        },
       },
       likeHeartIcon: {
         likeColor: heartColor,
-        noLikeColor: color.palette.harborGray,
+        noLikeColor: themeMainGreyColor,
       },
     },
     SearchBar: {
       bgColor: color.palette.cloud,
       border: `2px solid ${themeMainColor}`,
-      color: color.palette.anchor,
+      color: textColor,
       fontSize: font.size.xs,
       searchIconColor: themeMainColor,
     },
     Select: {
       borderWidth: '2px',
       color: {
-        default: color.palette.lava,
-        disabled: color.palette.pearlRiver,
+        default: themeSecondaryGreyColor,
+        disabled: themeDisabledColor,
         error: color.palette.chili,
         success: color.palette.green,
       },
@@ -158,14 +163,14 @@ export default {
       },
       ul: {
         bgColor: color.palette.white,
-        boxShadow: `0 0px 5px 1px ${color.palette.lava}`,
+        boxShadow: `0 0px 5px 1px ${themeSecondaryGreyColor}`,
         scrollBar: {
           thumb: {
-            bgColor: color.palette.lava,
+            bgColor: themeSecondaryGreyColor,
           },
           track: {
             bgColor: color.palette.white,
-            border: `1px solid ${color.palette.lava}`,
+            border: `1px solid ${themeSecondaryGreyColor}`,
           },
         },
       },
@@ -202,8 +207,8 @@ export default {
       },
       informative: {
         bgColor: color.palette.asphalt,
-        border: `3px solid ${color.palette.gold}`,
-        color: color.palette.gold,
+        border: '3px solid transparent',
+        color: color.palette.white,
       },
       title: {
         fontSize: font.size.lm,
@@ -220,8 +225,8 @@ export default {
     Comment: {
       textarea: {
         color: {
-          default: color.palette.lava,
-          disabled: color.palette.pearlRiver,
+          default: themeSecondaryGreyColor,
+          disabled: themeDisabledColor,
           focus: themeMainColor,
         },
         borderWidth: '2px',

@@ -37,6 +37,11 @@ const StyledSimulatedSelect = styled.div`
   `}
 `;
 
+const StyledSelectedOption = styled.span`
+  padding-left: 10px;
+  user-select: none;
+`;
+
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,6 +58,10 @@ const StyledWrapper = styled.div`
     ${StyledSimulatedSelect} {
       border-color: ${theme.components.Select.color.disabled} !important;
       cursor: default;
+    }
+
+    ${StyledSelectedOption} {
+      color: ${theme.components.Select.color.disabled} !important
     }
   `}
 
@@ -85,11 +94,6 @@ const StyledSpan = styled.span`
   height: 45px;
   position: absolute;
   width: 100%;
-`;
-
-const StyledSelectedOption = styled.span`
-  padding-left: 10px;
-  user-select: none;
 `;
 
 const StyledUl = styled.ul`
