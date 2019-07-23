@@ -71,11 +71,6 @@ export default {
         color: themeSecondaryGreyColor,
         fontSize: font.size.xxs,
       },
-      seeMoreComments: {
-        color: themeMainColor,
-        fontSize: font.size.xs,
-        fontWeight: font.weight.medium,
-      },
       username: {
         fontSize: font.size.xs,
         fontWeight: font.weight.medium,
@@ -133,6 +128,11 @@ export default {
       likeHeartIcon: {
         likeColor: heartColor,
         noLikeColor: themeMainGreyColor,
+      },
+      seeOrHideComments: {
+        color: themeMainColor,
+        fontSize: font.size.xs,
+        fontWeight: font.weight.medium,
       },
       stats: {
         color: themeSecondaryGreyColor,

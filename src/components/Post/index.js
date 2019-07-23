@@ -136,14 +136,14 @@ const StyledCommentsWrapper = styled.div`
   }
 `;
 
-const StyledSeeMoreCommentsSpan = styled.span`
-  color: ${({ theme }) => theme.components.Comment.seeMoreComments.color};
+const StyledSeeOrHideCommentsSpan = styled.span`
+  color: ${({ theme }) => theme.components.Post.seeOrHideComments.color};
   cursor: pointer
   font-size: ${({ theme }) => (
-    theme.components.Comment.seeMoreComments.fontSize
+    theme.components.Post.seeOrHideComments.fontSize
   )};
   font-weight: ${({ theme }) => (
-    theme.components.Comment.seeMoreComments.fontWeight
+    theme.components.Post.seeOrHideComments.fontWeight
   )};
 
   &:hover {
@@ -224,9 +224,11 @@ class Post extends Component {
     );
   };
 
-  handleSeeMoreCommentsClick = () => (
+  handleSeeCommentsClick = () => (
     this.setState(prevState => ({ commentsLimit: prevState.commentsLimit + 3 }))
   )
+
+  handleHideCommentsClick = () => this.setState({ commentsLimit: 0 });
 
   composeLikesAndCommentsString = (likesCount, commentsCount) => {
     const likesString = () => {
@@ -402,11 +404,19 @@ class Post extends Component {
             }
 
             {post.comments.length > commentsLimit && (
-              <StyledSeeMoreCommentsSpan
-                onClick={() => this.handleSeeMoreCommentsClick()}
+              <StyledSeeOrHideCommentsSpan
+                onClick={() => this.handleSeeCommentsClick()}
               >
-                {`See more comments (${post.comments.length - commentsLimit})...`}
-              </StyledSeeMoreCommentsSpan>
+                {`See comments (${post.comments.length - commentsLimit})...`}
+              </StyledSeeOrHideCommentsSpan>
+            )}
+
+            {commentsLimit >= post.comments.length && (
+              <StyledSeeOrHideCommentsSpan
+                onClick={() => this.handleHideCommentsClick()}
+              >
+                {'Hide comments...'}
+              </StyledSeeOrHideCommentsSpan>
             )}
           </StyledCommentsWrapper>
         )}
