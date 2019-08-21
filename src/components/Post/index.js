@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { CommentAlt } from 'styled-icons/fa-solid/CommentAlt';
+import { Comments } from 'styled-icons/fa-solid/Comments';
 import { Heart } from 'styled-icons/fa-solid/Heart';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -67,6 +68,7 @@ const StyledLongDate = styled.span`
 `;
 
 const StyledActionsAndStatsWrapper = styled.div`
+  align-items: flex-end;
   display: flex;
   justify-content: space-between;
 `;
@@ -78,6 +80,16 @@ const StyledActions = styled.div`
 const StyledStats = styled.div`
   color: ${({ theme }) => theme.components.Post.stats.color};
   font-size: ${({ theme }) => theme.components.Post.stats.fontSize};
+`;
+
+const StyledLikesStatIcon = styled(Heart)`
+  margin-right: 4px;
+  width: 13px;
+`;
+
+const StyledCommentsStatIcon = styled(Comments)`
+  margin: 0 4px;
+  width: 13px;
 `;
 
 const StyledLikeHeartIcon = styled(Heart)`
@@ -230,32 +242,6 @@ class Post extends Component {
 
   handleHideCommentsClick = () => this.setState({ commentsLimit: 0 });
 
-  composeLikesAndCommentsString = (likesCount, commentsCount) => {
-    const likesString = () => {
-      switch (likesCount) {
-        case 0:
-          return 'No likes';
-        case 1:
-          return '1 like';
-        default:
-          return `${likesCount} likes`;
-      }
-    };
-
-    const commentsString = () => {
-      switch (commentsCount) {
-        case 0:
-          return 'No comments';
-        case 1:
-          return '1 comment';
-        default:
-          return `${commentsCount} comments`;
-      }
-    };
-
-    return `${likesString()} - ${commentsString()}`;
-  }
-
   setCommentFormIsVisibleState = (state) => {
     const { post } = this.props;
 
@@ -378,9 +364,18 @@ class Post extends Component {
           </StyledActions>
 
           <StyledStats>
-            {this.composeLikesAndCommentsString(
-              post.likes.length,
-              post.comments.length,
+            {post.likes.length > 0 && (
+              <Fragment>
+                <StyledLikesStatIcon />
+                {post.likes.length}
+              </Fragment>
+            )}
+
+            {post.comments.length > 0 && (
+              <Fragment>
+                <StyledCommentsStatIcon />
+                {post.comments.length}
+              </Fragment>
             )}
           </StyledStats>
         </StyledActionsAndStatsWrapper>
