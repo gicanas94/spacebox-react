@@ -10,15 +10,15 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
 import { alertSet } from '../../Redux/actions';
-import Button from '../../components/Button';
+// import Button from '../../components/Button';
 import { CATEGORIES, ROUTES } from '../../constants';
 import Checkbox from '../../components/Checkbox';
-import ColorInput from '../../components/ColorInput';
+import ColorPicker from '../../components/ColorPicker';
 import { device } from '../../styles';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
 import Spacebox from '../../components/Spacebox';
-import Tooltip from '../../components/Tooltip';
+// import Tooltip from '../../components/Tooltip';
 import { withFirebase } from '../../Firebase';
 import Wizard from '../../components/Wizard';
 
@@ -33,91 +33,67 @@ const CreateSpaceboxFormSchema = [
   }),
 ];
 
-const StyledSpacebox = styled.div`
-  margin-bottom: 25px;
+const StyledSpacebox = styled.div``;
 
-  @media ${device.mobileL} {
-    margin-bottom: 0;
-    margin-right: 25px;
-    width: 50%;
-  }
+const StyledP1Inputs = styled.div``;
 
-  @media ${device.tablet} {
-    margin-bottom: 25px;
-    margin-right: 0;
-    width: 100%;
-  }
-`;
+const StyledP2n3Inputs = styled.div``;
 
 const StyledPageWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin: auto;
+  max-width: 425px;
 
-  @media ${device.mobileL} {
-    flex-direction: row;
+  ${StyledSpacebox} {
+    margin: 0 auto;
+    margin-bottom: 25px;
+    width: 100%;
 
-    ${StyledSpacebox} {
-      width: 55%;
+    & > div {
+      height: 251.57px;
     }
   }
 
   @media ${device.tablet} {
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+    max-width: 100%;
 
     ${StyledSpacebox} {
-      width: 100%;
+      margin-bottom: 0;
+      margin-right: 25px;
+      width: 50%;
+    }
+
+    ${StyledP1Inputs} {
+      width: 50%;
+    }
+
+    ${StyledP2n3Inputs} {
+      width: 50%;
     }
   }
 `;
 
-const StyledP1Inputs = styled.div`
-  align-items: flex-end;
-  display: flex;
-  justify-content: space-between;
-
-  @media ${device.mobileL} {
-    flex-direction: column;
-    width: 45%;
-  }
-
-  @media ${device.tablet} {
-    flex-direction: row;
-    width: 100%;
-  }
-`;
-
-const StyledP2n3Inputs = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  @media ${device.mobileL} {
-    width: 45%;
-  }
-
-  @media ${device.tablet} {
-    width: 100%;
-  }
-`;
-
-const mixes = [
-  {
-    bgColor: '#5c0c07',
-    color: '#fecebe',
-  },
-  {
-    bgColor: '#06385e',
-    color: '#bddeff',
-  },
-];
+// const mixes = [
+//   {
+//     bgColor: '#5c0c07',
+//     color: '#fecebe',
+//   },
+//   {
+//     bgColor: '#06385e',
+//     color: '#bddeff',
+//   },
+// ];
 
 class CreateSpaceboxForm extends Component {
-  handleMixerClick = (form) => {
-    const randomMix = mixes[Math.floor(Math.random() * mixes.length)];
-
-    form.setFieldValue('bgColor', randomMix.bgColor);
-    form.setFieldValue('color', randomMix.color);
-  }
+  // handleMixerClick = (form) => {
+  //   const randomMix = mixes[Math.floor(Math.random() * mixes.length)];
+  //
+  //   form.setFieldValue('bgColor', randomMix.bgColor);
+  //   form.setFieldValue('color', randomMix.color);
+  // }
 
   handleSubmit = (values, actions) => {
     const {
@@ -173,9 +149,9 @@ class CreateSpaceboxForm extends Component {
     return (
       <Wizard
         initialValues={{
-          bgColor: '#1d85a3',
+          bgColor: 'rgb(64, 191, 163)',
           category: '',
-          color: '#8cdff7',
+          color: 'rgb(25, 44, 77)',
           description: 'Description',
           title: 'Title',
           visible: true,
@@ -184,7 +160,12 @@ class CreateSpaceboxForm extends Component {
         validationSchema={CreateSpaceboxFormSchema}
       >
         <Wizard.Page>
-          <h3>Step 1: colors</h3>
+          <h4>Step 1: colors</h4>
+
+          <p>
+            Background and Text color of the box. We recommend you to choose
+            combination of colors with contrast that are pleasing to the eye.
+          </p>
 
           <StyledPageWrapper>
             <StyledSpacebox>
@@ -204,34 +185,37 @@ class CreateSpaceboxForm extends Component {
 
             <StyledP1Inputs>
               <Field name="bgColor">
-                {({ field, form }) => (
-                  <ColorInput
+                {({ form }) => (
+                  <ColorPicker
+                    color={form.values.bgColor}
                     disabled={form.isSubmitting}
                     label="Background"
+                    margin="0 0 25px 0"
                     name="bgColor"
-                    onBlur={field.onBlur}
-                    onChange={field.onChange}
-                    value={form.values.bgColor}
+                    onChangeHandler={(event) => {
+                      form.setFieldValue('bgColor', event.hex);
+                    }}
                   />
                 )}
               </Field>
 
               <Field name="color">
-                {({ field, form }) => (
-                  <ColorInput
+                {({ form }) => (
+                  <ColorPicker
+                    color={form.values.color}
                     disabled={form.isSubmitting}
                     label="Text"
                     name="color"
-                    onBlur={field.onBlur}
-                    onChange={field.onChange}
-                    value={form.values.color}
+                    onChangeHandler={(event) => {
+                      form.setFieldValue('color', event.hex);
+                    }}
                   />
                 )}
               </Field>
             </StyledP1Inputs>
           </StyledPageWrapper>
 
-          <Field name="autoMix">
+          {/* <Field name="autoMix">
             {({ form }) => (
               <Button
                 color="lime"
@@ -249,11 +233,16 @@ class CreateSpaceboxForm extends Component {
             )}
           </Field>
 
-          <Tooltip delayShow={500} effect="solid" id="auto-mix" place="bottom" />
+          <Tooltip delayShow={500} effect="solid" id="auto-mix" place="bottom" /> */}
         </Wizard.Page>
 
         <Wizard.Page>
-          <h3>Step 2: title and description</h3>
+          <h4>Step 2: title and description</h4>
+
+          <p>
+      	    Keep in mind that if the title or description of your space is too
+            long, it will not be shown completely.
+          </p>
 
           <StyledPageWrapper>
             <StyledSpacebox>
@@ -320,7 +309,13 @@ class CreateSpaceboxForm extends Component {
         </Wizard.Page>
 
         <Wizard.Page>
-          <h3>Step 3: category and visible</h3>
+          <h4>Step 3: category and visible</h4>
+
+          <p>
+          	Choose carefully the category of your Spacebox, since in case you
+            decide that it is visible on the home page, other users will filter
+            by category to quickly find what they want to read.
+          </p>
 
           <StyledPageWrapper>
             <StyledSpacebox>

@@ -65,7 +65,8 @@ const StyledPostsHistoryLink = styled(Link)`
   margin-top: 10px;
 `;
 
-const StyledNoPostsWrapper = styled.div`
+const StyledNoPostsWrapper = styled.p`
+  margin-bottom: 0;
   text-align: center;
 `;
 

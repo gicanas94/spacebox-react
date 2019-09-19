@@ -134,7 +134,7 @@ class PostForm extends Component {
             />
 
             <Box size="small">
-              <h2>New post</h2>
+              <h1>New post</h1>
 
               <Formik
                 initialValues={{

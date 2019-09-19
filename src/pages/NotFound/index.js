@@ -21,6 +21,7 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledContent = styled.p`
+  font-size: ${({ theme }) => theme.pages.NotFound.content.fontSize};
   margin-bottom: 0;
   margin-top: 25px;
 

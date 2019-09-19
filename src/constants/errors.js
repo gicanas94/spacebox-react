@@ -8,5 +8,8 @@ export default {
         social accounts on your personal account page.
       `,
     },
+    WRONG_PASSWORD: {
+      CODE: 'auth/wrong-password',
+    },
   },
 };

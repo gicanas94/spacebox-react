@@ -15,18 +15,9 @@ const StyledButton = styled.button`
   line-height: 1;
   padding: 0 15px;
   position: relative;
-  transition: background-color ${transition.speed.superfast} linear,
-              transform ${transition.speed.superfast} linear;
+  transition: all ${transition.speed.superfast} linear;
   user-select: none;
   width: fit-content;
-
-  &:active {
-    transform: scale(0.97);
-  }
-
-  &:focus {
-    outline: none;
-  }
 
   ${({
     color,
@@ -35,6 +26,14 @@ const StyledButton = styled.button`
     theme,
   }) => !disabled && `
     cursor: pointer;
+
+    &:active {
+      transform: scale(0.97);
+    }
+
+    &:focus {
+      outline: none;
+    }
 
     &:hover {
       ${(styleType === 'bordered' || styleType === 'unbordered') && `

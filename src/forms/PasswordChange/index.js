@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
+import { ERRORS } from '../../constants';
 import Input from '../../components/Input';
 import Hr from '../../components/Hr';
 import { setCookie, getCookie } from '../../utils';
@@ -66,26 +67,33 @@ class PasswordChangeForm extends Component {
             actions.setSubmitting(false);
           });
       })
-      .catch(() => {
-        actions.setStatus({
-          currentPasswordIsWrong: 'Your current password is wrong',
-        });
+      .catch((error) => {
+        if (error.code === ERRORS.FIREBASE.WRONG_PASSWORD.CODE) {
+          actions.setStatus({
+            currentPasswordIsWrong: 'Your current password is wrong',
+          });
 
-        this.setState(
-          prevState => ({
-            currentPasswordAttemps: prevState.currentPasswordAttemps + 1,
-          }),
-          () => {
-            const { currentPasswordAttemps } = this.state;
+          this.setState(
+            prevState => ({
+              currentPasswordAttemps: prevState.currentPasswordAttemps + 1,
+            }),
+            () => {
+              const { currentPasswordAttemps } = this.state;
 
-            if (currentPasswordAttemps === 3) {
-              this.handleReachedMaxCurrentPasswordAttemps(
-                actions,
-                alertSetAction,
-              );
-            }
-          },
-        );
+              if (currentPasswordAttemps === 3) {
+                this.handleReachedMaxCurrentPasswordAttemps(
+                  actions,
+                  alertSetAction,
+                );
+              }
+            },
+          );
+        } else {
+          alertSetAction({
+            text: error.message,
+            type: 'danger',
+          });
+        }
 
         actions.setSubmitting(false);
       });

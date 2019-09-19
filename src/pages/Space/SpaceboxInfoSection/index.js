@@ -34,14 +34,16 @@ const StyledSpaceboxTitle = styled.h1`
   }
 `;
 
-const StyledSpaceboxDescription = styled.p`
+const StyledSpaceboxDescription = styled.h2`
+  color: inherit;
   font-size: ${({ theme }) => (
     theme.pages.Space.SpaceboxInfoSection.spaceboxDescription.fontSize
   )};
+  font-weight: inherit;
   margin-bottom: 15px;
 `;
 
-const StyledSpaceboxCategory = styled.p`
+const StyledSpaceboxCategory = styled.div`
   font-size: ${({ theme }) => (
     theme.pages.Space.SpaceboxInfoSection.spaceboxCategory.fontSize
   )};

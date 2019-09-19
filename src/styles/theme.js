@@ -62,7 +62,9 @@ export default {
       },
       fontSize: font.size.xs,
     },
-    ColorInput: {
+    ColorPicker: {
+      bgColor: color.palette.cloud,
+      border: `1px solid ${Color(color.palette.cloud).darken(0.2).hex()}`,
       fontSize: font.size.xs,
     },
     Comment: {
@@ -221,7 +223,7 @@ export default {
       totalLikesHeartIconColor: heartColor,
     },
     Tooltip: {
-      fontSize: '18px',
+      fontSize: font.size.xs,
       fontWeight: font.weight.regular,
     },
   },
@@ -261,21 +263,38 @@ export default {
     h: {
       color: themeMainColor,
     },
+    h1: {
+      fontSize: font.size.m,
+    },
+    h2: {
+      fontSize: font.size.sm,
+    },
+    h3: {
+      fontSize: font.size.s,
+    },
+    h4: {
+      fontSize: font.size.xs,
+    },
+    h5: {
+      fontSize: font.size.xs,
+    },
+    h6: {
+      fontSize: font.size.xs,
+    },
     input: {
       color: textColor,
+    },
+    p: {
+      fontSize: font.size.xs,
     },
     textarea: {
       color: textColor,
     },
   },
   pages: {
-    CreateSpacebox: {
-      infoText: {
-        fontSize: font.size.xs,
-      },
-    },
     NotFound: {
       content: {
+        fontSize: font.size.sm,
         fontWeight: font.weight.bold,
       },
     },

@@ -13,7 +13,7 @@ const StyledHr = styled.hr`
   border-style: ${({ dashed }) => (dashed ? 'dashed' : 'solid')};
   border-width: ${({ theme }) => theme.components.Hr.borderWidth};
   border-radius: ${({ theme }) => theme.global.borderRadius};
-  display: inline-flex;
+  display: block;
   margin: 0;
   width: 100%;
 

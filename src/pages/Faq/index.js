@@ -9,8 +9,7 @@ import { ROUTES } from '../../constants';
 const FaqPage = () => (
   <Box size="medium">
     <Helmet title="WT#? - Spacebox" />
-
-    <h2>What is this all about?</h2>
+    <h1>What is this all about?</h1>
 
     <p>
       Spacebox is a platform designed for two types of people: those who like

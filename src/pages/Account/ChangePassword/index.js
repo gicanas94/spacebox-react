@@ -7,8 +7,7 @@ import PasswordChangeForm from '../../../forms/PasswordChange';
 const ChangePasswordSubpage = () => (
   <Fragment>
     <Helmet title="Change password - Spacebox" />
-
-    <h2>Change password</h2>
+    <h1>Change password</h1>
 
     <p>
       Complete the following input with your current password, just in

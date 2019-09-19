@@ -50,6 +50,30 @@ const GlobalStyle = createGlobalStyle`
     margin-top: 0;
   }
 
+  h1 {
+    font-size: ${theme.htmlTags.h1.fontSize};
+  }
+
+  h2 {
+    font-size: ${theme.htmlTags.h2.fontSize};
+  }
+
+  h3 {
+    font-size: ${theme.htmlTags.h3.fontSize};
+  }
+
+  h4 {
+    font-size: ${theme.htmlTags.h4.fontSize};
+  }
+
+  h5 {
+    font-size: ${theme.htmlTags.h5.fontSize};
+  }
+
+  h6 {
+    font-size: ${theme.htmlTags.h6.fontSize};
+  }
+
   html {
     height: 100%;
   }
@@ -59,7 +83,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   p {
-    line-height: 1.4;
+    font-size: ${theme.htmlTags.p.fontSize};
+    line-height: 1.5;
     margin-bottom: 25px;
     margin-top: 0;
   }

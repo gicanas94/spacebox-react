@@ -23,8 +23,7 @@ const SignUpPage = ({ authUser }) => (
     : (
       <Box size="medium">
         <Helmet title="Sign up - Spacebox" />
-
-        <h2>Good choice.</h2>
+        <h1>Good choice.</h1>
         <SignUpForm />
       </Box>
     )

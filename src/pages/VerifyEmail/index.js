@@ -70,8 +70,8 @@ class VerifyEmailPage extends Component {
         : (
           <Box size="small">
             <Helmet title="Verify e-mail - Spacebox" />
+            <h1>Verify your e-mail</h1>
 
-            <h2>Verify your e-mail</h2>
             <p>
               {`Please verify the e-mail of your account in
               order to access this page.`}
