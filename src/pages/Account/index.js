@@ -1,6 +1,6 @@
+import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
@@ -34,36 +34,43 @@ const StyledGrid = styled.div`
 `;
 
 const AccountPage = ({ alertSetAction, authUser }) => {
-  const sidebarContent = (
-    [
-      {
-        title: 'Account',
-        links: [
-          {
-            text: 'Change password',
-            to: ROUTES.CHANGE_PASSWORD,
-          },
-          {
-            text: 'Login management',
-            to: ROUTES.LOGIN_MANAGEMENT,
-          },
-        ],
-      },
-    ]
-  );
+  let authUserHasPassword = null;
+
+  const sidebarContent = [
+    {
+      title: 'Account',
+      links: [],
+    },
+  ];
+
+  _.map(authUser.providerData, (provider) => {
+    if (provider.providerId === 'password') {
+      authUserHasPassword = true;
+
+      sidebarContent[0].links.push({
+        text: 'Change password',
+        to: ROUTES.CHANGE_PASSWORD,
+      });
+    }
+  });
+
+  sidebarContent[0].links.push({
+    text: 'Login management',
+    to: ROUTES.LOGIN_MANAGEMENT,
+  });
 
   return (
     <StyledGrid>
-      <Helmet title="Account - Spacebox" />
-
       <Sidebar content={sidebarContent} />
 
-      <Box fullWidth noBorder padding="0">
+      <Box size="small">
         <Switch>
-          <Route
-            component={ChangePasswordSubpage}
-            path={ROUTES.CHANGE_PASSWORD}
-          />
+          {authUserHasPassword && (
+            <Route
+              component={ChangePasswordSubpage}
+              path={ROUTES.CHANGE_PASSWORD}
+            />
+          )}
 
           <Route
             render={() => (

@@ -16,10 +16,8 @@ import Textarea from '../../components/Textarea';
 import { withFirebase } from '../../Firebase';
 
 const PostFormSchema = Yup.object().shape({
-  title: Yup.string()
-    .required('This field is required!'),
-  content: Yup.string()
-    .required('This field is required!'),
+  title: Yup.string().required('This field is required!'),
+  content: Yup.string().required('This field is required!'),
 });
 
 const StyledBackground = styled.div`

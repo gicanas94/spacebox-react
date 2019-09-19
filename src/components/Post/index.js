@@ -80,6 +80,7 @@ const StyledActions = styled.div`
 const StyledStats = styled.div`
   color: ${({ theme }) => theme.components.Post.stats.color};
   font-size: ${({ theme }) => theme.components.Post.stats.fontSize};
+  user-select: none;
 `;
 
 const StyledLikesStatIcon = styled(Heart)`
@@ -221,9 +222,7 @@ class Post extends Component {
             likes: postAlreadyLiked ? spacebox.likes - 1 : spacebox.likes + 1,
           });
         })
-          .then(() => {
-            this.setState({ likeInProgress: false });
-          })
+          .then(() => this.setState({ likeInProgress: false }))
           .catch((error) => {
             alertSetAction({
               text: error.message,

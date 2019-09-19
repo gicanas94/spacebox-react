@@ -19,8 +19,7 @@ const SignInFormSchema = Yup.object().shape({
   email: Yup.string()
     .email('Please check your e-mail')
     .required('This field is required!'),
-  password: Yup.string()
-    .required('This field is required!'),
+  password: Yup.string().required('This field is required!'),
 });
 
 const StyledBottomWrapper = styled.div`

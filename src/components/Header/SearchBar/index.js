@@ -5,7 +5,6 @@ import { SearchAlt } from 'styled-icons/boxicons-regular/SearchAlt';
 import styled from 'styled-components';
 
 import { searchBarChange } from '../../../Redux/actions';
-import Tooltip from '../../Tooltip';
 import { transition } from '../../../styles';
 
 const StyledWrapper = styled.div`
@@ -42,7 +41,7 @@ const StyledSearchIcon = styled(SearchAlt)`
   width: 30px;
 `;
 
-const SearchBar = ({ searchBarChangeAction, ...props }) => {
+const SearchBar = ({ searchBarChangeAction, spaceboxToSearch, ...props }) => {
   let textInput = null;
 
   return (
@@ -50,24 +49,12 @@ const SearchBar = ({ searchBarChangeAction, ...props }) => {
       <StyledSearchIcon onClick={() => textInput.focus()} />
 
       <StyledInput
-        data-for="searchbar"
-        data-tip="Search by name, for example: Best pasta recipes<br>
-          Or by category, for example: Poetry"
         onChange={event => searchBarChangeAction(event.target.value)}
         placeholder="Search"
         ref={(input) => { textInput = input; }}
         type="text"
+        value={spaceboxToSearch}
         {...props}
-      />
-
-      <Tooltip
-        className="search-tooltip"
-        effect="solid"
-        event="focus"
-        eventOff="blur"
-        id="searchbar"
-        multiline
-        place="bottom"
       />
     </StyledWrapper>
   );
@@ -76,12 +63,16 @@ const SearchBar = ({ searchBarChangeAction, ...props }) => {
 SearchBar.propTypes = {
   rounded: PropTypes.bool,
   searchBarChangeAction: PropTypes.func.isRequired,
+  spaceboxToSearch: PropTypes.string,
 };
 
 SearchBar.defaultProps = {
   rounded: false,
+  spaceboxToSearch: '',
 };
+
+const mapStateToProps = state => ({ spaceboxToSearch: state.spaceboxToSearch });
 
 const mapDispatchToProps = { searchBarChangeAction: searchBarChange };
 
-export default connect(null, mapDispatchToProps)(SearchBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

@@ -10,6 +10,7 @@ import { alertSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import Button from '../../components/Button';
 import { ROUTES } from '../../constants';
+import { setCookie, getCookie } from '../../utils';
 import { withFirebase } from '../../Firebase';
 
 const StyledButtonWrapper = styled.div`
@@ -43,6 +44,12 @@ class VerifyEmailPage extends Component {
         });
 
         this.setState({ emailSent: true });
+
+        setCookie(
+          'verificationEmailSentRecently',
+          '',
+          new Date(new Date().getTime() + 5 * 60 * 1000).toGMTString(),
+        );
       })
       .catch(error => (
         alertSetAction({
@@ -78,7 +85,12 @@ class VerifyEmailPage extends Component {
 
             <StyledButtonWrapper>
               <Button
-                disabled={emailSent}
+                disabled={
+                  (
+                    emailSent
+                    || getCookie('verificationEmailSentRecently', false)
+                  )
+                }
                 fullWidth
                 onClick={this.handleClick}
                 rounded

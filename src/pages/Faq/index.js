@@ -33,7 +33,7 @@ const FaqPage = () => (
     <p>
       At the moment of thinking about the idea of creating this page I thought
       it would be longer, but I'm running out of imagination so... I think this
-      is it <Emoji label="face neutral skeptical" symbol="🙄" />
+      is it <Emoji label="Face Neutral Skeptical" symbol="🙄" />
     </p>
 
     <Link to={ROUTES.HOME}>Enjoy!</Link>

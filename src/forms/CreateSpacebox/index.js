@@ -25,14 +25,11 @@ import Wizard from '../../components/Wizard';
 const CreateSpaceboxFormSchema = [
   {},
   Yup.object().shape({
-    title: Yup.string()
-      .required('This field is required!'),
-    description: Yup.string()
-      .required('This field is required!'),
+    title: Yup.string().required('This field is required!'),
+    description: Yup.string().required('This field is required!'),
   }),
   Yup.object().shape({
-    category: Yup.string()
-      .required('This field is required!'),
+    category: Yup.string().required('This field is required!'),
   }),
 ];
 

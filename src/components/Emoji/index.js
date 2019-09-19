@@ -7,7 +7,7 @@ const StyledSpan = styled.span`
 `;
 
 const Emoji = ({ label, fontSize, symbol }) => (
-  <StyledSpan aria-label={label} role="img" fontSize={fontSize}>
+  <StyledSpan aria-label={`*${label} Icon*`} role="img" fontSize={fontSize}>
     {symbol}
   </StyledSpan>
 );

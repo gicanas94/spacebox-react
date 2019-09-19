@@ -29,6 +29,7 @@ class Wizard extends Component {
     const isLastPage = page === Children.count(children) - 1;
 
     if (isLastPage) {
+      actions.setSubmitting(true);
       onSubmit(values, actions);
     } else {
       actions.setTouched({});
@@ -62,7 +63,7 @@ class Wizard extends Component {
         initialValues={values}
         onSubmit={this.handleSubmit}
         validationSchema={validationSchema[page]}
-        render={() => (
+        render={({ isSubmitting }) => (
           <Form>
             {activePage}
 
@@ -96,7 +97,12 @@ class Wizard extends Component {
               )}
 
               {isLastPage && (
-                <Button rounded styleType="bordered" type="submit">
+                <Button
+                  disabled={isSubmitting}
+                  rounded
+                  styleType="bordered"
+                  type="submit"
+                >
                   {'Finish'}
                 </Button>
               )}
