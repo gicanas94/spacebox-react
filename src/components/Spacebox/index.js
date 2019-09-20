@@ -1,4 +1,5 @@
 import Color from 'color';
+import { Edit } from 'styled-icons/boxicons-regular/Edit';
 import { Heart } from 'styled-icons/fa-solid/Heart';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -77,7 +78,6 @@ const StyledDescription = styled.div`
 `;
 
 const StyledBubblesWrapper = styled.div`
-  align-items: space-between;
   display: flex;
   justify-content: space-between;
   padding: 7px;
@@ -98,11 +98,40 @@ const StyledBubble = styled.div`
   padding: 0 5px;
 `;
 
+const StyledLeftBubblesWrapper = styled.div`
+  display: flex;
+
+  & > ${StyledBubble} {
+    margin-right: 7px;
+  }
+
+  & > ${StyledBubble}:last-child {
+    margin-right: 0;
+  }
+`;
+
 const StyledTotalLikesHeartIcon = styled(Heart)`
   color: ${({ theme }) => theme.components.Spacebox.totalLikesHeartIconColor};
-  filter: none !important;
   width: 16px;
   margin-right: 5px;
+`;
+
+const StyledEditSpaceboxIcon = styled(Edit)`
+  width: 20px;
+`;
+
+const StyledEditSpaceboxIconBubble = styled(StyledBubble)`
+  &:hover {
+    ${StyledEditSpaceboxIcon} {
+      transform: scale(1.1);
+    }
+  }
+
+  &:active {
+    ${StyledEditSpaceboxIcon} {
+      transform: scale(0.97);
+    }
+  }
 `;
 
 const StyledSpacebox = styled.div`
@@ -234,12 +263,20 @@ const Spacebox = ({
       {...props}
     >
       <StyledBubblesWrapper>
-        {likes !== undefined && (
-          <StyledBubble>
-            <StyledTotalLikesHeartIcon />
-            {likes}
-          </StyledBubble>
-        )}
+        <StyledLeftBubblesWrapper>
+          {likes !== undefined && (
+            <StyledBubble>
+              <StyledTotalLikesHeartIcon />
+              {likes}
+            </StyledBubble>
+          )}
+
+          {authUserIsTheOwner && (
+            <StyledEditSpaceboxIconBubble>
+              <StyledEditSpaceboxIcon />
+            </StyledEditSpaceboxIconBubble>
+          )}
+        </StyledLeftBubblesWrapper>
 
         {category && <StyledBubble>{category}</StyledBubble>}
       </StyledBubblesWrapper>

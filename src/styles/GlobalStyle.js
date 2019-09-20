@@ -83,7 +83,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   p {
-    font-size: ${theme.htmlTags.p.fontSize};
     line-height: 1.5;
     margin-bottom: 25px;
     margin-top: 0;

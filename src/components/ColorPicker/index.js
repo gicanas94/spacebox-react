@@ -18,6 +18,7 @@ const StyledWrapper = styled.div`
 
 const StyledLabel = styled.span`
   font-size: ${({ theme }) => theme.components.ColorPicker.fontSize};
+  font-weight: ${({ theme }) => theme.components.ColorPicker.fontWeight};
   margin-bottom: 15px;
   word-break: break-all;
 `;

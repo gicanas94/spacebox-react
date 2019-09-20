@@ -12,6 +12,7 @@ const StyledButton = styled.button`
   border: 0;
   cursor: pointer;
   display: flex;
+  font-size: ${({ theme }) => theme.components.SignInWithButton.fontSize};
   font-weight: ${({ theme }) => theme.components.SignInWithButton.fontWeight};
   padding: 10px;
   padding-left: 13px;

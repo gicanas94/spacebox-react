@@ -9,6 +9,7 @@ import { transition } from '../../styles';
 const StyledButton = styled.button`
   align-items: center;
   display: flex;
+  font-size: ${({ theme }) => theme.components.Button.fontSize};
   font-weight: ${({ theme }) => theme.components.Button.fontWeight};
   height: 45px;
   justify-content: center;
@@ -35,6 +36,7 @@ const StyledButton = styled.button`
       outline: none;
     }
 
+    &:focus,
     &:hover {
       ${(styleType === 'bordered' || styleType === 'unbordered') && `
         background-color: ${

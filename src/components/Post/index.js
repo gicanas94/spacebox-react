@@ -152,9 +152,6 @@ const StyledCommentsWrapper = styled.div`
 const StyledSeeOrHideCommentsSpan = styled.span`
   color: ${({ theme }) => theme.components.Post.seeOrHideComments.color};
   cursor: pointer
-  font-size: ${({ theme }) => (
-    theme.components.Post.seeOrHideComments.fontSize
-  )};
   font-weight: ${({ theme }) => (
     theme.components.Post.seeOrHideComments.fontWeight
   )};

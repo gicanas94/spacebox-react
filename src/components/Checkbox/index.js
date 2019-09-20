@@ -33,7 +33,7 @@ const StyledLabel = styled.span`
 `;
 
 const StyledWrapper = styled.div`
-  align-items: center;
+  align-items: flex-end;
   cursor: pointer;
   display: flex;
   position: relative;

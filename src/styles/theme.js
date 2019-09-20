@@ -50,6 +50,7 @@ export default {
         default: themeMainColor,
         disabled: themeDisabledColor,
       },
+      fontSize: font.size.m,
       fontWeight: font.weight.bold,
     },
     Checkbox: {
@@ -60,12 +61,13 @@ export default {
         error: color.palette.chili,
         unchecked: themeSecondaryGreyColor,
       },
-      fontSize: font.size.xs,
+      fontSize: font.size.s,
     },
     ColorPicker: {
       bgColor: color.palette.cloud,
       border: `1px solid ${Color(color.palette.cloud).darken(0.2).hex()}`,
-      fontSize: font.size.xs,
+      fontSize: font.size.s,
+      fontWeight: font.weight.bold,
     },
     Comment: {
       borderWidth: '2px',
@@ -74,7 +76,6 @@ export default {
         fontSize: font.size.xxs,
       },
       username: {
-        fontSize: font.size.xs,
         fontWeight: font.weight.medium,
       },
     },
@@ -86,7 +87,7 @@ export default {
       laptopWidth: '80%',
     },
     Hr: {
-      borderWidth: '2px',
+      borderWidth: '1.5px',
       color: {
         default: color.palette.abalone,
       },
@@ -104,7 +105,7 @@ export default {
         fontWeight: font.weight.bold,
       },
       label: {
-        fontSize: font.size.xs,
+        fontSize: font.size.s,
         fontWeight: font.weight.bold,
       },
     },
@@ -119,7 +120,7 @@ export default {
       createdAtDate: {
         dateFromNow: {
           color: themeMainColor,
-          fontSize: font.size.xs,
+          fontSize: font.size.s,
           fontWeight: font.weight.bold,
         },
         longDate: {
@@ -133,19 +134,17 @@ export default {
       },
       seeOrHideComments: {
         color: themeMainColor,
-        fontSize: font.size.xs,
         fontWeight: font.weight.medium,
       },
       stats: {
         color: themeSecondaryGreyColor,
-        fontSize: font.size.xs,
+        fontSize: font.size.s,
       },
     },
     SearchBar: {
       bgColor: color.palette.cloud,
       border: `2px solid ${themeMainColor}`,
       color: textColor,
-      fontSize: font.size.xs,
       searchIconColor: themeMainColor,
     },
     Select: {
@@ -161,7 +160,7 @@ export default {
         fontWeight: font.weight.bold,
       },
       label: {
-        fontSize: font.size.xs,
+        fontSize: font.size.s,
         fontWeight: font.weight.bold,
       },
       li: {
@@ -186,7 +185,7 @@ export default {
         fontWeight: font.weight.bold,
       },
       link: {
-        fontSize: font.size.xs,
+        fontSize: font.size.s,
         fontWeight: font.weight.regular,
       },
       activeLink: {
@@ -194,6 +193,7 @@ export default {
       },
     },
     SignInWithButton: {
+      fontSize: font.size.m,
       fontWeight: font.weight.medium,
     },
     Spacebox: {
@@ -208,7 +208,7 @@ export default {
         fontWeight: font.weight.medium,
       },
       description: {
-        fontSize: font.size.xs,
+        fontSize: font.size.s,
         fontWeight: font.weight.medium,
       },
       informative: {
@@ -217,7 +217,7 @@ export default {
         color: color.palette.white,
       },
       title: {
-        fontSize: font.size.lm,
+        fontSize: font.size.xxxl,
         fontWeight: font.weight.bold,
       },
       totalLikesHeartIconColor: heartColor,
@@ -258,34 +258,31 @@ export default {
       )`,
       color: textColor,
       fontFamily: font.family.AlegreyaSans,
-      fontSize: font.size.s,
+      fontSize: font.size.sm,
     },
     h: {
       color: themeMainColor,
     },
     h1: {
-      fontSize: font.size.m,
+      fontSize: font.size.l,
     },
     h2: {
-      fontSize: font.size.sm,
+      fontSize: font.size.lm,
     },
     h3: {
-      fontSize: font.size.s,
+      fontSize: font.size.m,
     },
     h4: {
-      fontSize: font.size.xs,
+      fontSize: font.size.sm,
     },
     h5: {
-      fontSize: font.size.xs,
+      fontSize: font.size.sm,
     },
     h6: {
-      fontSize: font.size.xs,
+      fontSize: font.size.sm,
     },
     input: {
       color: textColor,
-    },
-    p: {
-      fontSize: font.size.xs,
     },
     textarea: {
       color: textColor,
@@ -294,46 +291,46 @@ export default {
   pages: {
     NotFound: {
       content: {
-        fontSize: font.size.sm,
+        fontSize: font.size.l,
         fontWeight: font.weight.bold,
       },
     },
     SignIn: {
       forgotPasswordLink: {
-        fontSize: font.size.xs,
+        fontSize: font.size.s,
       },
     },
     SignUp: {
       signInLink: {
-        fontSize: font.size.xs,
+        fontSize: font.size.s,
       },
     },
     Space: {
       postsHistory: {
         link: {
-          fontSize: font.size.xs,
+          fontSize: font.size.s,
         },
         month: {
-          fontSize: font.size.m,
+          fontSize: font.size.l,
           fontWeight: font.weight.thin,
         },
         year: {
-          fontSize: font.size.sm,
-          fontWeight: font.weight.regular,
+          fontSize: font.size.l,
+          fontWeight: font.weight.light,
         },
       },
       SpaceboxInfoSection: {
         spaceboxCategory: {
-          fontSize: font.size.xs,
+          fontSize: font.size.s,
           titleFontWeight: font.weight.bold,
         },
         spaceboxDescription: {
-          fontSize: font.size.xs,
+          fontSize: font.size.s,
         },
         spaceboxTitle: {
           fontWeight: font.weight.bold,
-          smallFontSize: font.size.s,
-          largeFontSize: font.size.m,
+          smallFontSize: font.size.m,
+          largeFontSize: font.size.l,
         },
         userImage: {
           bgColor: Color(themeMainColor).lighten(0.6).hex(),

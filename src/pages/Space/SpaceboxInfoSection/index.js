@@ -19,7 +19,6 @@ const StyledSpaceboxTitle = styled.h1`
     theme.pages.Space.SpaceboxInfoSection.spaceboxTitle.fontWeight
   )};
   line-height: 1;
-  margin-bottom: 5px;
 
   @media ${device.mobileL} {
     font-size: ${({ theme }) => (
@@ -40,7 +39,6 @@ const StyledSpaceboxDescription = styled.h2`
     theme.pages.Space.SpaceboxInfoSection.spaceboxDescription.fontSize
   )};
   font-weight: inherit;
-  margin-bottom: 15px;
 `;
 
 const StyledSpaceboxCategory = styled.div`
@@ -48,7 +46,7 @@ const StyledSpaceboxCategory = styled.div`
     theme.pages.Space.SpaceboxInfoSection.spaceboxCategory.fontSize
   )};
   line-height: 1;
-  margin: 0;
+  margin-bottom: 0;
 
   span {
     font-weight: ${({ theme }) => (

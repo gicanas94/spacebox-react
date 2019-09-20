@@ -10,8 +10,8 @@ const ChangePasswordSubpage = () => (
     <h1>Change password</h1>
 
     <p>
-      Complete the following input with your current password, just in
-      case <Emoji label="Slightly Smiling Face" symbol="🙂" />
+      Complete the following inputs to change your password. Don't forget your
+      current one, just in case <Emoji label="Slightly Smiling Face" symbol="🙂" />
     </p>
 
     <PasswordChangeForm />

@@ -16,7 +16,6 @@ const StyledInput = styled.input`
   background-color: ${({ theme }) => theme.components.SearchBar.bgColor};
   border: ${({ theme }) => theme.components.SearchBar.border};
   color: ${({ theme }) => theme.components.SearchBar.color};
-  font-size: ${({ theme }) => theme.components.SearchBar.fontSize};
   height: 40px;
   padding: 5px 35px 0 10px;
   transition: width ${transition.speed.fast} linear;

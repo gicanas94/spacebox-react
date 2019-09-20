@@ -33,6 +33,10 @@ const CreateSpaceboxFormSchema = [
   }),
 ];
 
+const StyledH4 = styled.h4`
+  margin-bottom: 5px;
+`;
+
 const StyledSpacebox = styled.div``;
 
 const StyledP1Inputs = styled.div``;
@@ -160,7 +164,7 @@ class CreateSpaceboxForm extends Component {
         validationSchema={CreateSpaceboxFormSchema}
       >
         <Wizard.Page>
-          <h4>Step 1: colors</h4>
+          <StyledH4>Step 1: colors</StyledH4>
 
           <p>
             Background and Text color of the box. We recommend you to choose
@@ -237,7 +241,7 @@ class CreateSpaceboxForm extends Component {
         </Wizard.Page>
 
         <Wizard.Page>
-          <h4>Step 2: title and description</h4>
+          <StyledH4>Step 2: title and description</StyledH4>
 
           <p>
       	    Keep in mind that if the title or description of your space is too
@@ -309,7 +313,7 @@ class CreateSpaceboxForm extends Component {
         </Wizard.Page>
 
         <Wizard.Page>
-          <h4>Step 3: category and visible</h4>
+          <StyledH4>Step 3: category and visible</StyledH4>
 
           <p>
           	Choose carefully the category of your Spacebox, since in case you
