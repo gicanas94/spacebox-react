@@ -80,10 +80,14 @@ class Firebase {
     this.db.collection('spaceboxes').doc(spacebox.slug).set(spacebox)
   );
 
-  getSpacebox = sid => this.db.collection('spaceboxes').doc(sid);
-
   getAllVisibleSpaceboxes = () => (
     this.db.collection('spaceboxes').where('visible', '==', true)
+  );
+
+  getSpacebox = sid => this.db.collection('spaceboxes').doc(sid);
+
+  updateSpacebox = (sid, newData) => (
+    this.db.collection('spaceboxes').doc(sid).update(newData)
   );
 
   // ---------------------------------------------------------------------------
@@ -92,6 +96,10 @@ class Firebase {
   createPost = (post, sid) => (
     this.getSpacebox(sid).collection('posts').doc(post.slug).set(post)
   )
+
+  deletePost = (sid, pid) => (
+    this.getSpacebox(sid).collection('posts').doc(pid).delete()
+  );
 
   getPost = (sid, pid) => (
     this.getSpacebox(sid).collection('posts').doc(pid)
@@ -104,9 +112,13 @@ class Firebase {
   // ---------------------------------------------------------------------------
   // User API ------------------------------------------------------------------
   // ---------------------------------------------------------------------------
+  getAllUsers = () => this.db.collection('users');
+
   getUser = uid => this.db.collection('users').doc(uid);
 
-  getAllUsers = () => this.db.collection('users');
+  getUserSpaceboxes = uid => (
+    this.db.collection('spaceboxes').where('uid', '==', uid)
+  );
 }
 
 export default Firebase;

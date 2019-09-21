@@ -10,7 +10,6 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
 import { alertSet } from '../../Redux/actions';
-// import Button from '../../components/Button';
 import { CATEGORIES, ROUTES } from '../../constants';
 import Checkbox from '../../components/Checkbox';
 import ColorPicker from '../../components/ColorPicker';
@@ -18,7 +17,6 @@ import { device } from '../../styles';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
 import Spacebox from '../../components/Spacebox';
-// import Tooltip from '../../components/Tooltip';
 import { withFirebase } from '../../Firebase';
 import Wizard from '../../components/Wizard';
 
@@ -33,15 +31,11 @@ const CreateSpaceboxFormSchema = [
   }),
 ];
 
-const StyledH4 = styled.h4`
+const StyledH2 = styled.h2`
   margin-bottom: 5px;
 `;
 
 const StyledSpacebox = styled.div``;
-
-const StyledP1Inputs = styled.div``;
-
-const StyledP2n3Inputs = styled.div``;
 
 const StyledPageWrapper = styled.div`
   display: flex;
@@ -55,7 +49,7 @@ const StyledPageWrapper = styled.div`
     width: 100%;
 
     & > div {
-      height: 251.57px;
+      height: 252.71px;
     }
   }
 
@@ -70,35 +64,13 @@ const StyledPageWrapper = styled.div`
       width: 50%;
     }
 
-    ${StyledP1Inputs} {
-      width: 50%;
-    }
-
-    ${StyledP2n3Inputs} {
+    & > div:last-of-type {
       width: 50%;
     }
   }
 `;
 
-// const mixes = [
-//   {
-//     bgColor: '#5c0c07',
-//     color: '#fecebe',
-//   },
-//   {
-//     bgColor: '#06385e',
-//     color: '#bddeff',
-//   },
-// ];
-
 class CreateSpaceboxForm extends Component {
-  // handleMixerClick = (form) => {
-  //   const randomMix = mixes[Math.floor(Math.random() * mixes.length)];
-  //
-  //   form.setFieldValue('bgColor', randomMix.bgColor);
-  //   form.setFieldValue('color', randomMix.color);
-  // }
-
   handleSubmit = (values, actions) => {
     const {
       alertSetAction,
@@ -107,37 +79,36 @@ class CreateSpaceboxForm extends Component {
       history,
     } = this.props;
 
-    const {
-      bgColor,
-      category,
-      color,
-      description,
-      title,
-      visible,
-    } = values;
-
     alertSetAction(null);
-    actions.setSubmitting(true);
 
-    firebase.createSpacebox({
-      bgColor,
-      category,
-      color,
+    const slug = `${_.kebabCase(values.title)}-${Math.floor(Math.random() * 10000)}`;
+
+    const createdSpacebox = {
+      bgColor: values.bgColor,
+      category: values.category,
+      color: values.color,
       createdAt: moment().valueOf(),
-      description,
+      description: values.description,
       likes: 0,
-      slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,
-      title: title.toUpperCase(),
+      slug,
+      title: values.title,
       uid: authUser.uid,
-      visible,
-    })
-      .then(() => {
-        history.push(ROUTES.HOME);
+      visible: values.visible,
+    };
 
+    firebase.createSpacebox(createdSpacebox)
+      .then(() => {
         alertSetAction({
           text: 'Your Spacebox was successfully created. Enjoy!',
           type: 'success',
         });
+
+        history.push(
+          `${ROUTES.SPACE_BASE}/${slug}`,
+          {
+            spacebox: createdSpacebox,
+          },
+        );
       })
       .catch((error) => {
         alertSetAction({
@@ -164,7 +135,7 @@ class CreateSpaceboxForm extends Component {
         validationSchema={CreateSpaceboxFormSchema}
       >
         <Wizard.Page>
-          <StyledH4>Step 1: colors</StyledH4>
+          <StyledH2>Step 1: colors</StyledH2>
 
           <p>
             Background and Text color of the box. We recommend you to choose
@@ -187,7 +158,7 @@ class CreateSpaceboxForm extends Component {
               </Field>
             </StyledSpacebox>
 
-            <StyledP1Inputs>
+            <div>
               <Field name="bgColor">
                 {({ form }) => (
                   <ColorPicker
@@ -216,32 +187,12 @@ class CreateSpaceboxForm extends Component {
                   />
                 )}
               </Field>
-            </StyledP1Inputs>
+            </div>
           </StyledPageWrapper>
-
-          {/* <Field name="autoMix">
-            {({ form }) => (
-              <Button
-                color="lime"
-                data-for="auto-mix"
-                data-tip="Generates a random combination of colors"
-                fullWidth
-                margin="25px 0 0 0"
-                onClick={() => this.handleMixerClick(form)}
-                size="large"
-                styleType="filled"
-                type="button"
-              >
-                {'Auto-Mix'}
-              </Button>
-            )}
-          </Field>
-
-          <Tooltip delayShow={500} effect="solid" id="auto-mix" place="bottom" /> */}
         </Wizard.Page>
 
         <Wizard.Page>
-          <StyledH4>Step 2: title and description</StyledH4>
+          <StyledH2>Step 2: title and description</StyledH2>
 
           <p>
       	    Keep in mind that if the title or description of your space is too
@@ -264,7 +215,7 @@ class CreateSpaceboxForm extends Component {
               </Field>
             </StyledSpacebox>
 
-            <StyledP2n3Inputs>
+            <div>
               <Field name="title">
                 {({ field, form }) => (
                   <Input
@@ -308,12 +259,12 @@ class CreateSpaceboxForm extends Component {
                   />
                 )}
               </Field>
-            </StyledP2n3Inputs>
+            </div>
           </StyledPageWrapper>
         </Wizard.Page>
 
         <Wizard.Page>
-          <StyledH4>Step 3: category and visible</StyledH4>
+          <StyledH2>Step 3: category and visible</StyledH2>
 
           <p>
           	Choose carefully the category of your Spacebox, since in case you
@@ -337,7 +288,7 @@ class CreateSpaceboxForm extends Component {
               </Field>
             </StyledSpacebox>
 
-            <StyledP2n3Inputs>
+            <div>
               <Field name="category">
                 {({ form }) => (
                   <Select
@@ -375,7 +326,7 @@ class CreateSpaceboxForm extends Component {
                   />
                 )}
               </Field>
-            </StyledP2n3Inputs>
+            </div>
           </StyledPageWrapper>
         </Wizard.Page>
       </Wizard>

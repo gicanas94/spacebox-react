@@ -7,6 +7,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
+import { Trash } from 'styled-icons/fa-solid/Trash';
 
 import Box from '../Box';
 import Comment from './Comment';
@@ -95,7 +96,7 @@ const StyledCommentsStatIcon = styled(Comments)`
 
 const StyledLikeHeartIcon = styled(Heart)`
   cursor: pointer;
-  margin-right: 15px;
+  margin-right: 20px;
   width: 30px;
 
   ${({ authUserLike, theme }) => authUserLike && `
@@ -126,6 +127,7 @@ const StyledLikeHeartIcon = styled(Heart)`
 const StyledCommentIcon = styled(CommentAlt)`
   color: ${({ theme }) => theme.components.Post.commentIcon.color};
   cursor: pointer;
+  margin-right: 20px;
   width: 28px;
 
   ${({ disabled }) => !disabled && `
@@ -135,6 +137,18 @@ const StyledCommentIcon = styled(CommentAlt)`
       transform: scale(0.9);
     }
   `}
+`;
+
+const StyledTrashIcon = styled(Trash)`
+  color: ${({ theme }) => theme.components.Post.trashIcon.color};
+  cursor: pointer;
+  height: 30px;
+  width: 28px;
+  transition: transform ${transition.speed.superfast} linear;
+
+  &:active {
+    transform: scale(0.9);
+  }
 `;
 
 const StyledCommentFormWrapper = styled.div`
@@ -185,6 +199,26 @@ class Post extends Component {
 
   componentWillUnmount() {
     clearInterval(this.updatecreatedAtDateInterval);
+  }
+
+  handleDeletePostClick = (spaceboxSlug, postSlug) => {
+    const { alertSetAction, firebase } = this.props;
+
+    alertSetAction(null);
+
+    firebase.deletePost(spaceboxSlug, postSlug)
+      .then(() => {
+        alertSetAction({
+          text: 'The post has been deleted.',
+          type: 'success',
+        });
+      })
+      .catch((error) => {
+        alertSetAction({
+          text: error.message,
+          type: 'danger',
+        });
+      });
   }
 
   handleLikeHeartIconClick = (likedPost) => {
@@ -304,6 +338,16 @@ class Post extends Component {
       />
     );
 
+    const trashIcon = (
+      <StyledTrashIcon
+        data-for={`trash-icon-${post.slug}`}
+        data-tip="Delete post (double click)"
+        onDoubleClick={
+          () => this.handleDeletePostClick(spacebox.slug, post.slug)
+        }
+      />
+    );
+
     return (
       <StyledBox>
         <StyledTitleAndDateWrapper>
@@ -357,6 +401,18 @@ class Post extends Component {
                 {commentIcon}
               </Fragment>
             )}
+
+            {authUser && authUser.uid === spacebox.uid && (
+              <Fragment>
+                {trashIcon}
+
+                <Tooltip
+                  effect="solid"
+                  id={`trash-icon-${post.slug}`}
+                  place="right"
+                />
+              </Fragment>
+            )}
           </StyledActions>
 
           <StyledStats>
@@ -390,7 +446,7 @@ class Post extends Component {
           <StyledCommentsWrapper>
             {_.orderBy(post.comments, 'createdAt', 'desc')
               .slice(0, commentsLimit).map(comment => (
-                <Comment comment={comment} key={comment.slug} />
+                <Comment authUser={authUser} comment={comment} key={comment.slug} />
               ))
             }
 

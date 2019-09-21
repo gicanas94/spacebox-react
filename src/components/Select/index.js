@@ -172,12 +172,13 @@ const StyledErrorMessage = styled.div`
 class Select extends Component {
   constructor(props) {
     super(props);
+    const { value } = this.props;
 
     this.wrapperRef = React.createRef();
 
     this.state = {
       listIsOpen: false,
-      selectedOption: '-',
+      selectedOption: value,
     };
   }
 
@@ -253,16 +254,16 @@ class Select extends Component {
 
           {listIsOpen && (
             <StyledUl rounded={rounded}>
-              {options.map(value => (
+              {options.map(option => (
                 <StyledLi
-                  key={value}
+                  key={option}
                   onClick={!disabled
                     ? event => (
-                      this.handleOptionClick(value, onChangeHandler, event)
+                      this.handleOptionClick(option, onChangeHandler, event)
                     ) : null
                   }
                 >
-                  {value}
+                  {option}
                 </StyledLi>
               ))}
             </StyledUl>
@@ -286,6 +287,7 @@ Select.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   rounded: PropTypes.bool,
   success: PropTypes.bool,
+  value: PropTypes.string,
 };
 
 Select.defaultProps = {
@@ -294,6 +296,7 @@ Select.defaultProps = {
   margin: undefined,
   rounded: false,
   success: false,
+  value: '-',
 };
 
 export default Select;

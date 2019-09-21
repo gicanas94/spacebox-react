@@ -11,6 +11,7 @@ import Alert from './components/Alert';
 import { alertSet } from './Redux/actions';
 import CreateSpaceboxPage from './pages/CreateSpacebox';
 import { device } from './styles';
+import EditSpaceboxPage from './pages/EditSpacebox';
 import FaqPage from './pages/Faq';
 import Header from './components/Header';
 import HomePage from './pages/Home';
@@ -54,6 +55,7 @@ const App = ({ activeAlert, alertSetAction }) => (
         <Route component={AccountPage} path={ROUTES.ACCOUNT} />
         <Route component={AdminPage} path={ROUTES.ADMIN} />
         <Route component={CreateSpaceboxPage} path={ROUTES.CREATE_SPACEBOX} />
+        <Route component={EditSpaceboxPage} path={ROUTES.EDIT_SPACEBOX_WITH_SLUG} />
         <Route component={FaqPage} path={ROUTES.FAQ} />
         <Route component={HomePage} exact path={ROUTES.HOME} />
         <Route component={NotFoundPage} exact path={ROUTES.NOT_FOUND} />

@@ -153,6 +153,7 @@ class PostPage extends Component {
 
   getPost = (spaceboxSlug, postSlug) => {
     const { firebase, history, loadingSetAction } = this.props;
+    const { spacebox } = this.state;
 
     return new Promise((resolvePromise, rejectPromise) => {
       firebase.getPost(spaceboxSlug, postSlug)
@@ -167,7 +168,7 @@ class PostPage extends Component {
           } else {
             // Post does not exist
             loadingSetAction(false);
-            history.push(ROUTES.NOT_FOUND);
+            history.push(`${ROUTES.SPACE_BASE}/${spaceboxSlug}`, { spacebox });
           }
         }, error => rejectPromise(error));
     });

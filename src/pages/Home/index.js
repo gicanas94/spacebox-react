@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 
 import { alertSet, loadingSet, spaceboxesSet } from '../../Redux/actions';
 import { device } from '../../styles';
@@ -16,24 +17,24 @@ import { withFirebase } from '../../Firebase';
 const StyledWrapper = styled.div`
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: auto;
+  grid-template-columns: 1fr;
   width: 100%;
 
   @media ${device.mobileL} {
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   @media ${device.tablet} {
-    grid-template-columns: repeat(3, auto);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   @media ${device.laptop} {
     grid-gap: 20px;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(4, 1fr);
   }
 
   @media ${device.laptopL} {
-    grid-template-columns: repeat(5, auto);
+    grid-template-columns: repeat(5, 1fr);
   }
 `;
 
@@ -75,6 +76,12 @@ class HomePage extends Component {
     this.componentIsMounted = false;
 
     (firebase.db.collection('spaceboxes').onSnapshot(() => {}));
+  }
+
+  handleEditSpaceboxClick(spaceboxSlug) {
+    const { history } = this.props;
+
+    history.push(`${ROUTES.EDIT_SPACEBOX_BASE}/${spaceboxSlug}`);
   }
 
   render() {
@@ -121,6 +128,9 @@ class HomePage extends Component {
                 category={spacebox.category}
                 color={spacebox.color}
                 description={spacebox.description}
+                onEditSpaceboxClickHandler={
+                  () => this.handleEditSpaceboxClick(spacebox.slug)
+                }
                 key={spacebox.slug}
                 likes={spacebox.likes}
                 link={[`${ROUTES.SPACE_BASE}/${spacebox.slug}`, spacebox]}
@@ -144,6 +154,7 @@ HomePage.propTypes = {
   allSpaceboxes: PropTypes.arrayOf(PropTypes.object),
   authUser: PropTypes.objectOf(PropTypes.any),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool,
   loadingSetAction: PropTypes.func.isRequired,
   spaceboxesSetAction: PropTypes.func.isRequired,
@@ -173,4 +184,5 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withFirebase,
+  withRouter,
 )(HomePage);

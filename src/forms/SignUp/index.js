@@ -57,7 +57,6 @@ class SignUpForm extends Component {
     const { email, passwordOne, username } = values;
 
     alertSetAction(null);
-    actions.setSubmitting(true);
 
     firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => (
@@ -71,7 +70,6 @@ class SignUpForm extends Component {
       ))
       .then(() => {
         firebase.doSendEmailVerification();
-        history.push(ROUTES.HOME);
 
         alertSetAction({
           text: `Welcome to Spacebox! Please, follow the instructions that
@@ -79,6 +77,8 @@ class SignUpForm extends Component {
             Spacebox.`,
           type: 'success',
         });
+
+        history.push(ROUTES.HOME);
       })
       .catch((error) => {
         alertSetAction({

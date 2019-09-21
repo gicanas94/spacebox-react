@@ -128,6 +128,9 @@ export default {
           fontSize: font.size.xxs,
         },
       },
+      trashIcon: {
+        color: themeMainGreyColor,
+      },
       likeHeartIcon: {
         likeColor: heartColor,
         noLikeColor: themeMainGreyColor,

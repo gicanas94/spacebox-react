@@ -47,7 +47,6 @@ class PasswordChangeForm extends Component {
     const { password, passwordOne } = values;
 
     alertSetAction(null);
-    actions.setSubmitting(true);
 
     firebase.doSignInWithEmailAndPassword(authUser.email, password)
       .then(() => {

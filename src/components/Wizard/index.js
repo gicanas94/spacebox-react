@@ -29,7 +29,6 @@ class Wizard extends Component {
     const isLastPage = page === Children.count(children) - 1;
 
     if (isLastPage) {
-      actions.setSubmitting(true);
       onSubmit(values, actions);
     } else {
       actions.setTouched({});

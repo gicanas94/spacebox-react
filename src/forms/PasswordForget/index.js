@@ -28,7 +28,6 @@ class PasswordForgetForm extends Component {
     const { email } = values;
 
     alertSetAction(null);
-    actions.setSubmitting(true);
 
     firebase.doPasswordReset(email)
       .then(() => {

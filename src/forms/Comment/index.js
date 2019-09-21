@@ -84,7 +84,6 @@ class CommentForm extends Component {
     const postRef = firebase.getPost(sid, postSlug);
 
     alertSetAction(null);
-    actions.setSubmitting(true);
 
     postRef.get()
       .then((document) => {
@@ -102,16 +101,19 @@ class CommentForm extends Component {
 
         postRef.update({ comments: postComments });
       })
-      .then(() => actions.resetForm())
-      .catch(error => (
+      .then(() => {
+        actions.resetForm();
+        actions.setSubmitting(false);
+        autosize.destroy(document.querySelectorAll('textarea'));
+      })
+      .catch((error) => {
         alertSetAction({
           text: error.message,
           type: 'danger',
-        })
-      ));
+        });
 
-    actions.setSubmitting(false);
-    autosize.destroy(document.querySelectorAll('textarea'));
+        actions.setSubmitting(false);
+      });
   };
 
   render() {

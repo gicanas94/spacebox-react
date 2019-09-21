@@ -7,83 +7,65 @@ import React from 'react';
 import styled from 'styled-components';
 
 import colors from '../../styles/color';
-import { transition } from '../../styles';
+import { device, transition } from '../../styles';
 
 const StyledTitle = styled.div`
+  display: -webkit-box;
   font-size: ${({ theme }) => theme.components.Spacebox.title.fontSize};
   font-weight: ${({ theme }) => theme.components.Spacebox.title.fontWeight};
   line-height: 1em;
-  max-height: 4em;
   overflow: hidden;
-  padding-left: 15px;
-  padding-right: 45px;
-  position: absolute
+  text-overflow: ellipsis;
   text-transform: uppercase;
   transition: blur ${transition.speed.superfast} linear,
               opacity ${transition.speed.superfast} linear;
   width: 100%;
   word-spacing: 5px;
   word-wrap: break-word;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 
-  &:before {
-    bottom: 0;
-    content: '...';
+  @media ${device.laptop} {
+    bottom: 7px;
+    padding: 0 10px;
     position: absolute;
-    right: 20px;
-  }
-
-  &:after {
-    content: '';
-    height: 1em;
-    margin-top: 0.2em;
-    position: absolute;
-    right: 20px;
-    width: 0.7em;
+    -webkit-line-clamp: 4;
   }
 `;
 
 const StyledDescription = styled.div`
+  display: -webkit-box;
   font-size: ${({ theme }) => theme.components.Spacebox.description.fontSize};
   font-weight: ${({ theme }) => (
     theme.components.Spacebox.description.fontWeight
   )};
   line-height: 1em;
-  max-height: 8em;
-  opacity: 0;
   overflow: hidden;
-  padding-left: 10px;
-  padding-right: 25px;
-  position: absolute;
   transition: opacity ${transition.speed.superfast} linear,
               visibility ${transition.speed.superfast} linear;
-  visibility: hidden;
   width: 100%;
   word-wrap: break-word;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 
-  &:before {
-    bottom: 0;
-    content: '...';
+  @media ${device.laptop} {
+    bottom: 7px;
+    opacity: 0;
+    padding: 0 10px;
     position: absolute;
-    right: 12px;
-  }
-
-  &:after {
-    content: '';
-    height: 1em;
-    margin-top: 0.2em;
-    position: absolute;
-    right: 12px;
-    width: 1em;
+    visibility: hidden;
+    -webkit-line-clamp: 8;
   }
 `;
 
 const StyledBubblesWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 7px;
-  position: absolute;
-  top: 0;
   width: 100%;
+
+  @media ${device.laptop} {
+    padding: 7px 7px 0 7px;
+  }
 `;
 
 const StyledBubble = styled.div`
@@ -117,6 +99,7 @@ const StyledTotalLikesHeartIcon = styled(Heart)`
 `;
 
 const StyledEditSpaceboxIcon = styled(Edit)`
+  transition: transform ${transition.speed.superfast} linear;
   width: 20px;
 `;
 
@@ -135,7 +118,7 @@ const StyledEditSpaceboxIconBubble = styled(StyledBubble)`
 `;
 
 const StyledSpacebox = styled.div`
-  align-items: flex-end;
+  align-items: flex-start;
   background: ${({ bgColor }) => `
     linear-gradient(
       ${Color(bgColor).lighten(0.3).hex()},
@@ -150,25 +133,30 @@ const StyledSpacebox = styled.div`
   border-style: solid;
   border-width: ${({ theme }) => theme.components.Spacebox.borderWidth};
   display: flex;
+  flex-direction: column;
   height: 220px;
-  justify-content: center;
+  justify-content: space-between;
   overflow: hidden;
-  padding-bottom: 7px;
+  padding: 7px;
   position: relative;
   width: 100%;
 
-  &:hover {
-    ${({ description }) => description && `
-      ${StyledTitle} {
-        filter: blur(4px);
-        opacity: 0.2;
-      }
+  @media ${device.laptop} {
+    padding: 0;
 
-      ${StyledDescription} {
-        opacity: 1;
-        visibility: visible;
-      }
-    `}
+    &:hover {
+      ${({ description }) => description && `
+        ${StyledTitle} {
+          filter: blur(4px);
+          opacity: 0.2;
+        }
+
+        ${StyledDescription} {
+          opacity: 1;
+          visibility: visible;
+        }
+      `}
+    }
   }
 
   ${({ authUserIsTheOwner, theme }) => authUserIsTheOwner && `
@@ -210,31 +198,16 @@ const StyledSpacebox = styled.div`
 
   ${StyledTitle} {
     color: ${({ color }) => color};
-
-    &:after {
-      background-color: ${({ bgColor, informative, theme }) => (
-        informative
-          ? theme.components.Spacebox.informative.bgColor
-          : bgColor
-      )};
-    }
   }
 
   ${StyledDescription} {
     color: ${({ color }) => color};
-
-    &:after {
-      background-color: ${({ bgColor, informative, theme }) => (
-        informative
-          ? theme.components.Spacebox.informative.bgColor
-          : bgColor
-      )};
-    }
   }
 `;
 
 const StyledLink = styled(Link)`
   order: ${({ order }) => order};
+  text-decoration: none !important;
 `;
 
 const StyledAuthUserIsTheOwnerWrapper = styled.div`
@@ -249,6 +222,7 @@ const Spacebox = ({
   authUserIsTheOwner,
   category,
   description,
+  onEditSpaceboxClickHandler,
   order,
   likes,
   link,
@@ -272,7 +246,12 @@ const Spacebox = ({
           )}
 
           {authUserIsTheOwner && (
-            <StyledEditSpaceboxIconBubble>
+            <StyledEditSpaceboxIconBubble onClick={
+              (event) => {
+                event.preventDefault();
+                onEditSpaceboxClickHandler();
+              }}
+            >
               <StyledEditSpaceboxIcon />
             </StyledEditSpaceboxIconBubble>
           )}
@@ -321,6 +300,7 @@ Spacebox.propTypes = {
     PropTypes.string,
     PropTypes.array,
   ]),
+  onEditSpaceboxClickHandler: PropTypes.func,
   order: PropTypes.number,
   rounded: PropTypes.bool,
   title: PropTypes.string,
@@ -335,6 +315,7 @@ Spacebox.defaultProps = {
   informative: false,
   likes: undefined,
   link: undefined,
+  onEditSpaceboxClickHandler: () => false,
   order: undefined,
   rounded: false,
   title: undefined,

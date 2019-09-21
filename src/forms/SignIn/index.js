@@ -34,7 +34,6 @@ class SignInForm extends Component {
     const { email, password } = values;
 
     alertSetAction(null);
-    actions.setSubmitting(true);
 
     firebase.doSignInWithEmailAndPassword(email, password)
       .then(() => history.push(ROUTES.HOME))

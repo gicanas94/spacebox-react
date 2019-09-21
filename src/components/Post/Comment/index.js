@@ -98,7 +98,12 @@ const Comment = ({ comment }) => (
 );
 
 Comment.propTypes = {
+  authUser: PropTypes.objectOf(PropTypes.any),
   comment: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+Comment.defaultProps = {
+  authUser: null,
 };
 
 export default Comment;

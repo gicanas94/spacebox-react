@@ -64,7 +64,6 @@ class PostForm extends Component {
     const { title, content } = values;
 
     alertSetAction(null);
-    actions.setSubmitting(true);
 
     firebase.createPost(
       {
@@ -82,14 +81,14 @@ class PostForm extends Component {
         actions.resetForm();
         this.closeForm();
       })
-      .catch(error => (
+      .catch((error) => {
         alertSetAction({
           text: error.message,
           type: 'danger',
         })
-      ));
 
-    actions.setSubmitting(false);
+        actions.setSubmitting(false);
+      });
   };
 
   openForm = () => {

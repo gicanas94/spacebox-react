@@ -3,6 +3,8 @@ export default {
   ADMIN: '/admin',
   CHANGE_PASSWORD: '/account/change-password',
   CREATE_SPACEBOX: '/create-spacebox',
+  EDIT_SPACEBOX_BASE: '/edit-spacebox',
+  EDIT_SPACEBOX_WITH_SLUG: '/edit-spacebox/:spaceboxSlug',
   FAQ: '/faq',
   HOME: '/',
   LOGIN_MANAGEMENT: '/account/login-management',
