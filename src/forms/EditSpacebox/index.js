@@ -1,14 +1,10 @@
 import * as Yup from 'yup';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
 
-import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
 import { CATEGORIES, ROUTES } from '../../constants';
 import Checkbox from '../../components/Checkbox';
@@ -17,7 +13,6 @@ import { device } from '../../styles';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
 import Spacebox from '../../components/Spacebox';
-import { withFirebase } from '../../Firebase';
 
 const EditSpaceboxFormSchema = [
   Yup.object().shape({
@@ -234,10 +229,4 @@ EditSpaceboxForm.propTypes = {
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = { alertSetAction: alertSet };
-
-export default compose(
-  connect(null, mapDispatchToProps),
-  withFirebase,
-  withRouter,
-)(EditSpaceboxForm);
+export default EditSpaceboxForm;

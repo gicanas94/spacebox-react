@@ -63,8 +63,8 @@ const StyledText = styled.div`
 `;
 
 const StyledCrossIcon = styled(Cross)`
-  min-width: 30px;
-  width: 30px;
+  min-width: 22px;
+  width: 22px;
 `;
 
 const Alert = ({ onAlertCloseHandler, text, ...props }) => (

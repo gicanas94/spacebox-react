@@ -1,18 +1,14 @@
 import * as Yup from 'yup';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
 import { ERRORS } from '../../constants';
 import Input from '../../components/Input';
 import Hr from '../../components/Hr';
 import { setCookie, getCookie } from '../../utils';
-import { withFirebase } from '../../Firebase';
 
 const PasswordChangeFormSchema = Yup.object().shape({
   password: Yup.string().required('This field is required!'),
@@ -222,11 +218,4 @@ PasswordChangeForm.propTypes = {
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = { alertSetAction: alertSet };
-
-const mapStateToProps = state => ({ authUser: state.session.authUser });
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withFirebase,
-)(PasswordChangeForm);
+export default PasswordChangeForm;

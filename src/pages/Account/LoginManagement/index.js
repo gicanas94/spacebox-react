@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import Box from '../../../components/Box';
 import PasswordLoginToggle from './PasswordLoginToggle';
 import SocialLoginToggle from './SocialLoginToggle';
-import { withFirebase } from '../../../Firebase';
 
 const SIGN_IN_METHODS = [
   {
@@ -153,4 +152,4 @@ LoginManagement.propTypes = {
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withFirebase(LoginManagement);
+export default LoginManagement;

@@ -1,15 +1,10 @@
 import _ from 'lodash';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
 
-import { alertSet } from '../../Redux/actions';
 import { ERRORS, ROUTES } from '../../constants';
 import SignInWithButton from '../../components/SignInWithButton';
-import { withFirebase } from '../../Firebase';
 
 class SignInSocialMedia extends Component {
   handleSignInWithClick = (doSignInWith) => {
@@ -102,10 +97,4 @@ SignInSocialMedia.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = { alertSetAction: alertSet };
-
-export default compose(
-  connect(null, mapDispatchToProps),
-  withFirebase,
-  withRouter,
-)(SignInSocialMedia);
+export default SignInSocialMedia;

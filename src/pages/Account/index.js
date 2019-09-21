@@ -14,6 +14,7 @@ import LoginManagementSubpage from './LoginManagement';
 import { ROUTES } from '../../constants';
 import Sidebar from '../../components/Sidebar';
 import { withAuthorization } from '../../Session';
+import { withFirebase } from '../../Firebase';
 
 const StyledGrid = styled.div`
   align-items: start;
@@ -33,7 +34,7 @@ const StyledGrid = styled.div`
   }
 `;
 
-const AccountPage = ({ alertSetAction, authUser }) => {
+const AccountPage = ({ alertSetAction, authUser, firebase }) => {
   let authUserHasPassword = null;
 
   const sidebarContent = [
@@ -67,19 +68,26 @@ const AccountPage = ({ alertSetAction, authUser }) => {
         <Switch>
           {authUserHasPassword && (
             <Route
-              component={ChangePasswordSubpage}
               path={ROUTES.CHANGE_PASSWORD}
+              render={() => (
+                <ChangePasswordSubpage
+                  alertSetAction={alertSetAction}
+                  authUser={authUser}
+                  firebase={firebase}
+                />
+              )}
             />
           )}
 
           <Route
+            path={ROUTES.LOGIN_MANAGEMENT}
             render={() => (
               <LoginManagementSubpage
                 alertSetAction={alertSetAction}
                 authUser={authUser}
+                firebase={firebase}
               />
             )}
-            path={ROUTES.LOGIN_MANAGEMENT}
           />
         </Switch>
       </Box>
@@ -90,6 +98,7 @@ const AccountPage = ({ alertSetAction, authUser }) => {
 AccountPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  firebase: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const condition = authUser => !!authUser;
@@ -101,4 +110,5 @@ const mapDispatchToProps = { alertSetAction: alertSet };
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withAuthorization(condition),
+  withFirebase,
 )(AccountPage);

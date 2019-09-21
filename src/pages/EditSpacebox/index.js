@@ -11,6 +11,7 @@ import Box from '../../components/Box';
 import EditSpaceboxForm from '../../forms/EditSpacebox';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { ROUTES } from '../../constants';
+import { withAuthorization } from '../../Session';
 import { withFirebase } from '../../Firebase';
 
 class EditSpaceboxPage extends Component {
@@ -30,43 +31,43 @@ class EditSpaceboxPage extends Component {
       match,
     } = this.props;
 
-    if (!authUser) {
-      loadingSetAction(false);
-      history.push(ROUTES.SIGN_IN);
-    } else {
-      loadingSetAction(true);
+    loadingSetAction(true);
 
-      firebase.getUserSpaceboxes(authUser.uid).onSnapshot((documents) => {
-        const spaceboxes = [];
+    firebase.getUserSpaceboxes(authUser.uid).onSnapshot((documents) => {
+      const spaceboxes = [];
 
-        documents.forEach(document => spaceboxes.push(document.data()));
+      documents.forEach(document => spaceboxes.push(document.data()));
 
-        const userSpacebox = _.filter(spaceboxes, spacebox => (
-          spacebox.slug === match.params.spaceboxSlug
-        ))[0];
+      const userSpacebox = _.filter(spaceboxes, spacebox => (
+        spacebox.slug === match.params.spaceboxSlug
+      ))[0];
 
-        if (userSpacebox) {
-          this.setState(
-            { spacebox: userSpacebox },
-            () => loadingSetAction(false),
-          );
-        } else {
-          loadingSetAction(false);
-          history.push(ROUTES.HOME);
-        }
-      }, (error) => {
-        alertSetAction({
-          text: error.message,
-          type: 'danger',
-        });
-
+      if (userSpacebox) {
+        this.setState(
+          { spacebox: userSpacebox },
+          () => loadingSetAction(false),
+        );
+      } else {
         loadingSetAction(false);
+        history.push(ROUTES.HOME);
+      }
+    }, (error) => {
+      alertSetAction({
+        text: error.message,
+        type: 'danger',
       });
-    }
+
+      loadingSetAction(false);
+    });
   }
 
   render() {
-    const { isLoading } = this.props;
+    const {
+      alertSetAction,
+      firebase,
+      history,
+      isLoading,
+    } = this.props;
     const { spacebox } = this.state;
 
     return (
@@ -77,7 +78,13 @@ class EditSpaceboxPage extends Component {
           <Box size="medium">
             <Helmet title="Edit Spacebox - Spacebox" />
             <h1>Edit Spacebox</h1>
-            <EditSpaceboxForm spacebox={spacebox} />
+
+            <EditSpaceboxForm
+              alertSetAction={alertSetAction}
+              firebase={firebase}
+              history={history}
+              spacebox={spacebox}
+            />
           </Box>
         )}
       </Fragment>
@@ -110,8 +117,11 @@ const mapDispatchToProps = {
   loadingSetAction: loadingSet,
 };
 
+const condition = authUser => !!authUser;
+
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  withAuthorization(condition),
   withFirebase,
   withRouter,
 )(EditSpaceboxPage);

@@ -225,6 +225,23 @@ export default {
       },
       totalLikesHeartIconColor: heartColor,
     },
+    SpaceboxInfoSection: {
+      spaceboxCategory: {
+        fontSize: font.size.s,
+        titleFontWeight: font.weight.bold,
+      },
+      spaceboxDescription: {
+        fontSize: font.size.s,
+      },
+      spaceboxTitle: {
+        fontWeight: font.weight.bold,
+        smallFontSize: font.size.m,
+        largeFontSize: font.size.l,
+      },
+      userImage: {
+        bgColor: Color(themeMainColor).lighten(0.6).hex(),
+      },
+    },
     Tooltip: {
       fontSize: font.size.xs,
       fontWeight: font.weight.regular,
@@ -320,23 +337,6 @@ export default {
         year: {
           fontSize: font.size.l,
           fontWeight: font.weight.light,
-        },
-      },
-      SpaceboxInfoSection: {
-        spaceboxCategory: {
-          fontSize: font.size.s,
-          titleFontWeight: font.weight.bold,
-        },
-        spaceboxDescription: {
-          fontSize: font.size.s,
-        },
-        spaceboxTitle: {
-          fontWeight: font.weight.bold,
-          smallFontSize: font.size.m,
-          largeFontSize: font.size.l,
-        },
-        userImage: {
-          bgColor: Color(themeMainColor).lighten(0.6).hex(),
         },
       },
     },

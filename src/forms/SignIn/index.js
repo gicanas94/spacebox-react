@@ -1,19 +1,14 @@
 import * as Yup from 'yup';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
 
-import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
 import Checkbox from '../../components/Checkbox';
 import { ERRORS, ROUTES } from '../../constants';
 import Input from '../../components/Input';
 import { PasswordForgetLink } from '../../pages/SignIn';
-import { withFirebase } from '../../Firebase';
 
 const SignInFormSchema = Yup.object().shape({
   email: Yup.string()
@@ -135,10 +130,4 @@ SignInForm.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = { alertSetAction: alertSet };
-
-export default compose(
-  connect(null, mapDispatchToProps),
-  withFirebase,
-  withRouter,
-)(SignInForm);
+export default SignInForm;

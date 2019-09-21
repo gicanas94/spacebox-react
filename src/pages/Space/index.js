@@ -15,7 +15,7 @@ import Hr from '../../components/Hr';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Post from '../../components/Post';
 import { ROUTES } from '../../constants';
-import SpaceboxInfoSection from './SpaceboxInfoSection';
+import SpaceboxInfoSection from '../../components/SpaceboxInfoSection';
 import Tooltip from '../../components/Tooltip';
 import { withFirebase } from '../../Firebase';
 
@@ -289,6 +289,8 @@ class SpacePage extends Component {
       alertSetAction,
       authUser,
       firebase,
+      history,
+      location,
       isLoading,
     } = this.props;
 
@@ -312,6 +314,8 @@ class SpacePage extends Component {
                 <StyledSpaceboxInfoSectionWrapper>
                   <SpaceboxInfoSection
                     authUser={authUser}
+                    history={history}
+                    location={location}
                     page="space"
                     spacebox={spacebox}
                     user={user}

@@ -50,7 +50,10 @@ class PostForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { formIsOpen: false };
+    this.state = {
+      formIsOpen: false,
+      formIsBeingSubmitted: false,
+    };
   }
 
   componentDidMount() {
@@ -65,6 +68,8 @@ class PostForm extends Component {
 
     alertSetAction(null);
 
+    this.setState({ formIsBeingSubmitted: true });
+
     firebase.createPost(
       {
         comments: [],
@@ -78,6 +83,7 @@ class PostForm extends Component {
       sid,
     )
       .then(() => {
+        this.setState({ formIsBeingSubmitted: false });
         actions.resetForm();
         this.closeForm();
       })
@@ -85,8 +91,9 @@ class PostForm extends Component {
         alertSetAction({
           text: error.message,
           type: 'danger',
-        })
+        });
 
+        this.setState({ formIsBeingSubmitted: false });
         actions.setSubmitting(false);
       });
   };
@@ -97,15 +104,21 @@ class PostForm extends Component {
   }
 
   closeForm = () => {
-    const close = () => {
-      document.removeEventListener('keydown', this.handleKeydown);
-      this.setState({ formIsOpen: false });
-    };
+    const { formIsBeingSubmitted } = this.state;
 
-    return document.getElementById('title').value === ''
-      && document.getElementById('content').value === ''
-      ? close()
-      : window.confirm('Are you sure you want to exit?') && close();
+    if (!formIsBeingSubmitted) {
+      const close = () => {
+        document.removeEventListener('keydown', this.handleKeydown);
+        this.setState({ formIsOpen: false });
+      };
+
+      return document.getElementById('title').value === ''
+        && document.getElementById('content').value === ''
+        ? close()
+        : window.confirm('Are you sure you want to exit?') && close();
+    }
+
+    return false;
   }
 
   render() {

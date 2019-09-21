@@ -1,34 +1,34 @@
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import Box from '../../../components/Box';
-import Button from '../../../components/Button';
-import { device } from '../../../styles';
-import Hr from '../../../components/Hr';
-import PostForm from '../../../forms/Post';
-import { ROUTES } from '../../../constants';
+import Box from '../Box';
+import Button from '../Button';
+import { device } from '../../styles';
+import Hr from '../Hr';
+import PostForm from '../../forms/Post';
+import { ROUTES } from '../../constants';
 
 const StyledSpaceboxTitle = styled.h1`
   color: inherit;
   font-size: ${({ theme }) => (
-    theme.pages.Space.SpaceboxInfoSection.spaceboxTitle.smallFontSize
+    theme.components.SpaceboxInfoSection.spaceboxTitle.smallFontSize
   )};
   font-weight: ${({ theme }) => (
-    theme.pages.Space.SpaceboxInfoSection.spaceboxTitle.fontWeight
+    theme.components.SpaceboxInfoSection.spaceboxTitle.fontWeight
   )};
   line-height: 1;
 
   @media ${device.mobileL} {
     font-size: ${({ theme }) => (
-      theme.pages.Space.SpaceboxInfoSection.spaceboxTitle.largeFontSize
+      theme.components.SpaceboxInfoSection.spaceboxTitle.largeFontSize
     )};
   }
 
   @media ${device.tablet} {
     font-size: ${({ theme }) => (
-      theme.pages.Space.SpaceboxInfoSection.spaceboxTitle.smallFontSize
+      theme.components.SpaceboxInfoSection.spaceboxTitle.smallFontSize
     )};
   }
 `;
@@ -36,21 +36,21 @@ const StyledSpaceboxTitle = styled.h1`
 const StyledSpaceboxDescription = styled.h2`
   color: inherit;
   font-size: ${({ theme }) => (
-    theme.pages.Space.SpaceboxInfoSection.spaceboxDescription.fontSize
+    theme.components.SpaceboxInfoSection.spaceboxDescription.fontSize
   )};
   font-weight: inherit;
 `;
 
 const StyledSpaceboxCategory = styled.div`
   font-size: ${({ theme }) => (
-    theme.pages.Space.SpaceboxInfoSection.spaceboxCategory.fontSize
+    theme.components.SpaceboxInfoSection.spaceboxCategory.fontSize
   )};
   line-height: 1;
   margin-bottom: 0;
 
   span {
     font-weight: ${({ theme }) => (
-      theme.pages.Space.SpaceboxInfoSection.spaceboxCategory.titleFontWeight
+      theme.components.SpaceboxInfoSection.spaceboxCategory.titleFontWeight
     )};
   }
 `;
@@ -198,4 +198,4 @@ SpaceboxInfoSection.defaultProps = {
   authUser: null,
 };
 
-export default withRouter(SpaceboxInfoSection);
+export default SpaceboxInfoSection;

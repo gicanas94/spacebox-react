@@ -6,13 +6,13 @@ import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
-import { alertSet, loadingSet } from '../../../Redux/actions';
-import { device } from '../../../styles';
-import LoadingSpinner from '../../../components/LoadingSpinner';
-import { ROUTES } from '../../../constants';
-import Post from '../../../components/Post';
-import SpaceboxInfoSection from '../SpaceboxInfoSection';
-import { withFirebase } from '../../../Firebase';
+import { alertSet, loadingSet } from '../../Redux/actions';
+import { device } from '../../styles';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import { ROUTES } from '../../constants';
+import Post from '../../components/Post';
+import SpaceboxInfoSection from '../../components/SpaceboxInfoSection';
+import { withFirebase } from '../../Firebase';
 
 const StyledGrid = styled.div`
   align-items: start;

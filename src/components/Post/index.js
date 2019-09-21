@@ -341,8 +341,8 @@ class Post extends Component {
     const trashIcon = (
       <StyledTrashIcon
         data-for={`trash-icon-${post.slug}`}
-        data-tip="Delete post (double click)"
-        onDoubleClick={
+        data-tip="Delete post"
+        onClick={
           () => this.handleDeletePostClick(spacebox.slug, post.slug)
         }
       />

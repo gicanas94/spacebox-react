@@ -1,7 +1,6 @@
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -9,7 +8,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
-import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
 import { device } from '../../styles';
 import Input from '../../components/Input';
@@ -202,10 +200,7 @@ SignUpForm.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapDispatchToProps = { alertSetAction: alertSet };
-
 export default compose(
-  connect(null, mapDispatchToProps),
   withFirebase,
   withRouter,
 )(SignUpForm);
