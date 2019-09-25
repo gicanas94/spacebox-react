@@ -1,11 +1,12 @@
 import * as Yup from 'yup';
 import _ from 'lodash';
+import autosize from 'autosize';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { alertSet } from '../../Redux/actions';
@@ -16,29 +17,9 @@ import Textarea from '../../components/Textarea';
 import { withFirebase } from '../../Firebase';
 
 const PostFormSchema = Yup.object().shape({
-  title: Yup.string().required('This field is required!'),
-  content: Yup.string().required('This field is required!'),
+  title: Yup.string().trim().required('This field is required!'),
+  content: Yup.string().trim().required('This field is required!'),
 });
-
-const StyledBackground = styled.div`
-  align-items: center;
-  background-color: ${({ theme }) => theme.forms.Post.bgColor};
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 400;
-`;
-
-const StyledCloserOnClick = styled.div`
-  height: 100%;
-  position: absolute;
-  width: 100%;
-  z-index: -1;
-`;
 
 const StyledButtonsWrapper = styled.div`
   align-items: flex-end;
@@ -46,45 +27,27 @@ const StyledButtonsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-class PostForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      formIsOpen: false,
-      formIsBeingSubmitted: false,
-    };
-  }
-
-  componentDidMount() {
-    this.closerOnClickRef = React.createRef();
-  }
-
-  handleKeydown = event => event.key === 'Escape' && this.closeForm();
-
-  handleSubmit = (values, actions) => {
-    const { alertSetAction, firebase, sid } = this.props;
+const PostForm = ({ alertSetAction, firebase, sid }) => {
+  const handleSubmit = (values, actions) => {
     const { title, content } = values;
 
     alertSetAction();
-    this.setState({ formIsBeingSubmitted: true });
 
     firebase.createPost(
       {
         comments: [],
-        content,
+        content: content.trim(),
         createdAt: moment().valueOf(),
         likes: [],
         sid,
         slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,
-        title,
+        title: title.trim(),
       },
       sid,
     )
       .then(() => {
-        this.setState({ formIsBeingSubmitted: false });
         actions.resetForm();
-        this.closeForm();
+        autosize.destroy(document.getElementById('textarea-component_content'));
       })
       .catch((error) => {
         alertSetAction({
@@ -92,136 +55,71 @@ class PostForm extends Component {
           type: 'danger',
         });
 
-        this.setState({ formIsBeingSubmitted: false });
         actions.setSubmitting(false);
       });
   };
 
-  openForm = () => {
-    this.setState({ formIsOpen: true });
-    document.addEventListener('keydown', this.handleKeydown);
-  }
-
-  closeForm = () => {
-    const { formIsBeingSubmitted } = this.state;
-
-    if (!formIsBeingSubmitted) {
-      const close = () => {
-        document.removeEventListener('keydown', this.handleKeydown);
-        this.setState({ formIsOpen: false });
-      };
-
-      return document.getElementById('title').value === ''
-        && document.getElementById('content').value === ''
-        ? close()
-        : window.confirm('Are you sure you want to exit?') && close();
-    }
-
-    return false;
-  }
-
-  render() {
-    const { formIsOpen } = this.state;
-
-    return (
-      <Fragment>
-        <Button
-          color="emerald"
-          fullWidth
-          onClick={() => this.openForm()}
-          rounded
-          size="large"
-          styleType="bordered"
-          type="button"
-        >
-          {'New post'}
-        </Button>
-
-        {formIsOpen && (
-          <StyledBackground>
-            <StyledCloserOnClick
-              onClick={() => this.closeForm()}
-              ref={this.closerOnClickRef}
+  return (
+    <Box padding="20px">
+      <Formik
+        initialValues={{
+          content: '',
+          title: '',
+        }}
+        onSubmit={handleSubmit}
+        validationSchema={PostFormSchema}
+        render={({
+          errors,
+          handleBlur,
+          handleChange,
+          isSubmitting,
+          touched,
+          values,
+        }) => (
+          <Form>
+            <Input
+              disabled={isSubmitting}
+              error={errors.title && touched.title && errors.title}
+              label="Title"
+              margin="0 0 25px 0"
+              name="title"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              rounded
+              success={!errors.title && touched.title}
+              type="text"
+              value={values.title}
             />
 
-            <Box size="small">
-              <h1>New post</h1>
+            <Textarea
+              error={errors.content && touched.content && errors.content}
+              disabled={isSubmitting}
+              label="Content"
+              margin="0 0 25px 0"
+              name="content"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              success={!errors.content && touched.content}
+              value={values.content}
+              rounded
+            />
 
-              <Formik
-                initialValues={{
-                  content: '',
-                  title: '',
-                }}
-                onSubmit={this.handleSubmit}
-                validationSchema={PostFormSchema}
-                render={({
-                  errors,
-                  handleBlur,
-                  handleChange,
-                  isSubmitting,
-                  touched,
-                  values,
-                }) => (
-                  <Form>
-                    <Input
-                      autoFocus
-                      disabled={isSubmitting}
-                      error={errors.title && touched.title && errors.title}
-                      label="Title"
-                      margin="0 0 25px 0"
-                      name="title"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      rounded
-                      success={!errors.title && touched.title}
-                      type="text"
-                      value={values.title}
-                    />
-
-                    <Textarea
-                      disabled={isSubmitting}
-                      error={errors.content && touched.content && errors.content}
-                      label="Content"
-                      margin="0 0 25px 0"
-                      name="content"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      rounded
-                      success={!errors.content && touched.content}
-                      value={values.content}
-                    />
-
-                    <StyledButtonsWrapper>
-                      <Button
-                        color="abalone"
-                        disabled={isSubmitting}
-                        onClick={() => this.closeForm()}
-                        rounded
-                        styleType="unbordered"
-                        type="button"
-                      >
-                        {'Cancel'}
-                      </Button>
-
-                      <Button
-                        disabled={isSubmitting}
-                        rounded
-                        styleType="filled"
-                        type="submit"
-                      >
-                        {'Post'}
-                      </Button>
-                    </StyledButtonsWrapper>
-                  </Form>
-                )}
-              />
-            </Box>
-          </StyledBackground>
+            <StyledButtonsWrapper>
+              <Button
+                disabled={isSubmitting}
+                rounded
+                styleType="filled"
+                type="submit"
+              >
+                {'Post'}
+              </Button>
+            </StyledButtonsWrapper>
+          </Form>
         )}
-      </Fragment>
-    );
-  }
-}
+      />
+    </Box>
+  );
+};
 
 PostForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,

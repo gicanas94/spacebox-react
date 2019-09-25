@@ -11,11 +11,13 @@ import Hr from '../../components/Hr';
 import { setCookie, getCookie } from '../../utils';
 
 const PasswordChangeFormSchema = Yup.object().shape({
-  password: Yup.string().required('This field is required!'),
+  password: Yup.string().trim().required('This field is required!'),
   passwordOne: Yup.string()
+    .trim()
     .required('This field is required!')
     .min(6, 'The minimum of characters for this field is 6'),
   passwordTwo: Yup.string()
+    .trim()
     .required('This field is required!')
     .oneOf([Yup.ref('passwordOne'), null], 'Passwords must match'),
 });

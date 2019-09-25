@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 

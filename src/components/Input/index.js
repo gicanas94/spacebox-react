@@ -118,14 +118,18 @@ const Input = ({
   margin,
   success,
   ...props
-}) => (
-  <StyledWrapper error={error} margin={margin} success={success}>
-    <StyledLabel disabled={disabled} htmlFor={name}>{label}</StyledLabel>
-    <StyledInput disabled={disabled} id={name} {...props} />
-    {!disabled && error && <StyledErrorIcon />}
-    {!disabled && error && <StyledErrorMessage>{error}</StyledErrorMessage>}
-  </StyledWrapper>
-);
+}) => {
+  const inputId = `textarea-component_${name}`;
+
+  return (
+    <StyledWrapper error={error} margin={margin} success={success}>
+      <StyledLabel disabled={disabled} htmlFor={name}>{label}</StyledLabel>
+      <StyledInput disabled={disabled} id={inputId} name={name} {...props} />
+      {!disabled && error && <StyledErrorIcon />}
+      {!disabled && error && <StyledErrorMessage>{error}</StyledErrorMessage>}
+    </StyledWrapper>
+  );
+};
 
 Input.propTypes = {
   disabled: PropTypes.bool,

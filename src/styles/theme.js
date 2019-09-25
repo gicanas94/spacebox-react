@@ -50,6 +50,7 @@ export default {
         default: themeMainColor,
         disabled: themeDisabledColor,
       },
+      filter: 'none',
       fontSize: font.size.m,
       fontWeight: font.weight.bold,
     },
@@ -196,6 +197,7 @@ export default {
       },
     },
     SignInWithButton: {
+      filter: 'none',
       fontSize: font.size.m,
       fontWeight: font.weight.medium,
     },
@@ -258,9 +260,6 @@ export default {
         borderWidth: '2px',
       },
     },
-    Post: {
-      bgColor: 'rgba(0, 0, 0, 0.8)',
-    },
   },
   global: {
     borderRadius: '4px',
@@ -277,6 +276,7 @@ export default {
         ${Color(color.palette.frenchRose).lighten(0.55).hex()}
       )`,
       color: textColor,
+      filter: 'none',
       fontFamily: font.family.AlegreyaSans,
       fontSize: font.size.sm,
     },

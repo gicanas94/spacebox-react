@@ -12,6 +12,7 @@ const StyledButton = styled.button`
   border: 0;
   cursor: pointer;
   display: flex;
+  filter: ${({ theme }) => theme.components.SignInWithButton.filter};
   font-size: ${({ theme }) => theme.components.SignInWithButton.fontSize};
   font-weight: ${({ theme }) => theme.components.SignInWithButton.fontWeight};
   padding: 10px;
@@ -22,6 +23,10 @@ const StyledButton = styled.button`
 
   &:active {
     transform: scale(0.98);
+  }
+
+  &:focus {
+    outline: none;
   }
 
   ${({ account }) => (account === 'Google') && `

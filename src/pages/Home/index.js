@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
@@ -38,17 +38,24 @@ const StyledWrapper = styled.div`
   }
 `;
 
-class HomePage extends Component {
-  componentDidMount() {
-    const {
-      alertSetAction,
-      firebase,
-      loadingSetAction,
-      spaceboxesSetAction,
-    } = this.props;
+const HomePage = ({
+  allSpaceboxes,
+  alertSetAction,
+  authUser,
+  firebase,
+  history,
+  isLoading,
+  loadingSetAction,
+  spaceboxesSetAction,
+  spaceboxToSearch,
+}) => {
+  const [componentIsMounted, setComponentIsMounted] = useState(true);
 
-    this.componentIsMounted = true;
+  const handleEditSpaceboxClick = spaceboxSlug => (
+    history.push(`${ROUTES.EDIT_SPACEBOX_BASE}/${spaceboxSlug}`)
+  );
 
+  useEffect(() => {
     loadingSetAction(true);
 
     firebase.getAllVisibleSpaceboxes().onSnapshot((documents) => {
@@ -56,7 +63,7 @@ class HomePage extends Component {
 
       documents.forEach(document => spaceboxes.push(document.data()));
 
-      if (this.componentIsMounted) {
+      if (componentIsMounted) {
         spaceboxesSetAction(spaceboxes);
         loadingSetAction(false);
       }
@@ -68,86 +75,68 @@ class HomePage extends Component {
 
       loadingSetAction(false);
     });
-  }
 
-  componentWillUnmount() {
-    const { firebase } = this.props;
+    return () => {
+      setComponentIsMounted(false);
+      (firebase.db.collection('spaceboxes').onSnapshot(() => {}));
+    };
+  }, []);
 
-    this.componentIsMounted = false;
+  return (
+    <StyledWrapper>
+      <Helmet
+        title={
+          `${spaceboxToSearch === '' ? 'Home' : 'Search results'} - Spacebox`
+        }
+      />
 
-    (firebase.db.collection('spaceboxes').onSnapshot(() => {}));
-  }
-
-  handleEditSpaceboxClick(spaceboxSlug) {
-    const { history } = this.props;
-
-    history.push(`${ROUTES.EDIT_SPACEBOX_BASE}/${spaceboxSlug}`);
-  }
-
-  render() {
-    const {
-      authUser,
-      allSpaceboxes,
-      isLoading,
-      spaceboxToSearch,
-    } = this.props;
-
-    return (
-      <StyledWrapper>
-        <Helmet
+      {spaceboxToSearch !== '' && (
+        <Spacebox
+          informative
+          order={1}
           title={
-            `${spaceboxToSearch === '' ? 'Home' : 'Search results'} - Spacebox`
+            allSpaceboxes.length === 0
+              ? 'No results'
+              : `Results: ${allSpaceboxes.length}`
           }
         />
+      )}
 
-        {spaceboxToSearch !== '' && (
-          <Spacebox
-            informative
-            order={1}
-            title={
-              allSpaceboxes.length === 0
-                ? 'No results'
-                : `Results: ${allSpaceboxes.length}`
-            }
-          />
-        )}
+      {isLoading && (
+        <Spacebox informative order={1} title="Loading..." />
+      )}
 
-        {isLoading && (
-          <Spacebox informative order={1} title="Loading..." />
-        )}
-
-        {allSpaceboxes
-          && !isLoading
-          && _.map(allSpaceboxes, (spacebox, index) => (
-            spacebox.visible && (
-              <Spacebox
-                authUserIsTheOwner={
-                  authUser && authUser.uid === spacebox.uid
-                }
-                bgColor={spacebox.bgColor}
-                category={spacebox.category}
-                color={spacebox.color}
-                description={spacebox.description}
-                onEditSpaceboxClickHandler={
-                  () => this.handleEditSpaceboxClick(spacebox.slug)
-                }
-                key={spacebox.slug}
-                likes={spacebox.likes}
-                link={[`${ROUTES.SPACE_BASE}/${spacebox.slug}`, spacebox]}
-                order={
-                  authUser && authUser.uid === spacebox.uid
-                    ? -1
-                    : index + 10
-                }
-                title={spacebox.title}
-              />
-            )
-          ))
-        }
-      </StyledWrapper>
-    );
-  }
-}
+      {allSpaceboxes
+        && !isLoading
+        && _.map(allSpaceboxes, (spacebox, index) => (
+          spacebox.visible && (
+            <Spacebox
+              authUserIsTheOwner={
+                authUser && authUser.uid === spacebox.uid
+              }
+              bgColor={spacebox.bgColor}
+              category={spacebox.category}
+              color={spacebox.color}
+              description={spacebox.description}
+              onEditSpaceboxClickHandler={
+                () => handleEditSpaceboxClick(spacebox.slug)
+              }
+              key={spacebox.slug}
+              likes={spacebox.likes}
+              link={[`${ROUTES.SPACE_BASE}/${spacebox.slug}`, spacebox]}
+              order={
+                authUser && authUser.uid === spacebox.uid
+                  ? -1
+                  : index + 10
+              }
+              title={spacebox.title}
+            />
+          )
+        ))
+      }
+    </StyledWrapper>
+  );
+};
 
 HomePage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,

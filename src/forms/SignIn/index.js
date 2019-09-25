@@ -12,9 +12,10 @@ import { PasswordForgetLink } from '../../pages/SignIn';
 
 const SignInFormSchema = Yup.object().shape({
   email: Yup.string()
+    .trim()
     .email('Please check your e-mail')
     .required('This field is required!'),
-  password: Yup.string().required('This field is required!'),
+  password: Yup.string().trim().required('This field is required!'),
 });
 
 const StyledBottomWrapper = styled.div`

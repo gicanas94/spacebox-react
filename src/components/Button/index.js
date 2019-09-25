@@ -9,6 +9,7 @@ import { transition } from '../../styles';
 const StyledButton = styled.button`
   align-items: center;
   display: flex;
+  filter: ${({ theme }) => theme.components.Button.filter};
   font-size: ${({ theme }) => theme.components.Button.fontSize};
   font-weight: ${({ theme }) => theme.components.Button.fontWeight};
   height: 45px;

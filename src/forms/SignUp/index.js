@@ -17,15 +17,19 @@ import { withFirebase } from '../../Firebase';
 
 const SignUpFormSchema = Yup.object().shape({
   email: Yup.string()
+    .trim()
     .email('Please check your e-mail')
     .required('This field is required!'),
   passwordOne: Yup.string()
+    .trim()
     .required('This field is required!')
     .min(6, 'The minimum of characters for this field is 6'),
   passwordTwo: Yup.string()
+    .trim()
     .required('This field is required!')
     .oneOf([Yup.ref('passwordOne'), null], 'Passwords must match'),
   username: Yup.string()
+    .trim()
     .min(4, 'The minimum of characters for this field is 4')
     .max(25, 'The maximum of characters for this field is 25')
     .required('This field is required!'),

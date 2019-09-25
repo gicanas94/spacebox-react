@@ -13,20 +13,9 @@ import useStateWithCallback from 'use-state-with-callback';
 import Box from '../Box';
 import Comment from './Comment';
 import CommentForm from '../../forms/Comment';
-import { device, transition } from '../../styles';
 import { ROUTES } from '../../constants';
 import Tooltip from '../Tooltip';
-
-const StyledBox = styled(Box)`
-  margin: 0;
-  margin-bottom: 10px;
-  padding: 20px;
-  width: 100%;
-
-  @media ${device.laptop} {
-    margin-bottom: 20px;
-  }
-`;
+import { transition } from '../../styles';
 
 const StyledTitleAndDateWrapper = styled.div`
   display: flex;
@@ -186,17 +175,19 @@ const Post = ({
   user,
 }) => {
   const [commentsLimit, setCommentsLimit] = useState(3);
+  const [createdAt, setCreatedAt] = useState(moment(post.createdAt).fromNow());
+  const [likeInProgress, setLikeInProgress] = useState(false);
+  const [userIsLikingOrDisliking, setUserIsLikingOrDisliking] = useState(false);
+  const commentFormId = `comment-form_${post.slug}`;
 
   const [
     commentFormIsVisible,
     setCommentFormIsVisible,
   ] = useStateWithCallback(false, () => {
-    if (commentFormIsVisible) document.getElementById(post.slug).focus();
+    if (commentFormIsVisible) {
+      document.getElementById(commentFormId).focus();
+    }
   });
-
-  const [createdAt, setCreatedAt] = useState(moment(post.createdAt).fromNow());
-  const [likeInProgress, setLikeInProgress] = useState(false);
-  const [userIsLikingOrDisliking, setUserIsLikingOrDisliking] = useState(false);
 
   const updateCreatedAtDate = () => (
     setCreatedAt(moment(post.createdAt).fromNow())
@@ -273,7 +264,7 @@ const Post = ({
       authUserLike={
         authUser && post.likes && post.likes.includes(authUser.uid)
       }
-      data-for={`like-heart-icon-${post.slug}`}
+      data-for={`like-heart-icon_${post.slug}`}
       data-tip={!authUser
         ? 'You need to be logged in to like a post'
         : 'You need to validate your e-mail to like a post'
@@ -289,7 +280,7 @@ const Post = ({
 
   const commentIcon = (
     <StyledCommentIcon
-      data-for={`comment-icon-${post.slug}`}
+      data-for={`comment-icon_${post.slug}`}
       data-tip={!authUser
         ? 'You need to be logged in to make a comment'
         : 'You need to validate your e-mail to make a comment'
@@ -304,7 +295,7 @@ const Post = ({
 
   const trashIcon = (
     <StyledTrashIcon
-      data-for={`trash-icon-${post.slug}`}
+      data-for={`trash-icon_${post.slug}`}
       data-tip="Delete post"
       onClick={
         () => handleDeletePostClick(spacebox.slug, post.slug)
@@ -319,7 +310,7 @@ const Post = ({
   }, []);
 
   return (
-    <StyledBox>
+    <Box padding="20px">
       <StyledTitleAndDateWrapper>
         {page === 'space' && (
           <Link to={{
@@ -378,7 +369,7 @@ const Post = ({
 
               <Tooltip
                 effect="solid"
-                id={`trash-icon-${post.slug}`}
+                id={`trash-icon_${post.slug}`}
                 place="right"
               />
             </Fragment>
@@ -407,6 +398,7 @@ const Post = ({
           <CommentForm
             postSlug={post.slug}
             sid={post.sid}
+            textareaId={commentFormId}
             user={{ username: authUser.username, uid: authUser.uid }}
           />
         </StyledCommentFormWrapper>
@@ -442,18 +434,18 @@ const Post = ({
         <Fragment>
           <Tooltip
             effect="solid"
-            id={`like-heart-icon-${post.slug}`}
+            id={`like-heart-icon_${post.slug}`}
             place="right"
           />
 
           <Tooltip
             effect="solid"
-            id={`comment-icon-${post.slug}`}
+            id={`comment-icon_${post.slug}`}
             place="right"
           />
         </Fragment>
       )}
-    </StyledBox>
+    </Box>
   );
 };
 

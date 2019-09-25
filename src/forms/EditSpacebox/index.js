@@ -16,8 +16,8 @@ import Spacebox from '../../components/Spacebox';
 
 const EditSpaceboxFormSchema = [
   Yup.object().shape({
-    title: Yup.string().required('This field is required!'),
-    description: Yup.string().required('This field is required!'),
+    title: Yup.string().trim().required('This field is required!'),
+    description: Yup.string().trim().required('This field is required!'),
   }),
 ];
 

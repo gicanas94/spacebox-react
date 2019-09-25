@@ -14,12 +14,17 @@ import { device } from '../../styles';
 import Hr from '../../components/Hr';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Post from '../../components/Post';
+import PostForm from '../../forms/Post';
 import { ROUTES } from '../../constants';
 import SpaceboxInfoSection from '../../components/SpaceboxInfoSection';
 import Tooltip from '../../components/Tooltip';
 import { withFirebase } from '../../Firebase';
 
 const StyledSpaceboxInfoSectionWrapper = styled.div``;
+
+const StyledPostFormWrapper = styled.div``;
+
+const StyledPostsWrapper = styled.div``;
 
 const StyledGrid = styled.div`
   align-items: start;
@@ -29,8 +34,17 @@ const StyledGrid = styled.div`
   margin: auto;
   width: 100%;
 
-  ${StyledSpaceboxInfoSectionWrapper} {
+  ${StyledSpaceboxInfoSectionWrapper},
+  ${StyledPostFormWrapper} {
     margin-bottom: 10px;
+  }
+
+  ${StyledPostsWrapper} > div {
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   @media ${device.tablet} {
@@ -40,7 +54,12 @@ const StyledGrid = styled.div`
   @media ${device.laptop} {
     grid-gap: 20px;
 
-    ${StyledSpaceboxInfoSectionWrapper} {
+    ${StyledSpaceboxInfoSectionWrapper},
+    ${StyledPostFormWrapper} {
+      margin-bottom: 20px;
+    }
+
+    ${StyledPostsWrapper} > div {
       margin-bottom: 20px;
     }
   }
@@ -65,15 +84,9 @@ const StyledPostsHistoryLink = styled(Link)`
   margin-top: 10px;
 `;
 
-const StyledNoPostsWrapper = styled.p`
+const StyledNoPostsText = styled.p`
   margin-bottom: 0;
   text-align: center;
-`;
-
-const StyledPostsWrapper = styled.div`
-  div:last-child {
-    margin-bottom: 0;
-  }
 `;
 
 class SpacePage extends Component {
@@ -90,35 +103,15 @@ class SpacePage extends Component {
   }
 
   componentDidMount() {
-    const {
-      alertSetAction,
-      loadingSetAction,
-      match,
-      location,
-    } = this.props;
+    const { loadingSetAction, match, location } = this.props;
 
     this.componentIsMounted = true;
     loadingSetAction(true);
-    window.addEventListener('scroll', this.getMorePostsIfScrollIsAtTheEnd);
 
     if (location.state) {
       this.setState(
         { spacebox: location.state.spacebox },
-        () => {
-          Promise.all([
-            this.getUser(location.state.spacebox.uid),
-            this.getPosts(location.state.spacebox.slug),
-          ])
-            .then(() => loadingSetAction(false))
-            .catch((error) => {
-              alertSetAction({
-                text: error.message,
-                type: 'danger',
-              });
-
-              loadingSetAction(false);
-            });
-        },
+        () => this.getUserAndPosts(),
       );
     } else {
       this.getSpacebox(match.params.spaceboxSlug);
@@ -147,21 +140,7 @@ class SpacePage extends Component {
         if (document.data()) {
           this.setState(
             { spacebox: document.data() },
-            () => {
-              Promise.all([
-                this.getUser(document.data().uid),
-                this.getPosts(spaceboxSlug),
-              ])
-                .then(() => loadingSetAction(false))
-                .catch((error) => {
-                  alertSetAction({
-                    text: error.message,
-                    type: 'danger',
-                  });
-
-                  loadingSetAction(false);
-                });
-            },
+            () => this.getUserAndPosts(),
           );
         } else {
           // Spacebox does not exist
@@ -175,6 +154,28 @@ class SpacePage extends Component {
           type: 'danger',
         })
       ));
+  }
+
+  getUserAndPosts = () => {
+    const { alertSetAction, loadingSetAction } = this.props;
+    const { spacebox } = this.state;
+
+    Promise.all([
+      this.getUser(spacebox.uid),
+      this.getPosts(spacebox.slug),
+    ])
+      .then(() => {
+        window.addEventListener('scroll', this.getMorePostsIfScrollIsAtTheEnd);
+        loadingSetAction(false);
+      })
+      .catch((error) => {
+        alertSetAction({
+          text: error.message,
+          type: 'danger',
+        });
+
+        loadingSetAction(false);
+      });
   }
 
   getUser = (uid) => {
@@ -313,7 +314,6 @@ class SpacePage extends Component {
               {spacebox && user && (
                 <StyledSpaceboxInfoSectionWrapper>
                   <SpaceboxInfoSection
-                    authUser={authUser}
                     history={history}
                     location={location}
                     page="space"
@@ -386,33 +386,41 @@ class SpacePage extends Component {
               )}
             </div>
 
-            {posts && posts.length > 0
-              ? (
-                <StyledPostsWrapper>
-                  {posts.slice(0, postsLimit).map(post => (
-                    <Post
-                      alertSetAction={alertSetAction}
-                      authUser={authUser}
-                      firebase={firebase}
-                      key={post.createdAt}
-                      page="space"
-                      post={post}
-                      spacebox={spacebox}
-                      user={user}
-                    />
-                  ))}
-                </StyledPostsWrapper>
-              ) : (
-                <Box fullWidth margin="0">
-                  <StyledNoPostsWrapper>
-                    {authUser && spacebox && authUser.uid === spacebox.uid
-                      ? 'You haven\'t made any post yet.'
-                      : 'The writer of this Spacebox hasn\'t made any post yet.'
-                    }
-                  </StyledNoPostsWrapper>
-                </Box>
-              )
-            }
+            <div>
+              {authUser && spacebox && authUser.uid === spacebox.uid && (
+                <StyledPostFormWrapper>
+                  <PostForm sid={spacebox.slug} />
+                </StyledPostFormWrapper>
+              )}
+
+              {posts && posts.length > 0
+                ? (
+                  <StyledPostsWrapper>
+                    {posts.slice(0, postsLimit).map(post => (
+                      <Post
+                        alertSetAction={alertSetAction}
+                        authUser={authUser}
+                        firebase={firebase}
+                        key={post.createdAt}
+                        page="space"
+                        post={post}
+                        spacebox={spacebox}
+                        user={user}
+                      />
+                    ))}
+                  </StyledPostsWrapper>
+                ) : (
+                  <Box fullWidth margin="0">
+                    <StyledNoPostsText>
+                      {authUser && spacebox && authUser.uid === spacebox.uid
+                        ? 'You haven\'t made any post yet.'
+                        : 'The writer of this Spacebox hasn\'t made any post yet.'
+                      }
+                    </StyledNoPostsText>
+                  </Box>
+                )
+              }
+            </div>
           </StyledGrid>
         )}
       </Fragment>

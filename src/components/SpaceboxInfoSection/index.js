@@ -7,7 +7,6 @@ import Box from '../Box';
 import Button from '../Button';
 import { device } from '../../styles';
 import Hr from '../Hr';
-import PostForm from '../../forms/Post';
 import { ROUTES } from '../../constants';
 
 const StyledSpaceboxTitle = styled.h1`
@@ -95,7 +94,6 @@ const StyledLink = styled(Link)`
 `;
 
 const SpaceboxInfoSection = ({
-  authUser,
   history,
   location,
   page,
@@ -140,15 +138,6 @@ const SpaceboxInfoSection = ({
         </StyledLink>
       </StyledFirstChild>
 
-      {page === 'space'
-        && authUser
-        && authUser.uid === spacebox.uid
-        && (
-          <StyledSecondChild>
-            <PostForm sid={spacebox.slug} />
-          </StyledSecondChild>
-        )}
-
       {page === 'post' && (
         <StyledSecondChild>
           {location.state
@@ -187,16 +176,11 @@ const SpaceboxInfoSection = ({
 );
 
 SpaceboxInfoSection.propTypes = {
-  authUser: PropTypes.objectOf(PropTypes.any),
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
   page: PropTypes.oneOf(['space', 'post']).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired,
-};
-
-SpaceboxInfoSection.defaultProps = {
-  authUser: null,
 };
 
 export default SpaceboxInfoSection;

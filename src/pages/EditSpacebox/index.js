@@ -31,9 +31,9 @@ const EditSpaceboxPage = ({
         loadingSetAction(true);
 
         const userSpaceboxes = [];
-        const documents = await firebase.getUserSpaceboxes(authUser.uid).get();
+        const data = await firebase.getUserSpaceboxes(authUser.uid).get();
 
-        documents.forEach(document => userSpaceboxes.push(document.data()));
+        data.forEach(document => userSpaceboxes.push(document.data()));
 
         const userSpaceboxToEdit = _.filter(userSpaceboxes, userSpacebox => (
           userSpacebox.slug === match.params.spaceboxSlug

@@ -13,6 +13,7 @@ import { withFirebase } from '../../Firebase';
 
 const PasswordForgetFormSchema = Yup.object().shape({
   email: Yup.string()
+    .trim()
     .email('Please check your e-mail')
     .required('This field is required!'),
 });

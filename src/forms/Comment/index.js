@@ -15,7 +15,7 @@ import { color, transition } from '../../styles';
 import { withFirebase } from '../../Firebase';
 
 const CommentFormSchema = Yup.object().shape({
-  content: Yup.string().required(),
+  content: Yup.string().trim().required(),
 });
 
 const StyledWrapper = styled.div`
@@ -66,6 +66,7 @@ const CommentForm = ({
   firebase,
   postSlug,
   sid,
+  textareaId,
   user,
 }) => {
   const handleSubmit = (values, actions) => {
@@ -82,7 +83,7 @@ const CommentForm = ({
           bgColor: color.specific.commentBgColor[
             Math.floor(Math.random() * color.specific.commentBgColor.length)
           ],
-          content,
+          content: content.trim(),
           createdAt: moment().valueOf(),
           slug: `${_.kebabCase(content)}-${Math.floor(Math.random() * 10000)}`,
           user,
@@ -92,8 +93,7 @@ const CommentForm = ({
       })
       .then(() => {
         actions.resetForm();
-        actions.setSubmitting(false);
-        autosize.destroy(document.querySelectorAll('textarea'));
+        autosize.destroy(document.getElementById(textareaId));
       })
       .catch((error) => {
         alertSetAction({
@@ -106,9 +106,11 @@ const CommentForm = ({
   };
 
   useEffect(() => {
-    autosize(document.querySelectorAll('textarea'));
+    autosize(document.getElementById(textareaId));
 
-    return () => autosize.destroy(document.querySelectorAll('textarea'));
+    return () => {
+      autosize.destroy(document.getElementById(textareaId));
+    };
   }, []);
 
   return (
@@ -126,7 +128,7 @@ const CommentForm = ({
           <StyledWrapper>
             <StyledTextarea
               disabled={isSubmitting}
-              id={postSlug}
+              id={textareaId}
               name="content"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -155,6 +157,7 @@ CommentForm.propTypes = {
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   postSlug: PropTypes.string.isRequired,
   sid: PropTypes.string.isRequired,
+  textareaId: PropTypes.string.isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

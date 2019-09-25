@@ -39,6 +39,7 @@ const GlobalStyle = createGlobalStyle`
     background-attachment: fixed;
     background-repeat: no-repeat;
     color: ${theme.htmlTags.body.color};
+    filter: ${theme.htmlTags.body.filter};
     font-family: ${theme.htmlTags.body.fontFamily};
     font-size: ${theme.htmlTags.body.fontSize};
     height: 100%;

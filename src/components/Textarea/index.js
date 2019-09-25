@@ -1,6 +1,7 @@
+import autosize from 'autosize';
 import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { keyframe, transition } from '../../styles';
@@ -26,7 +27,6 @@ const StyledTextarea = styled.textarea`
   border-color: ${({ theme }) => theme.components.Input.color.default};
   border-style: solid;
   border-width: ${({ theme }) => theme.components.Input.borderWidth};
-  height: 189px;
   padding: 10px;
   resize: none;
   transition: border ${transition.speed.superfast} linear;
@@ -80,7 +80,6 @@ const StyledErrorMessage = styled.div`
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 236px;
   justify-content: flex-start;
   position: relative;
 
@@ -117,14 +116,33 @@ const Textarea = ({
   margin,
   success,
   ...props
-}) => (
-  <StyledWrapper error={error} margin={margin} success={success}>
-    <StyledLabel disabled={disabled} htmlFor={name}>{label}</StyledLabel>
-    <StyledTextarea disabled={disabled} id={name} {...props} />
-    {!disabled && error && <StyledErrorIcon />}
-    {!disabled && error && <StyledErrorMessage>{error}</StyledErrorMessage>}
-  </StyledWrapper>
-);
+}) => {
+  const textareaId = `textarea-component_${name}`;
+
+  useEffect(() => {
+    autosize(document.getElementById(textareaId));
+
+    return () => {
+      autosize.destroy(document.getElementById(textareaId));
+    };
+  }, []);
+
+  return (
+    <StyledWrapper error={error} margin={margin} success={success}>
+      <StyledLabel disabled={disabled} htmlFor={textareaId}>{label}</StyledLabel>
+
+      <StyledTextarea
+        disabled={disabled}
+        id={textareaId}
+        name={name}
+        {...props}
+      />
+
+      {!disabled && error && <StyledErrorIcon />}
+      {!disabled && error && <StyledErrorMessage>{error}</StyledErrorMessage>}
+    </StyledWrapper>
+  );
+};
 
 Textarea.propTypes = {
   disabled: PropTypes.bool,
