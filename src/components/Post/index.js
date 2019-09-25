@@ -5,9 +5,10 @@ import { Heart } from 'styled-icons/fa-solid/Heart';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Trash } from 'styled-icons/fa-solid/Trash';
+import useStateWithCallback from 'use-state-with-callback';
 
 import Box from '../Box';
 import Comment from './Comment';
@@ -175,36 +176,34 @@ const StyledSeeOrHideCommentsSpan = styled.span`
   }
 `;
 
-class Post extends Component {
-  constructor(props) {
-    super(props);
+const Post = ({
+  alertSetAction,
+  authUser,
+  firebase,
+  page,
+  post,
+  spacebox,
+  user,
+}) => {
+  const [commentsLimit, setCommentsLimit] = useState(3);
 
-    const { post } = this.props;
+  const [
+    commentFormIsVisible,
+    setCommentFormIsVisible,
+  ] = useStateWithCallback(false, () => {
+    if (commentFormIsVisible) document.getElementById(post.slug).focus();
+  });
 
-    this.state = {
-      commentsLimit: 3,
-      commentFormIsVisible: false,
-      likeInProgress: false,
-      createdAt: moment(post.createdAt).fromNow(),
-      userIsLikingOrDisliking: null,
-    };
-  }
+  const [createdAt, setCreatedAt] = useState(moment(post.createdAt).fromNow());
+  const [likeInProgress, setLikeInProgress] = useState(false);
+  const [userIsLikingOrDisliking, setUserIsLikingOrDisliking] = useState(false);
 
-  componentDidMount() {
-    this.updatecreatedAtDateInterval = setInterval(
-      this.updatecreatedAtDate,
-      60000,
-    );
-  }
+  const updateCreatedAtDate = () => (
+    setCreatedAt(moment(post.createdAt).fromNow())
+  );
 
-  componentWillUnmount() {
-    clearInterval(this.updatecreatedAtDateInterval);
-  }
-
-  handleDeletePostClick = (spaceboxSlug, postSlug) => {
-    const { alertSetAction, firebase } = this.props;
-
-    alertSetAction(null);
+  const handleDeletePostClick = (spaceboxSlug, postSlug) => {
+    alertSetAction();
 
     firebase.deletePost(spaceboxSlug, postSlug)
       .then(() => {
@@ -219,274 +218,244 @@ class Post extends Component {
           type: 'danger',
         });
       });
-  }
+  };
 
-  handleLikeHeartIconClick = (likedPost) => {
-    const { alertSetAction, authUser, firebase } = this.props;
+  const handleLikeHeartIconClick = (likedPost) => {
     const postRef = firebase.getPost(likedPost.sid, likedPost.slug);
     const spaceboxRef = firebase.getSpacebox(likedPost.sid);
 
+    setLikeInProgress(true);
+
     // [If like process is in progress,
     // If user is liking (false) or disliking(true)]
-    this.setState(
-      {
-        likeInProgress: true,
-        userIsLikingOrDisliking: likedPost.likes.includes(authUser.uid)
-          ? 'dislike'
-          : 'like',
-      },
-      () => (
-        firebase.db.runTransaction(async (transaction) => {
-          const postDocument = await transaction.get(postRef);
-          const spaceboxDocument = await transaction.get(spaceboxRef);
-          const post = postDocument.data();
-          const spacebox = spaceboxDocument.data();
-          const postAlreadyLiked = post.likes.includes(authUser.uid);
-
-          post.likes = postAlreadyLiked
-            ? post.likes.splice(post.likes.indexOf(authUser.uid), 0)
-            : post.likes.concat([authUser.uid]);
-
-          transaction.update(postRef, { likes: post.likes });
-
-          transaction.update(spaceboxRef, {
-            likes: postAlreadyLiked ? spacebox.likes - 1 : spacebox.likes + 1,
-          });
-        })
-          .then(() => this.setState({ likeInProgress: false }))
-          .catch((error) => {
-            alertSetAction({
-              text: error.message,
-              type: 'danger',
-            });
-
-            this.setState({ likeInProgress: false });
-          })
-      ),
+    setUserIsLikingOrDisliking(
+      likedPost.likes.includes(authUser.uid)
+        ? 'dislike'
+        : 'like',
     );
+
+    firebase.db.runTransaction(async (transaction) => {
+      const postDocument = await transaction.get(postRef);
+      const spaceboxDocument = await transaction.get(spaceboxRef);
+      const postData = postDocument.data();
+      const spaceboxData = spaceboxDocument.data();
+      const postAlreadyLiked = post.likes.includes(authUser.uid);
+
+      postData.likes = postAlreadyLiked
+        ? postData.likes.splice(postData.likes.indexOf(authUser.uid), 0)
+        : postData.likes.concat([authUser.uid]);
+
+      transaction.update(postRef, { likes: postData.likes });
+
+      transaction.update(spaceboxRef, {
+        likes: postAlreadyLiked
+          ? spaceboxData.likes - 1
+          : spaceboxData.likes + 1,
+      });
+    })
+      .then(() => setLikeInProgress(false))
+      .catch((error) => {
+        alertSetAction({
+          text: error.message,
+          type: 'danger',
+        });
+
+        setLikeInProgress(false);
+      });
   };
 
-  handleSeeCommentsClick = () => (
-    this.setState(prevState => ({ commentsLimit: prevState.commentsLimit + 3 }))
-  )
+  const handleSeeCommentsClick = () => setCommentsLimit(commentsLimit + 3);
 
-  handleHideCommentsClick = () => this.setState({ commentsLimit: 0 });
+  const handleHideCommentsClick = () => setCommentsLimit(0);
 
-  setCommentFormIsVisibleState = (state) => {
-    const { post } = this.props;
+  const likeHeartIcon = (
+    <StyledLikeHeartIcon
+      authUserLike={
+        authUser && post.likes && post.likes.includes(authUser.uid)
+      }
+      data-for={`like-heart-icon-${post.slug}`}
+      data-tip={!authUser
+        ? 'You need to be logged in to like a post'
+        : 'You need to validate your e-mail to like a post'
+      }
+      disabled={likeInProgress || !authUser || !authUser.emailVerified}
+      userIsLikingOrDisliking={userIsLikingOrDisliking}
+      onClick={likeInProgress || !authUser || !authUser.emailVerified
+        ? null
+        : () => handleLikeHeartIconClick(post)
+      }
+    />
+  );
 
-    this.setState(
-      { commentFormIsVisible: state },
-      () => state && document.getElementById(post.slug).focus(),
-    );
-  };
+  const commentIcon = (
+    <StyledCommentIcon
+      data-for={`comment-icon-${post.slug}`}
+      data-tip={!authUser
+        ? 'You need to be logged in to make a comment'
+        : 'You need to validate your e-mail to make a comment'
+      }
+      disabled={!authUser || !authUser.emailVerified}
+      onClick={!authUser || !authUser.emailVerified
+        ? null
+        : () => setCommentFormIsVisible(true)
+      }
+    />
+  );
 
-  updatecreatedAtDate = () => {
-    const { post } = this.props;
+  const trashIcon = (
+    <StyledTrashIcon
+      data-for={`trash-icon-${post.slug}`}
+      data-tip="Delete post"
+      onClick={
+        () => handleDeletePostClick(spacebox.slug, post.slug)
+      }
+    />
+  );
 
-    this.setState({ createdAt: moment(post.createdAt).fromNow() });
-  }
+  useEffect(() => {
+    const updateCreatedAtDateInterval = setInterval(updateCreatedAtDate, 60000);
 
-  render() {
-    const {
-      authUser,
-      page,
-      post,
-      spacebox,
-      user,
-    } = this.props;
+    return () => clearInterval(updateCreatedAtDateInterval);
+  }, []);
 
-    const {
-      commentsLimit,
-      commentFormIsVisible,
-      likeInProgress,
-      createdAt,
-      userIsLikingOrDisliking,
-    } = this.state;
+  return (
+    <StyledBox>
+      <StyledTitleAndDateWrapper>
+        {page === 'space' && (
+          <Link to={{
+            pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
+            state: {
+              spacebox,
+              user,
+            },
+          }}
+          >
+            <StyledTitle>{post.title}</StyledTitle>
+          </Link>
+        )}
 
-    const likeHeartIcon = (
-      <StyledLikeHeartIcon
-        authUserLike={
-          authUser && post.likes && post.likes.includes(authUser.uid)
-        }
-        data-for={`like-heart-icon-${post.slug}`}
-        data-tip={!authUser
-          ? 'You need to be logged in to like a post'
-          : 'You need to validate your e-mail to like a post'
-        }
-        disabled={likeInProgress || !authUser || !authUser.emailVerified}
-        userIsLikingOrDisliking={userIsLikingOrDisliking}
-        onClick={likeInProgress || !authUser || !authUser.emailVerified
-          ? null
-          : () => this.handleLikeHeartIconClick(post)
-        }
-      />
-    );
+        {page === 'post' && <StyledTitle>{post.title}</StyledTitle>}
 
-    const commentIcon = (
-      <StyledCommentIcon
-        data-for={`comment-icon-${post.slug}`}
-        data-tip={!authUser
-          ? 'You need to be logged in to make a comment'
-          : 'You need to validate your e-mail to make a comment'
-        }
-        disabled={!authUser || !authUser.emailVerified}
-        onClick={!authUser || !authUser.emailVerified
-          ? null
-          : () => this.setCommentFormIsVisibleState(true)
-        }
-      />
-    );
+        <StyledCreatedAtDate>
+          <StyledDateFromNow>{createdAt}</StyledDateFromNow>
 
-    const trashIcon = (
-      <StyledTrashIcon
-        data-for={`trash-icon-${post.slug}`}
-        data-tip="Delete post"
-        onClick={
-          () => this.handleDeletePostClick(spacebox.slug, post.slug)
-        }
-      />
-    );
+          <StyledLongDate>
+            {moment(post.createdAt).format('DD/MM/YY - kk:mm')}
+          </StyledLongDate>
+        </StyledCreatedAtDate>
+      </StyledTitleAndDateWrapper>
 
-    return (
-      <StyledBox>
-        <StyledTitleAndDateWrapper>
-          {page === 'space' && (
-            <Link to={{
-              pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
-              state: {
-                spacebox,
-                user,
-              },
-            }}
-            >
-              <StyledTitle>{post.title}</StyledTitle>
-            </Link>
+      <StyledContent>
+        {post.content}
+      </StyledContent>
+
+      <StyledActionsAndStatsWrapper>
+        <StyledActions>
+          {!authUser && (
+            <Fragment>
+              <Link to={ROUTES.SIGN_IN}>{likeHeartIcon}</Link>
+              <Link to={ROUTES.SIGN_IN}>{commentIcon}</Link>
+            </Fragment>
           )}
 
-          {page === 'post' && <StyledTitle>{post.title}</StyledTitle>}
+          {authUser && !authUser.emailVerified && (
+            <Fragment>
+              <Link to={ROUTES.VERIFY_EMAIL}>{likeHeartIcon}</Link>
+              <Link to={ROUTES.VERIFY_EMAIL}>{commentIcon}</Link>
+            </Fragment>
+          )}
 
-          <StyledCreatedAtDate>
-            <StyledDateFromNow>{createdAt}</StyledDateFromNow>
+          {authUser && authUser.emailVerified && (
+            <Fragment>
+              {likeHeartIcon}
+              {commentIcon}
+            </Fragment>
+          )}
 
-            <StyledLongDate>
-              {moment(post.createdAt).format('DD/MM/YY - kk:mm')}
-            </StyledLongDate>
-          </StyledCreatedAtDate>
-        </StyledTitleAndDateWrapper>
+          {authUser && authUser.uid === spacebox.uid && (
+            <Fragment>
+              {trashIcon}
 
-        <StyledContent>
-          {post.content}
-        </StyledContent>
+              <Tooltip
+                effect="solid"
+                id={`trash-icon-${post.slug}`}
+                place="right"
+              />
+            </Fragment>
+          )}
+        </StyledActions>
 
-        <StyledActionsAndStatsWrapper>
-          <StyledActions>
-            {!authUser && (
-              <Fragment>
-                <Link to={ROUTES.SIGN_IN}>{likeHeartIcon}</Link>
-                <Link to={ROUTES.SIGN_IN}>{commentIcon}</Link>
-              </Fragment>
-            )}
+        <StyledStats>
+          {post.likes.length > 0 && (
+            <Fragment>
+              <StyledLikesStatIcon />
+              {post.likes.length}
+            </Fragment>
+          )}
 
-            {authUser && !authUser.emailVerified && (
-              <Fragment>
-                <Link to={ROUTES.VERIFY_EMAIL}>{likeHeartIcon}</Link>
-                <Link to={ROUTES.VERIFY_EMAIL}>{commentIcon}</Link>
-              </Fragment>
-            )}
+          {post.comments.length > 0 && (
+            <Fragment>
+              <StyledCommentsStatIcon />
+              {post.comments.length}
+            </Fragment>
+          )}
+        </StyledStats>
+      </StyledActionsAndStatsWrapper>
 
-            {authUser && authUser.emailVerified && (
-              <Fragment>
-                {likeHeartIcon}
-                {commentIcon}
-              </Fragment>
-            )}
+      {authUser && authUser.emailVerified && commentFormIsVisible && (
+        <StyledCommentFormWrapper>
+          <CommentForm
+            postSlug={post.slug}
+            sid={post.sid}
+            user={{ username: authUser.username, uid: authUser.uid }}
+          />
+        </StyledCommentFormWrapper>
+      )}
 
-            {authUser && authUser.uid === spacebox.uid && (
-              <Fragment>
-                {trashIcon}
+      {post.comments && post.comments.length > 0 && (
+        <StyledCommentsWrapper>
+          {_.orderBy(post.comments, 'createdAt', 'desc')
+            .slice(0, commentsLimit).map(comment => (
+              <Comment authUser={authUser} comment={comment} key={comment.slug} />
+            ))
+          }
 
-                <Tooltip
-                  effect="solid"
-                  id={`trash-icon-${post.slug}`}
-                  place="right"
-                />
-              </Fragment>
-            )}
-          </StyledActions>
+          {post.comments.length > commentsLimit && (
+            <StyledSeeOrHideCommentsSpan
+              onClick={() => handleSeeCommentsClick()}
+            >
+              {`See comments (${post.comments.length - commentsLimit})...`}
+            </StyledSeeOrHideCommentsSpan>
+          )}
 
-          <StyledStats>
-            {post.likes.length > 0 && (
-              <Fragment>
-                <StyledLikesStatIcon />
-                {post.likes.length}
-              </Fragment>
-            )}
+          {commentsLimit >= post.comments.length && (
+            <StyledSeeOrHideCommentsSpan
+              onClick={() => handleHideCommentsClick()}
+            >
+              {'Hide comments...'}
+            </StyledSeeOrHideCommentsSpan>
+          )}
+        </StyledCommentsWrapper>
+      )}
 
-            {post.comments.length > 0 && (
-              <Fragment>
-                <StyledCommentsStatIcon />
-                {post.comments.length}
-              </Fragment>
-            )}
-          </StyledStats>
-        </StyledActionsAndStatsWrapper>
+      {(!authUser || !authUser.emailVerified) && (
+        <Fragment>
+          <Tooltip
+            effect="solid"
+            id={`like-heart-icon-${post.slug}`}
+            place="right"
+          />
 
-        {authUser && authUser.emailVerified && commentFormIsVisible && (
-          <StyledCommentFormWrapper>
-            <CommentForm
-              postSlug={post.slug}
-              sid={post.sid}
-              user={{ username: authUser.username, uid: authUser.uid }}
-            />
-          </StyledCommentFormWrapper>
-        )}
-
-        {post.comments && post.comments.length > 0 && (
-          <StyledCommentsWrapper>
-            {_.orderBy(post.comments, 'createdAt', 'desc')
-              .slice(0, commentsLimit).map(comment => (
-                <Comment authUser={authUser} comment={comment} key={comment.slug} />
-              ))
-            }
-
-            {post.comments.length > commentsLimit && (
-              <StyledSeeOrHideCommentsSpan
-                onClick={() => this.handleSeeCommentsClick()}
-              >
-                {`See comments (${post.comments.length - commentsLimit})...`}
-              </StyledSeeOrHideCommentsSpan>
-            )}
-
-            {commentsLimit >= post.comments.length && (
-              <StyledSeeOrHideCommentsSpan
-                onClick={() => this.handleHideCommentsClick()}
-              >
-                {'Hide comments...'}
-              </StyledSeeOrHideCommentsSpan>
-            )}
-          </StyledCommentsWrapper>
-        )}
-
-        {(!authUser || !authUser.emailVerified) && (
-          <Fragment>
-            <Tooltip
-              effect="solid"
-              id={`like-heart-icon-${post.slug}`}
-              place="right"
-            />
-
-            <Tooltip
-              effect="solid"
-              id={`comment-icon-${post.slug}`}
-              place="right"
-            />
-          </Fragment>
-        )}
-      </StyledBox>
-    );
-  }
-}
+          <Tooltip
+            effect="solid"
+            id={`comment-icon-${post.slug}`}
+            place="right"
+          />
+        </Fragment>
+      )}
+    </StyledBox>
+  );
+};
 
 Post.propTypes = {
   alertSetAction: PropTypes.func.isRequired,

@@ -11,7 +11,7 @@ const ChangePasswordSubpage = ({ alertSetAction, authUser, firebase }) => (
     <h1>Change password</h1>
 
     <p>
-      Complete the following inputs to change your password. Dont forget your
+      Complete the following inputs to change your password. Don't forget your
       current one, just in case <Emoji label="Slightly Smiling Face" symbol="🙂" />
     </p>
 

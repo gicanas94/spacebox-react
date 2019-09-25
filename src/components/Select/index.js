@@ -1,7 +1,7 @@
 import { KeyboardArrowDown } from 'styled-icons/material/KeyboardArrowDown';
 import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { keyframe, transition } from '../../styles';
@@ -169,114 +169,94 @@ const StyledErrorMessage = styled.div`
   white-space: nowrap;
 `;
 
-class Select extends Component {
-  constructor(props) {
-    super(props);
-    const { value } = this.props;
+const Select = ({
+  disabled,
+  error,
+  label,
+  margin,
+  onChangeHandler,
+  options,
+  rounded,
+  success,
+  value,
+}) => {
+  const [listIsOpen, setListIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(value);
 
-    this.wrapperRef = React.createRef();
+  const wrapperRef = useRef();
 
-    this.state = {
-      listIsOpen: false,
-      selectedOption: value,
-    };
-  }
+  const closeList = (event) => {
+    if (wrapperRef.current.contains(event.target)) return;
+    if (listIsOpen) setListIsOpen(!listIsOpen);
+  };
 
-  componentDidMount() {
-    const { disabled } = this.props;
+  const handleKeydown = event => event.key === 'Escape' && closeList(event);
 
-    if (!disabled) {
-      document.addEventListener('click', this.closeList);
-      document.addEventListener('keydown', this.handleKeydown);
-    }
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('click', this.closeList);
-    document.removeEventListener('keydown', this.handleKeydown);
-  }
-
-  closeList = (event) => {
-    const { listIsOpen } = this.state;
-
-    if (this.wrapperRef.current.contains(event.target)) return;
-    if (listIsOpen) this.toggleListIsOpenState();
-  }
-
-  handleKeydown = event => event.key === 'Escape' && this.closeList(event);
-
-  handleOptionClick = (value, onChangeHandler, event) => {
-    this.setState({ selectedOption: value });
-    this.toggleListIsOpenState();
+  const handleOptionClick = (option, event) => {
+    setSelectedOption(option);
+    setListIsOpen(!listIsOpen);
     onChangeHandler(event.target.textContent);
   };
 
-  setListIsOpenState = state => this.setState({ listIsOpen: state });
+  useEffect(() => {
+    if (!disabled) {
+      document.addEventListener('click', closeList);
+      document.addEventListener('keydown', handleKeydown);
+    }
 
-  toggleListIsOpenState = () => this.setState(
-    prevState => ({ listIsOpen: !prevState.listIsOpen }),
-  )
+    return () => {
+      if (!disabled) {
+        document.removeEventListener('click', closeList);
+        document.removeEventListener('keydown', handleKeydown);
+      }
+    };
+  });
 
-  render() {
-    const {
-      disabled,
-      error,
-      label,
-      margin,
-      onChangeHandler,
-      options,
-      rounded,
-      success,
-    } = this.props;
-
-    const { listIsOpen, selectedOption } = this.state;
-
-    return (
-      <StyledWrapper
-        disabled={disabled}
-        error={error}
-        margin={margin}
-        ref={this.wrapperRef}
-        success={success}
+  return (
+    <StyledWrapper
+      disabled={disabled}
+      error={error}
+      margin={margin}
+      ref={wrapperRef}
+      success={success}
+    >
+      <StyledLabel
+        onClick={!disabled ? () => setListIsOpen(!listIsOpen) : null}
       >
-        <StyledLabel
-          onClick={!disabled ? () => this.toggleListIsOpenState() : null}
-        >
-          {label}
-        </StyledLabel>
+        {label}
+      </StyledLabel>
 
-        <StyledSimulatedSelect rounded={rounded}>
-          <StyledSpan
-            onClick={!disabled ? () => this.toggleListIsOpenState() : null}
-          />
+      <StyledSimulatedSelect rounded={rounded}>
+        <StyledSpan
+          onClick={!disabled ? () => setListIsOpen(!listIsOpen) : null}
+        />
 
-          <StyledSelectedOption>{selectedOption}</StyledSelectedOption>
+        <StyledSelectedOption>{selectedOption || '-'}</StyledSelectedOption>
 
-          {listIsOpen && (
-            <StyledUl rounded={rounded}>
-              {options.map(option => (
-                <StyledLi
-                  key={option}
-                  onClick={!disabled
-                    ? event => (
-                      this.handleOptionClick(option, onChangeHandler, event)
-                    ) : null
-                  }
-                >
-                  {option}
-                </StyledLi>
-              ))}
-            </StyledUl>
-          )}
-        </StyledSimulatedSelect>
+        {listIsOpen && (
+          <StyledUl rounded={rounded}>
+            {options.map(option => (
+              <StyledLi
+                key={option}
+                onClick={!disabled
+                  ? event => (
+                    handleOptionClick(option, event)
+                  ) : null
+                }
+              >
+                {option}
+              </StyledLi>
+            ))}
+          </StyledUl>
+        )}
+      </StyledSimulatedSelect>
 
-        {!disabled && <StyledArrowDownIcon />}
-        {!disabled && error && <StyledErrorIcon />}
-        {!disabled && error && <StyledErrorMessage>{error}</StyledErrorMessage>}
-      </StyledWrapper>
-    );
-  }
-}
+      {!disabled && <StyledArrowDownIcon />}
+      {!disabled && error && <StyledErrorIcon />}
+      {!disabled && error && <StyledErrorMessage>{error}</StyledErrorMessage>}
+    </StyledWrapper>
+  );
+};
 
 Select.propTypes = {
   disabled: PropTypes.bool,
@@ -287,7 +267,7 @@ Select.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   rounded: PropTypes.bool,
   success: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.string.isRequired,
 };
 
 Select.defaultProps = {
@@ -296,7 +276,6 @@ Select.defaultProps = {
   margin: undefined,
   rounded: false,
   success: false,
-  value: '-',
 };
 
 export default Select;

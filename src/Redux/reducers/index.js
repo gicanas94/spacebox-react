@@ -5,7 +5,6 @@ import loadingReducer from './loading';
 import searchReducer from './search';
 import sessionReducer from './session';
 import spaceboxReducer from './spacebox';
-import userReducer from './user';
 
 const rootReducer = combineReducers({
   activeAlert: alertReducer,
@@ -13,7 +12,6 @@ const rootReducer = combineReducers({
   session: sessionReducer,
   spacebox: spaceboxReducer,
   spaceboxToSearch: searchReducer,
-  user: userReducer,
 });
 
 export default rootReducer;

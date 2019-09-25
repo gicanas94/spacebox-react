@@ -42,7 +42,7 @@ class LoginManagement extends Component {
   fetchSignInMethods = () => {
     const { alertSetAction, authUser, firebase } = this.props;
 
-    alertSetAction(null);
+    alertSetAction();
 
     firebase.auth
       .fetchSignInMethodsForEmail(authUser.email)
@@ -58,7 +58,7 @@ class LoginManagement extends Component {
   handlePasswordLoginLink = (password) => {
     const { alertSetAction, authUser, firebase } = this.props;
 
-    alertSetAction(null);
+    alertSetAction();
 
     const credential = firebase.emailAuthProvider.credential(
       authUser.email,
@@ -79,7 +79,7 @@ class LoginManagement extends Component {
   handleSocialLoginLink = (provider) => {
     const { alertSetAction, firebase } = this.props;
 
-    alertSetAction(null);
+    alertSetAction();
 
     firebase.auth.currentUser
       .linkWithPopup(firebase[provider])
@@ -95,7 +95,7 @@ class LoginManagement extends Component {
   handleUnlink = (providerId) => {
     const { alertSetAction, firebase } = this.props;
 
-    alertSetAction(null);
+    alertSetAction();
 
     firebase.auth.currentUser
       .unlink(providerId)

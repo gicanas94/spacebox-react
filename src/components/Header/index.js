@@ -141,7 +141,7 @@ const StyledLaptopViewNav = styled.nav`
   }
 `;
 
-const Header = ({ history }) => {
+const Header = ({ location }) => {
   const [mobileNavIsOpen, setMobileNavIsOpen] = useState(false);
 
   return (
@@ -156,7 +156,7 @@ const Header = ({ history }) => {
               <img alt="Spacebox logo" src={smallLogo} />
             </StyledSmallLogoLink>
 
-            {history.location.pathname === '/' && <SearchBar />}
+            {location.pathname === '/' && <SearchBar />}
           </StyledSpan>
 
           {mobileNavIsOpen
@@ -180,9 +180,9 @@ const Header = ({ history }) => {
           </StyledLargeLogoLink>
 
           <StyledLaptopViewNav>
-            <Links onLinkClickHandler={setMobileNavIsOpen} />
+            {location.pathname === '/' && <SearchBar rounded />}
 
-            {history.location.pathname === '/' && <SearchBar rounded />}
+            <Links onLinkClickHandler={setMobileNavIsOpen} />
           </StyledLaptopViewNav>
         </StyledLaptopView>
       </StyledHeader>
@@ -191,7 +191,7 @@ const Header = ({ history }) => {
 };
 
 Header.propTypes = {
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default withRouter(Header);

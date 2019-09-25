@@ -66,8 +66,7 @@ class PostForm extends Component {
     const { alertSetAction, firebase, sid } = this.props;
     const { title, content } = values;
 
-    alertSetAction(null);
-
+    alertSetAction();
     this.setState({ formIsBeingSubmitted: true });
 
     firebase.createPost(

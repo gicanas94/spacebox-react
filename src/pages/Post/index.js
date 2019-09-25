@@ -179,7 +179,9 @@ class PostPage extends Component {
       alertSetAction,
       authUser,
       firebase,
+      history,
       isLoading,
+      location,
     } = this.props;
 
     const { post, spacebox, user } = this.state;
@@ -194,6 +196,8 @@ class PostPage extends Component {
             {spacebox && user && (
               <SpaceboxInfoSection
                 authUser={authUser}
+                history={history}
+                location={location}
                 page="post"
                 spacebox={spacebox}
                 user={user}

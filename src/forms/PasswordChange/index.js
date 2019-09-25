@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import Button from '../../components/Button';
@@ -25,24 +25,18 @@ const StyledButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-class PasswordChangeForm extends Component {
-  constructor(props) {
-    super(props);
+const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
+  const [currentPasswordAttemps, setCurrentPasswordAttemps] = useState(0);
 
-    this.state = {
-      currentPasswordAttemps: 0,
-      reachedMaxCurrentPasswordAttemps: getCookie(
-        'reachedMaxCurrentPasswordAttemps',
-        false,
-      ),
-    };
-  }
+  const [
+    reachedMaxCurrentPasswordAttemps,
+    setReachedMaxCurrentPasswordAttemps,
+  ] = useState(getCookie('reachedMaxCurrentPasswordAttemps', false));
 
-  handleSubmit = (values, actions) => {
-    const { alertSetAction, authUser, firebase } = this.props;
+  const handleSubmit = (values, actions) => {
     const { password, passwordOne } = values;
 
-    alertSetAction(null);
+    alertSetAction();
 
     firebase.doSignInWithEmailAndPassword(authUser.email, password)
       .then(() => {
@@ -68,21 +62,24 @@ class PasswordChangeForm extends Component {
             currentPasswordIsWrong: 'Your current password is wrong',
           });
 
-          this.setState(
-            prevState => ({
-              currentPasswordAttemps: prevState.currentPasswordAttemps + 1,
-            }),
-            () => {
-              const { currentPasswordAttemps } = this.state;
+          setCurrentPasswordAttemps(currentPasswordAttemps + 1);
 
-              if (currentPasswordAttemps === 3) {
-                this.handleReachedMaxCurrentPasswordAttemps(
-                  actions,
-                  alertSetAction,
-                );
-              }
-            },
-          );
+          if (currentPasswordAttemps === 2) {
+            setCookie(
+              'reachedMaxCurrentPasswordAttemps',
+              '',
+              new Date(new Date().getTime() + 30 * 60 * 1000).toGMTString(),
+            );
+
+            setReachedMaxCurrentPasswordAttemps(true);
+            actions.resetForm();
+
+            alertSetAction({
+              text: `You reached the limit of attempts to enter your current password,
+                please try again later.`,
+              type: 'danger',
+            });
+          }
         } else {
           alertSetAction({
             text: error.message,
@@ -94,123 +91,101 @@ class PasswordChangeForm extends Component {
       });
   };
 
-  handleReachedMaxCurrentPasswordAttemps(actions, alertSetAction) {
-    setCookie(
-      'reachedMaxCurrentPasswordAttemps',
-      '',
-      new Date(new Date().getTime() + 30 * 60 * 1000).toGMTString(),
-    );
+  return (
+    <Formik
+      initialValues={{
+        password: '',
+        passwordOne: '',
+        passwordTwo: '',
+      }}
+      onSubmit={handleSubmit}
+      validationSchema={PasswordChangeFormSchema}
+      render={({
+        errors,
+        handleBlur,
+        handleChange,
+        isSubmitting,
+        setStatus,
+        status,
+        touched,
+        values,
+      }) => (
+        <Form>
+          <Input
+            autoFocus
+            disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
+            error={
+              (errors.password && touched.password && errors.password)
+              || (status && status.currentPasswordIsWrong)
+              || (status && status.reachedMaxCurrentPasswordAttemps)
+            }
+            label="Current password"
+            name="password"
+            onBlur={handleBlur}
+            onChange={(e) => {
+              if (status) setStatus(false);
+              handleChange(e);
+            }}
+            rounded
+            success={!errors.password && touched.password && !status}
+            type="password"
+            value={status ? '' : values.password}
+          />
 
-    this.setState({ reachedMaxCurrentPasswordAttemps: true });
+          <Hr margin="25px 0" />
 
-    alertSetAction({
-      text: `You reached the limit of attempts to enter your current password,
-        please try again later.`,
-      type: 'danger',
-    });
+          <Input
+            disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
+            error={
+              errors.passwordOne
+              && touched.passwordOne
+              && errors.passwordOne
+            }
+            label="New password"
+            margin="0 0 25px 0"
+            name="passwordOne"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            rounded
+            success={!errors.passwordOne && touched.passwordOne}
+            type="password"
+            value={values.passwordOne}
+          />
 
-    actions.resetForm();
-  }
+          <Input
+            disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
+            error={
+              errors.passwordTwo
+              && touched.passwordTwo
+              && errors.passwordTwo
+            }
+            label="Confirm your new password"
+            margin="0 0 25px 0"
+            name="passwordTwo"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            rounded
+            success={!errors.passwordTwo && touched.passwordTwo}
+            type="password"
+            value={values.passwordTwo}
+          />
 
-  render() {
-    const { reachedMaxCurrentPasswordAttemps } = this.state;
-
-    return (
-      <Formik
-        initialValues={{
-          password: '',
-          passwordOne: '',
-          passwordTwo: '',
-        }}
-        onSubmit={this.handleSubmit}
-        validationSchema={PasswordChangeFormSchema}
-        render={({
-          errors,
-          handleBlur,
-          handleChange,
-          isSubmitting,
-          setStatus,
-          status,
-          touched,
-          values,
-        }) => (
-          <Form>
-            <Input
-              autoFocus
+          <StyledButtonWrapper>
+            <Button
               disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
-              error={
-                (errors.password && touched.password && errors.password)
-                || (status && status.currentPasswordIsWrong)
-                || (status && status.reachedMaxCurrentPasswordAttemps)
-              }
-              label="Current password"
-              name="password"
-              onBlur={handleBlur}
-              onChange={(e) => {
-                if (status) setStatus(false);
-                handleChange(e);
-              }}
+              fullWidth
               rounded
-              success={!errors.password && touched.password && !status}
-              type="password"
-              value={status ? '' : values.password}
-            />
-
-            <Hr margin="25px 0" />
-
-            <Input
-              disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
-              error={
-                errors.passwordOne
-                && touched.passwordOne
-                && errors.passwordOne
-              }
-              label="New password"
-              margin="0 0 25px 0"
-              name="passwordOne"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              rounded
-              success={!errors.passwordOne && touched.passwordOne}
-              type="password"
-              value={values.passwordOne}
-            />
-
-            <Input
-              disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
-              error={
-                errors.passwordTwo
-                && touched.passwordTwo
-                && errors.passwordTwo
-              }
-              label="Confirm your new password"
-              margin="0 0 25px 0"
-              name="passwordTwo"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              rounded
-              success={!errors.passwordTwo && touched.passwordTwo}
-              type="password"
-              value={values.passwordTwo}
-            />
-
-            <StyledButtonWrapper>
-              <Button
-                disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
-                fullWidth
-                rounded
-                styleType="filled"
-                type="submit"
-              >
-                {'Update'}
-              </Button>
-            </StyledButtonWrapper>
-          </Form>
-        )}
-      />
-    );
-  }
-}
+              styleType="filled"
+              type="submit"
+            >
+              {'Update'}
+            </Button>
+          </StyledButtonWrapper>
+        </Form>
+      )}
+    />
+  );
+};
 
 PasswordChangeForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,

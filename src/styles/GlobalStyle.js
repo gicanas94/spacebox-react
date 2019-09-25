@@ -19,6 +19,7 @@ const GlobalStyle = createGlobalStyle`
   a {
     color: ${theme.htmlTags.a.color};
     cursor: pointer !important;
+    display: inline-block;
     font-weight: ${theme.htmlTags.a.fontWeight}
     text-decoration: none;
     transition: transform ${transition.speed.superfast} linear;

@@ -216,6 +216,10 @@ const StyledAuthUserIsTheOwnerWrapper = styled.div`
   )};
   border: ${({ theme }) => theme.components.Spacebox.authUserIsTheOwner.border};
   padding: 5px;
+
+  ${({ rounded, theme }) => rounded && `
+    border-radius: ${theme.global.borderRadius};
+  `}
 `;
 
 const Spacebox = ({
@@ -226,6 +230,7 @@ const Spacebox = ({
   order,
   likes,
   link,
+  rounded,
   title,
   ...props
 }) => {
@@ -234,6 +239,7 @@ const Spacebox = ({
       authUserIsTheOwner={authUserIsTheOwner}
       description={description}
       order={!link ? order : undefined}
+      rounded={rounded}
       {...props}
     >
       <StyledBubblesWrapper>
@@ -278,7 +284,7 @@ const Spacebox = ({
         >
           {authUserIsTheOwner
             ? (
-              <StyledAuthUserIsTheOwnerWrapper>
+              <StyledAuthUserIsTheOwnerWrapper rounded={rounded}>
                 {box}
               </StyledAuthUserIsTheOwnerWrapper>
             ) : box}

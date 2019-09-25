@@ -20,13 +20,8 @@ const StyledButton = styled.button`
   user-select: none;
   width: 270px;
 
-  &:focus {
-    outline: none;
-  }
-
-  &:focus,
-  &:hover {
-    transform: scale(1.03);
+  &:active {
+    transform: scale(0.98);
   }
 
   ${({ account }) => (account === 'Google') && `

@@ -29,23 +29,23 @@ const StyledSignOutButtonWrapper = styled.div`
 const Links = ({
   authUser,
   firebase,
-  history,
+  location,
   onLinkClickHandler,
 }) => (
   <Fragment>
-    <CommonLinks history={history} onLinkClickHandler={onLinkClickHandler} />
+    <CommonLinks location={location} onLinkClickHandler={onLinkClickHandler} />
 
     {authUser
       ? (
         <AuthLinks
           authUser={authUser}
           firebase={firebase}
-          history={history}
+          location={location}
           onLinkClickHandler={onLinkClickHandler}
         />
       ) : (
         <NonAuthLinks
-          history={history}
+          location={location}
           onLinkClickHandler={onLinkClickHandler}
         />
       )
@@ -53,14 +53,14 @@ const Links = ({
   </Fragment>
 );
 
-const CommonLinks = ({ history, onLinkClickHandler }) => (
+const CommonLinks = ({ location, onLinkClickHandler }) => (
   <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.HOME}>
     <Button
       color="punch"
       fullWidth
       rounded
       size="small"
-      styleType={history.location.pathname === ROUTES.HOME
+      styleType={location.pathname === ROUTES.HOME
         ? 'filled'
         : 'unbordered'
       }
@@ -74,7 +74,7 @@ const CommonLinks = ({ history, onLinkClickHandler }) => (
 const AuthLinks = ({
   authUser,
   firebase,
-  history,
+  location,
   onLinkClickHandler,
 }) => (
   <Fragment>
@@ -87,7 +87,7 @@ const AuthLinks = ({
         fullWidth
         rounded
         size="small"
-        styleType={history.location.pathname === ROUTES.CREATE_SPACEBOX
+        styleType={location.pathname === ROUTES.CREATE_SPACEBOX
           ? 'filled'
           : 'bordered'
         }
@@ -103,7 +103,7 @@ const AuthLinks = ({
         fullWidth
         rounded
         size="small"
-        styleType={history.location.pathname === ROUTES.ACCOUNT
+        styleType={location.pathname === ROUTES.ACCOUNT
           ? 'filled'
           : 'unbordered'
         }
@@ -120,7 +120,7 @@ const AuthLinks = ({
           fullWidth
           rounded
           size="small"
-          styleType={history.location.pathname === ROUTES.ADMIN
+          styleType={location.pathname === ROUTES.ADMIN
             ? 'filled'
             : 'unbordered'
           }
@@ -148,7 +148,7 @@ const AuthLinks = ({
   </Fragment>
 );
 
-const NonAuthLinks = ({ history, onLinkClickHandler }) => (
+const NonAuthLinks = ({ location, onLinkClickHandler }) => (
   <Fragment>
     <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.FAQ}>
       <Button
@@ -156,7 +156,7 @@ const NonAuthLinks = ({ history, onLinkClickHandler }) => (
         fullWidth
         rounded
         size="small"
-        styleType={history.location.pathname === ROUTES.FAQ
+        styleType={location.pathname === ROUTES.FAQ
           ? 'filled'
           : 'unbordered'
         }
@@ -172,7 +172,7 @@ const NonAuthLinks = ({ history, onLinkClickHandler }) => (
         fullWidth
         rounded
         size="small"
-        styleType={history.location.pathname === ROUTES.SIGN_UP
+        styleType={location.pathname === ROUTES.SIGN_UP
           ? 'filled'
           : 'unbordered'
         }
@@ -188,7 +188,7 @@ const NonAuthLinks = ({ history, onLinkClickHandler }) => (
         fullWidth
         rounded
         size="small"
-        styleType={history.location.pathname === ROUTES.SIGN_IN
+        styleType={location.pathname === ROUTES.SIGN_IN
           ? 'filled'
           : 'bordered'
         }
@@ -203,7 +203,7 @@ const NonAuthLinks = ({ history, onLinkClickHandler }) => (
 Links.propTypes = {
   authUser: PropTypes.objectOf(PropTypes.any),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
   onLinkClickHandler: PropTypes.func.isRequired,
 };
 
@@ -212,14 +212,14 @@ Links.defaultProps = {
 };
 
 CommonLinks.propTypes = {
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
   onLinkClickHandler: PropTypes.func.isRequired,
 };
 
 AuthLinks.propTypes = {
   authUser: PropTypes.objectOf(PropTypes.any),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
   onLinkClickHandler: PropTypes.func.isRequired,
 };
 
@@ -228,7 +228,7 @@ AuthLinks.defaultProps = {
 };
 
 NonAuthLinks.propTypes = {
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
   onLinkClickHandler: PropTypes.func.isRequired,
 };
 

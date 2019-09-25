@@ -2,7 +2,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -22,17 +22,11 @@ const StyledEmail = styled.span`
   font-weight: ${({ theme }) => theme.pages.VerifyEmail.email.fontWeight};
 `;
 
-class VerifyEmailPage extends Component {
-  constructor(props) {
-    super(props);
+const VerifyEmailPage = ({ alertSetAction, authUser, firebase }) => {
+  const [emailSent, setEmailSent] = useState(false);
 
-    this.state = { emailSent: null };
-  }
-
-  handleClick = () => {
-    const { alertSetAction, firebase } = this.props;
-
-    alertSetAction(null);
+  const handleClick = () => {
+    alertSetAction();
 
     firebase
       .doSendEmailVerification()
@@ -43,7 +37,7 @@ class VerifyEmailPage extends Component {
           type: 'success',
         });
 
-        this.setState({ emailSent: true });
+        setEmailSent(true);
 
         setCookie(
           'verificationEmailSentRecently',
@@ -57,54 +51,49 @@ class VerifyEmailPage extends Component {
           type: 'danger',
         })
       ));
-  }
+  };
 
-  render() {
-    const { authUser } = this.props;
-    const { emailSent } = this.state;
+  return (
+    !authUser
+    || (authUser && authUser.emailVerified)
+      ? <Redirect to={ROUTES.HOME} />
+      : (
+        <Box size="small">
+          <Helmet title="Verify e-mail - Spacebox" />
+          <h1>Verify your e-mail</h1>
 
-    return (
-      !authUser
-      || (authUser && authUser.emailVerified)
-        ? <Redirect to={ROUTES.HOME} />
-        : (
-          <Box size="small">
-            <Helmet title="Verify e-mail - Spacebox" />
-            <h1>Verify your e-mail</h1>
+          <p>
+            {`Please verify the e-mail of your account in
+            order to access this page.`}
+          </p>
+          <p>
+            {`Once you press the button below you will receive an e-mail
+            in `}
 
-            <p>
-              {`Please verify the e-mail of your account in
-              order to access this page.`}
-            </p>
-            <p>
-              {`Once you press the button below you will receive an e-mail
-              in `}
+            <StyledEmail>{authUser.email}</StyledEmail>
+          </p>
 
-              <StyledEmail>{authUser.email}</StyledEmail>
-            </p>
-
-            <StyledButtonWrapper>
-              <Button
-                disabled={
-                  (
-                    emailSent
-                    || getCookie('verificationEmailSentRecently', false)
-                  )
-                }
-                fullWidth
-                onClick={this.handleClick}
-                rounded
-                styleType="filled"
-                type="submit"
-              >
-                {'Send'}
-              </Button>
-            </StyledButtonWrapper>
-          </Box>
-        )
-    );
-  }
-}
+          <StyledButtonWrapper>
+            <Button
+              disabled={
+                (
+                  emailSent
+                  || getCookie('verificationEmailSentRecently', false)
+                )
+              }
+              fullWidth
+              onClick={handleClick}
+              rounded
+              styleType="filled"
+              type="submit"
+            >
+              {'Send'}
+            </Button>
+          </StyledButtonWrapper>
+        </Box>
+      )
+  );
+};
 
 VerifyEmailPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,

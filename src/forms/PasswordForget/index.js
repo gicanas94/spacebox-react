@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { alertSet } from '../../Redux/actions';
@@ -22,12 +22,11 @@ const StyledButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-class PasswordForgetForm extends Component {
-  handleSubmit = (values, actions) => {
-    const { alertSetAction, firebase } = this.props;
+const PasswordForgetForm = ({ alertSetAction, firebase }) => {
+  const handleSubmit = (values, actions) => {
     const { email } = values;
 
-    alertSetAction(null);
+    alertSetAction();
 
     firebase.doPasswordReset(email)
       .then(() => {
@@ -47,53 +46,51 @@ class PasswordForgetForm extends Component {
       });
   };
 
-  render() {
-    return (
-      <Formik
-        initialValues={{ email: '' }}
-        onSubmit={this.handleSubmit}
-        validationSchema={PasswordForgetFormSchema}
-        render={({
-          errors,
-          handleBlur,
-          handleChange,
-          isSubmitting,
-          touched,
-          values,
-        }) => (
-          <Form>
-            <Input
-              autoFocus
-              disabled={isSubmitting}
-              error={errors.email && touched.email && errors.email}
-              label="E-mail"
-              margin="0 0 25px 0"
-              name="email"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              rounded
-              success={!errors.email && touched.email}
-              type="text"
-              value={values.email}
-            />
+  return (
+    <Formik
+      initialValues={{ email: '' }}
+      onSubmit={handleSubmit}
+      validationSchema={PasswordForgetFormSchema}
+      render={({
+        errors,
+        handleBlur,
+        handleChange,
+        isSubmitting,
+        touched,
+        values,
+      }) => (
+        <Form>
+          <Input
+            autoFocus
+            disabled={isSubmitting}
+            error={errors.email && touched.email && errors.email}
+            label="E-mail"
+            margin="0 0 25px 0"
+            name="email"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            rounded
+            success={!errors.email && touched.email}
+            type="text"
+            value={values.email}
+          />
 
-            <StyledButtonWrapper>
-              <Button
-                disabled={isSubmitting}
-                fullWidth
-                rounded
-                styleType="filled"
-                type="submit"
-              >
-                {'Send'}
-              </Button>
-            </StyledButtonWrapper>
-          </Form>
-        )}
-      />
-    );
-  }
-}
+          <StyledButtonWrapper>
+            <Button
+              disabled={isSubmitting}
+              fullWidth
+              rounded
+              styleType="filled"
+              type="submit"
+            >
+              {'Send'}
+            </Button>
+          </StyledButtonWrapper>
+        </Form>
+      )}
+    />
+  );
+};
 
 PasswordForgetForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -35,7 +35,7 @@ const StyledGrid = styled.div`
 `;
 
 const AccountPage = ({ alertSetAction, authUser, firebase }) => {
-  let authUserHasPassword = null;
+  let authUserHasPassword = false;
 
   const sidebarContent = [
     {

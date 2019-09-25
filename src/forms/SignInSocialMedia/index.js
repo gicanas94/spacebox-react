@@ -1,16 +1,14 @@
 import _ from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 
 import { ERRORS, ROUTES } from '../../constants';
 import SignInWithButton from '../../components/SignInWithButton';
 
-class SignInSocialMedia extends Component {
-  handleSignInWithClick = (doSignInWith) => {
-    const { alertSetAction, firebase, history } = this.props;
-
-    alertSetAction(null);
+const SignInSocialMedia = ({ alertSetAction, firebase, history }) => {
+  const handleSignInWithClick = (doSignInWith) => {
+    alertSetAction();
 
     doSignInWith()
       .then((socialAuthUser) => {
@@ -50,46 +48,42 @@ class SignInSocialMedia extends Component {
       ));
   };
 
-  render() {
-    const { firebase } = this.props;
+  return (
+    <Fragment>
+      <SignInWithButton
+        account="Google"
+        fullWidth
+        margin="0 0 10px 0"
+        onClick={() => handleSignInWithClick(
+          firebase.doSignInWithGoogle,
+        )}
+        rounded
+        type="button"
+      />
 
-    return (
-      <Fragment>
-        <SignInWithButton
-          account="Google"
-          fullWidth
-          margin="0 0 10px 0"
-          onClick={() => this.handleSignInWithClick(
-            firebase.doSignInWithGoogle,
-          )}
-          rounded
-          type="button"
-        />
+      <SignInWithButton
+        account="Facebook"
+        fullWidth
+        margin="0 0 10px 0"
+        onClick={() => handleSignInWithClick(
+          firebase.doSignInWithFacebook,
+        )}
+        rounded
+        type="button"
+      />
 
-        <SignInWithButton
-          account="Facebook"
-          fullWidth
-          margin="0 0 10px 0"
-          onClick={() => this.handleSignInWithClick(
-            firebase.doSignInWithFacebook,
-          )}
-          rounded
-          type="button"
-        />
-
-        <SignInWithButton
-          account="Twitter"
-          fullWidth
-          onClick={() => this.handleSignInWithClick(
-            firebase.doSignInWithTwitter,
-          )}
-          rounded
-          type="button"
-        />
-      </Fragment>
-    );
-  }
-}
+      <SignInWithButton
+        account="Twitter"
+        fullWidth
+        onClick={() => handleSignInWithClick(
+          firebase.doSignInWithTwitter,
+        )}
+        rounded
+        type="button"
+      />
+    </Fragment>
+  );
+};
 
 SignInSocialMedia.propTypes = {
   alertSetAction: PropTypes.func.isRequired,

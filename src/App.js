@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import AccountPage from './pages/Account';
 import AdminPage from './pages/Admin';
 import Alert from './components/Alert';
-import { alertSet } from './Redux/actions';
+import { alertReset } from './Redux/actions';
 import CreateSpaceboxPage from './pages/CreateSpacebox';
 import { device } from './styles';
 import EditSpaceboxPage from './pages/EditSpacebox';
@@ -38,13 +38,13 @@ const StyledRoutesContainer = styled.div`
   }
 `;
 
-const App = ({ activeAlert, alertSetAction }) => (
+const App = ({ activeAlert, alertResetAction }) => (
   <Fragment>
     <Header />
 
     {activeAlert && (
       <Alert
-        onAlertCloseHandler={() => alertSetAction(null)}
+        onAlertCloseHandler={() => alertResetAction(null)}
         text={activeAlert.text}
         type={activeAlert.type}
       />
@@ -74,7 +74,7 @@ const App = ({ activeAlert, alertSetAction }) => (
 
 App.propTypes = {
   activeAlert: PropTypes.objectOf(PropTypes.string),
-  alertSetAction: PropTypes.func.isRequired,
+  alertResetAction: PropTypes.func.isRequired,
 };
 
 App.defaultProps = {
@@ -83,7 +83,7 @@ App.defaultProps = {
 
 const mapStateToProps = state => ({ activeAlert: state.activeAlert });
 
-const mapDispatchToProps = { alertSetAction: alertSet };
+const mapDispatchToProps = { alertResetAction: alertReset };
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

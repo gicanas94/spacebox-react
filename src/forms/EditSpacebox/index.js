@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import Button from '../../components/Button';
@@ -49,15 +49,13 @@ const StyledCheckBoxAndButtonWrapper = styled.div`
   justify-content: space-between;
 `;
 
-class EditSpaceboxForm extends Component {
-  handleSubmit = (values, actions) => {
-    const {
-      alertSetAction,
-      firebase,
-      history,
-      spacebox,
-    } = this.props;
-
+const EditSpaceboxForm = ({
+  alertSetAction,
+  firebase,
+  history,
+  spacebox,
+}) => {
+  const handleSubmit = (values, actions) => {
     const updatedSpacebox = {
       bgColor: values.bgColor,
       category: values.category,
@@ -68,7 +66,7 @@ class EditSpaceboxForm extends Component {
       visible: values.visible,
     };
 
-    alertSetAction(null);
+    alertSetAction();
 
     firebase.updateSpacebox(spacebox.slug, updatedSpacebox)
       .then(() => {
@@ -94,133 +92,129 @@ class EditSpaceboxForm extends Component {
       });
   };
 
-  render() {
-    const { spacebox } = this.props;
-
-    return (
-      <Formik
-        initialValues={spacebox}
-        onSubmit={this.handleSubmit}
-        validationSchema={EditSpaceboxFormSchema}
-        render={({
-          errors,
-          handleBlur,
-          handleChange,
-          isSubmitting,
-          setFieldTouched,
-          setFieldValue,
-          touched,
-          values,
-        }) => (
-          <Form>
-            <StyledWrapper>
-              <StyledSpacebox>
-                <Spacebox
-                  bgColor={values.bgColor}
-                  category={values.category}
-                  color={values.color}
-                  description={values.description}
-                  likes={0}
-                  title={values.title}
-                />
-              </StyledSpacebox>
-
-              <div>
-                <ColorPicker
-                  color={values.bgColor}
-                  disabled={isSubmitting}
-                  label="Background"
-                  margin="0 0 25px 0"
-                  name="bgColor"
-                  onChangeHandler={(event) => {
-                    setFieldValue('bgColor', event.hex);
-                  }}
-                />
-
-                <ColorPicker
-                  color={values.color}
-                  disabled={isSubmitting}
-                  label="Text"
-                  name="color"
-                  onChangeHandler={(event) => {
-                    setFieldValue('color', event.hex);
-                  }}
-                />
-              </div>
-
-              <Input
-                disabled={isSubmitting}
-                error={errors.title && touched.title && errors.title}
-                label="Title"
-                name="title"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                rounded
-                success={!errors.title && touched.title}
-                type="text"
-                value={values.title}
+  return (
+    <Formik
+      initialValues={spacebox}
+      onSubmit={handleSubmit}
+      validationSchema={EditSpaceboxFormSchema}
+      render={({
+        errors,
+        handleBlur,
+        handleChange,
+        isSubmitting,
+        setFieldTouched,
+        setFieldValue,
+        touched,
+        values,
+      }) => (
+        <Form>
+          <StyledWrapper>
+            <StyledSpacebox>
+              <Spacebox
+                bgColor={values.bgColor}
+                category={values.category}
+                color={values.color}
+                description={values.description}
+                likes={0}
+                title={values.title}
               />
+            </StyledSpacebox>
 
-              <Input
+            <div>
+              <ColorPicker
+                color={values.bgColor}
                 disabled={isSubmitting}
-                error={
-                  errors.description
-                  && touched.description
-                  && errors.description
-                }
-                label="Description"
-                name="description"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                rounded
-                success={!errors.description && touched.description}
-                type="text"
-                value={values.description}
-              />
-
-              <Select
-                disabled={isSubmitting}
-                error={errors.category && touched.category && errors.category}
-                label="Category"
+                label="Background"
+                margin="0 0 25px 0"
+                name="bgColor"
                 onChangeHandler={(event) => {
-                  setFieldValue('category', event);
-                  setFieldTouched('category');
+                  setFieldValue('bgColor', event.hex);
                 }}
-                options={CATEGORIES}
-                rounded
-                success={!errors.category && touched.category}
-                value={values.category}
               />
 
-              <StyledCheckBoxAndButtonWrapper>
-                <Checkbox
-                  checked={values.visible}
-                  disabled={isSubmitting}
-                  label="Visible on home page"
-                  name="visible"
-                  onChangeHandler={() => setFieldValue(
-                    'visible',
-                    !values.visible,
-                  )}
-                  rounded
-                />
+              <ColorPicker
+                color={values.color}
+                disabled={isSubmitting}
+                label="Text"
+                name="color"
+                onChangeHandler={(event) => {
+                  setFieldValue('color', event.hex);
+                }}
+              />
+            </div>
 
-                <Button
-                  disabled={isSubmitting}
-                  rounded
-                  styleType="bordered"
-                  type="submit"
-                >
-                  {'Save'}
-                </Button>
-              </StyledCheckBoxAndButtonWrapper>
-            </StyledWrapper>
-          </Form>
-        )}
-      />
-    );
-  }
-}
+            <Input
+              disabled={isSubmitting}
+              error={errors.title && touched.title && errors.title}
+              label="Title"
+              name="title"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              rounded
+              success={!errors.title && touched.title}
+              type="text"
+              value={values.title}
+            />
+
+            <Input
+              disabled={isSubmitting}
+              error={
+                errors.description
+                && touched.description
+                && errors.description
+              }
+              label="Description"
+              name="description"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              rounded
+              success={!errors.description && touched.description}
+              type="text"
+              value={values.description}
+            />
+
+            <Select
+              disabled={isSubmitting}
+              error={errors.category && touched.category && errors.category}
+              label="Category"
+              onChangeHandler={(event) => {
+                setFieldValue('category', event);
+                setFieldTouched('category');
+              }}
+              options={CATEGORIES}
+              rounded
+              success={!errors.category && touched.category}
+              value={values.category}
+            />
+
+            <StyledCheckBoxAndButtonWrapper>
+              <Checkbox
+                checked={values.visible}
+                disabled={isSubmitting}
+                label="Visible on home page"
+                name="visible"
+                onChangeHandler={() => setFieldValue(
+                  'visible',
+                  !values.visible,
+                )}
+                rounded
+              />
+
+              <Button
+                disabled={isSubmitting}
+                rounded
+                styleType="bordered"
+                type="submit"
+              >
+                {'Save'}
+              </Button>
+            </StyledCheckBoxAndButtonWrapper>
+          </StyledWrapper>
+        </Form>
+      )}
+    />
+  );
+};
 
 EditSpaceboxForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { alertSet } from '../../Redux/actions';
@@ -61,29 +61,18 @@ const StyledTextarea = styled.textarea`
   `}
 `;
 
-class CommentForm extends Component {
-  componentDidMount() {
-    autosize(document.querySelectorAll('textarea'));
-  }
-
-  componentWillUnmount() {
-    autosize.destroy(document.querySelectorAll('textarea'));
-  }
-
-  handleSubmit = (values, actions) => {
-    const {
-      alertSetAction,
-      firebase,
-      postSlug,
-      sid,
-      user,
-    } = this.props;
-
+const CommentForm = ({
+  alertSetAction,
+  firebase,
+  postSlug,
+  sid,
+  user,
+}) => {
+  const handleSubmit = (values, actions) => {
     const { content } = values;
-
     const postRef = firebase.getPost(sid, postSlug);
 
-    alertSetAction(null);
+    alertSetAction();
 
     postRef.get()
       .then((document) => {
@@ -116,48 +105,50 @@ class CommentForm extends Component {
       });
   };
 
-  render() {
-    const { postSlug } = this.props;
+  useEffect(() => {
+    autosize(document.querySelectorAll('textarea'));
 
-    return (
-      <Formik
-        initialValues={{ content: '' }}
-        onSubmit={this.handleSubmit}
-        validationSchema={CommentFormSchema}
-        render={({
-          handleBlur,
-          handleChange,
-          isSubmitting,
-          values,
-        }) => (
-          <Form>
-            <StyledWrapper>
-              <StyledTextarea
-                disabled={isSubmitting}
-                id={postSlug}
-                name="content"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                placeholder="Make a comment..."
-                value={values.content}
-              />
+    return () => autosize.destroy(document.querySelectorAll('textarea'));
+  }, []);
 
-              <Button
-                disabled={isSubmitting}
-                rounded
-                size="small"
-                styleType="bordered"
-                type="submit"
-              >
-                {'Comment'}
-              </Button>
-            </StyledWrapper>
-          </Form>
-        )}
-      />
-    );
-  }
-}
+  return (
+    <Formik
+      initialValues={{ content: '' }}
+      onSubmit={handleSubmit}
+      validationSchema={CommentFormSchema}
+      render={({
+        handleBlur,
+        handleChange,
+        isSubmitting,
+        values,
+      }) => (
+        <Form>
+          <StyledWrapper>
+            <StyledTextarea
+              disabled={isSubmitting}
+              id={postSlug}
+              name="content"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              placeholder="Make a comment..."
+              value={values.content}
+            />
+
+            <Button
+              disabled={isSubmitting}
+              rounded
+              size="small"
+              styleType="bordered"
+              type="submit"
+            >
+              {'Comment'}
+            </Button>
+          </StyledWrapper>
+        </Form>
+      )}
+    />
+  );
+};
 
 CommentForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,

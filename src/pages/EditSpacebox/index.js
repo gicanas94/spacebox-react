@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { alertSet, loadingSet } from '../../Redux/actions';
@@ -14,83 +14,71 @@ import { ROUTES } from '../../constants';
 import { withAuthorization } from '../../Session';
 import { withFirebase } from '../../Firebase';
 
-class EditSpaceboxPage extends Component {
-  constructor(props) {
-    super(props);
+const EditSpaceboxPage = ({
+  alertSetAction,
+  authUser,
+  firebase,
+  history,
+  isLoading,
+  loadingSetAction,
+  match,
+}) => {
+  const [spacebox, setSpacebox] = useState(null);
 
-    this.state = { spacebox: null };
-  }
+  useEffect(() => {
+    const getUserSpaceboxes = async () => {
+      try {
+        loadingSetAction(true);
 
-  componentDidMount() {
-    const {
-      alertSetAction,
-      authUser,
-      firebase,
-      history,
-      loadingSetAction,
-      match,
-    } = this.props;
+        const userSpaceboxes = [];
+        const documents = await firebase.getUserSpaceboxes(authUser.uid).get();
 
-    loadingSetAction(true);
+        documents.forEach(document => userSpaceboxes.push(document.data()));
 
-    firebase.getUserSpaceboxes(authUser.uid).onSnapshot((documents) => {
-      const spaceboxes = [];
+        const userSpaceboxToEdit = _.filter(userSpaceboxes, userSpacebox => (
+          userSpacebox.slug === match.params.spaceboxSlug
+        ))[0];
 
-      documents.forEach(document => spaceboxes.push(document.data()));
+        if (userSpaceboxToEdit) {
+          setSpacebox(userSpaceboxToEdit);
+          loadingSetAction(false);
+        } else {
+          loadingSetAction(false);
+          history.push(ROUTES.HOME);
+        }
+      } catch (error) {
+        alertSetAction({
+          text: error.message,
+          type: 'danger',
+        });
 
-      const userSpacebox = _.filter(spaceboxes, spacebox => (
-        spacebox.slug === match.params.spaceboxSlug
-      ))[0];
-
-      if (userSpacebox) {
-        this.setState(
-          { spacebox: userSpacebox },
-          () => loadingSetAction(false),
-        );
-      } else {
         loadingSetAction(false);
-        history.push(ROUTES.HOME);
       }
-    }, (error) => {
-      alertSetAction({
-        text: error.message,
-        type: 'danger',
-      });
+    };
 
-      loadingSetAction(false);
-    });
-  }
+    getUserSpaceboxes();
+  }, []);
 
-  render() {
-    const {
-      alertSetAction,
-      firebase,
-      history,
-      isLoading,
-    } = this.props;
-    const { spacebox } = this.state;
+  return (
+    <Fragment>
+      {isLoading && <LoadingSpinner />}
 
-    return (
-      <Fragment>
-        {isLoading && <LoadingSpinner />}
+      {!isLoading && spacebox && (
+        <Box size="medium">
+          <Helmet title="Edit Spacebox - Spacebox" />
+          <h1>Edit Spacebox</h1>
 
-        {!isLoading && spacebox && (
-          <Box size="medium">
-            <Helmet title="Edit Spacebox - Spacebox" />
-            <h1>Edit Spacebox</h1>
-
-            <EditSpaceboxForm
-              alertSetAction={alertSetAction}
-              firebase={firebase}
-              history={history}
-              spacebox={spacebox}
-            />
-          </Box>
-        )}
-      </Fragment>
-    );
-  }
-}
+          <EditSpaceboxForm
+            alertSetAction={alertSetAction}
+            firebase={firebase}
+            history={history}
+            spacebox={spacebox}
+          />
+        </Box>
+      )}
+    </Fragment>
+  );
+};
 
 EditSpaceboxPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
