@@ -177,8 +177,8 @@ const EditSpaceboxForm = ({
               disabled={isSubmitting}
               error={errors.category && touched.category && errors.category}
               label="Category"
-              onChangeHandler={(event) => {
-                setFieldValue('category', event);
+              onChangeHandler={(categoryIndex) => {
+                setFieldValue('category', categoryIndex);
                 setFieldTouched('category');
               }}
               options={CATEGORIES}

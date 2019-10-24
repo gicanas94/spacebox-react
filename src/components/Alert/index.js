@@ -1,3 +1,4 @@
+import Color from 'color';
 import { Cross } from 'styled-icons/icomoon/Cross';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -26,7 +27,10 @@ const StyledAlert = styled.div`
   }
 
   ${({ type, theme }) => type && `
-    background-color: ${theme.components.Alert.type[type].bgColor};
+    background: linear-gradient(
+      ${theme.components.Alert.type[type].bgColor},
+      ${Color(theme.components.Alert.type[type].bgColor).darken(0.07)}
+    );
     color: ${theme.components.Alert.type[type].color};
   `}
 

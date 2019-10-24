@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
+import { CATEGORIES } from '../../constants';
 import colors from '../../styles/color';
 import { device, transition } from '../../styles';
 
@@ -263,7 +264,9 @@ const Spacebox = ({
           )}
         </StyledLeftBubblesWrapper>
 
-        {category && <StyledBubble>{category}</StyledBubble>}
+        {CATEGORIES[category] && (
+          <StyledBubble>{CATEGORIES[category]}</StyledBubble>
+        )}
       </StyledBubblesWrapper>
 
       {title && <StyledTitle>{title}</StyledTitle>}
@@ -297,7 +300,7 @@ const Spacebox = ({
 Spacebox.propTypes = {
   authUserIsTheOwner: PropTypes.bool,
   bgColor: PropTypes.string,
-  category: PropTypes.string,
+  category: PropTypes.number,
   color: PropTypes.string,
   description: PropTypes.string,
   informative: PropTypes.bool,

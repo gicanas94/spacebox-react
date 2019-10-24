@@ -389,7 +389,11 @@ class SpacePage extends Component {
             <div>
               {authUser && spacebox && authUser.uid === spacebox.uid && (
                 <StyledPostFormWrapper>
-                  <PostForm sid={spacebox.slug} />
+                  <PostForm
+                    alertSetAction={alertSetAction}
+                    firebase={firebase}
+                    sid={spacebox.slug}
+                  />
                 </StyledPostFormWrapper>
               )}
 

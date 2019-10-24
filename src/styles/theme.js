@@ -80,6 +80,9 @@ export default {
         fontWeight: font.weight.medium,
       },
     },
+    ConfirmationModal: {
+      bgColor: Color(themeMainColor).alpha(0.8).string(),
+    },
     Header: {
       maxWidth: '1280px',
       mobileWidth: '100%',
@@ -111,7 +114,7 @@ export default {
       },
     },
     LoadingSpinner: {
-      bgColor: 'rgba(255, 255, 255, 0.9)',
+      bgColor: 'rgba(255, 255, 255, 0.8)',
       spinnerColor: themeMainColor,
     },
     Post: {

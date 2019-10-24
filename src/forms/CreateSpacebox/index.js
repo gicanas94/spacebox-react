@@ -27,7 +27,7 @@ const CreateSpaceboxFormSchema = [
     description: Yup.string().required('This field is required!'),
   }),
   Yup.object().shape({
-    category: Yup.string().trim().required('This field is required!'),
+    category: Yup.number().integer().required('This field is required!'),
   }),
 ];
 
@@ -83,9 +83,7 @@ const CreateSpaceboxForm = ({
 
     const createdSpacebox = {
       bgColor: values.bgColor,
-      category: CATEGORIES.filter(
-        category => category === values.category,
-      )[0] || 'Other',
+      category: values.category,
       color: values.color,
       createdAt: moment().valueOf(),
       description: values.description.trim(),
@@ -124,7 +122,7 @@ const CreateSpaceboxForm = ({
     <Wizard
       initialValues={{
         bgColor: 'rgb(64, 191, 163)',
-        category: '',
+        category: null,
         color: 'rgb(25, 44, 77)',
         description: 'Description',
         title: 'Title',
@@ -299,8 +297,8 @@ const CreateSpaceboxForm = ({
                   }
                   label="Category"
                   margin="0 0 25px 0"
-                  onChangeHandler={(event) => {
-                    form.setFieldValue('category', event);
+                  onChangeHandler={(categoryIndex) => {
+                    form.setFieldValue('category', categoryIndex);
                     form.setFieldTouched('category');
                   }}
                   options={CATEGORIES}

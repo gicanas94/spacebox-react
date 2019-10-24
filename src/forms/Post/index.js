@@ -1,20 +1,16 @@
 import * as Yup from 'yup';
 import _ from 'lodash';
 import autosize from 'autosize';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { alertSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
-import { withFirebase } from '../../Firebase';
 
 const PostFormSchema = Yup.object().shape({
   title: Yup.string().trim().required('This field is required!'),
@@ -127,9 +123,4 @@ PostForm.propTypes = {
   sid: PropTypes.string.isRequired,
 };
 
-const mapDispatchToProps = { alertSetAction: alertSet };
-
-export default compose(
-  connect(null, mapDispatchToProps),
-  withFirebase,
-)(PostForm);
+export default PostForm;
