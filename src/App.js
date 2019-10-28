@@ -9,7 +9,6 @@ import AccountPage from './pages/Account';
 import AdminPage from './pages/Admin';
 import Alert from './components/Alert';
 import { alertReset } from './Redux/actions';
-import ConfirmationModal from './components/ConfirmationModal';
 import CreateSpaceboxPage from './pages/CreateSpacebox';
 import { device } from './styles';
 import EditSpaceboxPage from './pages/EditSpacebox';

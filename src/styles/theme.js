@@ -263,6 +263,20 @@ export default {
         borderWidth: '2px',
       },
     },
+    SignIn: {
+      forgotPasswordLink: {
+        fontSize: font.size.s,
+      },
+    },
+    SignUp: {
+      signInLink: {
+        fontSize: font.size.s,
+      },
+      termsOfUsePolicy: {
+        color: themeSecondaryGreyColor,
+        fontSize: font.size.s,
+      },
+    },
   },
   global: {
     borderRadius: '4px',
@@ -316,16 +330,6 @@ export default {
       content: {
         fontSize: font.size.l,
         fontWeight: font.weight.bold,
-      },
-    },
-    SignIn: {
-      forgotPasswordLink: {
-        fontSize: font.size.s,
-      },
-    },
-    SignUp: {
-      signInLink: {
-        fontSize: font.size.s,
       },
     },
     Space: {

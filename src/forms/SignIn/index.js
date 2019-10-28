@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -8,7 +9,6 @@ import Button from '../../components/Button';
 import Checkbox from '../../components/Checkbox';
 import { ERRORS, ROUTES } from '../../constants';
 import Input from '../../components/Input';
-import { PasswordForgetLink } from '../../pages/SignIn';
 
 const SignInFormSchema = Yup.object().shape({
   email: Yup.string()
@@ -17,6 +17,10 @@ const SignInFormSchema = Yup.object().shape({
     .required('This field is required!'),
   password: Yup.string().trim().required('This field is required!'),
 });
+
+const StyledLink = styled(Link)`
+  font-size: ${({ theme }) => theme.forms.SignIn.forgotPasswordLink.fontSize};
+`;
 
 const StyledBottomWrapper = styled.div`
   align-items: flex-end;
@@ -105,7 +109,9 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
           />
 
           <StyledBottomWrapper>
-            <PasswordForgetLink />
+            <StyledLink to={ROUTES.PASSWORD_FORGET}>
+              {'Forgot password?'}
+            </StyledLink>
 
             <Button
               disabled={isSubmitting}

@@ -1,10 +1,9 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { Link, Redirect, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
+import { Redirect, withRouter } from 'react-router-dom';
 
 import { alertSet } from '../../Redux/actions';
 import Box from '../../components/Box';
@@ -13,14 +12,6 @@ import { ROUTES } from '../../constants';
 import SignInForm from '../../forms/SignIn';
 import SignInSocialMediaForm from '../../forms/SignInSocialMedia';
 import { withFirebase } from '../../Firebase';
-
-const StyledLink = styled(Link)`
-  font-size: ${({ theme }) => theme.pages.SignIn.forgotPasswordLink.fontSize};
-`;
-
-const PasswordForgetLink = () => (
-  <StyledLink to={ROUTES.PASSWORD_FORGET}>Forgot password?</StyledLink>
-);
 
 const SignInPage = ({
   alertSetAction,
@@ -65,8 +56,6 @@ SignInPage.defaultProps = {
 const mapStateToProps = state => ({ authUser: state.session.authUser });
 
 const mapDispatchToProps = { alertSetAction: alertSet };
-
-export { PasswordForgetLink };
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

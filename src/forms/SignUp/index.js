@@ -2,17 +2,16 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import { compose } from 'recompose';
 import { Form, Formik } from 'formik';
+import { Link, withRouter } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
 
 import Button from '../../components/Button';
 import { device } from '../../styles';
 import Input from '../../components/Input';
 import { ROUTES } from '../../constants';
-import { SignInLink } from '../../pages/SignUp';
 import { withFirebase } from '../../Firebase';
 
 const SignUpFormSchema = Yup.object().shape({
@@ -45,6 +44,15 @@ const StyledGrid = styled.div`
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
   }
+`;
+
+const StyledLink = styled(Link)`
+  font-size: ${({ theme }) => theme.forms.SignUp.signInLink.fontSize};
+`;
+
+const StyledTermsOfUsePolicy = styled.p`
+  color: ${({ theme }) => theme.forms.SignUp.termsOfUsePolicy.color};
+  font-size: ${({ theme }) => theme.forms.SignUp.termsOfUsePolicy.fontSize};
 `;
 
 const StyledBottomWrapper = styled.div`
@@ -177,8 +185,14 @@ const SignUpForm = ({ alertSetAction, firebase, history }) => {
             />
           </StyledGrid>
 
+          <StyledTermsOfUsePolicy>
+            {'By signing up, you are accepting our '}
+            <Link to={ROUTES.TERMS_OF_USE}>Terms of Use</Link>
+            {'.'}
+          </StyledTermsOfUsePolicy>
+
           <StyledBottomWrapper>
-            <SignInLink />
+            <StyledLink to={ROUTES.SIGN_IN}>Sign in instead?</StyledLink>
 
             <Button
               disabled={isSubmitting}
