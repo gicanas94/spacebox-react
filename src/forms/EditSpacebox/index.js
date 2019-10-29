@@ -10,6 +10,7 @@ import { CATEGORIES, ROUTES } from '../../constants';
 import Checkbox from '../../components/Checkbox';
 import ColorPicker from '../../components/ColorPicker';
 import { device } from '../../styles';
+import Hr from '../../components/Hr';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
 import Spacebox from '../../components/Spacebox';
@@ -28,6 +29,7 @@ const StyledSpacebox = styled.div`
 `;
 
 const StyledWrapper = styled.div`
+  align-items: center;
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 25px;
@@ -43,10 +45,13 @@ const StyledWrapper = styled.div`
   }
 `;
 
-const StyledCheckBoxAndButtonWrapper = styled.div`
-  align-items: center;
+const StyledButtonsWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+
+  @media ${device.tablet} {
+    justify-content: center;
+  }
 `;
 
 const EditSpaceboxForm = ({
@@ -187,29 +192,42 @@ const EditSpaceboxForm = ({
               value={values.category}
             />
 
-            <StyledCheckBoxAndButtonWrapper>
-              <Checkbox
-                checked={values.visible}
-                disabled={isSubmitting}
-                label="Visible on home page"
-                name="visible"
-                onChangeHandler={() => setFieldValue(
-                  'visible',
-                  !values.visible,
-                )}
-                rounded
-              />
-
-              <Button
-                disabled={isSubmitting}
-                rounded
-                styleType="bordered"
-                type="submit"
-              >
-                {'Save'}
-              </Button>
-            </StyledCheckBoxAndButtonWrapper>
+            <Checkbox
+              checked={values.visible}
+              disabled={isSubmitting}
+              label="Visible on home page"
+              name="visible"
+              onChangeHandler={() => setFieldValue(
+                'visible',
+                !values.visible,
+              )}
+              rounded
+            />
           </StyledWrapper>
+
+          <Hr margin="25px 0" />
+
+          <StyledButtonsWrapper>
+            <Button
+              color="abalone"
+              onClick={() => history.goBack()}
+              margin="0 25px 0 0"
+              rounded
+              styleType="unbordered"
+              type="button"
+            >
+              {'Cancel'}
+            </Button>
+
+            <Button
+              disabled={isSubmitting}
+              rounded
+              styleType="bordered"
+              type="submit"
+            >
+              {'Save'}
+            </Button>
+          </StyledButtonsWrapper>
         </Form>
       )}
     />

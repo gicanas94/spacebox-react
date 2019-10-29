@@ -298,7 +298,7 @@ const Post = ({
       data-for={`trash-icon_${post.slug}`}
       data-tip="Delete post"
       onClick={
-        () => handleDeletePostClick(spacebox.slug, post.slug)
+        () => !likeInProgress && handleDeletePostClick(spacebox.slug, post.slug)
       }
     />
   );

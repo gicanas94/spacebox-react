@@ -14,7 +14,9 @@ const StyledWrapper = styled.div`
   display: flex;
   height: 100%;
   justify-content: center;
+  left: 0;
   position: fixed;
+  top: 0;
   width: 100%;
   z-index: 800;
 `;
@@ -50,7 +52,7 @@ const StyledButtonsWrapper = styled.div`
 
 const ConfirmationModal = ({
   buttonsText,
-  confirmButtonIsDisabled,
+  buttonsAreDisabled,
   content,
   onCancelHandler,
   onConfirmHandler,
@@ -67,6 +69,7 @@ const ConfirmationModal = ({
       <StyledButtonsWrapper>
         <Button
           color="abalone"
+          disabled={buttonsAreDisabled}
           onClick={onCancelHandler}
           margin="0 25px 0 0"
           rounded
@@ -77,7 +80,7 @@ const ConfirmationModal = ({
         </Button>
 
         <Button
-          disabled={confirmButtonIsDisabled}
+          disabled={buttonsAreDisabled}
           onClick={onConfirmHandler}
           rounded
           styleType="bordered"
@@ -92,7 +95,7 @@ const ConfirmationModal = ({
 
 ConfirmationModal.propTypes = {
   buttonsText: PropTypes.arrayOf(PropTypes.string),
-  confirmButtonIsDisabled: PropTypes.bool,
+  buttonsAreDisabled: PropTypes.bool,
   content: PropTypes.string.isRequired,
   onCancelHandler: PropTypes.func.isRequired,
   onConfirmHandler: PropTypes.func.isRequired,
@@ -102,7 +105,7 @@ ConfirmationModal.propTypes = {
 
 ConfirmationModal.defaultProps = {
   buttonsText: ['Cancel', 'Confirm'],
-  confirmButtonIsDisabled: false,
+  buttonsAreDisabled: false,
   rounded: true,
 };
 

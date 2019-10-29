@@ -94,6 +94,7 @@ const StyledLink = styled(Link)`
 `;
 
 const SpaceboxInfoSection = ({
+  authUserIsTheOwner,
   history,
   location,
   page,
@@ -118,24 +119,41 @@ const SpaceboxInfoSection = ({
 
     <StyledButtonsWrapper>
       <StyledFirstChild>
-        <StyledLink to={{
-          pathname: `${ROUTES.USER_BASE}/${user.slug}`,
-          state: {
-            user,
-            uid: spacebox.uid,
-          },
-        }}
-        >
-          <Button
-            fullWidth
-            rounded
-            size="small"
-            styleType="filled"
-            type="button"
-          >
-            {'Go to user profile'}
-          </Button>
-        </StyledLink>
+        {authUserIsTheOwner
+          ? (
+            <StyledLink to={`${ROUTES.EDIT_SPACEBOX_BASE}/${spacebox.slug}`}>
+              <Button
+                color="cornflower"
+                fullWidth
+                rounded
+                size="small"
+                styleType="bordered"
+                type="button"
+              >
+                {'Edit Spacebox'}
+              </Button>
+            </StyledLink>
+          ) : (
+            <StyledLink to={{
+              pathname: `${ROUTES.USER_BASE}/${user.slug}`,
+              state: {
+                user,
+                uid: spacebox.uid,
+              },
+            }}
+            >
+              <Button
+                fullWidth
+                rounded
+                size="small"
+                styleType="filled"
+                type="button"
+              >
+                {'Go to user profile'}
+              </Button>
+            </StyledLink>
+          )
+        }
       </StyledFirstChild>
 
       {page === 'post' && (
@@ -143,14 +161,15 @@ const SpaceboxInfoSection = ({
           {location.state
             ? (
               <Button
+                color="emerald"
                 fullWidth
                 onClick={() => history.goBack()}
                 rounded
-                size="small"
+                size="large"
                 styleType="filled"
                 type="button"
               >
-                {'Go back to Spacebox'}
+                {'Go back'}
               </Button>
             ) : (
               <StyledLink to={{
@@ -159,8 +178,10 @@ const SpaceboxInfoSection = ({
               }}
               >
                 <Button
+                  color="emerald"
                   fullWidth
                   rounded
+                  size="large"
                   styleType="filled"
                   type="button"
                 >
@@ -176,11 +197,16 @@ const SpaceboxInfoSection = ({
 );
 
 SpaceboxInfoSection.propTypes = {
+  authUserIsTheOwner: PropTypes.bool,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
   page: PropTypes.oneOf(['space', 'post']).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+SpaceboxInfoSection.defaultProps = {
+  authUserIsTheOwner: false,
 };
 
 export default SpaceboxInfoSection;

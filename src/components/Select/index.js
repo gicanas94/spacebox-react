@@ -182,7 +182,6 @@ const Select = ({
 }) => {
   const [listIsOpen, setListIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(value);
-
   const wrapperRef = useRef();
 
   const closeList = (event) => {

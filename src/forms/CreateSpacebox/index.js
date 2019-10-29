@@ -27,7 +27,7 @@ const CreateSpaceboxFormSchema = [
     description: Yup.string().required('This field is required!'),
   }),
   Yup.object().shape({
-    category: Yup.number().integer().required('This field is required!'),
+    category: Yup.mixed().required('This field is required!'),
   }),
 ];
 

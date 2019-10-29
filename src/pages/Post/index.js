@@ -195,7 +195,9 @@ class PostPage extends Component {
           <StyledGrid>
             {spacebox && user && (
               <SpaceboxInfoSection
-                authUser={authUser}
+                authUserIsTheOwner={
+                  authUser && authUser.uid === spacebox.uid
+                }
                 history={history}
                 location={location}
                 page="post"

@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
     background: ${theme.global.textSelectionColor};
   }
 
-  a {
+  a, .linkStyle {
     color: ${theme.htmlTags.a.color};
     cursor: pointer !important;
     display: inline-block;

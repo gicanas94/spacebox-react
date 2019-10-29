@@ -80,6 +80,8 @@ class Firebase {
     this.db.collection('spaceboxes').doc(spacebox.slug).set(spacebox)
   );
 
+  deleteSpacebox = sid => this.db.collection('spaceboxes').doc(sid).delete();
+
   getAllVisibleSpaceboxes = () => (
     this.db.collection('spaceboxes').where('visible', '==', true)
   );

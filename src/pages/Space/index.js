@@ -314,6 +314,9 @@ class SpacePage extends Component {
               {spacebox && user && (
                 <StyledSpaceboxInfoSectionWrapper>
                   <SpaceboxInfoSection
+                    authUserIsTheOwner={
+                      authUser && authUser.uid === spacebox.uid
+                    }
                     history={history}
                     location={location}
                     page="space"

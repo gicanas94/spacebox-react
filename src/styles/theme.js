@@ -326,6 +326,13 @@ export default {
     },
   },
   pages: {
+    EditSpacebox: {
+      deleteSpacebox: {
+        color: color.palette.salmon,
+        fontSize: font.size.xs,
+        fontWeight: font.weight.bold,
+      },
+    },
     NotFound: {
       content: {
         fontSize: font.size.l,

@@ -4,11 +4,16 @@ import { Form, Formik } from 'formik';
 import styled from 'styled-components';
 
 import Button from '../Button';
+import { device } from '../../styles';
 import Hr from '../Hr';
 
 const StyledButtonsWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+
+  @media ${device.tablet} {
+    justify-content: center;
+  }
 `;
 
 class Wizard extends Component {
