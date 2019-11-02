@@ -119,7 +119,7 @@ const Input = ({
   success,
   ...props
 }) => {
-  const inputId = `textarea-component_${name}`;
+  const inputId = `input-component_${name}`;
 
   return (
     <StyledWrapper error={error} margin={margin} success={success}>

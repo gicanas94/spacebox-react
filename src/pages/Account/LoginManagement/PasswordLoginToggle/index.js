@@ -1,91 +1,87 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
+import useStateWithCallback from 'use-state-with-callback';
 
 import Button from '../../../../components/Button';
-import Input from '../../../../components/Input';
+import PasswordLinkForm from '../../../../forms/PasswordLink';
 
-class PasswordLoginToggle extends Component {
-  constructor(props) {
-    super(props);
+const PasswordLoginToggle = ({
+  alertSetAction,
+  authUserEmail,
+  fetchSignInMethodsHandler,
+  firebase,
+  isEnabled,
+  isLoading,
+  onlyOneLeft,
+  onUnlinkHandler,
+  signInMethod,
+}) => {
+  const [
+    passwordLinkFormIsVisible,
+    setPasswordLinkFormIsVisible,
+  ] = useStateWithCallback(false, () => {
+    if (passwordLinkFormIsVisible) {
+      document.getElementById('input-component_passwordOne').focus();
+    }
+  });
 
-    this.state = {
-      passwordOne: '',
-      passwordTwo: '',
-    };
-  }
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-
-    const { onLinkHandler } = this.props;
-    const { passwordOne } = this.state;
-
-    onLinkHandler(passwordOne);
-
-    this.setState({
-      passwordOne: '',
-      passwordTwo: '',
-    });
-  };
-
-  handleChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  render() {
-    const {
-      onlyOneLeft,
-      isEnabled,
-      signInMethod,
-      onUnlinkHandler,
-    } = this.props;
-
-    const { passwordOne, passwordTwo } = this.state;
-
-    return isEnabled ? (
-      <Button
-        color="salmon"
-        disabled={onlyOneLeft}
-        onClick={() => onUnlinkHandler(signInMethod.id)}
-        rounded
-        styleType="bordered"
-      >
-        {`Unlink ${signInMethod.displayName}`}
-      </Button>
-    ) : (
-      <form onSubmit={this.handleSubmit}>
-        <Input
-          label="Password"
-          name="passwordOne"
-          onChange={this.handleChange}
+  return (
+    <Fragment>
+      {isEnabled ? (
+        <Button
+          color="salmon"
+          disabled={onlyOneLeft || isLoading}
+          onClick={() => onUnlinkHandler(signInMethod.id)}
           rounded
-          type="password"
-          value={passwordOne}
-        />
-
-        <Input
-          label="Confirm your password"
-          name="passwordTwo"
-          onChange={this.handleChange}
-          rounded
-          type="password"
-          value={passwordTwo}
-        />
-
-        <Button color="green" rounded styleType="bordered" type="submit">
-          {`Link ${signInMethod.displayName}`}
+          size="small"
+          styleType="filled"
+          width="90px"
+        >
+          {isLoading ? '...' : 'Unlink'}
         </Button>
-      </form>
-    );
-  }
-}
+      ) : (
+        <Button
+          color="green"
+          disabled={isLoading}
+          onClick={() => setPasswordLinkFormIsVisible(true)}
+          rounded
+          size="small"
+          styleType="filled"
+          type="button"
+          width="90px"
+        >
+          {isLoading ? '...' : 'Link'}
+        </Button>
+      )}
+
+      {passwordLinkFormIsVisible && (
+        <PasswordLinkForm
+          alertSetAction={alertSetAction}
+          authUserEmail={authUserEmail}
+          fetchSignInMethodsHandler={fetchSignInMethodsHandler}
+          firebase={firebase}
+          page="loginManagement"
+          setPasswordLinkFormIsVisibleHandler={setPasswordLinkFormIsVisible}
+        />
+      )}
+    </Fragment>
+  );
+};
 
 PasswordLoginToggle.propTypes = {
+  alertSetAction: PropTypes.func.isRequired,
+  authUserEmail: PropTypes.string.isRequired,
+  fetchSignInMethodsHandler: PropTypes.func.isRequired,
+  firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   isEnabled: PropTypes.bool.isRequired,
-  onLinkHandler: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
   onlyOneLeft: PropTypes.bool.isRequired,
   onUnlinkHandler: PropTypes.func.isRequired,
-  signInMethod: PropTypes.objectOf(PropTypes.string).isRequired,
+  signInMethod: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+PasswordLoginToggle.defaultProps = {
+  isLoading: false,
 };
 
 export default PasswordLoginToggle;

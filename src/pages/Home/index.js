@@ -51,6 +51,11 @@ const HomePage = ({
 }) => {
   const [componentIsMounted, setComponentIsMounted] = useState(true);
 
+  const [
+    getAllVisibleSpaceboxesFailed,
+    setGetAllVisibleSpaceboxesFailed,
+  ] = useState(false);
+
   const handleEditSpaceboxClick = spaceboxSlug => (
     history.push(`${ROUTES.EDIT_SPACEBOX_BASE}/${spaceboxSlug}`)
   );
@@ -60,7 +65,6 @@ const HomePage = ({
 
     firebase.getAllVisibleSpaceboxes().onSnapshot((documents) => {
       const spaceboxes = [];
-
       documents.forEach(document => spaceboxes.push(document.data()));
 
       if (componentIsMounted) {
@@ -73,6 +77,7 @@ const HomePage = ({
         type: 'danger',
       });
 
+      setGetAllVisibleSpaceboxesFailed(true);
       loadingSetAction(false);
     });
 
@@ -104,6 +109,10 @@ const HomePage = ({
 
       {isLoading && (
         <Spacebox informative order={1} title="Loading..." />
+      )}
+
+      {getAllVisibleSpaceboxesFailed && (
+        <Spacebox informative order={1} title="ERROR." />
       )}
 
       {allSpaceboxes

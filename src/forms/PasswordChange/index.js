@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import Button from '../../components/Button';
+import { device } from '../../styles';
 import { ERRORS } from '../../constants';
 import Input from '../../components/Input';
 import Hr from '../../components/Hr';
@@ -22,9 +23,44 @@ const PasswordChangeFormSchema = Yup.object().shape({
     .oneOf([Yup.ref('passwordOne'), null], 'Passwords must match'),
 });
 
-const StyledButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+const StyledNewPasswordWrapper = styled.div`
+  & > div:first-of-type {
+    margin-bottom: 25px;
+  }
+
+  @media ${device.mobileL} {
+    display: flex;
+
+    & > div:first-of-type {
+      margin-bottom: 0;
+      margin-right: 25px;
+    }
+
+    & > * {
+      width: 50%;
+    }
+  }
+`;
+
+const StyledCurrentPasswordAndButtonWrapper = styled.div`
+  & > div {
+    margin-bottom: 25px;
+  }
+
+  @media ${device.mobileL} {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    & > div {
+      margin-bottom: 0;
+      margin-right: 25px;
+    }
+
+    & > * {
+      width: 50%;
+    }
+  }
 `;
 
 const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
@@ -113,66 +149,66 @@ const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
         values,
       }) => (
         <Form>
-          <Input
-            autoFocus
-            disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
-            error={
-              (errors.password && touched.password && errors.password)
-              || (status && status.currentPasswordIsWrong)
-              || (status && status.reachedMaxCurrentPasswordAttemps)
-            }
-            label="Current password"
-            name="password"
-            onBlur={handleBlur}
-            onChange={(e) => {
-              if (status) setStatus(false);
-              handleChange(e);
-            }}
-            rounded
-            success={!errors.password && touched.password && !status}
-            type="password"
-            value={status ? '' : values.password}
-          />
+          <StyledNewPasswordWrapper>
+            <Input
+              autoFocus
+              disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
+              error={
+                errors.passwordOne
+                && touched.passwordOne
+                && errors.passwordOne
+              }
+              label="New password"
+              name="passwordOne"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              rounded
+              success={!errors.passwordOne && touched.passwordOne}
+              type="password"
+              value={values.passwordOne}
+            />
+
+            <Input
+              disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
+              error={
+                errors.passwordTwo
+                && touched.passwordTwo
+                && errors.passwordTwo
+              }
+              label="Confirm password"
+              name="passwordTwo"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              rounded
+              success={!errors.passwordTwo && touched.passwordTwo}
+              type="password"
+              value={values.passwordTwo}
+            />
+          </StyledNewPasswordWrapper>
 
           <Hr margin="25px 0" />
 
-          <Input
-            disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
-            error={
-              errors.passwordOne
-              && touched.passwordOne
-              && errors.passwordOne
-            }
-            label="New password"
-            margin="0 0 25px 0"
-            name="passwordOne"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            rounded
-            success={!errors.passwordOne && touched.passwordOne}
-            type="password"
-            value={values.passwordOne}
-          />
+          <StyledCurrentPasswordAndButtonWrapper>
+            <Input
+              disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
+              error={
+                (errors.password && touched.password && errors.password)
+                || (status && status.currentPasswordIsWrong)
+                || (status && status.reachedMaxCurrentPasswordAttemps)
+              }
+              label="Your current password"
+              name="password"
+              onBlur={handleBlur}
+              onChange={(e) => {
+                if (status) setStatus(false);
+                handleChange(e);
+              }}
+              rounded
+              success={!errors.password && touched.password && !status}
+              type="password"
+              value={status ? '' : values.password}
+            />
 
-          <Input
-            disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
-            error={
-              errors.passwordTwo
-              && touched.passwordTwo
-              && errors.passwordTwo
-            }
-            label="Confirm your new password"
-            margin="0 0 25px 0"
-            name="passwordTwo"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            rounded
-            success={!errors.passwordTwo && touched.passwordTwo}
-            type="password"
-            value={values.passwordTwo}
-          />
-
-          <StyledButtonWrapper>
             <Button
               disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
               fullWidth
@@ -182,7 +218,7 @@ const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
             >
               {'Update'}
             </Button>
-          </StyledButtonWrapper>
+          </StyledCurrentPasswordAndButtonWrapper>
         </Form>
       )}
     />

@@ -38,6 +38,7 @@ const StyledDeleteSpacebox = styled.span`
   font-weight: ${({ theme }) => (
     theme.pages.EditSpacebox.deleteSpacebox.fontWeight
   )} !important;
+  text-align: right;
 `;
 
 const StyledTrashIcon = styled(Trash)`
@@ -128,6 +129,7 @@ const EditSpaceboxPage = ({
       {!isLoading && spacebox && (
         <Box size="medium">
           <Helmet title="Edit Spacebox - Spacebox" />
+
           <StyledTitleAndDeleteSpaceboxWrapper>
             <h1>Edit Spacebox</h1>
 

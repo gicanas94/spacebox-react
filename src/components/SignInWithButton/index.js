@@ -1,9 +1,12 @@
-import { Facebook as FacebookIcon } from 'styled-icons/fa-brands/Facebook';
-import { Google as GoogleIcon } from 'styled-icons/fa-brands/Google';
+import {
+  FacebookSquare as FacebookIcon,
+} from 'styled-icons/boxicons-logos/FacebookSquare';
+
+import { Google as GoogleIcon } from 'styled-icons/boxicons-logos/Google';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { Twitter as TwitterIcon } from 'styled-icons/fa-brands/Twitter';
+import { Twitter as TwitterIcon } from 'styled-icons/boxicons-logos/Twitter';
 
 import { transition } from '../../styles';
 
@@ -29,13 +32,13 @@ const StyledButton = styled.button`
     outline: none;
   }
 
-  ${({ account }) => (account === 'Google') && `
-    background-color: #db4437;
+  ${({ account }) => account === 'Facebook' && `
+    background-color: #3b5998;
     color: #ffffff;
   `}
 
-  ${({ account }) => account === 'Facebook' && `
-    background-color: #3b5998;
+  ${({ account }) => (account === 'Google') && `
+    background-color: #db4437;
     color: #ffffff;
   `}
 
@@ -63,7 +66,7 @@ const StyledIconWrapper = styled.div`
 
 const StyledIcon = styled.div`
   line-height: 0;
-  width: 21px;
+  width: 28px;
 `;
 
 const StyledText = styled.div`
@@ -77,8 +80,8 @@ const SignInWithButton = ({ account, ...props }) => (
   <StyledButton account={account} {...props}>
     <StyledIconWrapper>
       <StyledIcon>
-        {account === 'Google' && <GoogleIcon />}
         {account === 'Facebook' && <FacebookIcon />}
+        {account === 'Google' && <GoogleIcon />}
         {account === 'Twitter' && <TwitterIcon />}
       </StyledIcon>
     </StyledIconWrapper>
@@ -88,7 +91,7 @@ const SignInWithButton = ({ account, ...props }) => (
 );
 
 SignInWithButton.propTypes = {
-  account: PropTypes.oneOf(['Google', 'Facebook', 'Twitter']).isRequired,
+  account: PropTypes.oneOf(['Facebook', 'Google', 'Twitter']).isRequired,
   fullWidth: PropTypes.bool,
   margin: PropTypes.string,
   rounded: PropTypes.bool,

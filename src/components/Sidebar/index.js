@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
@@ -59,9 +59,7 @@ const StyledUl = styled.ul`
   }
 `;
 
-const StyledNavLink = styled(NavLink).attrs({
-  activeClassName: 'active',
-})`
+const StyledNavLink = styled(NavLink)`
   font-size: ${({ theme }) => theme.components.Sidebar.link.fontSize};
   font-weight: ${({ theme }) => theme.components.Sidebar.link.fontWeight};
 
@@ -70,9 +68,13 @@ const StyledNavLink = styled(NavLink).attrs({
       theme.components.Sidebar.activeLink.fontWeight
     )};
   }
+
+  &.not-active {
+    font-weight: inherit;
+  }
 `;
 
-const Sidebar = ({ content }) => {
+const Sidebar = ({ content, location }) => {
   const myContent = (
     <StyledSections>
       {content.map(section => (
@@ -82,7 +84,11 @@ const Sidebar = ({ content }) => {
           <StyledUl>
             {section.links.map(link => (
               <li key={link.text}>
-                <StyledNavLink to={link.to}>
+                {console.log(location.pathname === link.to)}
+                <StyledNavLink
+                  className={location.pathname === link.to ? 'active' : 'not-active'}
+                  to={link.to}
+                >
                   {link.text}
                 </StyledNavLink>
               </li>
@@ -114,10 +120,11 @@ const Sidebar = ({ content }) => {
 
 Sidebar.propTypes = {
   content: PropTypes.arrayOf(PropTypes.object),
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 Sidebar.defaultProps = {
   content: undefined,
 };
 
-export default Sidebar;
+export default withRouter(Sidebar);

@@ -306,6 +306,7 @@ class SpacePage extends Component {
     return (
       <Fragment>
         {spacebox && <Helmet title={`${spacebox.title} - Spacebox`} />}
+
         {isLoading && <LoadingSpinner />}
 
         {!isLoading && (

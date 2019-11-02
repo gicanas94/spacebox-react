@@ -97,13 +97,16 @@ const AuthLinks = ({
       </Button>
     </StyledLink>
 
-    <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.ACCOUNT}>
+    <StyledLink
+      onClick={() => onLinkClickHandler(false)}
+      to={ROUTES.ACCOUNT_BASE}
+    >
       <Button
         color="flax"
         fullWidth
         rounded
         size="small"
-        styleType={location.pathname === ROUTES.ACCOUNT
+        styleType={location.pathname.startsWith(ROUTES.ACCOUNT_BASE)
           ? 'filled'
           : 'unbordered'
         }

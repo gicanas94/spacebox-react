@@ -189,6 +189,7 @@ class PostPage extends Component {
     return (
       <Fragment>
         {post && <Helmet title={`${post.title} - Spacebox`} />}
+
         {isLoading && <LoadingSpinner />}
 
         {!isLoading && post && (

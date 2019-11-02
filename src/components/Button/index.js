@@ -157,6 +157,7 @@ const StyledButton = styled.button`
     styleType === 'filled' && disabled
   ) && `
     background-color: ${theme.components.Button.color.disabled};
+    color: ${Color(theme.components.Button.color.disabled).darken(0.2).hex()};
   `}
 
   ${({ styleType, theme }) => styleType === 'unbordered' && `
@@ -169,6 +170,10 @@ const StyledButton = styled.button`
     styleType === 'unbordered' && disabled
   ) && `
     color: ${theme.components.Button.color.disabled};
+  `}
+
+  ${({ width }) => width && `
+    width: ${width};
   `}
 `;
 
@@ -195,6 +200,7 @@ Button.propTypes = {
   rounded: PropTypes.bool,
   size: PropTypes.string,
   styleType: PropTypes.oneOf(['bordered', 'filled', 'unbordered']).isRequired,
+  width: PropTypes.string,
 };
 
 Button.defaultProps = {
@@ -204,6 +210,7 @@ Button.defaultProps = {
   margin: undefined,
   rounded: false,
   size: undefined,
+  width: undefined,
 };
 
 export default Button;

@@ -38,7 +38,10 @@ const StyledRoutesContainer = styled.div`
   }
 `;
 
-const App = ({ activeAlert, alertResetAction }) => (
+const App = ({
+  activeAlert,
+  alertResetAction,
+}) => (
   <Fragment>
     <Header />
 
@@ -52,7 +55,7 @@ const App = ({ activeAlert, alertResetAction }) => (
 
     <StyledRoutesContainer>
       <Switch>
-        <Route component={AccountPage} path={ROUTES.ACCOUNT} />
+        <Route component={AccountPage} path={ROUTES.ACCOUNT_BASE} />
         <Route component={AdminPage} path={ROUTES.ADMIN} />
         <Route component={CreateSpaceboxPage} path={ROUTES.CREATE_SPACEBOX} />
         <Route component={EditSpaceboxPage} path={ROUTES.EDIT_SPACEBOX_WITH_SLUG} />
@@ -77,11 +80,11 @@ App.propTypes = {
   alertResetAction: PropTypes.func.isRequired,
 };
 
-App.defaultProps = {
-  activeAlert: null,
-};
+App.defaultProps = { activeAlert: null };
 
-const mapStateToProps = state => ({ activeAlert: state.activeAlert });
+const mapStateToProps = state => ({
+  activeAlert: state.activeAlert,
+});
 
 const mapDispatchToProps = { alertResetAction: alertReset };
 
