@@ -191,10 +191,10 @@ const Select = ({
 
   const handleKeydown = event => event.key === 'Escape' && closeList(event);
 
-  const handleOptionClick = (index) => {
-    setSelectedOption(index);
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
     setListIsOpen(!listIsOpen);
-    onChangeHandler(index);
+    onChangeHandler(option);
   };
 
   useEffect(() => {
@@ -231,15 +231,16 @@ const Select = ({
         />
 
         <StyledSelectedOption>
-          {options[selectedOption] || '-'}
+          {selectedOption || '-'}
         </StyledSelectedOption>
+
 
         {listIsOpen && (
           <StyledUl rounded={rounded}>
-            {options.map((option, index) => (
+            {options.map(option => (
               <StyledLi
                 key={option}
-                onClick={!disabled ? () => handleOptionClick(index) : null}
+                onClick={!disabled ? () => handleOptionClick(option) : null}
               >
                 {option}
               </StyledLi>
@@ -264,7 +265,7 @@ Select.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   rounded: PropTypes.bool,
   success: PropTypes.bool,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  value: PropTypes.string,
 };
 
 Select.defaultProps = {

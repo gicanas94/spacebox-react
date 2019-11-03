@@ -15,12 +15,15 @@ import Input from '../../components/Input';
 import Select from '../../components/Select';
 import Spacebox from '../../components/Spacebox';
 
-const EditSpaceboxFormSchema = [
-  Yup.object().shape({
-    title: Yup.string().trim().required('This field is required!'),
-    description: Yup.string().trim().required('This field is required!'),
-  }),
-];
+const EditSpaceboxFormSchema = Yup.object().shape({
+  title: Yup.string().trim().required('This field is required!'),
+  description: Yup.string().trim().required('This field is required!'),
+  category: Yup
+    .string()
+    .trim()
+    .oneOf(CATEGORIES, 'This field is required!')
+    .required('This field is required!'),
+});
 
 const StyledSpacebox = styled.div`
   margin: auto;
@@ -182,8 +185,8 @@ const EditSpaceboxForm = ({
               disabled={isSubmitting}
               error={errors.category && touched.category && errors.category}
               label="Category"
-              onChangeHandler={(categoryIndex) => {
-                setFieldValue('category', categoryIndex);
+              onChangeHandler={(category) => {
+                setFieldValue('category', category);
                 setFieldTouched('category');
               }}
               options={CATEGORIES}

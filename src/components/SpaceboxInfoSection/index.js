@@ -5,9 +5,9 @@ import styled from 'styled-components';
 
 import Box from '../Box';
 import Button from '../Button';
-import { CATEGORIES, ROUTES } from '../../constants';
 import { device } from '../../styles';
 import Hr from '../Hr';
+import { ROUTES } from '../../constants';
 
 const StyledSpaceboxTitle = styled.h1`
   color: inherit;
@@ -112,7 +112,7 @@ const SpaceboxInfoSection = ({
 
     <StyledSpaceboxCategory>
       <span>Category: </span>
-      {CATEGORIES[spacebox.category]}
+      {spacebox.category}
     </StyledSpaceboxCategory>
 
     <Hr centered margin="25px 0" width="50%" />
