@@ -28,7 +28,7 @@ const SignUpPage = ({ alertSetAction, authUser }) => (
 
 SignUpPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.objectOf(PropTypes.any),
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 SignUpPage.defaultProps = {

@@ -25,6 +25,11 @@ export const alertSet = alert => (dispatch) => {
   }
 };
 
+export const appLocaleSet = locale => ({
+  type: 'APP_LOCALE_SET',
+  locale,
+});
+
 export const authUserSet = authUser => ({
   type: 'AUTH_USER_SET',
   authUser,

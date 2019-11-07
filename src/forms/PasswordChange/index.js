@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
-import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 
 import Button from '../../components/Button';
 import { device } from '../../styles';
@@ -56,8 +56,8 @@ const PasswordChangeForm = ({
   alertSetAction,
   authUser,
   firebase,
-  intl,
 }) => {
+  const intl = useIntl();
   const minimumPasswordCharacters = 6;
 
   const PasswordChangeFormSchema = Yup.object().shape({
@@ -239,9 +239,8 @@ const PasswordChangeForm = ({
 
 PasswordChangeForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  intl: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default injectIntl(PasswordChangeForm);
+export default PasswordChangeForm;

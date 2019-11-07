@@ -1,7 +1,7 @@
-import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 
 const StyledSpan = styled.span`
   font-size: ${({ fontSize }) => fontSize};
@@ -9,10 +9,10 @@ const StyledSpan = styled.span`
 
 const Emoji = ({
   fontSize,
-  intl,
   label,
   symbol,
 }) => {
+  const intl = useIntl();
   const ariaLabel = intl.formatMessage({ id: label });
   const iconWord = intl.formatMessage({ id: 'components.emoji.labelSuffix' });
 
@@ -29,7 +29,6 @@ const Emoji = ({
 
 Emoji.propTypes = {
   fontSize: PropTypes.string,
-  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   label: PropTypes.string.isRequired,
   symbol: PropTypes.string.isRequired,
 };
@@ -38,4 +37,4 @@ Emoji.defaultProps = {
   fontSize: '0.91em',
 };
 
-export default injectIntl(Emoji);
+export default Emoji;

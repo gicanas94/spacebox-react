@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
@@ -18,7 +17,7 @@ const SignInSocialMedia = ({ alertSetAction, firebase, history }) => {
           .then((document) => {
             if (socialAuthUser.additionalUserInfo.isNewUser) {
               user.set({
-                createdAt: moment().valueOf(),
+                createdAt: new Date().toISOString(),
                 email: socialAuthUser.additionalUserInfo.profile.email,
                 isAdmin: false,
                 slug: `${_.kebabCase(

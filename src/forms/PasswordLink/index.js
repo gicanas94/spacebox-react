@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
-import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 
 import Button from '../../components/Button';
 import { device } from '../../styles';
@@ -45,10 +45,10 @@ const PasswordLinkForm = ({
   authUserEmail,
   fetchSignInMethodsHandler,
   firebase,
-  intl,
   page,
   setPasswordLinkFormIsVisibleHandler,
 }) => {
+  const intl = useIntl();
   const minimumPasswordCharacters = 6;
 
   const PasswordLinkFormSchema = Yup.object().shape({
@@ -172,7 +172,6 @@ PasswordLinkForm.propTypes = {
   authUserEmail: PropTypes.string.isRequired,
   fetchSignInMethodsHandler: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   page: PropTypes.oneOf(['changePassword', 'loginManagement']).isRequired,
   setPasswordLinkFormIsVisibleHandler: PropTypes.func,
 };
@@ -181,4 +180,4 @@ PasswordLinkForm.defaultProps = {
   setPasswordLinkFormIsVisibleHandler: () => true,
 };
 
-export default injectIntl(PasswordLinkForm);
+export default PasswordLinkForm;

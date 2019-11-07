@@ -36,7 +36,7 @@ const withAuthorization = condition => (Component) => {
   }
 
   WithAuthorization.propTypes = {
-    authUser: PropTypes.objectOf(PropTypes.any),
+    authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     firebase: PropTypes.objectOf(PropTypes.any).isRequired,
     history: PropTypes.objectOf(PropTypes.any).isRequired,
   };

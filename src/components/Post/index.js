@@ -1,12 +1,11 @@
 import _ from 'lodash';
 import { CommentAlt } from 'styled-icons/fa-solid/CommentAlt';
 import { Comments } from 'styled-icons/fa-solid/Comments';
+import { FormattedRelativeTime, useIntl } from 'react-intl';
 import { Heart } from 'styled-icons/fa-solid/Heart';
-import { injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 import PropTypes from 'prop-types';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { Trash } from 'styled-icons/fa-solid/Trash';
 import useStateWithCallback from 'use-state-with-callback';
@@ -170,17 +169,16 @@ const Post = ({
   alertSetAction,
   authUser,
   firebase,
-  intl,
   page,
   post,
   spacebox,
   user,
 }) => {
   const [commentsLimit, setCommentsLimit] = useState(3);
-  const [createdAt, setCreatedAt] = useState(moment(post.createdAt).fromNow());
   const [likeInProgress, setLikeInProgress] = useState(false);
   const [userIsLikingOrDisliking, setUserIsLikingOrDisliking] = useState(false);
   const commentFormId = `comment-form_${post.slug}`;
+  const intl = useIntl();
 
   const [
     commentFormIsVisible,
@@ -190,10 +188,6 @@ const Post = ({
       document.getElementById(commentFormId).focus();
     }
   });
-
-  const updateCreatedAtDate = () => (
-    setCreatedAt(moment(post.createdAt).fromNow())
-  );
 
   const handleDeletePostClick = (spaceboxSlug, postSlug) => {
     alertSetAction();
@@ -313,12 +307,6 @@ const Post = ({
     />
   );
 
-  useEffect(() => {
-    const updateCreatedAtDateInterval = setInterval(updateCreatedAtDate, 60000);
-
-    return () => clearInterval(updateCreatedAtDateInterval);
-  }, []);
-
   return (
     <Box padding="20px">
       <StyledTitleAndDateWrapper>
@@ -338,10 +326,27 @@ const Post = ({
         {page === 'post' && <StyledTitle>{post.title}</StyledTitle>}
 
         <StyledCreatedAtDate>
-          <StyledDateFromNow>{createdAt}</StyledDateFromNow>
+          <StyledDateFromNow>
+            <FormattedRelativeTime
+              numeric="auto"
+              updateIntervalInSeconds={60}
+              value={
+                (new Date(post.createdAt).getTime() - new Date().getTime())
+                / 1000
+              }
+            />
+          </StyledDateFromNow>
 
           <StyledLongDate>
-            {moment(post.createdAt).format('DD/MM/YY - kk:mm')}
+            {intl.formatDate(post.createdAt, {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric',
+            })}
+
+            {' - '}
+
+            {intl.formatTime(post.createdAt)}
           </StyledLongDate>
         </StyledCreatedAtDate>
       </StyledTitleAndDateWrapper>
@@ -390,14 +395,14 @@ const Post = ({
           {post.likes.length > 0 && (
             <Fragment>
               <StyledLikesStatIcon />
-              {post.likes.length}
+              {intl.formatNumber(post.likes.length)}
             </Fragment>
           )}
 
           {post.comments.length > 0 && (
             <Fragment>
               <StyledCommentsStatIcon />
-              {post.comments.length}
+              {intl.formatNumber(post.comments.length)}
             </Fragment>
           )}
         </StyledStats>
@@ -432,7 +437,11 @@ const Post = ({
             >
               {intl.formatMessage(
                 { id: 'components.post.seeCommentsText' },
-                { remainingComments: post.comments.length - commentsLimit },
+                {
+                  remainingComments: intl.formatNumber(
+                    post.comments.length - commentsLimit,
+                  ),
+                },
               )}
             </StyledSeeOrHideCommentsSpan>
           )}
@@ -468,9 +477,8 @@ const Post = ({
 
 Post.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.objectOf(PropTypes.any),
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   page: PropTypes.oneOf(['space', 'post']).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -481,4 +489,4 @@ Post.defaultProps = {
   authUser: null,
 };
 
-export default injectIntl(Post);
+export default Post;

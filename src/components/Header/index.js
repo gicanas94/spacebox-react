@@ -1,11 +1,10 @@
-import { compose } from 'recompose';
 import { Cross } from 'styled-icons/icomoon/Cross';
-import { injectIntl } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
 import { Menu } from 'styled-icons/boxicons-regular/Menu';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 
 import { device } from '../../styles';
 import largeLogo from '../../assets/images/logo-with-name.png';
@@ -115,7 +114,6 @@ const StyledLaptopView = styled.div`
   align-items: center;
   display: none;
   justify-content: space-between;
-  overflow: hidden;
 
   img {
     height: 30px;
@@ -144,8 +142,9 @@ const StyledLaptopViewNav = styled.nav`
   }
 `;
 
-const Header = ({ intl, location }) => {
+const Header = ({ location }) => {
   const [mobileNavIsOpen, setMobileNavIsOpen] = useState(false);
+  const intl = useIntl();
 
   return (
     <StyledWrapper>
@@ -204,8 +203,7 @@ const Header = ({ intl, location }) => {
 };
 
 Header.propTypes = {
-  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default compose(injectIntl, withRouter)(Header);
+export default withRouter(Header);

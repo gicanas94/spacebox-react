@@ -68,7 +68,7 @@ const ChangePasswordSubpage = ({
 
 ChangePasswordSubpage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   authUserHasPassword: PropTypes.bool.isRequired,
   fetchSignInMethodsHandler: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,

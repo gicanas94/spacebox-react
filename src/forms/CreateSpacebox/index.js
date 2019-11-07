@@ -3,11 +3,10 @@ import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Field } from 'formik';
-import { injectIntl } from 'react-intl';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 
 import { alertSet } from '../../Redux/actions';
@@ -65,8 +64,9 @@ const CreateSpaceboxForm = ({
   authUser,
   firebase,
   history,
-  intl,
 }) => {
+  const intl = useIntl();
+
   const CreateSpaceboxFormSchema = [
     {},
     Yup.object().shape({
@@ -91,7 +91,7 @@ const CreateSpaceboxForm = ({
       bgColor: values.bgColor,
       category: values.category,
       color: values.color,
-      createdAt: moment().valueOf(),
+      createdAt: new Date().toISOString(),
       description: values.description.trim(),
       likes: 0,
       slug,
@@ -339,10 +339,9 @@ const CreateSpaceboxForm = ({
 
 CreateSpaceboxForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
-  intl: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = state => ({ authUser: state.session.authUser });
@@ -351,7 +350,6 @@ const mapDispatchToProps = { alertSetAction: alertSet };
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  injectIntl,
   withFirebase,
   withRouter,
 )(CreateSpaceboxForm);

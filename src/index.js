@@ -1,5 +1,4 @@
 import { BrowserRouter } from 'react-router-dom';
-import { IntlProvider } from 'react-intl';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Normalize } from 'styled-normalize';
@@ -8,9 +7,9 @@ import { ThemeProvider } from 'styled-components';
 
 import * as serviceWorker from './serviceWorker';
 import App from './App';
+import ConnectedIntlProvider from './components/ConnectedIntlProvider';
 import Firebase, { FirebaseContext } from './Firebase';
 import GlobalStyle from './styles/GlobalStyle';
-import messages from './i18n';
 import store from './Redux/store';
 import theme from './styles/theme';
 
@@ -21,9 +20,9 @@ ReactDOM.render(
       <GlobalStyle />
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <IntlProvider locale="en" messages={messages.en}>
+          <ConnectedIntlProvider>
             <App />
-          </IntlProvider>
+          </ConnectedIntlProvider>
         </ThemeProvider>
       </BrowserRouter>
     </FirebaseContext.Provider>

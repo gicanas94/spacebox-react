@@ -2,7 +2,6 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import autosize from 'autosize';
 import { Form, Formik } from 'formik';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -33,7 +32,7 @@ const PostForm = ({ alertSetAction, firebase, sid }) => {
       {
         comments: [],
         content: content.trim(),
-        createdAt: moment().valueOf(),
+        createdAt: new Date().toISOString(),
         likes: [],
         sid,
         slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,

@@ -4,11 +4,10 @@ import autosize from 'autosize';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
-import { injectIntl } from 'react-intl';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 
 import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
@@ -61,12 +60,13 @@ const StyledTextarea = styled.textarea`
 const CommentForm = ({
   alertSetAction,
   firebase,
-  intl,
   postSlug,
   sid,
   textareaId,
   user,
 }) => {
+  const intl = useIntl();
+
   const CommentFormSchema = Yup.object().shape({
     content: Yup.string().trim().required(),
   });
@@ -86,7 +86,7 @@ const CommentForm = ({
             Math.floor(Math.random() * color.specific.commentBgColor.length)
           ],
           content: content.trim(),
-          createdAt: moment().valueOf(),
+          createdAt: new Date().toISOString(),
           slug: `${_.kebabCase(content)}-${Math.floor(Math.random() * 10000)}`,
           user,
         });
@@ -159,7 +159,6 @@ const CommentForm = ({
 CommentForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   postSlug: PropTypes.string.isRequired,
   sid: PropTypes.string.isRequired,
   textareaId: PropTypes.string.isRequired,
@@ -170,6 +169,5 @@ const mapDispatchToProps = { alertSetAction: alertSet };
 
 export default compose(
   connect(null, mapDispatchToProps),
-  injectIntl,
   withFirebase,
 )(CommentForm);

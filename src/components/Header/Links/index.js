@@ -204,7 +204,7 @@ const NonAuthLinks = ({ location, onLinkClickHandler }) => (
 );
 
 Links.propTypes = {
-  authUser: PropTypes.objectOf(PropTypes.any),
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
   onLinkClickHandler: PropTypes.func.isRequired,
@@ -220,7 +220,7 @@ CommonLinks.propTypes = {
 };
 
 AuthLinks.propTypes = {
-  authUser: PropTypes.objectOf(PropTypes.any),
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
   onLinkClickHandler: PropTypes.func.isRequired,

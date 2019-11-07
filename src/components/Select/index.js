@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
-import { injectIntl } from 'react-intl';
 import { KeyboardArrowDown } from 'styled-icons/material/KeyboardArrowDown';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 
 import { keyframe, transition } from '../../styles';
 
@@ -174,7 +174,6 @@ const StyledErrorMessage = styled.div`
 const Select = ({
   disabled,
   error,
-  intl,
   label,
   margin,
   onChangeHandler,
@@ -186,6 +185,7 @@ const Select = ({
   const [listIsOpen, setListIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(value);
   const wrapperRef = useRef();
+  const intl = useIntl();
 
   const translatedOptions = options.map(
     option => ({
@@ -278,7 +278,6 @@ const Select = ({
 Select.propTypes = {
   disabled: PropTypes.bool,
   error: PropTypes.string,
-  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   label: PropTypes.string.isRequired,
   margin: PropTypes.string,
   onChangeHandler: PropTypes.func.isRequired,
@@ -297,4 +296,4 @@ Select.defaultProps = {
   value: null,
 };
 
-export default injectIntl(Select);
+export default Select;

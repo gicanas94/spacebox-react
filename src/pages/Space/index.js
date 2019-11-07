@@ -1,9 +1,14 @@
-import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+
+import {
+  FormattedMessage,
+  FormattedHTMLMessage,
+  FormattedDateParts,
+  injectIntl,
+} from 'react-intl';
+
 import { Link, withRouter } from 'react-router-dom';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
@@ -215,42 +220,46 @@ class SpacePage extends Component {
 
   composePostsHistory = (resolveGetPostsPromise) => {
     const { posts } = this.state;
-    const postsOrderedByYearAndMonth = {};
     const reversedPosts = [...posts].reverse();
+    const postsHistory = {};
 
-    _.map(reversedPosts, (post) => {
-      postsOrderedByYearAndMonth[moment(post.createdAt).get('year')] = {};
+    reversedPosts.forEach((post) => {
+      Object.defineProperty(
+        postsHistory,
+        new Date(post.createdAt).getFullYear(),
+        {
+          value: {},
+          configurable: true,
+          enumerable: true,
+        },
+      );
     });
 
-    _.map(reversedPosts, post => (
-      _.map(postsOrderedByYearAndMonth, (yearValue, yearKey) => (
-        moment(post.createdAt).get('year').toString() === yearKey && (
-          Object.defineProperty(
-            yearValue,
-            moment(post.createdAt).get('month'),
-            {
-              value: [],
-              configurable: true,
-              enumerable: true,
-            },
-          )
+    reversedPosts.forEach((post) => {
+      Object.defineProperty(
+        postsHistory[new Date(post.createdAt).getFullYear()],
+        new Date(post.createdAt).getMonth(),
+        {
+          value: [],
+          configurable: true,
+          enumerable: true,
+        },
+      );
+    });
+
+    reversedPosts.map(post => (
+      Object.keys(postsHistory).reverse().map(year => (
+        new Date(post.createdAt).getFullYear() === parseInt(year, 10) && (
+          Object.keys(postsHistory[year]).map(month => (
+            new Date(post.createdAt).getMonth() === parseInt(month, 10) && (
+              postsHistory[year][month].push(post)
+            )
+          ))
         )
       ))
     ));
 
-    _.map(reversedPosts, post => (
-      _.map(postsOrderedByYearAndMonth, (yearValue, yearKey) => {
-        if (moment(post.createdAt).get('year').toString() === yearKey) {
-          _.map(yearValue, (monthValue, monthKey) => {
-            if (moment(post.createdAt).get('month').toString() === monthKey) {
-              monthValue.push(post);
-            }
-          });
-        }
-      })
-    ));
-
-    this.setState({ postsHistory: postsOrderedByYearAndMonth });
+    this.setState({ postsHistory });
     resolveGetPostsPromise();
   };
 
@@ -292,6 +301,7 @@ class SpacePage extends Component {
       authUser,
       firebase,
       history,
+      intl,
       location,
       isLoading,
     } = this.props;
@@ -337,28 +347,30 @@ class SpacePage extends Component {
 
               {posts && posts.length > 0 && (
                 <Box
-                  collapsed
                   collapseTitle="pages.space.postsHistory.boxCollapseTitle"
                   margin="0"
                   padding="15px"
                 >
                   <FormattedHTMLMessage id="pages.space.postsHistory.h3" />
 
-                  {_.map(_.keys(postsHistory).reverse(), (year, index) => (
+                  {Object.keys(postsHistory).map((year, index) => (
                     <Fragment key={year}>
                       <StyledPostsHistoryYear>
                         {year}
                       </StyledPostsHistoryYear>
 
-                      {_.map(_.keys(postsHistory[year]), month => (
+                      {Object.keys(postsHistory[year]).map(month => (
                         <Fragment key={month}>
                           <StyledPostsHistoryMonth>
-                            {moment(
-                              parseInt(month, 10) + 1, 'MM',
-                            ).format('MMMM')}
+                            <FormattedDateParts
+                              month="long"
+                              value={new Date(0, month).toISOString()}
+                            >
+                              {parts => parts[0].value.toUpperCase()}
+                            </FormattedDateParts>
                           </StyledPostsHistoryMonth>
 
-                          {_.map(postsHistory[year][month], post => (
+                          {postsHistory[year][month].map(post => (
                             <StyledPostsHistoryLink
                               key={post.createdAt}
                               to={{
@@ -371,9 +383,15 @@ class SpacePage extends Component {
                             >
                               <span
                                 data-for={(post.createdAt + 1).toString()}
-                                data-tip={moment(post.createdAt).format(
-                                  'dddd, MMMM Do YYYY, kk:mm',
-                                )}
+                                data-tip={`${intl.formatDate(
+                                  post.createdAt,
+                                  {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                  },
+                                )} - ${intl.formatTime(post.createdAt)}`}
                               >
                                 {post.title}
                               </span>
@@ -449,9 +467,10 @@ class SpacePage extends Component {
 
 SpacePage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.objectOf(PropTypes.any),
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool,
   loadingSetAction: PropTypes.func.isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -475,6 +494,7 @@ const mapDispatchToProps = {
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  injectIntl,
   withFirebase,
   withRouter,
 )(SpacePage);

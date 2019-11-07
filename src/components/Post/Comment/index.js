@@ -1,7 +1,13 @@
 import Color from 'color';
-import { FormattedMessage } from 'react-intl';
+
+import {
+  FormattedDate,
+  FormattedMessage,
+  FormattedRelativeTime,
+  FormattedTime,
+} from 'react-intl';
+
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -90,17 +96,35 @@ const Comment = ({ comment }) => (
     </StyledComment>
 
     <StyledCreatedAtDate>
-      <span>{moment(comment.createdAt).fromNow()}</span>
+      <span>
+        <FormattedRelativeTime
+          numeric="auto"
+          updateIntervalInSeconds={60}
+          value={
+            (new Date(comment.createdAt).getTime() - new Date().getTime())
+            / 1000
+          }
+        />
+      </span>
 
       <StyledLongDate>
-        {moment(comment.createdAt).format('DD/MM/YY - kk:mm')}
+        <FormattedDate
+          day="2-digit"
+          month="short"
+          value={comment.createdAt}
+          year="numeric"
+        />
+
+        {' - '}
+
+        <FormattedTime value={comment.createdAt} />
       </StyledLongDate>
     </StyledCreatedAtDate>
   </StyledWrapper>
 );
 
 Comment.propTypes = {
-  authUser: PropTypes.objectOf(PropTypes.any),
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   comment: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

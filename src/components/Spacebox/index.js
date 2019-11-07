@@ -1,6 +1,6 @@
 import Color from 'color';
 import { Edit } from 'styled-icons/boxicons-regular/Edit';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { Heart } from 'styled-icons/fa-solid/Heart';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -248,7 +248,7 @@ const Spacebox = ({
           {likes !== undefined && (
             <StyledBubble>
               <StyledTotalLikesHeartIcon />
-              {likes}
+              <FormattedNumber value={likes} />
             </StyledBubble>
           )}
 

@@ -26,7 +26,8 @@ const StyledButton = styled.button`
   width: 270px;
 
   &:active {
-    transform: scale(0.98);
+    // transform: scale(0.98);
+    transform: translateY(2px);
   }
 
   &:focus {

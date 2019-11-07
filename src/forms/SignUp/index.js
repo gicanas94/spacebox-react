@@ -2,9 +2,8 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import { compose } from 'recompose';
 import { Form, Formik } from 'formik';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -46,8 +45,8 @@ const SignUpForm = ({
   alertSetAction,
   firebase,
   history,
-  intl,
 }) => {
+  const intl = useIntl();
   const minimumPasswordCharacters = 6;
   const minimumUsernameCharacters = 4;
   const maximumUsernameCharacters = 25;
@@ -89,7 +88,7 @@ const SignUpForm = ({
     firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => (
         firebase.getUser(authUser.user.uid).set({
-          createdAt: moment().valueOf(),
+          createdAt: new Date().toISOString(),
           email,
           isAdmin: false,
           slug: `${_.kebabCase(username)}-${Math.floor(Math.random() * 10000)}`,
@@ -239,7 +238,6 @@ SignUpForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
-  intl: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default compose(injectIntl, withFirebase, withRouter)(SignUpForm);
+export default compose(withFirebase, withRouter)(SignUpForm);

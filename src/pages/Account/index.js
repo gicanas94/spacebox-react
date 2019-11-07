@@ -144,7 +144,7 @@ const AccountPage = ({
 
 AccountPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool,
   loadingSetAction: PropTypes.func.isRequired,
