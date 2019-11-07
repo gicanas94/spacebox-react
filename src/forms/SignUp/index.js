@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import { compose } from 'recompose';
 import { Form, Formik } from 'formik';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -13,26 +14,6 @@ import { device } from '../../styles';
 import Input from '../../components/Input';
 import { ROUTES } from '../../constants';
 import { withFirebase } from '../../Firebase';
-
-const SignUpFormSchema = Yup.object().shape({
-  email: Yup.string()
-    .trim()
-    .email('Please check your e-mail')
-    .required('This field is required!'),
-  passwordOne: Yup.string()
-    .trim()
-    .required('This field is required!')
-    .min(6, 'The minimum of characters for this field is 6'),
-  passwordTwo: Yup.string()
-    .trim()
-    .required('This field is required!')
-    .oneOf([Yup.ref('passwordOne'), null], 'Passwords must match'),
-  username: Yup.string()
-    .trim()
-    .min(4, 'The minimum of characters for this field is 4')
-    .max(25, 'The maximum of characters for this field is 25')
-    .required('This field is required!'),
-});
 
 const StyledGrid = styled.div`
   display: grid;
@@ -50,9 +31,9 @@ const StyledLink = styled(Link)`
   font-size: ${({ theme }) => theme.forms.SignUp.signInLink.fontSize};
 `;
 
-const StyledTermsOfUsePolicy = styled.p`
-  color: ${({ theme }) => theme.forms.SignUp.termsOfUsePolicy.color};
-  font-size: ${({ theme }) => theme.forms.SignUp.termsOfUsePolicy.fontSize};
+const StyledTermsOfUseNotice = styled.p`
+  color: ${({ theme }) => theme.forms.SignUp.termsOfUseNotice.color};
+  font-size: ${({ theme }) => theme.forms.SignUp.termsOfUseNotice.fontSize};
 `;
 
 const StyledBottomWrapper = styled.div`
@@ -61,7 +42,45 @@ const StyledBottomWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const SignUpForm = ({ alertSetAction, firebase, history }) => {
+const SignUpForm = ({
+  alertSetAction,
+  firebase,
+  history,
+  intl,
+}) => {
+  const minimumPasswordCharacters = 6;
+  const minimumUsernameCharacters = 4;
+  const maximumUsernameCharacters = 25;
+
+  const SignUpFormSchema = Yup.object().shape({
+    email: Yup.string()
+      .trim()
+      .email('yup.emailInvalid')
+      .required('yup.required'),
+    passwordOne: Yup.string()
+      .trim()
+      .required('yup.required')
+      .min(minimumPasswordCharacters, intl.formatMessage(
+        { id: 'yup.minimumCharacters' },
+        { characters: minimumPasswordCharacters },
+      )),
+    passwordTwo: Yup.string()
+      .trim()
+      .required('yup.required')
+      .oneOf([Yup.ref('passwordOne'), null], 'yup.passwordsMustMatch'),
+    username: Yup.string()
+      .trim()
+      .min(minimumUsernameCharacters, intl.formatMessage(
+        { id: 'yup.minimumCharacters' },
+        { characters: minimumUsernameCharacters },
+      ))
+      .max(maximumUsernameCharacters, intl.formatMessage(
+        { id: 'yup.maximumCharacters' },
+        { characters: maximumUsernameCharacters },
+      ))
+      .required('yup.required'),
+  });
+
   const handleSubmit = (values, actions) => {
     const { email, passwordOne, username } = values;
 
@@ -81,9 +100,7 @@ const SignUpForm = ({ alertSetAction, firebase, history }) => {
         firebase.doSendEmailVerification();
 
         alertSetAction({
-          text: `Welcome to Spacebox! Please, follow the instructions that
-            you received in your e-mail account in order to enjoy 100% of
-            Spacebox.`,
+          message: { id: 'forms.signUp.successAlertMessage' },
           type: 'success',
         });
 
@@ -91,7 +108,7 @@ const SignUpForm = ({ alertSetAction, firebase, history }) => {
       })
       .catch((error) => {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
 
@@ -123,7 +140,7 @@ const SignUpForm = ({ alertSetAction, firebase, history }) => {
               autoFocus
               disabled={isSubmitting}
               error={errors.username && touched.username && errors.username}
-              label="Name or Username"
+              label="forms.signUp.labels.usernameInput"
               margin="0 0 25px 0"
               name="username"
               onBlur={handleBlur}
@@ -137,7 +154,7 @@ const SignUpForm = ({ alertSetAction, firebase, history }) => {
             <Input
               disabled={isSubmitting}
               error={errors.email && touched.email && errors.email}
-              label="E-mail"
+              label="forms.signUp.labels.emailInput"
               margin="0 0 25px 0"
               name="email"
               onBlur={handleBlur}
@@ -155,7 +172,7 @@ const SignUpForm = ({ alertSetAction, firebase, history }) => {
                 && touched.passwordOne
                 && errors.passwordOne
               }
-              label="Password"
+              label="forms.signUp.labels.passwordOneInput"
               margin="0 0 25px 0"
               name="passwordOne"
               onBlur={handleBlur}
@@ -173,7 +190,7 @@ const SignUpForm = ({ alertSetAction, firebase, history }) => {
                 && touched.passwordTwo
                 && errors.passwordTwo
               }
-              label="Confirm your password"
+              label="forms.signUp.labels.passwordTwoInput"
               margin="0 0 25px 0"
               name="passwordTwo"
               onBlur={handleBlur}
@@ -185,11 +202,20 @@ const SignUpForm = ({ alertSetAction, firebase, history }) => {
             />
           </StyledGrid>
 
-          <StyledTermsOfUsePolicy>
-            {'By signing up, you are accepting our '}
-            <Link to={ROUTES.TERMS_OF_USE}>Terms of Use</Link>
-            {'.'}
-          </StyledTermsOfUsePolicy>
+          <StyledTermsOfUseNotice>
+            <FormattedMessage
+              id="forms.signUp.termsOfUseNotice"
+              values={{
+                termsOfUseLink: (
+                  <span>
+                    <Link to={ROUTES.TERMS_OF_USE}>
+                      <FormattedMessage id="forms.signUp.links.termsOfUse" />
+                    </Link>
+                  </span>
+                ),
+              }}
+            />
+          </StyledTermsOfUseNotice>
 
           <StyledBottomWrapper>
             <StyledLink to={ROUTES.SIGN_IN}>Sign in instead?</StyledLink>
@@ -200,7 +226,7 @@ const SignUpForm = ({ alertSetAction, firebase, history }) => {
               styleType="bordered"
               type="submit"
             >
-              {'Sign up'}
+              {'forms.signUp.submitButton'}
             </Button>
           </StyledBottomWrapper>
         </Form>
@@ -213,9 +239,7 @@ SignUpForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  intl: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default compose(
-  withFirebase,
-  withRouter,
-)(SignUpForm);
+export default compose(injectIntl, withFirebase, withRouter)(SignUpForm);

@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { CommentAlt } from 'styled-icons/fa-solid/CommentAlt';
 import { Comments } from 'styled-icons/fa-solid/Comments';
 import { Heart } from 'styled-icons/fa-solid/Heart';
+import { injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -169,6 +170,7 @@ const Post = ({
   alertSetAction,
   authUser,
   firebase,
+  intl,
   page,
   post,
   spacebox,
@@ -199,13 +201,13 @@ const Post = ({
     firebase.deletePost(spaceboxSlug, postSlug)
       .then(() => {
         alertSetAction({
-          text: 'The post has been deleted.',
+          message: { id: 'components.post.successDeletePostAlertMessage' },
           type: 'success',
         });
       })
       .catch((error) => {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
       });
@@ -247,7 +249,7 @@ const Post = ({
       .then(() => setLikeInProgress(false))
       .catch((error) => {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
 
@@ -266,8 +268,11 @@ const Post = ({
       }
       data-for={`like-heart-icon_${post.slug}`}
       data-tip={!authUser
-        ? 'You need to be logged in to like a post'
-        : 'You need to validate your e-mail to like a post'
+        ? intl.formatMessage({
+          id: 'components.post.iconsTooltips.needLoggedInToLike',
+        }) : intl.formatMessage({
+          id: 'components.post.iconsTooltips.needValidateEmailToLike',
+        })
       }
       disabled={likeInProgress || !authUser || !authUser.emailVerified}
       userIsLikingOrDisliking={userIsLikingOrDisliking}
@@ -282,8 +287,11 @@ const Post = ({
     <StyledCommentIcon
       data-for={`comment-icon_${post.slug}`}
       data-tip={!authUser
-        ? 'You need to be logged in to make a comment'
-        : 'You need to validate your e-mail to make a comment'
+        ? intl.formatMessage({
+          id: 'components.post.iconsTooltips.needLoggedInToComment',
+        }) : intl.formatMessage({
+          id: 'components.post.iconsTooltips.needValidateEmailToComment',
+        })
       }
       disabled={!authUser || !authUser.emailVerified}
       onClick={!authUser || !authUser.emailVerified
@@ -296,7 +304,9 @@ const Post = ({
   const trashIcon = (
     <StyledTrashIcon
       data-for={`trash-icon_${post.slug}`}
-      data-tip="Delete post"
+      data-tip={intl.formatMessage({
+        id: 'components.post.iconsTooltips.deletePost',
+      })}
       onClick={
         () => !likeInProgress && handleDeletePostClick(spacebox.slug, post.slug)
       }
@@ -399,7 +409,11 @@ const Post = ({
             postSlug={post.slug}
             sid={post.sid}
             textareaId={commentFormId}
-            user={{ username: authUser.username, uid: authUser.uid }}
+            user={{
+              slug: authUser.slug,
+              username: authUser.username,
+              uid: authUser.uid,
+            }}
           />
         </StyledCommentFormWrapper>
       )}
@@ -416,7 +430,10 @@ const Post = ({
             <StyledSeeOrHideCommentsSpan
               onClick={() => handleSeeCommentsClick()}
             >
-              {`See comments (${post.comments.length - commentsLimit})...`}
+              {intl.formatMessage(
+                { id: 'components.post.seeCommentsText' },
+                { remainingComments: post.comments.length - commentsLimit },
+              )}
             </StyledSeeOrHideCommentsSpan>
           )}
 
@@ -424,7 +441,7 @@ const Post = ({
             <StyledSeeOrHideCommentsSpan
               onClick={() => handleHideCommentsClick()}
             >
-              {'Hide comments...'}
+              {intl.formatMessage({ id: 'components.post.hideCommentsText' })}
             </StyledSeeOrHideCommentsSpan>
           )}
         </StyledCommentsWrapper>
@@ -453,6 +470,7 @@ Post.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.objectOf(PropTypes.any),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   page: PropTypes.oneOf(['space', 'post']).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -463,4 +481,4 @@ Post.defaultProps = {
   authUser: null,
 };
 
-export default Post;
+export default injectIntl(Post);

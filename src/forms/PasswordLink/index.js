@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
+import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -7,17 +8,6 @@ import styled from 'styled-components';
 import Button from '../../components/Button';
 import { device } from '../../styles';
 import Input from '../../components/Input';
-
-const PasswordLinkFormSchema = Yup.object().shape({
-  passwordOne: Yup.string()
-    .trim()
-    .required('This field is required!')
-    .min(6, 'The minimum of characters for this field is 6'),
-  passwordTwo: Yup.string()
-    .trim()
-    .required('This field is required!')
-    .oneOf([Yup.ref('passwordOne'), null], 'Passwords must match'),
-});
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -55,9 +45,26 @@ const PasswordLinkForm = ({
   authUserEmail,
   fetchSignInMethodsHandler,
   firebase,
+  intl,
   page,
   setPasswordLinkFormIsVisibleHandler,
 }) => {
+  const minimumPasswordCharacters = 6;
+
+  const PasswordLinkFormSchema = Yup.object().shape({
+    passwordOne: Yup.string()
+      .trim()
+      .required('yup.required')
+      .min(minimumPasswordCharacters, intl.formatMessage(
+        { id: 'yup.minimumCharacters' },
+        { characters: minimumPasswordCharacters },
+      )),
+    passwordTwo: Yup.string()
+      .trim()
+      .required('yup.required')
+      .oneOf([Yup.ref('passwordOne'), null], 'yup.passwordsMustMatch'),
+  });
+
   const handleSubmit = (values) => {
     const { passwordOne } = values;
 
@@ -75,13 +82,13 @@ const PasswordLinkForm = ({
         fetchSignInMethodsHandler();
 
         alertSetAction({
-          text: 'Congratulations! You just linked a password to your account.',
+          message: { id: 'forms.passwordLink.successAlertMessage' },
           type: 'success',
         });
       })
       .catch((error) => {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
 
@@ -115,7 +122,7 @@ const PasswordLinkForm = ({
                   && touched.passwordOne
                   && errors.passwordOne
                 }
-                label="New password"
+                label="forms.passwordLink.labels.passwordOneInput"
                 name="passwordOne"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -132,7 +139,7 @@ const PasswordLinkForm = ({
                   && touched.passwordTwo
                   && errors.passwordTwo
                 }
-                label="Confirm password"
+                label="forms.passwordLink.labels.passwordTwoInput"
                 name="passwordTwo"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -151,7 +158,7 @@ const PasswordLinkForm = ({
               styleType="filled"
               type="submit"
             >
-              {'Done'}
+              {'forms.passwordLink.submitButton'}
             </Button>
           </Form>
         )}
@@ -165,6 +172,7 @@ PasswordLinkForm.propTypes = {
   authUserEmail: PropTypes.string.isRequired,
   fetchSignInMethodsHandler: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   page: PropTypes.oneOf(['changePassword', 'loginManagement']).isRequired,
   setPasswordLinkFormIsVisibleHandler: PropTypes.func,
 };
@@ -172,4 +180,5 @@ PasswordLinkForm.propTypes = {
 PasswordLinkForm.defaultProps = {
   setPasswordLinkFormIsVisibleHandler: () => true,
 };
-export default PasswordLinkForm;
+
+export default injectIntl(PasswordLinkForm);

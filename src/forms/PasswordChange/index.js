@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
+import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -10,18 +11,6 @@ import { ERRORS } from '../../constants';
 import Input from '../../components/Input';
 import Hr from '../../components/Hr';
 import { setCookie, getCookie } from '../../utils';
-
-const PasswordChangeFormSchema = Yup.object().shape({
-  password: Yup.string().trim().required('This field is required!'),
-  passwordOne: Yup.string()
-    .trim()
-    .required('This field is required!')
-    .min(6, 'The minimum of characters for this field is 6'),
-  passwordTwo: Yup.string()
-    .trim()
-    .required('This field is required!')
-    .oneOf([Yup.ref('passwordOne'), null], 'Passwords must match'),
-});
 
 const StyledNewPasswordWrapper = styled.div`
   & > div:first-of-type {
@@ -63,7 +52,29 @@ const StyledCurrentPasswordAndButtonWrapper = styled.div`
   }
 `;
 
-const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
+const PasswordChangeForm = ({
+  alertSetAction,
+  authUser,
+  firebase,
+  intl,
+}) => {
+  const minimumPasswordCharacters = 6;
+
+  const PasswordChangeFormSchema = Yup.object().shape({
+    password: Yup.string().trim().required('yup.required'),
+    passwordOne: Yup.string()
+      .trim()
+      .required('yup.required')
+      .min(minimumPasswordCharacters, intl.formatMessage(
+        { id: 'yup.minimumCharacters' },
+        { characters: minimumPasswordCharacters },
+      )),
+    passwordTwo: Yup.string()
+      .trim()
+      .required('yup.required')
+      .oneOf([Yup.ref('passwordOne'), null], 'yup.passwordsMustMatch'),
+  });
+
   const [currentPasswordAttemps, setCurrentPasswordAttemps] = useState(0);
 
   const [
@@ -81,7 +92,7 @@ const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
         firebase.doPasswordUpdate(passwordOne)
           .then(() => {
             alertSetAction({
-              text: 'Your password was successfully updated.',
+              message: { id: 'forms.passwordChange.successAlertMessage' },
               type: 'success',
             });
           })
@@ -97,7 +108,7 @@ const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
       .catch((error) => {
         if (error.code === ERRORS.FIREBASE.WRONG_PASSWORD.CODE) {
           actions.setStatus({
-            currentPasswordIsWrong: 'Your current password is wrong',
+            currentPasswordIsWrong: ERRORS.FIREBASE.WRONG_PASSWORD.MESSAGE,
           });
 
           setCurrentPasswordAttemps(currentPasswordAttemps + 1);
@@ -113,14 +124,15 @@ const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
             actions.resetForm();
 
             alertSetAction({
-              text: `You reached the limit of attempts to enter your current password,
-                please try again later.`,
+              message: {
+                id: 'forms.passwordChange.reachedMaxCurrentPasswordAttempsAlertMessage',
+              },
               type: 'danger',
             });
           }
         } else {
           alertSetAction({
-            text: error.message,
+            message: error.message,
             type: 'danger',
           });
         }
@@ -158,7 +170,7 @@ const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
                 && touched.passwordOne
                 && errors.passwordOne
               }
-              label="New password"
+              label="forms.passwordChange.labels.passwordOneInput"
               name="passwordOne"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -175,7 +187,7 @@ const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
                 && touched.passwordTwo
                 && errors.passwordTwo
               }
-              label="Confirm password"
+              label="forms.passwordChange.labels.passwordTwoInput"
               name="passwordTwo"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -196,7 +208,7 @@ const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
                 || (status && status.currentPasswordIsWrong)
                 || (status && status.reachedMaxCurrentPasswordAttemps)
               }
-              label="Your current password"
+              label="forms.passwordChange.labels.passwordInput"
               name="password"
               onBlur={handleBlur}
               onChange={(e) => {
@@ -216,7 +228,7 @@ const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
               styleType="filled"
               type="submit"
             >
-              {'Update'}
+              {'forms.passwordChange.labels.passwordOneInput'}
             </Button>
           </StyledCurrentPasswordAndButtonWrapper>
         </Form>
@@ -229,6 +241,7 @@ PasswordChangeForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.objectOf(PropTypes.any).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  intl: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default PasswordChangeForm;
+export default injectIntl(PasswordChangeForm);

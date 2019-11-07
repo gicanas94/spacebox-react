@@ -1,9 +1,10 @@
-import { Helmet } from 'react-helmet';
+import { FormattedMessage } from 'react-intl';
 import React from 'react';
 import styled from 'styled-components';
 
 import { device } from '../../styles';
 import Emoji from '../../components/Emoji';
+import HelmetTitle from '../../components/HelmetTitle';
 
 const StyledWrapper = styled.div`
   align-items: center;
@@ -37,29 +38,55 @@ const StyledBoldFragment = styled.span`
 
 const NotFoundPage = () => {
   const emojisToRandom = [
-    '😶',
-    '😧',
-    '😬',
-    '😔',
-    '😵',
-    '😱',
+    {
+      label: 'pages.notFound.randomEmojiLabels.emoji1',
+      symbol: '😶',
+    },
+    {
+      label: 'pages.notFound.randomEmojiLabels.emoji2',
+      symbol: '😧',
+    },
+    {
+      label: 'pages.notFound.randomEmojiLabels.emoji3',
+      symbol: '😬',
+    },
+    {
+      label: 'pages.notFound.randomEmojiLabels.emoji4',
+      symbol: '😔',
+    },
+    {
+      label: 'pages.notFound.randomEmojiLabels.emoji5',
+      symbol: '😵',
+    },
+    {
+      label: 'pages.notFound.randomEmojiLabels.emoji6',
+      symbol: '😱',
+    },
   ];
+
+  const randomEmoji = Math.floor(Math.random() * emojisToRandom.length);
 
   return (
     <StyledWrapper>
-      <Helmet title="404 - Spacebox" />
+      <HelmetTitle title={{ id: 'pages.notFound.title' }} />
 
       <Emoji
         fontSize="120px"
-        label="anguished face"
-        symbol={emojisToRandom[
-          Math.floor(Math.random() * emojisToRandom.length)
-        ]}
+        label={emojisToRandom[randomEmoji].label}
+        symbol={emojisToRandom[randomEmoji].symbol}
       />
 
       <StyledContent>
-        This is embarrassing but...
-        <StyledBoldFragment> this page was not found.</StyledBoldFragment>
+        <FormattedMessage
+          id="pages.notFound.content"
+          values={{
+            boldPieceOfContent: (
+              <StyledBoldFragment>
+                <FormattedMessage id="pages.notFound.boldPieceOfContent" />
+              </StyledBoldFragment>
+            ),
+          }}
+        />
       </StyledContent>
     </StyledWrapper>
   );

@@ -4,6 +4,7 @@ import autosize from 'autosize';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
+import { injectIntl } from 'react-intl';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
@@ -13,10 +14,6 @@ import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
 import { color, transition } from '../../styles';
 import { withFirebase } from '../../Firebase';
-
-const CommentFormSchema = Yup.object().shape({
-  content: Yup.string().trim().required(),
-});
 
 const StyledWrapper = styled.div`
   align-items: flex-end;
@@ -64,11 +61,16 @@ const StyledTextarea = styled.textarea`
 const CommentForm = ({
   alertSetAction,
   firebase,
+  intl,
   postSlug,
   sid,
   textareaId,
   user,
 }) => {
+  const CommentFormSchema = Yup.object().shape({
+    content: Yup.string().trim().required(),
+  });
+
   const handleSubmit = (values, actions) => {
     const { content } = values;
     const postRef = firebase.getPost(sid, postSlug);
@@ -97,7 +99,7 @@ const CommentForm = ({
       })
       .catch((error) => {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
 
@@ -132,7 +134,9 @@ const CommentForm = ({
               name="content"
               onBlur={handleBlur}
               onChange={handleChange}
-              placeholder="Make a comment..."
+              placeholder={intl.formatMessage({
+                id: 'forms.comment.contentTextareaPlaceholder',
+              })}
               value={values.content}
             />
 
@@ -143,7 +147,7 @@ const CommentForm = ({
               styleType="bordered"
               type="submit"
             >
-              {'Comment'}
+              {'forms.comment.submitButton'}
             </Button>
           </StyledWrapper>
         </Form>
@@ -155,6 +159,7 @@ const CommentForm = ({
 CommentForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   postSlug: PropTypes.string.isRequired,
   sid: PropTypes.string.isRequired,
   textareaId: PropTypes.string.isRequired,
@@ -165,5 +170,6 @@ const mapDispatchToProps = { alertSetAction: alertSet };
 
 export default compose(
   connect(null, mapDispatchToProps),
+  injectIntl,
   withFirebase,
 )(CommentForm);

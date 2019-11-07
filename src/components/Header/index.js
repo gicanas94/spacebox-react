@@ -1,4 +1,6 @@
+import { compose } from 'recompose';
 import { Cross } from 'styled-icons/icomoon/Cross';
+import { injectIntl } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
 import { Menu } from 'styled-icons/boxicons-regular/Menu';
 import PropTypes from 'prop-types';
@@ -113,6 +115,7 @@ const StyledLaptopView = styled.div`
   align-items: center;
   display: none;
   justify-content: space-between;
+  overflow: hidden;
 
   img {
     height: 30px;
@@ -141,7 +144,7 @@ const StyledLaptopViewNav = styled.nav`
   }
 `;
 
-const Header = ({ location }) => {
+const Header = ({ intl, location }) => {
   const [mobileNavIsOpen, setMobileNavIsOpen] = useState(false);
 
   return (
@@ -153,10 +156,15 @@ const Header = ({ location }) => {
               onClick={() => setMobileNavIsOpen(false)}
               to={ROUTES.HOME}
             >
-              <img alt="Spacebox logo" src={smallLogo} />
+              <img
+                alt={intl.formatMessage({
+                  id: 'components.header.logoImageAlt',
+                })}
+                src={smallLogo}
+              />
             </StyledSmallLogoLink>
 
-            {location.pathname === '/' && <SearchBar />}
+            {location.pathname === '/' && <SearchBar intl={intl} />}
           </StyledSpan>
 
           {mobileNavIsOpen
@@ -176,11 +184,16 @@ const Header = ({ location }) => {
 
         <StyledLaptopView>
           <StyledLargeLogoLink to={ROUTES.HOME}>
-            <img alt="Spacebox logo" src={largeLogo} />
+            <img
+              alt={intl.formatMessage({
+                id: 'components.header.logoImageAlt',
+              })}
+              src={largeLogo}
+            />
           </StyledLargeLogoLink>
 
           <StyledLaptopViewNav>
-            {location.pathname === '/' && <SearchBar rounded />}
+            {location.pathname === '/' && <SearchBar intl={intl} rounded />}
 
             <Links onLinkClickHandler={setMobileNavIsOpen} />
           </StyledLaptopViewNav>
@@ -191,7 +204,8 @@ const Header = ({ location }) => {
 };
 
 Header.propTypes = {
+  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withRouter(Header);
+export default compose(injectIntl, withRouter)(Header);

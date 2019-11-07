@@ -1,7 +1,5 @@
-import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -9,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 
 import { alertSet, loadingSet, spaceboxesSet } from '../../Redux/actions';
 import { device } from '../../styles';
+import HelmetTitle from '../../components/HelmetTitle';
 import { ROUTES } from '../../constants';
 import searchSpaceboxSelector from '../../Redux/selectors';
 import Spacebox from '../../components/Spacebox';
@@ -73,7 +72,7 @@ const HomePage = ({
       }
     }, (error) => {
       alertSetAction({
-        text: error.message,
+        message: error.message,
         type: 'danger',
       });
 
@@ -89,11 +88,10 @@ const HomePage = ({
 
   return (
     <StyledWrapper>
-      <Helmet
-        title={
-          `${spaceboxToSearch === '' ? 'Home' : 'Search results'} - Spacebox`
-        }
-      />
+      {spaceboxToSearch === ''
+        ? <HelmetTitle title={{ id: 'pages.home.title.home' }} />
+        : <HelmetTitle title={{ id: 'pages.home.title.search' }} />
+      }
 
       {spaceboxToSearch !== '' && (
         <Spacebox
@@ -108,16 +106,24 @@ const HomePage = ({
       )}
 
       {isLoading && (
-        <Spacebox informative order={1} title="Loading..." />
+        <Spacebox
+          informative
+          order={allSpaceboxes ? allSpaceboxes.length + 1 : 1}
+          title="pages.home.informativeSpaceboxTitles.loading"
+        />
       )}
 
       {getAllVisibleSpaceboxesFailed && (
-        <Spacebox informative order={1} title="ERROR." />
+        <Spacebox
+          informative
+          order={1}
+          title="pages.home.informativeSpaceboxTitles.error"
+        />
       )}
 
       {allSpaceboxes
         && !isLoading
-        && _.map(allSpaceboxes, (spacebox, index) => (
+        && allSpaceboxes.map((spacebox, index) => (
           spacebox.visible && (
             <Spacebox
               authUserIsTheOwner={

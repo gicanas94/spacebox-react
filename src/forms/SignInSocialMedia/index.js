@@ -40,7 +40,7 @@ const SignInSocialMedia = ({ alertSetAction, firebase, history }) => {
       .then(() => history.push(ROUTES.HOME))
       .catch(error => (
         alertSetAction({
-          text: error.code === ERRORS.FIREBASE.ACCOUNT_EXISTS.CODE
+          message: error.code === ERRORS.FIREBASE.ACCOUNT_EXISTS.CODE
             ? ERRORS.FIREBASE.ACCOUNT_EXISTS.MESSAGE
             : error.message,
           type: 'danger',

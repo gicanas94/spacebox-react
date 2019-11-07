@@ -37,7 +37,10 @@ const PasswordLoginToggle = ({
           styleType="filled"
           width="90px"
         >
-          {isLoading ? '...' : 'Unlink'}
+          {isLoading
+            ? 'pages.account.loginManagement.buttons.loading'
+            : 'pages.account.loginManagement.buttons.unlink'
+          }
         </Button>
       ) : (
         <Button
@@ -50,7 +53,10 @@ const PasswordLoginToggle = ({
           type="button"
           width="90px"
         >
-          {isLoading ? '...' : 'Link'}
+          {isLoading
+            ? 'pages.account.loginManagement.buttons.loading'
+            : 'pages.account.loginManagement.buttons.link'
+          }
         </Button>
       )}
 

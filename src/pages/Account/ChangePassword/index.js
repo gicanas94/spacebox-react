@@ -1,8 +1,9 @@
-import { Helmet } from 'react-helmet';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
 import Emoji from '../../../components/Emoji';
+import HelmetTitle from '../../../components/HelmetTitle';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import PasswordChangeForm from '../../../forms/PasswordChange';
 import PasswordLinkForm from '../../../forms/PasswordLink';
@@ -16,8 +17,11 @@ const ChangePasswordSubpage = ({
   isLoading,
 }) => (
   <Fragment>
-    <Helmet title="Change password - Spacebox" />
-    <h1>Change password</h1>
+    <HelmetTitle title={{ id: 'pages.account.changePassword.title' }} />
+
+    <h1>
+      <FormattedMessage id="pages.account.changePassword.h1" />
+    </h1>
 
     {isLoading && <LoadingSpinner />}
 
@@ -25,8 +29,14 @@ const ChangePasswordSubpage = ({
       authUserHasPassword ? (
         <Fragment>
           <p>
-            Complete the following inputs to change your password. Don't forget your
-            current one, just in case <Emoji label="Slightly Smiling Face" symbol="🙂" />
+            <FormattedMessage
+              id="pages.account.changePassword.changePasswordSubtitle"
+            />
+
+            <Emoji
+              label="pages.account.changePassword.changePasswordSubtitleEmojiLabel"
+              symbol="🙂"
+            />
           </p>
 
           <PasswordChangeForm
@@ -38,8 +48,9 @@ const ChangePasswordSubpage = ({
       ) : (
         <Fragment>
           <p>
-            You don't have a password linked to your account, but let's do that
-            right now.
+            <FormattedMessage
+              id="pages.account.changePassword.linkPasswordSubtitle"
+            />
           </p>
 
           <PasswordLinkForm

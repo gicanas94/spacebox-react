@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { alertSet, loadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import { device } from '../../styles';
+import HelmetTitle from '../../components/HelmetTitle';
 import Hr from '../../components/Hr';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Post from '../../components/Post';
@@ -150,7 +151,7 @@ class SpacePage extends Component {
       })
       .catch(error => (
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         })
       ));
@@ -170,7 +171,7 @@ class SpacePage extends Component {
       })
       .catch((error) => {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
 
@@ -305,7 +306,14 @@ class SpacePage extends Component {
 
     return (
       <Fragment>
-        {spacebox && <Helmet title={`${spacebox.title} - Spacebox`} />}
+        {spacebox && (
+          <HelmetTitle
+            title={{
+              id: 'pages.post.title',
+              values: { postTitle: spacebox.title },
+            }}
+          />
+        )}
 
         {isLoading && <LoadingSpinner />}
 
@@ -330,11 +338,11 @@ class SpacePage extends Component {
               {posts && posts.length > 0 && (
                 <Box
                   collapsed
-                  collapseTitle={<h3>Posts history</h3>}
+                  collapseTitle="pages.space.postsHistory.boxCollapseTitle"
                   margin="0"
                   padding="15px"
                 >
-                  <h3>Posts history</h3>
+                  <FormattedHTMLMessage id="pages.space.postsHistory.h3" />
 
                   {_.map(_.keys(postsHistory).reverse(), (year, index) => (
                     <Fragment key={year}>
@@ -420,10 +428,13 @@ class SpacePage extends Component {
                 ) : (
                   <Box fullWidth margin="0">
                     <StyledNoPostsText>
-                      {authUser && spacebox && authUser.uid === spacebox.uid
-                        ? 'You haven\'t made any post yet.'
-                        : 'The writer of this Spacebox hasn\'t made any post yet.'
-                      }
+                      <FormattedMessage
+                        id={
+                          authUser && spacebox && authUser.uid === spacebox.uid
+                            ? 'pages.space.noPostsText.authUserIsTheOwner'
+                            : 'pages.space.noPostsText.authUserIsNotTheOwner'
+                        }
+                      />
                     </StyledNoPostsText>
                   </Box>
                 )

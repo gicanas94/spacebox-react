@@ -1,12 +1,12 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 
 import { alertSet } from '../../Redux/actions';
 import Box from '../../components/Box';
+import HelmetTitle from '../../components/HelmetTitle';
 import Hr from '../../components/Hr';
 import { ROUTES } from '../../constants';
 import SignInForm from '../../forms/SignIn';
@@ -23,7 +23,7 @@ const SignInPage = ({
     ? <Redirect to={ROUTES.HOME} />
     : (
       <Box size="small">
-        <Helmet title="Sign in - Spacebox" />
+        <HelmetTitle title={{ id: 'pages.signIn.title' }} />
 
         <SignInForm
           alertSetAction={alertSetAction}

@@ -1,4 +1,5 @@
 import Color from 'color';
+import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -78,8 +79,9 @@ const Comment = ({ comment }) => (
           >
 
             {comment.uid === comment.postUid
-              ? 'Post author'
-              : comment.user.username
+              ? (
+                <FormattedMessage id="components.post.comment.postAuthor" />
+              ) : comment.user.username
             }
           </StyledUsername>
         )}

@@ -1,4 +1,8 @@
-const initialState = { authUser: JSON.parse(localStorage.getItem('authUser')) };
+import SecureLS from 'secure-ls';
+
+const ls = new SecureLS();
+
+const initialState = { authUser: ls.get('au') };
 
 const sessionReducer = (state = initialState, action) => {
   switch (action.type) {

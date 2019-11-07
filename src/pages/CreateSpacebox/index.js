@@ -1,15 +1,20 @@
 import { compose } from 'recompose';
-import { Helmet } from 'react-helmet';
+import { FormattedMessage } from 'react-intl';
 import React from 'react';
 
 import Box from '../../components/Box';
 import CreateSpaceboxForm from '../../forms/CreateSpacebox';
+import HelmetTitle from '../../components/HelmetTitle';
 import { withAuthorization, withEmailVerification } from '../../Session';
 
 const CreateSpaceboxPage = () => (
   <Box size="medium">
-    <Helmet title="Create Spacebox - Spacebox" />
-    <h1>Create Spacebox</h1>
+    <HelmetTitle title={{ id: 'pages.createSpacebox.title' }} />
+
+    <h1>
+      <FormattedMessage id="pages.createSpacebox.h1" />
+    </h1>
+
     <CreateSpaceboxForm />
   </Box>
 );

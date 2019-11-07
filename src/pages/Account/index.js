@@ -1,5 +1,6 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
@@ -9,6 +10,7 @@ import { alertSet, loadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import ChangePasswordSubpage from './ChangePassword';
 import { device } from '../../styles';
+import HelmetTitle from '../../components/HelmetTitle';
 import LoginManagementSubpage from './LoginManagement';
 import { ROUTES } from '../../constants';
 import Sidebar from '../../components/Sidebar';
@@ -43,18 +45,18 @@ const AccountPage = ({
 }) => {
   const sidebarContent = [
     {
-      title: 'Account',
+      heading: 'pages.account.sidebarContent.section1.heading',
       links: [
         {
-          text: 'General',
+          text: 'pages.account.sidebarContent.section1.links.general',
           to: ROUTES.ACCOUNT_BASE,
         },
         {
-          text: 'Change password',
+          text: 'pages.account.sidebarContent.section1.links.changePassword',
           to: ROUTES.ACCOUNT_CHANGE_PASSWORD,
         },
         {
-          text: 'Login management',
+          text: 'pages.account.sidebarContent.section1.links.loginManagement',
           to: ROUTES.ACCOUNT_LOGIN_MANAGEMENT,
         },
       ],
@@ -80,7 +82,7 @@ const AccountPage = ({
       loadingSetAction(false);
     } catch (error) {
       alertSetAction({
-        text: error.message,
+        message: error.message,
         type: 'danger',
       });
 
@@ -99,7 +101,11 @@ const AccountPage = ({
       <Box fullWidth margin="0">
         <Switch>
           <Route exact path={ROUTES.ACCOUNT_BASE}>
-            <h1>General</h1>
+            <HelmetTitle title={{ id: 'pages.account.general.title' }} />
+
+            <h1>
+              <FormattedMessage id="pages.account.general.h1" />
+            </h1>
           </Route>
 
           <Route
@@ -148,8 +154,6 @@ AccountPage.defaultProps = {
   isLoading: false,
 };
 
-const condition = authUser => !!authUser;
-
 const mapStateToProps = state => ({
   authUser: state.session.authUser,
   isLoading: state.isLoading,
@@ -159,6 +163,8 @@ const mapDispatchToProps = {
   alertSetAction: alertSet,
   loadingSetAction: loadingSet,
 };
+
+const condition = authUser => !!authUser;
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

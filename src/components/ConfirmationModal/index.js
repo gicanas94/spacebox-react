@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -51,8 +52,8 @@ const StyledButtonsWrapper = styled.div`
 `;
 
 const ConfirmationModal = ({
-  buttonsText,
   buttonsAreDisabled,
+  buttonsContent,
   content,
   onCancelHandler,
   onConfirmHandler,
@@ -63,8 +64,13 @@ const ConfirmationModal = ({
     <StyledCloserOnClick onClick={onCancelHandler} />
 
     <StyledBox rounded={rounded} noBorder>
-      <h1>{title}</h1>
-      <StyledContent>{content}</StyledContent>
+      <h1>
+        <FormattedMessage id={title} />
+      </h1>
+
+      <StyledContent>
+        <FormattedMessage id={content} />
+      </StyledContent>
 
       <StyledButtonsWrapper>
         <Button
@@ -76,7 +82,7 @@ const ConfirmationModal = ({
           styleType="unbordered"
           type="button"
         >
-          {buttonsText[0]}
+          {buttonsContent[0]}
         </Button>
 
         <Button
@@ -86,7 +92,7 @@ const ConfirmationModal = ({
           styleType="bordered"
           type="submit"
         >
-          {buttonsText[1]}
+          {buttonsContent[1]}
         </Button>
       </StyledButtonsWrapper>
     </StyledBox>
@@ -94,8 +100,8 @@ const ConfirmationModal = ({
 );
 
 ConfirmationModal.propTypes = {
-  buttonsText: PropTypes.arrayOf(PropTypes.string),
   buttonsAreDisabled: PropTypes.bool,
+  buttonsContent: PropTypes.arrayOf(PropTypes.string),
   content: PropTypes.string.isRequired,
   onCancelHandler: PropTypes.func.isRequired,
   onConfirmHandler: PropTypes.func.isRequired,
@@ -104,8 +110,11 @@ ConfirmationModal.propTypes = {
 };
 
 ConfirmationModal.defaultProps = {
-  buttonsText: ['Cancel', 'Confirm'],
   buttonsAreDisabled: false,
+  buttonsContent: [
+    'components.confirmationModal.buttons.defaultCancel',
+    'components.confirmationModal.buttons.defaultConfirm',
+  ],
   rounded: true,
 };
 

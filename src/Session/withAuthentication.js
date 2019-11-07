@@ -1,10 +1,13 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import SecureLS from 'secure-ls';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import { authUserSet } from '../Redux/actions';
 import { withFirebase } from '../Firebase';
+
+const ls = new SecureLS();
 
 const withAuthentication = (Component) => {
   class WithAuthentication extends React.Component {
@@ -13,11 +16,11 @@ const withAuthentication = (Component) => {
 
       this.listener = firebase.onAuthUserListener(
         (authUser) => {
-          localStorage.setItem('authUser', JSON.stringify(authUser));
+          ls.set('au', authUser);
           authUserSetAction(authUser);
         },
         () => {
-          localStorage.removeItem('authUser');
+          ls.remove('au');
           authUserSetAction(null);
         },
       );

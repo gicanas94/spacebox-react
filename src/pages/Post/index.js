@@ -1,6 +1,5 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
@@ -8,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 
 import { alertSet, loadingSet } from '../../Redux/actions';
 import { device } from '../../styles';
+import HelmetTitle from '../../components/HelmetTitle';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { ROUTES } from '../../constants';
 import Post from '../../components/Post';
@@ -70,7 +70,7 @@ class PostPage extends Component {
             .then(() => loadingSetAction(false))
             .catch((error) => {
               alertSetAction({
-                text: error.message,
+                message: error.message,
                 type: 'danger',
               });
 
@@ -114,7 +114,7 @@ class PostPage extends Component {
                 .then(() => loadingSetAction(false))
                 .catch((error) => {
                   alertSetAction({
-                    text: error.message,
+                    message: error.message,
                     type: 'danger',
                   });
 
@@ -188,7 +188,14 @@ class PostPage extends Component {
 
     return (
       <Fragment>
-        {post && <Helmet title={`${post.title} - Spacebox`} />}
+        {post && (
+          <HelmetTitle
+            title={{
+              id: 'pages.post.title',
+              values: { postTitle: post.title },
+            }}
+          />
+        )}
 
         {isLoading && <LoadingSpinner />}
 

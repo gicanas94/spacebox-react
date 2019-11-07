@@ -66,7 +66,7 @@ const CommonLinks = ({ location, onLinkClickHandler }) => (
       }
       type="button"
     >
-      {'Home'}
+      {'components.header.links.home'}
     </Button>
   </StyledLink>
 );
@@ -93,7 +93,7 @@ const AuthLinks = ({
         }
         type="button"
       >
-        {'Create Spacebox'}
+        {'components.header.links.createSpacebox'}
       </Button>
     </StyledLink>
 
@@ -112,14 +112,14 @@ const AuthLinks = ({
         }
         type="button"
       >
-        {'Account'}
+        {'components.header.links.account'}
       </Button>
     </StyledLink>
 
     {authUser.isAdmin && (
       <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.ADMIN}>
         <Button
-          color="flax"
+          color="helio"
           fullWidth
           rounded
           size="small"
@@ -129,7 +129,7 @@ const AuthLinks = ({
           }
           type="button"
         >
-          {'Admin'}
+          {'components.header.links.admin'}
         </Button>
       </StyledLink>
     )}
@@ -144,7 +144,7 @@ const AuthLinks = ({
         styleType="unbordered"
         type="button"
       >
-        {'Sign out'}
+        {'components.header.links.signOut'}
       </Button>
     </StyledSignOutButtonWrapper>
 
@@ -165,7 +165,7 @@ const NonAuthLinks = ({ location, onLinkClickHandler }) => (
         }
         type="button"
       >
-        {'WT#?'}
+        {'components.header.links.faq'}
       </Button>
     </StyledLink>
 
@@ -181,7 +181,7 @@ const NonAuthLinks = ({ location, onLinkClickHandler }) => (
         }
         type="button"
       >
-        {'Sign up'}
+        {'components.header.links.signUp'}
       </Button>
     </StyledLink>
 
@@ -197,7 +197,7 @@ const NonAuthLinks = ({ location, onLinkClickHandler }) => (
         }
         type="button"
       >
-        {'Sign in'}
+        {'components.header.links.signIn'}
       </Button>
     </StyledLink>
   </Fragment>

@@ -62,8 +62,9 @@ class Firebase {
           createdAt: (document.data() && document.data().createdAt) || '',
           email: authUser.email,
           emailVerified: authUser.emailVerified,
-          isAdmin: (document.data() && document.data().isAdmin) || false,
+          isAdmin: (document.data() && document.data().isAdmin) || '',
           providerData: authUser.providerData,
+          slug: (document.data() && document.data().slug) || '',
           uid: authUser.uid,
           username: (document.data() && document.data().username) || '',
         })

@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Field } from 'formik';
+import { injectIntl } from 'react-intl';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -19,21 +20,6 @@ import Select from '../../components/Select';
 import Spacebox from '../../components/Spacebox';
 import { withFirebase } from '../../Firebase';
 import Wizard from '../../components/Wizard';
-
-const CreateSpaceboxFormSchema = [
-  {},
-  Yup.object().shape({
-    title: Yup.string().trim().required('This field is required!'),
-    description: Yup.string().required('This field is required!'),
-  }),
-  Yup.object().shape({
-    category: Yup
-      .string()
-      .trim()
-      .oneOf(CATEGORIES, 'This field is required!')
-      .required('This field is required!'),
-  }),
-];
 
 const StyledH2 = styled.h2`
   margin-bottom: 5px;
@@ -79,7 +65,23 @@ const CreateSpaceboxForm = ({
   authUser,
   firebase,
   history,
+  intl,
 }) => {
+  const CreateSpaceboxFormSchema = [
+    {},
+    Yup.object().shape({
+      title: Yup.string().trim().required('yup.required'),
+      description: Yup.string().required('yup.required'),
+    }),
+    Yup.object().shape({
+      category: Yup
+        .string()
+        .trim()
+        .oneOf(CATEGORIES.map(category => category.messageId), 'yup.required')
+        .required('yup.required'),
+    }),
+  ];
+
   const handleSubmit = (values, actions) => {
     alertSetAction();
 
@@ -101,7 +103,7 @@ const CreateSpaceboxForm = ({
     firebase.createSpacebox(createdSpacebox)
       .then(() => {
         alertSetAction({
-          text: 'Your Spacebox was successfully created. Enjoy!',
+          message: { id: 'forms.createSpacebox.successAlertMessage' },
           type: 'success',
         });
 
@@ -114,7 +116,7 @@ const CreateSpaceboxForm = ({
       })
       .catch((error) => {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
 
@@ -128,20 +130,23 @@ const CreateSpaceboxForm = ({
         bgColor: 'rgb(64, 191, 163)',
         category: '',
         color: 'rgb(25, 44, 77)',
-        description: 'Description',
-        title: 'Title',
+        description: intl.formatMessage({
+          id: 'forms.createSpacebox.defaultDescriptionValue',
+        }),
+        title: intl.formatMessage({
+          id: 'forms.createSpacebox.defaultTitleValue',
+        }),
         visible: true,
       }}
       onSubmit={handleSubmit}
       validationSchema={CreateSpaceboxFormSchema}
     >
       <Wizard.Page>
-        <StyledH2>Step 1: colors</StyledH2>
+        <StyledH2>
+          {intl.formatMessage({ id: 'forms.createSpacebox.step1.h2' })}
+        </StyledH2>
 
-        <p>
-          Background and Text color of the box. We recommend you to choose
-          combination of colors with contrast that are pleasing to the eye.
-        </p>
+        <p>{intl.formatMessage({ id: 'forms.createSpacebox.step1.p' })}</p>
 
         <StyledPageWrapper>
           <StyledSpacebox>
@@ -165,7 +170,7 @@ const CreateSpaceboxForm = ({
                 <ColorPicker
                   color={form.values.bgColor}
                   disabled={form.isSubmitting}
-                  label="Background"
+                  label="forms.createSpacebox.labels.backgroundColorPicker"
                   margin="0 0 25px 0"
                   name="bgColor"
                   onChangeHandler={(event) => {
@@ -180,7 +185,7 @@ const CreateSpaceboxForm = ({
                 <ColorPicker
                   color={form.values.color}
                   disabled={form.isSubmitting}
-                  label="Text"
+                  label="forms.createSpacebox.labels.textColorPicker"
                   name="color"
                   onChangeHandler={(event) => {
                     form.setFieldValue('color', event.hex);
@@ -193,12 +198,11 @@ const CreateSpaceboxForm = ({
       </Wizard.Page>
 
       <Wizard.Page>
-        <StyledH2>Step 2: title and description</StyledH2>
+        <StyledH2>
+          {intl.formatMessage({ id: 'forms.createSpacebox.step2.h2' })}
+        </StyledH2>
 
-        <p>
-          Keep in mind that if the title or description of your space is too
-          long, it will not be shown completely.
-        </p>
+        <p>{intl.formatMessage({ id: 'forms.createSpacebox.step2.p' })}</p>
 
         <StyledPageWrapper>
           <StyledSpacebox>
@@ -227,7 +231,7 @@ const CreateSpaceboxForm = ({
                     && form.touched.title
                     && form.errors.title
                   }
-                  label="Title"
+                  label="forms.createSpacebox.labels.titleInput"
                   margin="0 0 25px 0"
                   name="title"
                   onBlur={field.onBlur}
@@ -249,7 +253,7 @@ const CreateSpaceboxForm = ({
                     && form.touched.description
                     && form.errors.description
                   }
-                  label="Description"
+                  label="forms.createSpacebox.labels.descriptionInput"
                   name="description"
                   onBlur={field.onBlur}
                   onChange={field.onChange}
@@ -265,13 +269,11 @@ const CreateSpaceboxForm = ({
       </Wizard.Page>
 
       <Wizard.Page>
-        <StyledH2>Step 3: category and visible</StyledH2>
+        <StyledH2>
+          {intl.formatMessage({ id: 'forms.createSpacebox.step3.h2' })}
+        </StyledH2>
 
-        <p>
-          Choose carefully the category of your Spacebox, since in case you
-          decide that it is visible on the home page, other users will filter
-          by category to quickly find what they want to read.
-        </p>
+        <p>{intl.formatMessage({ id: 'forms.createSpacebox.step3.p' })}</p>
 
         <StyledPageWrapper>
           <StyledSpacebox>
@@ -299,7 +301,7 @@ const CreateSpaceboxForm = ({
                     && form.touched.category
                     && form.errors.category
                   }
-                  label="Category"
+                  label="forms.createSpacebox.labels.categorySelect"
                   margin="0 0 25px 0"
                   onChangeHandler={(category) => {
                     form.setFieldValue('category', category);
@@ -318,7 +320,7 @@ const CreateSpaceboxForm = ({
                 <Checkbox
                   checked={form.values.visible}
                   disabled={form.isSubmitting}
-                  label="Visible on home page"
+                  label="forms.createSpacebox.labels.visibleCheckbox"
                   name="visible"
                   onChangeHandler={() => form.setFieldValue(
                     'visible',
@@ -340,6 +342,7 @@ CreateSpaceboxForm.propTypes = {
   authUser: PropTypes.objectOf(PropTypes.any).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  intl: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = state => ({ authUser: state.session.authUser });
@@ -348,6 +351,7 @@ const mapDispatchToProps = { alertSetAction: alertSet };
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  injectIntl,
   withFirebase,
   withRouter,
 )(CreateSpaceboxForm);

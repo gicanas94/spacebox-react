@@ -1,5 +1,6 @@
 import autosize from 'autosize';
 import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
@@ -129,7 +130,9 @@ const Textarea = ({
 
   return (
     <StyledWrapper error={error} margin={margin} success={success}>
-      <StyledLabel disabled={disabled} htmlFor={textareaId}>{label}</StyledLabel>
+      <StyledLabel disabled={disabled} htmlFor={textareaId}>
+        <FormattedMessage id={label} />
+      </StyledLabel>
 
       <StyledTextarea
         disabled={disabled}
@@ -139,7 +142,12 @@ const Textarea = ({
       />
 
       {!disabled && error && <StyledErrorIcon />}
-      {!disabled && error && <StyledErrorMessage>{error}</StyledErrorMessage>}
+
+      {!disabled && error && (
+        <StyledErrorMessage>
+          <FormattedMessage defaultMessage={error} id={error} />
+        </StyledErrorMessage>
+      )}
     </StyledWrapper>
   );
 };

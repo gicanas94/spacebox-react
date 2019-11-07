@@ -1,5 +1,7 @@
-import { KeyboardArrowDown } from 'styled-icons/material/KeyboardArrowDown';
+import _ from 'lodash';
 import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
+import { injectIntl } from 'react-intl';
+import { KeyboardArrowDown } from 'styled-icons/material/KeyboardArrowDown';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
@@ -172,6 +174,7 @@ const StyledErrorMessage = styled.div`
 const Select = ({
   disabled,
   error,
+  intl,
   label,
   margin,
   onChangeHandler,
@@ -184,6 +187,13 @@ const Select = ({
   const [selectedOption, setSelectedOption] = useState(value);
   const wrapperRef = useRef();
 
+  const translatedOptions = options.map(
+    option => ({
+      category: intl.formatMessage({ id: option.messageId }),
+      index: option.index,
+    }),
+  );
+
   const closeList = (event) => {
     if (wrapperRef.current.contains(event.target)) return;
     if (listIsOpen) setListIsOpen(!listIsOpen);
@@ -191,10 +201,10 @@ const Select = ({
 
   const handleKeydown = event => event.key === 'Escape' && closeList(event);
 
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
+  const handleOptionClick = (optionIndex) => {
+    setSelectedOption(options[optionIndex].messageId);
     setListIsOpen(!listIsOpen);
-    onChangeHandler(option);
+    onChangeHandler(options[optionIndex].messageId);
   };
 
   useEffect(() => {
@@ -222,7 +232,7 @@ const Select = ({
       <StyledLabel
         onClick={!disabled ? () => setListIsOpen(!listIsOpen) : null}
       >
-        {label}
+        {intl.formatMessage({ id: label })}
       </StyledLabel>
 
       <StyledSimulatedSelect rounded={rounded}>
@@ -231,18 +241,23 @@ const Select = ({
         />
 
         <StyledSelectedOption>
-          {selectedOption || '-'}
+          {selectedOption
+            ? intl.formatMessage({ id: selectedOption })
+            : '-'
+          }
         </StyledSelectedOption>
-
 
         {listIsOpen && (
           <StyledUl rounded={rounded}>
-            {options.map(option => (
+            {_.sortBy(
+              translatedOptions,
+              translatedOption => translatedOption.category,
+            ).map(option => (
               <StyledLi
-                key={option}
-                onClick={!disabled ? () => handleOptionClick(option) : null}
+                key={option.index}
+                onClick={!disabled ? () => handleOptionClick(option.index) : null}
               >
-                {option}
+                {option.category}
               </StyledLi>
             ))}
           </StyledUl>
@@ -251,7 +266,11 @@ const Select = ({
 
       {!disabled && <StyledArrowDownIcon />}
       {!disabled && error && <StyledErrorIcon />}
-      {!disabled && error && <StyledErrorMessage>{error}</StyledErrorMessage>}
+      {!disabled && error && (
+        <StyledErrorMessage>
+          {intl.formatMessage({ id: error })}
+        </StyledErrorMessage>
+      )}
     </StyledWrapper>
   );
 };
@@ -259,10 +278,11 @@ const Select = ({
 Select.propTypes = {
   disabled: PropTypes.bool,
   error: PropTypes.string,
+  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   label: PropTypes.string.isRequired,
   margin: PropTypes.string,
   onChangeHandler: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
   rounded: PropTypes.bool,
   success: PropTypes.bool,
   value: PropTypes.string,
@@ -277,4 +297,4 @@ Select.defaultProps = {
   value: null,
 };
 
-export default Select;
+export default injectIntl(Select);

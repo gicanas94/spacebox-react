@@ -2,6 +2,7 @@ import {
   FacebookSquare as FacebookIcon,
 } from 'styled-icons/boxicons-logos/FacebookSquare';
 
+import { FormattedMessage } from 'react-intl';
 import { Google as GoogleIcon } from 'styled-icons/boxicons-logos/Google';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -86,7 +87,12 @@ const SignInWithButton = ({ account, ...props }) => (
       </StyledIcon>
     </StyledIconWrapper>
 
-    <StyledText>{`Sign in with ${account}`}</StyledText>
+    <StyledText>
+      <FormattedMessage
+        id="components.signInWithButton.signInWithText"
+        values={{ account }}
+      />
+    </StyledText>
   </StyledButton>
 );
 

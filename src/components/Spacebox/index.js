@@ -1,5 +1,6 @@
 import Color from 'color';
 import { Edit } from 'styled-icons/boxicons-regular/Edit';
+import { FormattedMessage } from 'react-intl';
 import { Heart } from 'styled-icons/fa-solid/Heart';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -93,7 +94,7 @@ const StyledLeftBubblesWrapper = styled.div`
 `;
 
 const StyledTotalLikesHeartIcon = styled(Heart)`
-  color: ${({ theme }) => theme.components.Spacebox.totalLikesHeartIconColor};
+  color: ${({ theme }) => theme.components.Spacebox.totalLikesHeartIcon.color};
   width: 16px;
   margin-right: 5px;
 `;
@@ -263,10 +264,18 @@ const Spacebox = ({
           )}
         </StyledLeftBubblesWrapper>
 
-        {category && <StyledBubble>{category}</StyledBubble>}
+        {category && (
+          <StyledBubble>
+            <FormattedMessage id={category} />
+          </StyledBubble>
+        )}
       </StyledBubblesWrapper>
 
-      {title && <StyledTitle>{title}</StyledTitle>}
+      {title && (
+        <StyledTitle>
+          <FormattedMessage defaultMessage={title} id={title} />
+        </StyledTitle>
+      )}
 
       {description && <StyledDescription>{description}</StyledDescription>}
     </StyledSpacebox>

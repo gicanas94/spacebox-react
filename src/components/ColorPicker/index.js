@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { SliderPicker } from 'react-color';
@@ -31,7 +32,10 @@ const ColorPicker = ({
   onChangeHandler,
 }) => (
   <StyledWrapper margin={margin}>
-    <StyledLabel>{label}</StyledLabel>
+    <StyledLabel>
+      <FormattedMessage id={label} />
+    </StyledLabel>
+
     <SliderPicker color={color} onChange={!disabled && onChangeHandler} />
   </StyledWrapper>
 );

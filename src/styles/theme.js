@@ -12,10 +12,10 @@ const themeSecondaryGreyColor = color.palette.lava;
 export default {
   components: {
     Alert: {
-      maxWidth: '1280px',
-      mobileWidth: '100%',
       fontWeight: font.weight.medium,
       laptopWidth: '80%',
+      maxWidth: '1280px',
+      mobileWidth: '100%',
       type: {
         danger: {
           bgColor: color.palette.salmon,
@@ -35,14 +35,16 @@ export default {
       },
     },
     App: {
+      laptopWidth: '80%',
       maxWidth: '1280px',
       mobileWidth: '100%',
-      laptopWidth: '80%',
     },
     Box: {
-      arrowColor: themeMainGreyColor,
+      arrowIcon: {
+        color: themeMainGreyColor,
+      },
+      bgColor: color.palette.white,
       borderWidth: '1px',
-      defaultBgColor: color.palette.white,
     },
     Button: {
       borderWidth: '2px',
@@ -84,11 +86,11 @@ export default {
       bgColor: Color(themeMainColor).alpha(0.8).string(),
     },
     Header: {
-      maxWidth: '1280px',
-      mobileWidth: '100%',
       bgColor: color.palette.asphalt,
       color: color.palette.cloud,
       laptopWidth: '80%',
+      maxWidth: '1280px',
+      mobileWidth: '100%',
     },
     Hr: {
       borderWidth: '1.5px',
@@ -152,7 +154,9 @@ export default {
       bgColor: color.palette.cloud,
       border: `2px solid ${themeMainColor}`,
       color: textColor,
-      searchIconColor: themeMainColor,
+      searchIcon: {
+        color: themeMainColor,
+      },
     },
     Select: {
       borderWidth: '2px',
@@ -188,15 +192,15 @@ export default {
       },
     },
     Sidebar: {
-      title: {
+      activeLink: {
+        fontWeight: font.weight.bold,
+      },
+      heading: {
         fontWeight: font.weight.bold,
       },
       link: {
         fontSize: font.size.s,
         fontWeight: font.weight.regular,
-      },
-      activeLink: {
-        fontWeight: font.weight.bold,
       },
     },
     SignInWithButton: {
@@ -228,7 +232,9 @@ export default {
         fontSize: font.size.xxxl,
         fontWeight: font.weight.bold,
       },
-      totalLikesHeartIconColor: heartColor,
+      totalLikesHeartIcon: {
+        color: heartColor,
+      },
     },
     SpaceboxInfoSection: {
       spaceboxCategory: {
@@ -240,8 +246,8 @@ export default {
       },
       spaceboxTitle: {
         fontWeight: font.weight.bold,
-        smallFontSize: font.size.m,
         largeFontSize: font.size.l,
+        smallFontSize: font.size.m,
       },
       userImage: {
         bgColor: Color(themeMainColor).lighten(0.6).hex(),
@@ -272,7 +278,7 @@ export default {
       signInLink: {
         fontSize: font.size.s,
       },
-      termsOfUsePolicy: {
+      termsOfUseNotice: {
         color: themeSecondaryGreyColor,
         fontSize: font.size.s,
       },

@@ -47,8 +47,8 @@ const App = ({
 
     {activeAlert && (
       <Alert
+        message={activeAlert.message}
         onAlertCloseHandler={() => alertResetAction(null)}
-        text={activeAlert.text}
         type={activeAlert.type}
       />
     )}
@@ -76,7 +76,7 @@ const App = ({
 );
 
 App.propTypes = {
-  activeAlert: PropTypes.objectOf(PropTypes.string),
+  activeAlert: PropTypes.objectOf(PropTypes.any),
   alertResetAction: PropTypes.func.isRequired,
 };
 

@@ -1,5 +1,6 @@
 import Color from 'color';
 import { Cross } from 'styled-icons/icomoon/Cross';
+import { FormattedHTMLMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -58,7 +59,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-const StyledText = styled.div`
+const StyledMessage = styled.div`
   margin-right: 10px;
 
   @media ${device.laptop} {
@@ -71,18 +72,28 @@ const StyledCrossIcon = styled(Cross)`
   width: 22px;
 `;
 
-const Alert = ({ onAlertCloseHandler, text, ...props }) => (
+const Alert = ({ message, onAlertCloseHandler, ...props }) => (
   <StyledAlert onClick={onAlertCloseHandler} {...props}>
     <StyledWrapper>
-      <StyledText>{text}</StyledText>
+      <StyledMessage>
+        {message.id
+          ? (
+            <FormattedHTMLMessage
+              id={message.id}
+              values={message.values}
+            />
+          ) : message
+        }
+      </StyledMessage>
+
       <StyledCrossIcon />
     </StyledWrapper>
   </StyledAlert>
 );
 
 Alert.propTypes = {
+  message: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
   onAlertCloseHandler: PropTypes.func.isRequired,
-  text: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   withBorder: PropTypes.bool,
 };

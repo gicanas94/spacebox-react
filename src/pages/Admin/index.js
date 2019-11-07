@@ -1,11 +1,11 @@
 import { compose } from 'recompose';
-import { Helmet } from 'react-helmet';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Box from '../../components/Box';
 import { device } from '../../styles';
+import HelmetTitle from '../../components/HelmetTitle';
 import Sidebar from '../../components/Sidebar';
 import { withAuthorization } from '../../Session';
 import { withFirebase } from '../../Firebase';
@@ -16,15 +16,16 @@ const StyledGrid = styled.div`
   grid-gap: 10px;
   grid-template-columns: 1fr;
   margin: auto;
+  max-width: 900px;
   width: 100%;
 
   @media ${device.tablet} {
-    grid-template-columns: repeat(2, 1fr);
-    width: min-content;
+    grid-template-columns: auto 1fr;
   }
 
   @media ${device.laptop} {
     grid-gap: 20px;
+    max-width: 910px;
   }
 `;
 
@@ -32,28 +33,28 @@ const AdminPage = () => {
   const sidebarContent = (
     [
       {
-        title: 'User(s)',
+        heading: 'pages.admin.sidebarContent.section1.heading',
         links: [
           {
-            text: 'List of users',
+            text: 'pages.admin.sidebarContent.section1.links.listOfUsers',
             to: '#',
           },
           {
-            text: 'Find user',
+            text: 'pages.admin.sidebarContent.section1.links.findUser',
             to: '#',
           },
         ],
         separator: true,
       },
       {
-        title: 'Spacebox(es)',
+        heading: 'pages.admin.sidebarContent.section2.heading',
         links: [
           {
-            text: 'List of Spaceboxes',
+            text: 'pages.admin.sidebarContent.section2.links.listOfSpaceboxes',
             to: '#',
           },
           {
-            text: 'Find Spacebox',
+            text: 'pages.admin.sidebarContent.section2.links.findSpacebox',
             to: '#',
           },
         ],
@@ -63,12 +64,14 @@ const AdminPage = () => {
 
   return (
     <StyledGrid>
-      <Helmet title="Admin - Spacebox" />
+      <HelmetTitle title={{ id: 'pages.admin.title' }} />
 
       <Sidebar content={sidebarContent} />
 
-      <Box fullWidth padding="0">
+      <Box fullWidth margin="0">
         <Switch>
+          <Route />
+          <Route />
           <Route />
           <Route />
         </Switch>
@@ -79,7 +82,4 @@ const AdminPage = () => {
 
 const condition = authUser => authUser && authUser.isAdmin;
 
-export default compose(
-  withAuthorization(condition),
-  withFirebase,
-)(AdminPage);
+export default compose(withAuthorization(condition), withFirebase)(AdminPage);

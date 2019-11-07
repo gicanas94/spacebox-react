@@ -1,4 +1,5 @@
 import Color from 'color';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -186,14 +187,14 @@ const StyledButtonText = styled.div`
 const Button = ({ children, ...props }) => (
   <StyledButton {...props}>
     <StyledButtonText>
-      {children}
+      <FormattedMessage id={children} />
     </StyledButtonText>
   </StyledButton>
 );
 
 Button.propTypes = {
-  color: PropTypes.string,
   children: PropTypes.string.isRequired,
+  color: PropTypes.string,
   disabled: PropTypes.bool,
   fullWidth: PropTypes.bool,
   margin: PropTypes.string,

@@ -83,20 +83,20 @@ class Wizard extends Component {
                   styleType="unbordered"
                   type="button"
                 >
-                  {'Back'}
+                  {'components.wizard.buttons.previousStep'}
                 </Button>
               )}
 
               {page === 0 && withStartPage && (
                 <Button rounded styleType="bordered" type="submit">
-                  {'Start'}
+                  {'components.wizard.buttons.start'}
                 </Button>
               )}
 
               {((!isLastPage && !withStartPage)
                 || (withStartPage && page > 0)) && (
                 <Button rounded styleType="bordered" type="submit">
-                  {'Next'}
+                  {'components.wizard.buttons.nextStep'}
                 </Button>
               )}
 
@@ -107,7 +107,7 @@ class Wizard extends Component {
                   styleType="bordered"
                   type="submit"
                 >
-                  {'Finish'}
+                  {'components.wizard.buttons.finish'}
                 </Button>
               )}
             </StyledButtonsWrapper>

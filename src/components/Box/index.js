@@ -1,5 +1,6 @@
 import { ArrowAltCircleUp } from 'styled-icons/fa-solid/ArrowAltCircleUp';
 import Color from 'color';
+import { FormattedHTMLMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -10,13 +11,13 @@ const StyledBox = styled.div`
   background-color: ${({ bgColor, theme }) => (
     bgColor
       ? color.palette[bgColor]
-      : theme.components.Box.defaultBgColor
+      : theme.components.Box.bgColor
   )};
   border-color: ${({ bgColor, theme }) => (
     Color(
       bgColor
         ? color.palette[bgColor]
-        : theme.components.Box.defaultBgColor,
+        : theme.components.Box.bgColor,
     ).darken(0.2).hex()
   )};
   border-style: solid;
@@ -91,7 +92,7 @@ const StyledCollapseTitle = styled.div`
 `;
 
 const StyledArrowIcon = styled(ArrowAltCircleUp)`
-  color: ${({ theme }) => theme.components.Box.arrowColor};
+  color: ${({ theme }) => theme.components.Box.arrowIcon.color};
   cursor: pointer;
   height: 25px;
   position: absolute;
@@ -122,7 +123,7 @@ const Box = ({
       {collapseTitle && boxIsCollapsed
         ? (
           <StyledCollapseTitle>
-            {collapseTitle}
+            <FormattedHTMLMessage id={collapseTitle} />
           </StyledCollapseTitle>
         ) : children
       }
@@ -141,7 +142,7 @@ Box.propTypes = {
   bgColor: PropTypes.string,
   children: PropTypes.node,
   collapsed: PropTypes.bool,
-  collapseTitle: PropTypes.node,
+  collapseTitle: PropTypes.string,
   fullHeight: PropTypes.bool,
   fullWidth: PropTypes.bool,
   margin: PropTypes.string,

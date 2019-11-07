@@ -32,7 +32,7 @@ const StyledInput = styled.input`
 `;
 
 const StyledSearchIcon = styled(SearchAlt)`
-  color: ${({ theme }) => theme.components.SearchBar.searchIconColor};
+  color: ${({ theme }) => theme.components.SearchBar.searchIcon.color};
   cursor: pointer;
   position: absolute;
   right: 5px;
@@ -40,7 +40,12 @@ const StyledSearchIcon = styled(SearchAlt)`
   width: 30px;
 `;
 
-const SearchBar = ({ searchBarChangeAction, spaceboxToSearch, ...props }) => {
+const SearchBar = ({
+  intl,
+  searchBarChangeAction,
+  spaceboxToSearch,
+  ...props
+}) => {
   let textInput = null;
 
   return (
@@ -49,7 +54,9 @@ const SearchBar = ({ searchBarChangeAction, spaceboxToSearch, ...props }) => {
 
       <StyledInput
         onChange={event => searchBarChangeAction(event.target.value)}
-        placeholder="Search"
+        placeholder={
+          intl.formatMessage({ id: 'components.header.searchBar.placeholder' })
+        }
         ref={(input) => { textInput = input; }}
         type="text"
         value={spaceboxToSearch}
@@ -60,6 +67,7 @@ const SearchBar = ({ searchBarChangeAction, spaceboxToSearch, ...props }) => {
 };
 
 SearchBar.propTypes = {
+  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   rounded: PropTypes.bool,
   searchBarChangeAction: PropTypes.func.isRequired,
   spaceboxToSearch: PropTypes.string,

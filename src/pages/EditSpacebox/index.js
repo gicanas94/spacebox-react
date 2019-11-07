@@ -1,7 +1,6 @@
-import _ from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -12,6 +11,7 @@ import { alertSet, loadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import EditSpaceboxForm from '../../forms/EditSpacebox';
+import HelmetTitle from '../../components/HelmetTitle';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { ROUTES } from '../../constants';
 import { withAuthorization } from '../../Session';
@@ -56,7 +56,7 @@ const EditSpaceboxPage = ({
   match,
 }) => {
   const [spacebox, setSpacebox] = useState(null);
-  const [confirmModalIsOpen, setConfirmModalIsOpen] = useState(false);
+  const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
 
   const [
     deleteSpaceboxInProgress,
@@ -73,7 +73,7 @@ const EditSpaceboxPage = ({
 
         data.forEach(document => userSpaceboxes.push(document.data()));
 
-        const userSpaceboxToEdit = _.filter(userSpaceboxes, userSpacebox => (
+        const userSpaceboxToEdit = userSpaceboxes.filter(userSpacebox => (
           userSpacebox.slug === match.params.spaceboxSlug
         ))[0];
 
@@ -86,7 +86,7 @@ const EditSpaceboxPage = ({
         }
       } catch (error) {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
 
@@ -103,20 +103,23 @@ const EditSpaceboxPage = ({
 
     firebase.deleteSpacebox(spacebox.slug)
       .then(() => {
-        setConfirmModalIsOpen(false);
+        setConfirmationModalIsOpen(false);
         history.push(ROUTES.HOME);
 
         alertSetAction({
-          text: `Your Spacebox ${spacebox.title} has been deleted.`,
+          message: {
+            id: 'pages.editSpacebox.deleteSpacebox.successAlertMessage',
+            values: { spaceboxTitle: spacebox.title },
+          },
           type: 'success',
         });
       })
       .catch((error) => {
-        setConfirmModalIsOpen(false);
+        setConfirmationModalIsOpen(false);
         setDeleteSpaceboxInProgress(false);
 
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
       });
@@ -128,18 +131,23 @@ const EditSpaceboxPage = ({
 
       {!isLoading && spacebox && (
         <Box size="medium">
-          <Helmet title="Edit Spacebox - Spacebox" />
+          <HelmetTitle title={{ id: 'pages.editSpacebox.title' }} />
 
           <StyledTitleAndDeleteSpaceboxWrapper>
-            <h1>Edit Spacebox</h1>
+            <h1>
+              <FormattedMessage id="pages.editSpacebox.h1" />
+            </h1>
 
             <StyledDeleteSpacebox
               className="linkStyle"
-              onClick={() => setConfirmModalIsOpen(true)}
+              onClick={() => setConfirmationModalIsOpen(true)}
               tabIndex="0"
             >
               <StyledTrashIcon />
-              {'delete Spacebox'}
+
+              <FormattedMessage
+                id="pages.editSpacebox.deleteSpacebox.triggerElementText"
+              />
             </StyledDeleteSpacebox>
           </StyledTitleAndDeleteSpaceboxWrapper>
 
@@ -150,13 +158,13 @@ const EditSpaceboxPage = ({
             spacebox={spacebox}
           />
 
-          {confirmModalIsOpen && (
+          {confirmationModalIsOpen && (
             <ConfirmationModal
               buttonsAreDisabled={deleteSpaceboxInProgress}
-              content="Are you 100% sure about this?"
-              onCancelHandler={() => setConfirmModalIsOpen(false)}
+              content="pages.editSpacebox.deleteSpacebox.confirmationModal.content"
+              onCancelHandler={() => setConfirmationModalIsOpen(false)}
               onConfirmHandler={() => handleDeleteSpaceboxClick()}
-              title="Delete Spacebox"
+              title="pages.editSpacebox.deleteSpacebox.confirmationModal.title"
             />
           )}
         </Box>

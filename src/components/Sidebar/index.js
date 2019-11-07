@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl';
 import { NavLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
@@ -42,8 +43,8 @@ const StyledSections = styled.div`
   }
 `;
 
-const StyledTitle = styled.div`
-  font-weight: ${({ theme }) => theme.components.Sidebar.title.fontWeight};
+const StyledHeading = styled.div`
+  font-weight: ${({ theme }) => theme.components.Sidebar.heading.fontWeight};
   margin-bottom: 15px;
 `;
 
@@ -78,18 +79,19 @@ const Sidebar = ({ content, location }) => {
   const myContent = (
     <StyledSections>
       {content.map(section => (
-        <Fragment key={section.title}>
-          <StyledTitle>{section.title}</StyledTitle>
+        <Fragment key={section.heading}>
+          <StyledHeading>
+            <FormattedMessage id={section.heading} />
+          </StyledHeading>
 
           <StyledUl>
             {section.links.map(link => (
               <li key={link.text}>
-                {console.log(location.pathname === link.to)}
                 <StyledNavLink
                   className={location.pathname === link.to ? 'active' : 'not-active'}
                   to={link.to}
                 >
-                  {link.text}
+                  <FormattedMessage id={link.text} />
                 </StyledNavLink>
               </li>
             ))}
@@ -119,12 +121,8 @@ const Sidebar = ({ content, location }) => {
 };
 
 Sidebar.propTypes = {
-  content: PropTypes.arrayOf(PropTypes.object),
+  content: PropTypes.arrayOf(PropTypes.object).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
-};
-
-Sidebar.defaultProps = {
-  content: undefined,
 };
 
 export default withRouter(Sidebar);

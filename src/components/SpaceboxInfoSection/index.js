@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -111,8 +112,11 @@ const SpaceboxInfoSection = ({
     </StyledSpaceboxDescription>
 
     <StyledSpaceboxCategory>
-      <span>Category: </span>
-      {spacebox.category}
+      <span>
+        <FormattedMessage id="components.spaceboxInfoSection.categoryTitle" />
+      </span>
+
+      <FormattedMessage id={spacebox.category} />
     </StyledSpaceboxCategory>
 
     <Hr centered margin="25px 0" width="50%" />
@@ -130,7 +134,7 @@ const SpaceboxInfoSection = ({
                 styleType="bordered"
                 type="button"
               >
-                {'Edit Spacebox'}
+                {'components.spaceboxInfoSection.buttons.editSpacebox'}
               </Button>
             </StyledLink>
           ) : (
@@ -149,7 +153,7 @@ const SpaceboxInfoSection = ({
                 styleType="filled"
                 type="button"
               >
-                {'Go to user profile'}
+                {'components.spaceboxInfoSection.buttons.goToUserProfile'}
               </Button>
             </StyledLink>
           )
@@ -169,7 +173,7 @@ const SpaceboxInfoSection = ({
                 styleType="filled"
                 type="button"
               >
-                {'Go back'}
+                {'components.spaceboxInfoSection.buttons.goBack'}
               </Button>
             ) : (
               <StyledLink to={{
@@ -185,7 +189,7 @@ const SpaceboxInfoSection = ({
                   styleType="filled"
                   type="button"
                 >
-                  {'Go to Spacebox'}
+                  {'components.spaceboxInfoSection.buttons.goToSpacebox'}
                 </Button>
               </StyledLink>
             )

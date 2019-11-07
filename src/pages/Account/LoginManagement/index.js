@@ -1,12 +1,13 @@
 import { FacebookSquare } from 'styled-icons/boxicons-logos/FacebookSquare';
+import { FormattedMessage } from 'react-intl';
 import { Google } from 'styled-icons/boxicons-logos/Google';
-import { Helmet } from 'react-helmet';
 import { LockAlt } from 'styled-icons/boxicons-regular/LockAlt';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { Twitter } from 'styled-icons/boxicons-logos/Twitter';
 
+import HelmetTitle from '../../../components/HelmetTitle';
 import Hr from '../../../components/Hr';
 import PasswordLoginToggle from './PasswordLoginToggle';
 import SocialLoginToggle from './SocialLoginToggle';
@@ -55,33 +56,6 @@ const StyledTwitterIcon = styled(Twitter)`
   color: #00acee;
 `;
 
-const SIGN_IN_METHODS = [
-  {
-    id: 'password',
-    displayName: 'Password',
-    provider: null,
-    icon: () => <StyledPasswordIcon />,
-  },
-  {
-    id: 'google.com',
-    displayName: 'Google',
-    provider: 'googleProvider',
-    icon: () => <StyledGoogleIcon />,
-  },
-  {
-    id: 'facebook.com',
-    displayName: 'Facebook',
-    provider: 'facebookProvider',
-    icon: () => <StyledFacebookIcon />,
-  },
-  {
-    id: 'twitter.com',
-    displayName: 'Twitter',
-    provider: 'twitterProvider',
-    icon: () => <StyledTwitterIcon />,
-  },
-];
-
 const LoginManagementSubpage = ({
   activeSignInMethods,
   alertSetAction,
@@ -91,10 +65,37 @@ const LoginManagementSubpage = ({
   isLoading,
   loadingSetAction,
 }) => {
+  const signInMethods = [
+    {
+      id: 'password',
+      displayName: 'pages.account.loginManagement.signInMethods.password',
+      provider: null,
+      icon: () => <StyledPasswordIcon />,
+    },
+    {
+      id: 'google.com',
+      displayName: 'pages.account.loginManagement.signInMethods.google',
+      provider: 'googleProvider',
+      icon: () => <StyledGoogleIcon />,
+    },
+    {
+      id: 'facebook.com',
+      displayName: 'pages.account.loginManagement.signInMethods.facebook',
+      provider: 'facebookProvider',
+      icon: () => <StyledFacebookIcon />,
+    },
+    {
+      id: 'twitter.com',
+      displayName: 'pages.account.loginManagement.signInMethods.twitter',
+      provider: 'twitterProvider',
+      icon: () => <StyledTwitterIcon />,
+    },
+  ];
+
   const handleSocialLoginLink = (provider) => {
     alertSetAction();
 
-    const providerToLink = SIGN_IN_METHODS.filter(eachProvider => (
+    const providerToLink = signInMethods.filter(eachProvider => (
       eachProvider.provider === provider
     ));
 
@@ -104,13 +105,16 @@ const LoginManagementSubpage = ({
         fetchSignInMethodsHandler();
 
         alertSetAction({
-          text: `Congratulations! You just linked your ${providerToLink[0].id} account.`,
+          message: {
+            id: 'pages.account.loginManagement.successLinkAlertMessage',
+            values: { provider: providerToLink[0].id },
+          },
           type: 'success',
         });
       })
       .catch(error => (
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         })
       ));
@@ -126,13 +130,16 @@ const LoginManagementSubpage = ({
         fetchSignInMethodsHandler();
 
         alertSetAction({
-          text: `Your ${providerId} account has been unlinked.`,
+          message: {
+            id: 'pages.account.loginManagement.successUnlinkAlertMessage',
+            values: { provider: providerId },
+          },
           type: 'success',
         });
       })
       .catch((error) => {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
 
@@ -142,11 +149,17 @@ const LoginManagementSubpage = ({
 
   return (
     <Fragment>
-      <Helmet title="Change password - Spacebox" />
-      <h1>Login management</h1>
-      <p>Manage how you sign in and link your social media accounts.</p>
+      <HelmetTitle title={{ id: 'pages.account.loginManagement.title' }} />
 
-      {activeSignInMethods && SIGN_IN_METHODS.map((signInMethod) => {
+      <h1>
+        <FormattedMessage id="pages.account.loginManagement.h1" />
+      </h1>
+
+      <p>
+        <FormattedMessage id="pages.account.loginManagement.subtitle" />
+      </p>
+
+      {activeSignInMethods && signInMethods.map((signInMethod) => {
         const onlyOneLeft = activeSignInMethods.length === 1;
         const isEnabled = activeSignInMethods.includes(
           signInMethod.id,
@@ -157,7 +170,10 @@ const LoginManagementSubpage = ({
             <StyledSocialOption key={signInMethod.id}>
               <StyledIconAndNameWrapper>
                 {signInMethod.icon()}
-                {signInMethod.displayName}
+
+                <span>
+                  <FormattedMessage id={signInMethod.displayName} />
+                </span>
               </StyledIconAndNameWrapper>
 
               <Hr borderWidth="0.5px" margin="0 15px" width="auto" />
@@ -178,7 +194,10 @@ const LoginManagementSubpage = ({
             <StyledSocialOption key={signInMethod.id}>
               <StyledIconAndNameWrapper>
                 {signInMethod.icon()}
-                {signInMethod.displayName}
+
+                <span>
+                  <FormattedMessage id={signInMethod.displayName} />
+                </span>
               </StyledIconAndNameWrapper>
 
               <Hr borderWidth="0.5px" margin="0 15px" width="auto" />

@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -81,7 +82,10 @@ const Checkbox = ({
     onClick={!disabled ? onChangeHandler : undefined}
   >
     <StyledCheckbox checked={checked} rounded={rounded} />
-    <StyledLabel>{label}</StyledLabel>
+
+    <StyledLabel>
+      <FormattedMessage id={label} />
+    </StyledLabel>
   </StyledWrapper>
 );
 

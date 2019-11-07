@@ -1,6 +1,6 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { alertSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import Button from '../../components/Button';
+import HelmetTitle from '../../components/HelmetTitle';
 import { ROUTES } from '../../constants';
 import { setCookie, getCookie } from '../../utils';
 import { withFirebase } from '../../Firebase';
@@ -32,8 +33,7 @@ const VerifyEmailPage = ({ alertSetAction, authUser, firebase }) => {
       .doSendEmailVerification()
       .then(() => {
         alertSetAction({
-          text: `We sent you an e-mail so you can verify your account. We
-            hope everything goes well!`,
+          message: { id: 'pages.verifyEmail.successAlertMessage' },
           type: 'success',
         });
 
@@ -47,29 +47,30 @@ const VerifyEmailPage = ({ alertSetAction, authUser, firebase }) => {
       })
       .catch(error => (
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         })
       ));
   };
 
   return (
-    !authUser
+    authUser
     || (authUser && authUser.emailVerified)
       ? <Redirect to={ROUTES.HOME} />
       : (
         <Box size="small">
-          <Helmet title="Verify e-mail - Spacebox" />
-          <h1>Verify your e-mail</h1>
+          <HelmetTitle title={{ id: 'pages.verifyEmail.title' }} />
+
+          <h1>
+            <FormattedMessage id="pages.verifyEmail.h1" />
+          </h1>
 
           <p>
-            {`Please verify the e-mail of your account in
-            order to access this page.`}
+            <FormattedMessage id="pages.verifyEmail.p1" />
           </p>
-          <p>
-            {`Once you press the button below you will receive an e-mail
-            in `}
 
+          <p>
+            <FormattedMessage id="pages.verifyEmail.p2" />
             <StyledEmail>{authUser.email}</StyledEmail>
           </p>
 
@@ -87,7 +88,7 @@ const VerifyEmailPage = ({ alertSetAction, authUser, firebase }) => {
               styleType="filled"
               type="submit"
             >
-              {'Send'}
+              {'pages.verifyEmail.submitButton'}
             </Button>
           </StyledButtonWrapper>
         </Box>

@@ -15,16 +15,6 @@ import Input from '../../components/Input';
 import Select from '../../components/Select';
 import Spacebox from '../../components/Spacebox';
 
-const EditSpaceboxFormSchema = Yup.object().shape({
-  title: Yup.string().trim().required('This field is required!'),
-  description: Yup.string().trim().required('This field is required!'),
-  category: Yup
-    .string()
-    .trim()
-    .oneOf(CATEGORIES, 'This field is required!')
-    .required('This field is required!'),
-});
-
 const StyledSpacebox = styled.div`
   margin: auto;
   max-width: 425px;
@@ -63,6 +53,16 @@ const EditSpaceboxForm = ({
   history,
   spacebox,
 }) => {
+  const EditSpaceboxFormSchema = Yup.object().shape({
+    title: Yup.string().trim().required('yup.required'),
+    description: Yup.string().trim().required('yup.required'),
+    category: Yup
+      .string()
+      .trim()
+      .oneOf(CATEGORIES.map(category => category.messageId), 'yup.required')
+      .required('yup.required'),
+  });
+
   const handleSubmit = (values, actions) => {
     const updatedSpacebox = {
       bgColor: values.bgColor,
@@ -79,7 +79,7 @@ const EditSpaceboxForm = ({
     firebase.updateSpacebox(spacebox.slug, updatedSpacebox)
       .then(() => {
         alertSetAction({
-          text: 'Your Spacebox was successfully updated.',
+          message: { id: 'forms.editSpacebox.successAlertMessage' },
           type: 'success',
         });
 
@@ -92,7 +92,7 @@ const EditSpaceboxForm = ({
       })
       .catch((error) => {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
 
@@ -132,7 +132,7 @@ const EditSpaceboxForm = ({
               <ColorPicker
                 color={values.bgColor}
                 disabled={isSubmitting}
-                label="Background"
+                label="forms.editSpacebox.labels.backgroundColorPicker"
                 margin="0 0 25px 0"
                 name="bgColor"
                 onChangeHandler={(event) => {
@@ -143,7 +143,7 @@ const EditSpaceboxForm = ({
               <ColorPicker
                 color={values.color}
                 disabled={isSubmitting}
-                label="Text"
+                label="forms.editSpacebox.labels.textColorPicker"
                 name="color"
                 onChangeHandler={(event) => {
                   setFieldValue('color', event.hex);
@@ -154,7 +154,7 @@ const EditSpaceboxForm = ({
             <Input
               disabled={isSubmitting}
               error={errors.title && touched.title && errors.title}
-              label="Title"
+              label="forms.editSpacebox.labels.titleInput"
               name="title"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -171,7 +171,7 @@ const EditSpaceboxForm = ({
                 && touched.description
                 && errors.description
               }
-              label="Description"
+              label="forms.editSpacebox.labels.descriptionInput"
               name="description"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -184,7 +184,7 @@ const EditSpaceboxForm = ({
             <Select
               disabled={isSubmitting}
               error={errors.category && touched.category && errors.category}
-              label="Category"
+              label="forms.editSpacebox.labels.categorySelect"
               onChangeHandler={(category) => {
                 setFieldValue('category', category);
                 setFieldTouched('category');
@@ -198,7 +198,7 @@ const EditSpaceboxForm = ({
             <Checkbox
               checked={values.visible}
               disabled={isSubmitting}
-              label="Visible on home page"
+              label="forms.editSpacebox.labels.visibleCheckbox"
               name="visible"
               onChangeHandler={() => setFieldValue(
                 'visible',
@@ -219,7 +219,7 @@ const EditSpaceboxForm = ({
               styleType="unbordered"
               type="button"
             >
-              {'Cancel'}
+              {'forms.editSpacebox.cancelButton'}
             </Button>
 
             <Button
@@ -228,7 +228,7 @@ const EditSpaceboxForm = ({
               styleType="bordered"
               type="submit"
             >
-              {'Save'}
+              {'forms.editSpacebox.submitButton'}
             </Button>
           </StyledButtonsWrapper>
         </Form>

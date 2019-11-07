@@ -12,11 +12,6 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
 
-const PostFormSchema = Yup.object().shape({
-  title: Yup.string().trim().required('This field is required!'),
-  content: Yup.string().trim().required('This field is required!'),
-});
-
 const StyledButtonsWrapper = styled.div`
   align-items: flex-end;
   display: flex;
@@ -24,6 +19,11 @@ const StyledButtonsWrapper = styled.div`
 `;
 
 const PostForm = ({ alertSetAction, firebase, sid }) => {
+  const PostFormSchema = Yup.object().shape({
+    title: Yup.string().trim().required('yup.required'),
+    content: Yup.string().trim().required('yup.required'),
+  });
+
   const handleSubmit = (values, actions) => {
     const { title, content } = values;
 
@@ -47,7 +47,7 @@ const PostForm = ({ alertSetAction, firebase, sid }) => {
       })
       .catch((error) => {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
 
@@ -76,7 +76,7 @@ const PostForm = ({ alertSetAction, firebase, sid }) => {
             <Input
               disabled={isSubmitting}
               error={errors.title && touched.title && errors.title}
-              label="Title"
+              label="forms.post.labels.title"
               margin="0 0 25px 0"
               name="title"
               onBlur={handleBlur}
@@ -90,7 +90,7 @@ const PostForm = ({ alertSetAction, firebase, sid }) => {
             <Textarea
               error={errors.content && touched.content && errors.content}
               disabled={isSubmitting}
-              label="Content"
+              label="forms.post.labels.content"
               margin="0 0 25px 0"
               name="content"
               onBlur={handleBlur}
@@ -107,7 +107,7 @@ const PostForm = ({ alertSetAction, firebase, sid }) => {
                 styleType="filled"
                 type="submit"
               >
-                {'Post'}
+                {'forms.post.submitButton'}
               </Button>
             </StyledButtonsWrapper>
           </Form>

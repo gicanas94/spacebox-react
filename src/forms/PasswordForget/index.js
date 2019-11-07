@@ -11,19 +11,19 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 import { withFirebase } from '../../Firebase';
 
-const PasswordForgetFormSchema = Yup.object().shape({
-  email: Yup.string()
-    .trim()
-    .email('Please check your e-mail')
-    .required('This field is required!'),
-});
-
 const StyledButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
 
 const PasswordForgetForm = ({ alertSetAction, firebase }) => {
+  const PasswordForgetFormSchema = Yup.object().shape({
+    email: Yup.string()
+      .trim()
+      .email('yup.emailInvalid')
+      .required('yup.required'),
+  });
+
   const handleSubmit = (values, actions) => {
     const { email } = values;
 
@@ -32,14 +32,13 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
     firebase.doPasswordReset(email)
       .then(() => {
         alertSetAction({
-          text: `We sent you an e-mail so you can reset your password.
-            We hope everything goes well!`,
+          message: { id: 'forms.passwordForget.successAlertMessage' },
           type: 'success',
         });
       })
       .catch((error) => {
         alertSetAction({
-          text: error.message,
+          message: error.message,
           type: 'danger',
         });
 
@@ -65,7 +64,7 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
             autoFocus
             disabled={isSubmitting}
             error={errors.email && touched.email && errors.email}
-            label="E-mail"
+            label="forms.passwordForget.emailInputLabel"
             margin="0 0 25px 0"
             name="email"
             onBlur={handleBlur}
@@ -84,7 +83,7 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
               styleType="filled"
               type="submit"
             >
-              {'Send'}
+              {'forms.passwordForget.submitButton'}
             </Button>
           </StyledButtonWrapper>
         </Form>
