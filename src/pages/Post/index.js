@@ -87,8 +87,9 @@ class PostPage extends Component {
     const { firebase } = this.props;
 
     this.componentIsMounted = false;
-    (firebase.db.collection('posts').onSnapshot(() => {}));
-    (firebase.db.collection('comments').onSnapshot(() => {}));
+
+    const unsubscribe = firebase.db.collection('posts').onSnapshot(() => {});
+    unsubscribe();
   }
 
   getSpacebox = (spaceboxSlug, postSlug) => {

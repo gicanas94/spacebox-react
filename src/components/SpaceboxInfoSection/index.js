@@ -153,7 +153,7 @@ const SpaceboxInfoSection = ({
                 styleType="filled"
                 type="button"
               >
-                {'components.spaceboxInfoSection.buttons.goToUserProfile'}
+                {'components.spaceboxInfoSection.buttons.userProfile'}
               </Button>
             </StyledLink>
           )

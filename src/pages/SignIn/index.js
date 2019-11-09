@@ -7,7 +7,6 @@ import { Redirect, withRouter } from 'react-router-dom';
 import { alertSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import HelmetTitle from '../../components/HelmetTitle';
-import Hr from '../../components/Hr';
 import { ROUTES } from '../../constants';
 import SignInForm from '../../forms/SignIn';
 import SignInSocialMediaForm from '../../forms/SignInSocialMedia';
@@ -30,8 +29,6 @@ const SignInPage = ({
           firebase={firebase}
           history={history}
         />
-
-        <Hr margin="25px 0" />
 
         <SignInSocialMediaForm
           alertSetAction={alertSetAction}

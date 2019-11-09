@@ -62,6 +62,7 @@ const StyledDescription = styled.div`
 const StyledBubblesWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  white-space: nowrap;
   width: 100%;
 
   @media ${device.laptop} {
@@ -86,10 +87,6 @@ const StyledLeftBubblesWrapper = styled.div`
 
   & > ${StyledBubble} {
     margin-right: 7px;
-  }
-
-  & > ${StyledBubble}:last-child {
-    margin-right: 0;
   }
 `;
 
@@ -227,10 +224,11 @@ const Spacebox = ({
   authUserIsTheOwner,
   category,
   description,
-  onEditSpaceboxClickHandler,
-  order,
+  informative,
   likes,
   link,
+  onEditSpaceboxClickHandler,
+  order,
   rounded,
   title,
   ...props
@@ -239,6 +237,7 @@ const Spacebox = ({
     <StyledSpacebox
       authUserIsTheOwner={authUserIsTheOwner}
       description={description}
+      informative={informative}
       order={!link ? order : undefined}
       rounded={rounded}
       {...props}
@@ -273,7 +272,10 @@ const Spacebox = ({
 
       {title && (
         <StyledTitle>
-          <FormattedMessage defaultMessage={title} id={title} />
+          {informative
+            ? <FormattedMessage id={title} />
+            : title
+          }
         </StyledTitle>
       )}
 

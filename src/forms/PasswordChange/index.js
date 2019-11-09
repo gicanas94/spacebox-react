@@ -37,9 +37,12 @@ const StyledCurrentPasswordAndButtonWrapper = styled.div`
   }
 
   @media ${device.mobileL} {
-    align-items: center;
     display: flex;
     justify-content: space-between;
+
+    button {
+      margin-top: 24px;
+    }
 
     & > div {
       margin-bottom: 0;
@@ -228,7 +231,7 @@ const PasswordChangeForm = ({
               styleType="filled"
               type="submit"
             >
-              {'forms.passwordChange.labels.passwordOneInput'}
+              {'forms.passwordChange.submitButton'}
             </Button>
           </StyledCurrentPasswordAndButtonWrapper>
         </Form>

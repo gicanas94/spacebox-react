@@ -35,7 +35,6 @@ const PasswordLoginToggle = ({
           rounded
           size="small"
           styleType="filled"
-          width="90px"
         >
           {isLoading
             ? 'pages.account.loginManagement.buttons.loading'
@@ -51,7 +50,6 @@ const PasswordLoginToggle = ({
           size="small"
           styleType="filled"
           type="button"
-          width="90px"
         >
           {isLoading
             ? 'pages.account.loginManagement.buttons.loading'

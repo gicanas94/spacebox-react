@@ -22,7 +22,7 @@ const StyledGrid = styled.div`
 
   @media ${device.mobileL} {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
   }
 `;
 
@@ -36,9 +36,29 @@ const StyledTermsOfUseNotice = styled.p`
 `;
 
 const StyledBottomWrapper = styled.div`
-  align-items: flex-end;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column-reverse;
+
+  a {
+    text-align: center;
+  }
+
+  button {
+    margin-bottom: 25px;
+    width: 100%;
+  }
+
+  @media ${device.mobileL} {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
+
+    button {
+      margin-bottom: 0;
+      width: fit-content;
+    }
+  }
 `;
 
 const SignUpForm = ({
@@ -217,7 +237,9 @@ const SignUpForm = ({
           </StyledTermsOfUseNotice>
 
           <StyledBottomWrapper>
-            <StyledLink to={ROUTES.SIGN_IN}>Sign in instead?</StyledLink>
+            <StyledLink to={ROUTES.SIGN_IN}>
+              <FormattedMessage id="forms.signUp.links.signIn" />
+            </StyledLink>
 
             <Button
               disabled={isSubmitting}

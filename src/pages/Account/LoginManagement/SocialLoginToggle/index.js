@@ -19,7 +19,6 @@ const SocialLoginToggle = ({
     size="small"
     styleType="filled"
     type="button"
-    width="90px"
   >
     {isLoading
       ? 'pages.account.loginManagement.buttons.loading'
@@ -35,7 +34,6 @@ const SocialLoginToggle = ({
     size="small"
     styleType="filled"
     type="button"
-    width="90px"
   >
     {isLoading
       ? 'pages.account.loginManagement.buttons.loading'

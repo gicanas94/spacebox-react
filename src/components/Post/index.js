@@ -13,6 +13,7 @@ import useStateWithCallback from 'use-state-with-callback';
 import Box from '../Box';
 import Comment from './Comment';
 import CommentForm from '../../forms/Comment';
+import ConfirmationModal from '../ConfirmationModal';
 import { ROUTES } from '../../constants';
 import Tooltip from '../Tooltip';
 import { transition } from '../../styles';
@@ -175,6 +176,8 @@ const Post = ({
   user,
 }) => {
   const [commentsLimit, setCommentsLimit] = useState(3);
+  const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
+  const [deletePostInProgress, setDeletePostInProgress] = useState(false);
   const [likeInProgress, setLikeInProgress] = useState(false);
   const [userIsLikingOrDisliking, setUserIsLikingOrDisliking] = useState(false);
   const commentFormId = `comment-form_${post.slug}`;
@@ -191,15 +194,21 @@ const Post = ({
 
   const handleDeletePostClick = (spaceboxSlug, postSlug) => {
     alertSetAction();
+    setDeletePostInProgress(true);
 
     firebase.deletePost(spaceboxSlug, postSlug)
       .then(() => {
+        setConfirmationModalIsOpen(false);
+
         alertSetAction({
-          message: { id: 'components.post.successDeletePostAlertMessage' },
+          message: { id: 'components.post.deletePost.successAlertMessage' },
           type: 'success',
         });
       })
       .catch((error) => {
+        setConfirmationModalIsOpen(false);
+        setDeletePostInProgress(false);
+
         alertSetAction({
           message: error.message,
           type: 'danger',
@@ -302,7 +311,7 @@ const Post = ({
         id: 'components.post.iconsTooltips.deletePost',
       })}
       onClick={
-        () => !likeInProgress && handleDeletePostClick(spacebox.slug, post.slug)
+        () => !likeInProgress && setConfirmationModalIsOpen(true)
       }
     />
   );
@@ -470,6 +479,18 @@ const Post = ({
             place="right"
           />
         </Fragment>
+      )}
+
+      {confirmationModalIsOpen && (
+        <ConfirmationModal
+          buttonsAreDisabled={deletePostInProgress}
+          content="components.post.deletePost.confirmationModal.content"
+          onCancelHandler={() => setConfirmationModalIsOpen(false)}
+          onConfirmHandler={() => (
+            handleDeletePostClick(spacebox.slug, post.slug)
+          )}
+          title="components.post.deletePost.confirmationModal.title"
+        />
       )}
     </Box>
   );

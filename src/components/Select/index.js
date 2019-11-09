@@ -45,10 +45,7 @@ const StyledSelectedOption = styled.span`
 `;
 
 const StyledWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
   height: 92px;
-  justify-content: flex-start;
   position: relative;
 
   ${({ disabled, theme }) => disabled && `

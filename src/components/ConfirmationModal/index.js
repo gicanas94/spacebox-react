@@ -10,7 +10,7 @@ import { device } from '../../styles';
 const StyledWrapper = styled.div`
   align-items: center;
   background-color: ${({ theme }) => (
-    theme.components.ConfirmationModal.bgColor
+    theme.components.ConfirmationModal.bgColor1
   )};
   display: flex;
   height: 100%;
@@ -19,7 +19,13 @@ const StyledWrapper = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 800;
+  z-index: 1300;
+
+  @media ${device.mobileL} {
+    background-color: ${({ theme }) => (
+      theme.components.ConfirmationModal.bgColor2
+    )};
+  }
 `;
 
 const StyledCloserOnClick = styled.div`
@@ -43,8 +49,30 @@ const StyledContent = styled.p`
 
 const StyledButtonsWrapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  flex-direction: column-reverse;
   margin-top: 60px;
+
+  button {
+    width: 100%;
+  }
+
+  button:last-of-type {
+    margin-bottom: 25px;
+  }
+
+  @media ${device.mobileL} {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    button {
+      width: fit-content;
+    }
+
+    button:last-of-type {
+      margin-bottom: 0;
+    }
+  }
 
   @media ${device.tablet} {
     justify-content: space-between;
@@ -77,7 +105,6 @@ const ConfirmationModal = ({
           color="abalone"
           disabled={buttonsAreDisabled}
           onClick={onCancelHandler}
-          margin="0 25px 0 0"
           rounded
           styleType="unbordered"
           type="button"

@@ -2,10 +2,30 @@ import { ArrowAltCircleUp } from 'styled-icons/fa-solid/ArrowAltCircleUp';
 import Color from 'color';
 import { FormattedHTMLMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 
 import { color, device, transition } from '../../styles';
+import Hr from '../Hr';
+
+const StyledCollapseTitle = styled.div`
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  justify-content: space-between;
+
+  * {
+    margin: 0;
+    user-select: none;
+  }
+`;
+
+const StyledArrowIcon = styled(ArrowAltCircleUp)`
+  color: ${({ theme }) => theme.components.Box.arrowIcon.color};
+  min-height: 25px;
+  transition: transform ${transition.speed.superfast} linear;
+  min-width: 25px;
+`;
 
 const StyledBox = styled.div`
   background-color: ${({ bgColor, theme }) => (
@@ -23,11 +43,20 @@ const StyledBox = styled.div`
   border-style: solid;
   border-width: ${({ theme }) => theme.components.Box.borderWidth};
   margin: auto;
-  padding: 25px;
   position: relative;
 
-  ${({ collapsed }) => collapsed && `
-    cursor: pointer;
+  ${({ collapsed, padding }) => !collapsed && `
+    padding: ${padding};
+  `}
+
+  ${({ collapsed, padding }) => collapsed && `
+    ${StyledCollapseTitle} {
+      padding: ${padding};
+    }
+
+    ${StyledArrowIcon} {
+      transform: rotate(180deg);
+    }
   `}
 
   ${({ fullHeight }) => fullHeight && `
@@ -49,10 +78,6 @@ const StyledBox = styled.div`
 
   ${({ noBorder }) => noBorder && `
     border-width: 0;
-  `}
-
-  ${({ padding }) => padding && `
-    padding: ${padding};
   `}
 
   ${({ rounded, theme }) => rounded && `
@@ -84,56 +109,36 @@ const StyledBox = styled.div`
   `}
 `;
 
-const StyledCollapseTitle = styled.div`
-  * {
-    margin: 0;
-    user-select: none;
-  }
-`;
-
-const StyledArrowIcon = styled(ArrowAltCircleUp)`
-  color: ${({ theme }) => theme.components.Box.arrowIcon.color};
-  cursor: pointer;
-  height: 25px;
-  position: absolute;
-  right: 15px;
-  top: 18px;
-  transition: transform ${transition.speed.superfast} linear;
-  width: 25px;
-
-  ${({ collapsed }) => collapsed && `
-    transform: rotate(180deg);
-  `}
-`;
-
 const Box = ({
   children,
   collapsed,
   collapseTitle,
+  padding,
   ...props
 }) => {
   const [boxIsCollapsed, setBoxIsCollapsed] = useState(collapsed);
 
   return (
-    <StyledBox
-      collapsed={boxIsCollapsed}
-      onClick={boxIsCollapsed ? () => setBoxIsCollapsed(!boxIsCollapsed) : null}
-      {...props}
-    >
-      {collapseTitle && boxIsCollapsed
+    <StyledBox collapsed={boxIsCollapsed} padding={padding} {...props}>
+      {collapseTitle
         ? (
-          <StyledCollapseTitle>
-            <FormattedHTMLMessage id={collapseTitle} />
-          </StyledCollapseTitle>
+          <Fragment>
+            <StyledCollapseTitle
+              onClick={() => setBoxIsCollapsed(!boxIsCollapsed)}
+            >
+              <FormattedHTMLMessage id={collapseTitle} />
+              <StyledArrowIcon collapsed={boxIsCollapsed} />
+            </StyledCollapseTitle>
+
+            {!boxIsCollapsed && (
+              <Fragment>
+                <Hr margin={`${padding} 0`} />
+                {children}
+              </Fragment>
+            )}
+          </Fragment>
         ) : children
       }
-
-      {collapseTitle && (
-        <StyledArrowIcon
-          collapsed={boxIsCollapsed}
-          onClick={() => setBoxIsCollapsed(!boxIsCollapsed)}
-        />
-      )}
     </StyledBox>
   );
 };
@@ -145,6 +150,7 @@ Box.propTypes = {
   collapseTitle: PropTypes.string,
   fullHeight: PropTypes.bool,
   fullWidth: PropTypes.bool,
+  hrMargin: PropTypes.string,
   margin: PropTypes.string,
   minMaxWidth: PropTypes.arrayOf(PropTypes.string),
   noBorder: PropTypes.bool,
@@ -163,7 +169,7 @@ Box.defaultProps = {
   margin: undefined,
   minMaxWidth: undefined,
   noBorder: false,
-  padding: undefined,
+  padding: '25px',
   rounded: false,
   size: undefined,
 };

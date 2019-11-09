@@ -55,8 +55,8 @@ const EditSpaceboxPage = ({
   loadingSetAction,
   match,
 }) => {
-  const [spacebox, setSpacebox] = useState(null);
   const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
+  const [spacebox, setSpacebox] = useState(null);
 
   const [
     deleteSpaceboxInProgress,

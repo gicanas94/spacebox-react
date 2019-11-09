@@ -40,10 +40,32 @@ const StyledWrapper = styled.div`
 
 const StyledButtonsWrapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  flex-direction: column-reverse;
+
+  button {
+    width: 100%;
+  }
+
+  button:last-of-type {
+    margin-bottom: 25px;
+  }
+
+  @media ${device.mobileL} {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    button {
+      width: fit-content;
+    }
+
+    button:last-of-type {
+      margin-bottom: 0;
+    }
+  }
 
   @media ${device.tablet} {
-    justify-content: center;
+    justify-content: space-between;
   }
 `;
 
@@ -214,7 +236,6 @@ const EditSpaceboxForm = ({
             <Button
               color="abalone"
               onClick={() => history.goBack()}
-              margin="0 25px 0 0"
               rounded
               styleType="unbordered"
               type="button"

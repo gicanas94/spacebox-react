@@ -17,7 +17,12 @@ const StyledButtonsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const PostForm = ({ alertSetAction, firebase, sid }) => {
+const PostForm = ({
+  alertSetAction,
+  firebase,
+  sid,
+  uid,
+}) => {
   const PostFormSchema = Yup.object().shape({
     title: Yup.string().trim().required('yup.required'),
     content: Yup.string().trim().required('yup.required'),
@@ -37,6 +42,7 @@ const PostForm = ({ alertSetAction, firebase, sid }) => {
         sid,
         slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,
         title: title.trim(),
+        uid,
       },
       sid,
     )
@@ -120,6 +126,7 @@ PostForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   sid: PropTypes.string.isRequired,
+  uid: PropTypes.string.isRequired,
 };
 
 export default PostForm;

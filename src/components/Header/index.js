@@ -19,7 +19,7 @@ const StyledWrapper = styled.div`
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 500;
+  z-index: 1100;
 `;
 
 const StyledHeader = styled.header`
@@ -56,7 +56,7 @@ const StyledSmallLogoLink = styled(Link)`
   line-height: 0;
   margin-right: 10px;
   user-select: none;
-  z-index: 600;
+  z-index: 1200;
 `;
 
 const StyledOverlay = styled.div`

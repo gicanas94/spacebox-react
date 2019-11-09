@@ -64,7 +64,7 @@ const StyledErrorIcon = styled(ErrorOutline)`
   color: ${({ theme }) => theme.components.Input.color.error};
   position: absolute;
   right: 10px;
-  top: 35%;
+  top: 33px;
   width: 30px;
 `;
 
@@ -72,18 +72,13 @@ const StyledErrorMessage = styled.div`
   color: ${({ theme }) => theme.components.Input.color.error};
   font-size: ${({ theme }) => theme.components.Input.errorMessage.fontSize};
   font-weight: ${({ theme }) => theme.components.Input.errorMessage.fontWeight};
-  overflow: hidden;
   padding-top: 5px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 const StyledWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 92px;
-  justify-content: flex-start;
+  overflow: hidden;
   position: relative;
+  text-overflow: ellipsis;
 
   ${({ error, theme }) => error && `
     ${StyledLabel} {

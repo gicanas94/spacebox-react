@@ -20,7 +20,7 @@ const StyledAlert = styled.div`
   position: fixed;
   text-align: justify;
   width: 100%;
-  z-index: 900;
+  z-index: 1400;
 
   @media ${device.laptop} {
     padding: 5px 0;

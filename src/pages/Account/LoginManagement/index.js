@@ -7,6 +7,7 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { Twitter } from 'styled-icons/boxicons-logos/Twitter';
 
+import { device } from '../../../styles';
 import HelmetTitle from '../../../components/HelmetTitle';
 import Hr from '../../../components/Hr';
 import PasswordLoginToggle from './PasswordLoginToggle';
@@ -15,28 +16,62 @@ import SocialLoginToggle from './SocialLoginToggle';
 const StyledSocialOption = styled.div`
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: space-between;
-  margin-top: 25px;
 
-  &:first-of-type {
-    margin-top: 0;
+  button {
+    margin-top: 15px;
+    width: 145px;
   }
 
-  hr {
-    flex-grow: 1;
+  .firstMediaQueryHr {
+    margin: 25px 0;
+    width: 145px;
+  }
+
+  .secondMediaQueryHr {
+    display: none;
+  }
+
+  @media ${device.mobileL} {
+    flex-direction: row;
+    margin-bottom: 25px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    button {
+      margin-top: 0;
+    }
+
+    .firstMediaQueryHr {
+      display: none;
+    }
+
+    .secondMediaQueryHr {
+      display: block;
+      flex-grow: 1;
+      margin: 0 25px;
+      width: auto;
+    }
   }
 `;
 
 const StyledIconAndNameWrapper = styled.div`
   align-items: center;
   display: flex;
+  justify-content: center;
   width: 130px;
 
   svg {
     height: 30px;
     margin-right: 8px
     width: 30px;
+  }
+
+  @media ${device.mobileL} {
+    justify-content: flex-start;
   }
 `;
 
@@ -74,19 +109,19 @@ const LoginManagementSubpage = ({
     },
     {
       id: 'google.com',
-      displayName: 'pages.account.loginManagement.signInMethods.google',
+      displayName: 'Google',
       provider: 'googleProvider',
       icon: () => <StyledGoogleIcon />,
     },
     {
       id: 'facebook.com',
-      displayName: 'pages.account.loginManagement.signInMethods.facebook',
+      displayName: 'Facebook',
       provider: 'facebookProvider',
       icon: () => <StyledFacebookIcon />,
     },
     {
       id: 'twitter.com',
-      displayName: 'pages.account.loginManagement.signInMethods.twitter',
+      displayName: 'Twitter',
       provider: 'twitterProvider',
       icon: () => <StyledTwitterIcon />,
     },
@@ -159,59 +194,56 @@ const LoginManagementSubpage = ({
         <FormattedMessage id="pages.account.loginManagement.subtitle" />
       </p>
 
-      {activeSignInMethods && signInMethods.map((signInMethod) => {
+      {activeSignInMethods && signInMethods.map((signInMethod, index) => {
         const onlyOneLeft = activeSignInMethods.length === 1;
         const isEnabled = activeSignInMethods.includes(
           signInMethod.id,
         );
 
         return (
-          signInMethod.id === 'password' ? (
-            <StyledSocialOption key={signInMethod.id}>
-              <StyledIconAndNameWrapper>
-                {signInMethod.icon()}
+          <StyledSocialOption key={signInMethod.id}>
+            <StyledIconAndNameWrapper>
+              {signInMethod.icon()}
 
-                <span>
-                  <FormattedMessage id={signInMethod.displayName} />
-                </span>
-              </StyledIconAndNameWrapper>
+              <span>
+                {signInMethod.id === 'password'
+                  ? <FormattedMessage id={signInMethod.displayName} />
+                  : signInMethod.displayName
+                }
+              </span>
+            </StyledIconAndNameWrapper>
 
-              <Hr borderWidth="0.5px" margin="0 15px" width="auto" />
+            <Hr className="secondMediaQueryHr" />
 
-              <PasswordLoginToggle
-                alertSetAction={alertSetAction}
-                authUserEmail={authUser.email}
-                fetchSignInMethodsHandler={fetchSignInMethodsHandler}
-                firebase={firebase}
-                isEnabled={isEnabled}
-                isLoading={isLoading}
-                onlyOneLeft={onlyOneLeft}
-                onUnlinkHandler={handleUnlink}
-                signInMethod={signInMethod}
-              />
-            </StyledSocialOption>
-          ) : (
-            <StyledSocialOption key={signInMethod.id}>
-              <StyledIconAndNameWrapper>
-                {signInMethod.icon()}
+            {signInMethod.id === 'password'
+              ? (
+                <PasswordLoginToggle
+                  alertSetAction={alertSetAction}
+                  authUserEmail={authUser.email}
+                  fetchSignInMethodsHandler={fetchSignInMethodsHandler}
+                  firebase={firebase}
+                  isEnabled={isEnabled}
+                  isLoading={isLoading}
+                  onlyOneLeft={onlyOneLeft}
+                  onUnlinkHandler={handleUnlink}
+                  signInMethod={signInMethod}
+                />
+              ) : (
+                <SocialLoginToggle
+                  isEnabled={isEnabled}
+                  isLoading={isLoading}
+                  onLinkHandler={handleSocialLoginLink}
+                  onlyOneLeft={onlyOneLeft}
+                  onUnlinkHandler={handleUnlink}
+                  signInMethod={signInMethod}
+                />
+              )
+            }
 
-                <span>
-                  <FormattedMessage id={signInMethod.displayName} />
-                </span>
-              </StyledIconAndNameWrapper>
-
-              <Hr borderWidth="0.5px" margin="0 15px" width="auto" />
-
-              <SocialLoginToggle
-                isEnabled={isEnabled}
-                isLoading={isLoading}
-                onLinkHandler={handleSocialLoginLink}
-                onlyOneLeft={onlyOneLeft}
-                onUnlinkHandler={handleUnlink}
-                signInMethod={signInMethod}
-              />
-            </StyledSocialOption>
-          )
+            {signInMethods.length > index + 1 && (
+              <Hr className="firstMediaQueryHr" />
+            )}
+          </StyledSocialOption>
         );
       })}
     </Fragment>

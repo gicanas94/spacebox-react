@@ -112,7 +112,7 @@ const Sidebar = ({ content, location }) => {
       </StyledMobileView>
 
       <StyledLaptopView>
-        <Box minMaxWidth={['230px', '100%']} padding="15px">
+        <Box minMaxWidth={['240px', '100%']} padding="15px">
           {myContent}
         </Box>
       </StyledLaptopView>

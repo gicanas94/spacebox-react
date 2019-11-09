@@ -9,7 +9,7 @@ import { transition } from '../../../styles';
 
 const StyledWrapper = styled.div`
   position: relative;
-  z-index: 600;
+  z-index: 1200;
 `;
 
 const StyledInput = styled.input`

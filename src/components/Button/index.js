@@ -16,6 +16,7 @@ const StyledButton = styled.button`
   height: 45px;
   justify-content: center;
   line-height: 1;
+  overflow: hidden;
   padding: 0 15px;
   position: relative;
   transition: all ${transition.speed.superfast} linear;

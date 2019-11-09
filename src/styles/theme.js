@@ -83,7 +83,8 @@ export default {
       },
     },
     ConfirmationModal: {
-      bgColor: Color(themeMainColor).alpha(0.8).string(),
+      bgColor1: color.palette.white,
+      bgColor2: Color(themeMainColor).alpha(0.8).string(),
     },
     Header: {
       bgColor: color.palette.asphalt,

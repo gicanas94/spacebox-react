@@ -9,10 +9,35 @@ import Hr from '../Hr';
 
 const StyledButtonsWrapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  flex-direction: column-reverse;
+
+  button {
+    width: 100%;
+
+    ${({ page }) => page > 0 && `
+      &:last-of-type {
+        margin-bottom: 25px;
+      }
+    `}
+  }
+
+  @media ${device.mobileL} {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    button {
+      margin-bottom: 0 !important;
+      width: fit-content;
+    }
+  }
 
   @media ${device.tablet} {
     justify-content: center;
+
+    button:first-of-type {
+      margin-right: 25px;
+    }
   }
 `;
 
@@ -73,12 +98,11 @@ class Wizard extends Component {
 
             <Hr margin="25px 0" />
 
-            <StyledButtonsWrapper>
+            <StyledButtonsWrapper page={page}>
               {page > 0 && (
                 <Button
                   color="abalone"
                   onClick={this.previousStep}
-                  margin="0 25px 0 0"
                   rounded
                   styleType="unbordered"
                   type="button"

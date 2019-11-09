@@ -82,7 +82,12 @@ const HomePage = ({
 
     return () => {
       setComponentIsMounted(false);
-      (firebase.db.collection('spaceboxes').onSnapshot(() => {}));
+
+      const unsubscribe = firebase.db.collection('spaceboxes').onSnapshot(
+        () => {},
+      );
+
+      unsubscribe();
     };
   }, []);
 

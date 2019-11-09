@@ -1,13 +1,6 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-
-import {
-  FormattedMessage,
-  FormattedHTMLMessage,
-  FormattedDateParts,
-  injectIntl,
-} from 'react-intl';
-
+import { FormattedMessage, FormattedDateParts, injectIntl } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -128,8 +121,10 @@ class SpacePage extends Component {
     const { firebase } = this.props;
 
     this.componentIsMounted = false;
-    (firebase.db.collection('posts').onSnapshot(() => {}));
-    (firebase.db.collection('comments').onSnapshot(() => {}));
+
+    const unsubscribe = firebase.db.collection('posts').onSnapshot(() => {});
+    unsubscribe();
+
     window.removeEventListener('scroll', this.getMorePostsIfScrollIsAtTheEnd);
   }
 
@@ -347,13 +342,13 @@ class SpacePage extends Component {
 
               {posts && posts.length > 0 && (
                 <Box
+                  collapsed
                   collapseTitle="pages.space.postsHistory.boxCollapseTitle"
                   margin="0"
                   padding="15px"
                 >
-                  <FormattedHTMLMessage id="pages.space.postsHistory.h3" />
 
-                  {Object.keys(postsHistory).map((year, index) => (
+                  {Object.keys(postsHistory).reverse().map((year, index) => (
                     <Fragment key={year}>
                       <StyledPostsHistoryYear>
                         {year}
@@ -423,6 +418,7 @@ class SpacePage extends Component {
                     alertSetAction={alertSetAction}
                     firebase={firebase}
                     sid={spacebox.slug}
+                    uid={authUser.uid}
                   />
                 </StyledPostFormWrapper>
               )}

@@ -16,9 +16,18 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledBottomWrapper = styled.div`
-  align-items: flex-end;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+
+  a {
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  button {
+    margin-bottom: 25px;
+    width: 100%;
+  }
 `;
 
 const SignInForm = ({ alertSetAction, firebase, history }) => {
@@ -110,10 +119,6 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
           />
 
           <StyledBottomWrapper>
-            <StyledLink to={ROUTES.PASSWORD_FORGET}>
-              <FormattedMessage id="forms.signIn.forgotPasswordLink" />
-            </StyledLink>
-
             <Button
               disabled={isSubmitting}
               rounded
@@ -122,6 +127,10 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
             >
               {'forms.signIn.submitButton'}
             </Button>
+
+            <StyledLink to={ROUTES.PASSWORD_FORGET}>
+              <FormattedMessage id="forms.signIn.forgotPasswordLink" />
+            </StyledLink>
           </StyledBottomWrapper>
         </Form>
       )}
