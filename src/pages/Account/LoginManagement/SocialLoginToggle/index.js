@@ -17,7 +17,7 @@ const SocialLoginToggle = ({
     onClick={() => onUnlinkHandler(signInMethod.id)}
     rounded
     size="small"
-    styleType="filled"
+    styleType="unbordered"
     type="button"
   >
     {isLoading
@@ -32,7 +32,7 @@ const SocialLoginToggle = ({
     onClick={() => onLinkHandler(signInMethod.provider)}
     rounded
     size="small"
-    styleType="filled"
+    styleType="bordered"
     type="button"
   >
     {isLoading

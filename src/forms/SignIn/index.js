@@ -122,7 +122,7 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
             <Button
               disabled={isSubmitting}
               rounded
-              styleType="bordered"
+              styleType="filled"
               type="submit"
             >
               {'forms.signIn.submitButton'}

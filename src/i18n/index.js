@@ -228,6 +228,7 @@ const messages = {
           },
           successLinkAlertMessage: 'Congratulations! You just linked your {provider} account.',
           successUnlinkAlertMessage: 'Your {provider} account has been unlinked.',
+          successPasswordUnlinkAlertMessage: 'Your password has been unlinked and removed.',
         },
         sidebarContent: {
           section1: {
@@ -578,8 +579,9 @@ const messages = {
           signInMethods: {
             password: 'Contraseña',
           },
-          successLinkAlertMessage: '¡Felicitaciones! Acabas de vincular tu cuenta de {provider}.',
+          successLinkAlertMessage: '¡Felicitaciones! Acabas de vincular tu cuenta de {provider}',
           successUnlinkAlertMessage: 'Tu cuenta de {provider} fue desvinculada.',
+          successPasswordUnlinkAlertMessage: 'Tu contraseña fue desvinculada y eliminada.',
         },
         sidebarContent: {
           section1: {

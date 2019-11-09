@@ -151,6 +151,7 @@ const PasswordLinkForm = ({
             </StyledNewPasswordWrapper>
 
             <Button
+              className="passwordLinkFormSubmitButton"
               disabled={isSubmitting}
               fullWidth
               margin="25px 0 0 0"

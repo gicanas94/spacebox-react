@@ -17,6 +17,7 @@ const StyledSocialOption = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   justify-content: space-between;
 
   button {
@@ -31,6 +32,11 @@ const StyledSocialOption = styled.div`
 
   .secondMediaQueryHr {
     display: none;
+  }
+
+  .passwordLinkFormSubmitButton {
+    margin-top: 25px;
+    width: 100%;
   }
 
   @media ${device.mobileL} {
@@ -166,7 +172,9 @@ const LoginManagementSubpage = ({
 
         alertSetAction({
           message: {
-            id: 'pages.account.loginManagement.successUnlinkAlertMessage',
+            id: providerId === 'password'
+              ? 'pages.account.loginManagement.successPasswordUnlinkAlertMessage'
+              : 'pages.account.loginManagement.successUnlinkAlertMessage',
             values: { provider: providerId },
           },
           type: 'success',

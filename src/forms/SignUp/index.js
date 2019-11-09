@@ -244,7 +244,7 @@ const SignUpForm = ({
             <Button
               disabled={isSubmitting}
               rounded
-              styleType="bordered"
+              styleType="filled"
               type="submit"
             >
               {'forms.signUp.submitButton'}

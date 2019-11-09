@@ -14,6 +14,7 @@ const StyledHr = styled.hr`
   border-width: ${({ theme }) => theme.components.Hr.borderWidth};
   border-radius: ${({ theme }) => theme.global.borderRadius};
   display: block;
+  height: 0.5px !important;
   margin: 0;
   width: 100%;
 

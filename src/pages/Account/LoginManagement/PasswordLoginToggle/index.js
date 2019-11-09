@@ -34,7 +34,7 @@ const PasswordLoginToggle = ({
           onClick={() => onUnlinkHandler(signInMethod.id)}
           rounded
           size="small"
-          styleType="filled"
+          styleType="unbordered"
         >
           {isLoading
             ? 'pages.account.loginManagement.buttons.loading'
@@ -48,7 +48,7 @@ const PasswordLoginToggle = ({
           onClick={() => setPasswordLinkFormIsVisible(true)}
           rounded
           size="small"
-          styleType="filled"
+          styleType="bordered"
           type="button"
         >
           {isLoading
