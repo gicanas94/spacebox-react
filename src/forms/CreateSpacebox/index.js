@@ -83,10 +83,6 @@ const CreateSpaceboxForm = ({
   ];
 
   const handleSubmit = (values, actions) => {
-    alertSetAction();
-
-    const slug = `${_.kebabCase(values.title)}-${Math.floor(Math.random() * 10000)}`;
-
     const createdSpacebox = {
       bgColor: values.bgColor,
       category: values.category,
@@ -94,34 +90,40 @@ const CreateSpaceboxForm = ({
       createdAt: new Date().toISOString(),
       description: values.description.trim(),
       likes: 0,
-      slug,
+      slug: `${_.kebabCase(values.title)}-${Math.floor(Math.random() * 10000)}`,
       title: values.title.trim(),
       uid: authUser.uid,
       visible: values.visible,
     };
 
-    firebase.createSpacebox(createdSpacebox)
-      .then(() => {
+    const createSpacebox = async () => {
+      try {
+        alertSetAction();
+
+        await firebase.spacebox(createdSpacebox.slug).set(createdSpacebox);
+
         alertSetAction({
           message: { id: 'forms.createSpacebox.successAlertMessage' },
           type: 'success',
         });
 
         history.push(
-          `${ROUTES.SPACE_BASE}/${slug}`,
-          {
-            spacebox: createdSpacebox,
-          },
+          `${ROUTES.SPACE_BASE}/${createdSpacebox.slug}`,
+          { spacebox: createdSpacebox },
         );
-      })
-      .catch((error) => {
+      } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
 
+        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+
         actions.setSubmitting(false);
-      });
+      }
+    };
+
+    createSpacebox();
   };
 
   return (

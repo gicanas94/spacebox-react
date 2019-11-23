@@ -27,23 +27,29 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
   const handleSubmit = (values, actions) => {
     const { email } = values;
 
-    alertSetAction();
+    const resetPassword = async () => {
+      try {
+        alertSetAction();
 
-    firebase.doPasswordReset(email)
-      .then(() => {
+        await firebase.doPasswordReset(email);
+
         alertSetAction({
           message: { id: 'forms.passwordForget.successAlertMessage' },
           type: 'success',
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
 
+        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+
         actions.setSubmitting(false);
-      });
+      }
+    };
+
+    resetPassword();
   };
 
   return (

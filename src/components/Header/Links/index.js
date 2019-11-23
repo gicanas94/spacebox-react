@@ -116,24 +116,6 @@ const AuthLinks = ({
       </Button>
     </StyledLink>
 
-    {authUser.isAdmin && (
-      <StyledLink onClick={() => onLinkClickHandler(false)} to={ROUTES.ADMIN}>
-        <Button
-          color="helio"
-          fullWidth
-          rounded
-          size="small"
-          styleType={location.pathname === ROUTES.ADMIN
-            ? 'filled'
-            : 'unbordered'
-          }
-          type="button"
-        >
-          {'components.header.links.admin'}
-        </Button>
-      </StyledLink>
-    )}
-
     <StyledSignOutButtonWrapper onClick={() => onLinkClickHandler(false)}>
       <Button
         color="salmon"

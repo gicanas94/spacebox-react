@@ -1,4 +1,4 @@
-const appLocaleReducer = (state = 'es', action) => {
+const appLocaleReducer = (state = 'en', action) => {
   switch (action.type) {
     case 'APP_LOCALE_SET':
       return action.locale;

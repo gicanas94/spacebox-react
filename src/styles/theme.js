@@ -67,8 +67,7 @@ export default {
       fontSize: font.size.s,
     },
     ColorPicker: {
-      bgColor: color.palette.cloud,
-      border: `1px solid ${Color(color.palette.cloud).darken(0.2).hex()}`,
+      color: themeSecondaryGreyColor,
       fontSize: font.size.s,
       fontWeight: font.weight.bold,
     },
@@ -100,7 +99,8 @@ export default {
       },
     },
     Input: {
-      borderWidth: '2px',
+      bgColor: color.palette.cloud,
+      borderBottomWidth: '2px',
       color: {
         default: themeSecondaryGreyColor,
         disabled: themeDisabledColor,
@@ -160,7 +160,8 @@ export default {
       },
     },
     Select: {
-      borderWidth: '2px',
+      bgColor: color.palette.cloud,
+      borderBottomWidth: '2px',
       color: {
         default: themeSecondaryGreyColor,
         disabled: themeDisabledColor,
@@ -179,14 +180,14 @@ export default {
         hoverColor: Color(themeMainColor).lighten(0.7).hex(),
       },
       ul: {
-        bgColor: color.palette.white,
-        boxShadow: `0 0px 5px 1px ${themeSecondaryGreyColor}`,
+        bgColor: color.palette.cloud,
+        boxShadow: `0 1px 7px -1px ${themeSecondaryGreyColor}`,
         scrollBar: {
           thumb: {
             bgColor: themeSecondaryGreyColor,
           },
           track: {
-            bgColor: color.palette.white,
+            bgColor: color.palette.cloud,
             border: `1px solid ${themeSecondaryGreyColor}`,
           },
         },
@@ -262,12 +263,12 @@ export default {
   forms: {
     Comment: {
       textarea: {
+        borderBottomWidth: '2px',
         color: {
           default: themeSecondaryGreyColor,
           disabled: themeDisabledColor,
           focus: themeMainColor,
         },
-        borderWidth: '2px',
       },
     },
     SignIn: {

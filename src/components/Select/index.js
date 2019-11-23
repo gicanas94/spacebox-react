@@ -11,6 +11,7 @@ import { keyframe, transition } from '../../styles';
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.components.Select.color.default};
   cursor: pointer;
+  display: block;
   font-size: ${({ theme }) => theme.components.Select.label.fontSize};
   font-weight: ${({ theme }) => theme.components.Select.label.fontWeight};
   overflow: hidden;
@@ -21,11 +22,13 @@ const StyledLabel = styled.label`
 `;
 
 const StyledSimulatedSelect = styled.div`
-  background-color: transparent;
+  background-color: ${({ theme }) => theme.components.Select.bgColor};
   border: 0;
+  border-bottom-width: ${({ theme }) => (
+    theme.components.Select.borderBottomWidth
+  )};
   border-color: ${({ theme }) => theme.components.Select.color.default};
   border-style: solid;
-  border-width: ${({ theme }) => theme.components.Select.borderWidth};
   cursor: pointer;
   height: 45px;
   line-height: 45px;
@@ -35,7 +38,8 @@ const StyledSimulatedSelect = styled.div`
   z-index: 100;
 
   ${({ rounded, theme }) => rounded && `
-    border-radius: ${theme.global.borderRadius};
+    border-top-left-radius: ${theme.global.borderRadius};
+    border-top-right-radius: ${theme.global.borderRadius};
   `}
 `;
 
@@ -44,12 +48,21 @@ const StyledSelectedOption = styled.span`
   user-select: none;
 `;
 
+const StyledArrowDownIcon = styled(KeyboardArrowDown)`
+  color: ${({ theme }) => theme.components.Select.color.default};
+  position: absolute;
+  right: 10px;
+  top: 33px;
+  width: 30px;
+  z-index: 101;
+`;
+
 const StyledWrapper = styled.div`
-  height: 92px;
   position: relative;
 
   ${({ disabled, theme }) => disabled && `
-    ${StyledLabel} {
+    ${StyledLabel},
+    ${StyledSelectedOption} {
       color: ${theme.components.Select.color.disabled} !important
       cursor: default;
     }
@@ -58,14 +71,11 @@ const StyledWrapper = styled.div`
       border-color: ${theme.components.Select.color.disabled} !important;
       cursor: default;
     }
-
-    ${StyledSelectedOption} {
-      color: ${theme.components.Select.color.disabled} !important
-    }
   `}
 
   ${({ error, theme }) => error && `
-    ${StyledLabel} {
+    ${StyledLabel},
+    ${StyledArrowDownIcon} {
       color: ${theme.components.Select.color.error};
     }
 
@@ -79,7 +89,8 @@ const StyledWrapper = styled.div`
   `}
 
   ${({ success, theme }) => success && `
-    ${StyledLabel} {
+    ${StyledLabel},
+    ${StyledArrowDownIcon} {
       color: ${theme.components.Select.color.success};
     }
 
@@ -100,14 +111,14 @@ const StyledUl = styled.ul`
   box-shadow: ${({ theme }) => theme.components.Select.ul.boxShadow};
   list-style: none;
   margin: 0;
-  margin-top: -1px;
+  margin-top: 0.5px;
   max-height: 225px;
   overflow: auto;
   padding: 0;
   user-select: none;
 
   ::-webkit-scrollbar {
-    width: 5px;
+    width: 15px;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -142,30 +153,21 @@ const StyledLi = styled.li`
   }
 `;
 
-const StyledArrowDownIcon = styled(KeyboardArrowDown)`
-  position: absolute;
-  right: 10px;
-  top: 35%;
-  width: 30px;
-`;
-
 const StyledErrorIcon = styled(ErrorOutline)`
   animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
   color: ${({ theme }) => theme.components.Select.color.error};
   position: absolute;
   right: 40px;
-  top: 35%;
+  top: 33px;
   width: 30px;
+  z-index: 101;
 `;
 
 const StyledErrorMessage = styled.div`
   color: ${({ theme }) => theme.components.Select.color.error};
   font-size: ${({ theme }) => theme.components.Select.errorMessage.fontSize};
   font-weight: ${({ theme }) => theme.components.Select.errorMessage.fontWeight};
-  overflow: hidden;
   padding-top: 5px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 const Select = ({

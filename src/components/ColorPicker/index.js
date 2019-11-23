@@ -5,11 +5,9 @@ import { SliderPicker } from 'react-color';
 import styled from 'styled-components';
 
 const StyledWrapper = styled.div`
-  border: ${({ theme }) => theme.components.ColorPicker.border};
-  background-color: ${({ theme }) => theme.components.ColorPicker.bgColor};
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  padding: 0;
   width: 100%;
 
   ${({ margin }) => margin && `
@@ -18,9 +16,10 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledLabel = styled.span`
+  color: ${({ theme }) => theme.components.ColorPicker.color};
   font-size: ${({ theme }) => theme.components.ColorPicker.fontSize};
   font-weight: ${({ theme }) => theme.components.ColorPicker.fontWeight};
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   word-break: break-all;
 `;
 

@@ -9,7 +9,7 @@ export default {
   FAQ: '/faq',
   HOME: '/',
   NOT_FOUND: '/404',
-  PASSWORD_FORGET: '/pw-forget',
+  PASSWORD_FORGET: '/password-forget',
   SIGN_IN: '/signin',
   SIGN_UP: '/signup',
   SPACE_BASE: '/space',

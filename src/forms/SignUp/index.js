@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
@@ -8,6 +9,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
+import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
 import { device } from '../../styles';
 import Input from '../../components/Input';
@@ -63,6 +65,7 @@ const StyledBottomWrapper = styled.div`
 
 const SignUpForm = ({
   alertSetAction,
+  authUser,
   firebase,
   history,
 }) => {
@@ -101,22 +104,30 @@ const SignUpForm = ({
   });
 
   const handleSubmit = (values, actions) => {
+    if (authUser) return;
+
     const { email, passwordOne, username } = values;
 
-    alertSetAction();
+    const signUpUser = async () => {
+      try {
+        alertSetAction();
 
-    firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(authUser => (
-        firebase.getUser(authUser.user.uid).set({
-          createdAt: new Date().toISOString(),
+        const createdAuthUser = await firebase.doCreateUserWithEmailAndPassword(
           email,
-          isAdmin: false,
+          passwordOne,
+        );
+
+        await firebase.user(createdAuthUser.user.uid).set({
+          createdAt: new Date().toISOString(),
           slug: `${_.kebabCase(username)}-${Math.floor(Math.random() * 10000)}`,
           username,
-        })
-      ))
-      .then(() => {
-        firebase.doSendEmailVerification();
+        });
+
+        await firebase.userRestrictedData(createdAuthUser.user.uid).set({
+          isAdmin: false,
+        });
+
+        await firebase.doSendEmailVerification();
 
         alertSetAction({
           message: { id: 'forms.signUp.successAlertMessage' },
@@ -124,15 +135,19 @@ const SignUpForm = ({
         });
 
         history.push(ROUTES.HOME);
-      })
-      .catch((error) => {
+      } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
 
+        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+
         actions.setSubmitting(false);
-      });
+      }
+    };
+
+    signUpUser();
   };
 
   return (
@@ -242,7 +257,7 @@ const SignUpForm = ({
             </StyledLink>
 
             <Button
-              disabled={isSubmitting}
+              disabled={isSubmitting || authUser === true}
               rounded
               styleType="filled"
               type="submit"
@@ -258,8 +273,21 @@ const SignUpForm = ({
 
 SignUpForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default compose(withFirebase, withRouter)(SignUpForm);
+SignUpForm.defaultProps = {
+  authUser: null,
+};
+
+const mapStateToProps = state => ({ authUser: state.session.authUser });
+
+const mapDispatchToProps = { alertSetAction: alertSet };
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withFirebase,
+  withRouter,
+)(SignUpForm);

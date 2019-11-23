@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -92,14 +91,16 @@ const EditSpaceboxForm = ({
       color: values.color,
       description: values.description,
       title: values.title,
-      updatedAt: moment().valueOf(),
+      updatedAt: new Date().toISOString(),
       visible: values.visible,
     };
 
-    alertSetAction();
+    const updateSpacebox = async () => {
+      try {
+        alertSetAction();
 
-    firebase.updateSpacebox(spacebox.slug, updatedSpacebox)
-      .then(() => {
+        await firebase.spacebox(spacebox.slug).update(updatedSpacebox);
+
         alertSetAction({
           message: { id: 'forms.editSpacebox.successAlertMessage' },
           type: 'success',
@@ -107,19 +108,21 @@ const EditSpaceboxForm = ({
 
         history.push(
           `${ROUTES.SPACE_BASE}/${spacebox.slug}`,
-          {
-            spacebox: { ...spacebox, ...updatedSpacebox },
-          },
+          { spacebox: { ...spacebox, ...updatedSpacebox } },
         );
-      })
-      .catch((error) => {
+      } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
 
+        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+
         actions.setSubmitting(false);
-      });
+      }
+    };
+
+    updateSpacebox();
   };
 
   return (

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
 import Emoji from '../../../components/Emoji';
+import { getCookie } from '../../../utils';
 import HelmetTitle from '../../../components/HelmetTitle';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import PasswordChangeForm from '../../../forms/PasswordChange';
@@ -28,16 +29,26 @@ const ChangePasswordSubpage = ({
     {!isLoading && (
       authUserHasPassword ? (
         <Fragment>
-          <p>
-            <FormattedMessage
-              id="pages.account.changePassword.changePasswordSubtitle"
-            />
+          {getCookie('reachedMaxCurrentPasswordAttemps', false)
+            ? (
+              <p>
+                <FormattedMessage
+                  id="pages.account.changePassword.reachedMaxCurrentPasswordAttempsSubtitle"
+                />
+              </p>
+            ) : (
+              <p>
+                <FormattedMessage
+                  id="pages.account.changePassword.changePasswordSubtitle"
+                />
 
-            <Emoji
-              label="pages.account.changePassword.changePasswordSubtitleEmojiLabel"
-              symbol="🙂"
-            />
-          </p>
+                <Emoji
+                  label="pages.account.changePassword.changePasswordSubtitleEmojiLabel"
+                  symbol="🙂"
+                />
+              </p>
+            )
+          }
 
           <PasswordChangeForm
             alertSetAction={alertSetAction}

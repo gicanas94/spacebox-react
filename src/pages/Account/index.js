@@ -79,13 +79,12 @@ const AccountPage = ({
       ).length > 0);
 
       setActiveSignInMethods(data);
-      loadingSetAction(false);
     } catch (error) {
       alertSetAction({
         message: error.message,
         type: 'danger',
       });
-
+    } finally {
       loadingSetAction(false);
     }
   };

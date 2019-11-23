@@ -66,10 +66,11 @@ const EditSpaceboxPage = ({
   useEffect(() => {
     const getUserSpaceboxes = async () => {
       try {
+        alertSetAction();
         loadingSetAction(true);
 
         const userSpaceboxes = [];
-        const data = await firebase.getUserSpaceboxes(authUser.uid).get();
+        const data = await firebase.userSpaceboxes(authUser.uid).get();
 
         data.forEach(document => userSpaceboxes.push(document.data()));
 
@@ -79,9 +80,7 @@ const EditSpaceboxPage = ({
 
         if (userSpaceboxToEdit) {
           setSpacebox(userSpaceboxToEdit);
-          loadingSetAction(false);
         } else {
-          loadingSetAction(false);
           history.push(ROUTES.HOME);
         }
       } catch (error) {
@@ -90,6 +89,8 @@ const EditSpaceboxPage = ({
           type: 'danger',
         });
 
+        history.push(ROUTES.HOME);
+      } finally {
         loadingSetAction(false);
       }
     };
@@ -98,11 +99,13 @@ const EditSpaceboxPage = ({
   }, []);
 
   const handleDeleteSpaceboxClick = () => {
-    alertSetAction();
-    setDeleteSpaceboxInProgress(true);
+    const deleteSpacebox = async () => {
+      try {
+        alertSetAction();
+        setDeleteSpaceboxInProgress(true);
 
-    firebase.deleteSpacebox(spacebox.slug)
-      .then(() => {
+        await firebase.spacebox(spacebox.slug).delete();
+
         setConfirmationModalIsOpen(false);
         history.push(ROUTES.HOME);
 
@@ -113,8 +116,7 @@ const EditSpaceboxPage = ({
           },
           type: 'success',
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         setConfirmationModalIsOpen(false);
         setDeleteSpaceboxInProgress(false);
 
@@ -122,7 +124,10 @@ const EditSpaceboxPage = ({
           message: error.message,
           type: 'danger',
         });
-      });
+      }
+    };
+
+    deleteSpacebox();
   };
 
   return (

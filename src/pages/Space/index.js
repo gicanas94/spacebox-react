@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import { FormattedMessage, FormattedDateParts, injectIntl } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+
+import React, {
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
 import styled from 'styled-components';
 
 import { alertSet, loadingSet } from '../../Redux/actions';
@@ -32,6 +39,10 @@ const StyledGrid = styled.div`
   grid-template-columns: 1fr;
   margin: auto;
   width: 100%;
+
+  div {
+    overflow: hidden;
+  }
 
   ${StyledSpaceboxInfoSectionWrapper},
   ${StyledPostFormWrapper} {
@@ -88,139 +99,80 @@ const StyledNoPostsText = styled.p`
   text-align: center;
 `;
 
-class SpacePage extends Component {
-  constructor(props) {
-    super(props);
+const SpacePage = ({
+  alertSetAction,
+  authUser,
+  firebase,
+  history,
+  intl,
+  isLoading,
+  loadingSetAction,
+  location,
+  match,
+}) => {
+  const [spacebox, setSpacebox] = useState(null);
+  const [posts, _setPosts] = useState(null);
+  const [postsHistory, setPostsHistory] = useState(null);
+  const [postsLimit, setPostsLimit] = useState(5);
+  const [user, setUser] = useState(null);
+  const [allTasksFinished, setAllTasksFinished] = useState(false);
+  const postsRef = useRef(posts);
 
-    this.state = {
-      posts: null,
-      postsHistory: null,
-      postsLimit: 5,
-      spacebox: null,
-      user: null,
-    };
-  }
-
-  componentDidMount() {
-    const { loadingSetAction, match, location } = this.props;
-
-    this.componentIsMounted = true;
-    loadingSetAction(true);
-
-    if (location.state) {
-      this.setState(
-        { spacebox: location.state.spacebox },
-        () => this.getUserAndPosts(),
-      );
-    } else {
-      this.getSpacebox(match.params.spaceboxSlug);
-    }
-  }
-
-  componentWillUnmount() {
-    const { firebase } = this.props;
-
-    this.componentIsMounted = false;
-
-    const unsubscribe = firebase.db.collection('posts').onSnapshot(() => {});
-    unsubscribe();
-
-    window.removeEventListener('scroll', this.getMorePostsIfScrollIsAtTheEnd);
-  }
-
-  getSpacebox = (spaceboxSlug) => {
-    const {
-      alertSetAction,
-      firebase,
-      history,
-      loadingSetAction,
-    } = this.props;
-
-    firebase.getSpacebox(spaceboxSlug).get()
-      .then((document) => {
-        if (document.data()) {
-          this.setState(
-            { spacebox: document.data() },
-            () => this.getUserAndPosts(),
-          );
-        } else {
-          // Spacebox does not exist
-          loadingSetAction(false);
-          history.push(ROUTES.NOT_FOUND);
-        }
-      })
-      .catch(error => (
-        alertSetAction({
-          message: error.message,
-          type: 'danger',
-        })
-      ));
-  }
-
-  getUserAndPosts = () => {
-    const { alertSetAction, loadingSetAction } = this.props;
-    const { spacebox } = this.state;
-
-    Promise.all([
-      this.getUser(spacebox.uid),
-      this.getPosts(spacebox.slug),
-    ])
-      .then(() => {
-        window.addEventListener('scroll', this.getMorePostsIfScrollIsAtTheEnd);
-        loadingSetAction(false);
-      })
-      .catch((error) => {
-        alertSetAction({
-          message: error.message,
-          type: 'danger',
-        });
-
-        loadingSetAction(false);
-      });
-  }
-
-  getUser = (uid) => {
-    const { firebase } = this.props;
-
-    return new Promise((resolvePromise, rejectPromise) => {
-      firebase.getUser(uid).get()
-        .then(document => this.setState(
-          { user: document.data() },
-          () => resolvePromise(),
-        ))
-        .catch(error => rejectPromise(error));
-    });
-  }
-
-  getPosts = (spaceboxSlug) => {
-    const { firebase } = this.props;
-
-    return new Promise((resolvePromise, rejectPromise) => {
-      firebase.getSpaceboxPosts(spaceboxSlug)
-        .orderBy('createdAt', 'desc')
-        .onSnapshot((documents) => {
-          const posts = [];
-
-          documents.forEach(document => posts.push(document.data()));
-
-          if (this.componentIsMounted) {
-            this.setState(
-              { posts },
-              () => this.composePostsHistory(resolvePromise),
-            );
-          }
-        }, error => rejectPromise(error));
-    });
+  const setPosts = (newListOfPosts) => {
+    postsRef.current = newListOfPosts;
+    _setPosts(newListOfPosts);
   };
 
-  composePostsHistory = (resolveGetPostsPromise) => {
-    const { posts } = this.state;
-    const reversedPosts = [...posts].reverse();
-    const postsHistory = {};
+  const getSpacebox = spaceboxSlug => (
+    new Promise((resolve, reject) => {
+      firebase.spacebox(spaceboxSlug).get()
+        .then((document) => {
+          if (document.data()) {
+            setSpacebox(document.data());
+            resolve(document.data());
+          } else {
+            /* eslint-disable */
+            reject({ id: 'pages.space.spaceboxNotFoundAlertMessage' });
+            /* eslint-enable */
+          }
+        })
+        .catch(error => reject(error));
+    })
+  );
+
+  const getPosts = spaceboxSlug => (
+    new Promise((resolve, reject) => {
+      firebase.spaceboxPosts(spaceboxSlug).orderBy('createdAt', 'desc').get()
+        .then((documents) => {
+          const postsArray = [];
+
+          documents.forEach(document => postsArray.push(document.data()));
+
+          setPosts(postsArray);
+          resolve(postsArray);
+        })
+        .catch(error => reject(error));
+    })
+  );
+
+  const getUser = uid => (
+    new Promise((resolve, reject) => {
+      firebase.user(uid).get()
+        .then((document) => {
+          setUser(document.data());
+          resolve(document.data());
+        })
+        .catch(error => reject(error));
+    })
+  );
+
+  const composePostsHistory = (postsData) => {
+    const reversedPosts = [...postsData].reverse();
+    const postsHistoryObj = {};
 
     reversedPosts.forEach((post) => {
       Object.defineProperty(
-        postsHistory,
+        postsHistoryObj,
         new Date(post.createdAt).getFullYear(),
         {
           value: {},
@@ -232,7 +184,7 @@ class SpacePage extends Component {
 
     reversedPosts.forEach((post) => {
       Object.defineProperty(
-        postsHistory[new Date(post.createdAt).getFullYear()],
+        postsHistoryObj[new Date(post.createdAt).getFullYear()],
         new Date(post.createdAt).getMonth(),
         {
           value: [],
@@ -243,24 +195,23 @@ class SpacePage extends Component {
     });
 
     reversedPosts.map(post => (
-      Object.keys(postsHistory).reverse().map(year => (
+      Object.keys(postsHistoryObj).reverse().map(year => (
         new Date(post.createdAt).getFullYear() === parseInt(year, 10) && (
-          Object.keys(postsHistory[year]).map(month => (
+          Object.keys(postsHistoryObj[year]).map(month => (
             new Date(post.createdAt).getMonth() === parseInt(month, 10) && (
-              postsHistory[year][month].push(post)
+              postsHistoryObj[year][month].push(post)
             )
           ))
         )
       ))
     ));
 
-    this.setState({ postsHistory });
-    resolveGetPostsPromise();
+    setPostsHistory(postsHistoryObj);
+
+    return new Promise(resolve => resolve());
   };
 
-  getMorePostsIfScrollIsAtTheEnd = () => {
-    const { posts, postsLimit } = this.state;
-
+  const getMorePostsIfScrollIsAtTheEnd = () => {
     const windowHeight = 'innerHeight' in window
       ? window.innerHeight
       : document.documentElement.offsetHeight;
@@ -278,51 +229,83 @@ class SpacePage extends Component {
     const windowBottom = Math.round(windowHeight + window.pageYOffset);
 
     return windowBottom >= docHeight && (
-      posts.length >= postsLimit
-        ? (
-          this.setState({ postsLimit: postsLimit + 1 })
-        ) : (
-          window.removeEventListener(
-            'scroll',
-            this.getMorePostsIfScrollIsAtTheEnd,
-          )
-        )
+      postsRef.current.length >= postsLimit
+        ? setPostsLimit(postsLimit + 1)
+        : window.removeEventListener('scroll', getMorePostsIfScrollIsAtTheEnd)
     );
-  }
+  };
 
-  render() {
-    const {
-      alertSetAction,
-      authUser,
-      firebase,
-      history,
-      intl,
-      location,
-      isLoading,
-    } = this.props;
+  const deletePostCallback = (deletedPost) => {
+    const newListOfPosts = posts.filter(post => post.slug !== deletedPost.slug);
 
-    const {
-      posts,
-      postsHistory,
-      postsLimit,
-      spacebox,
-      user,
-    } = this.state;
+    setPosts(newListOfPosts);
+    composePostsHistory(newListOfPosts);
+  };
 
-    return (
-      <Fragment>
-        {spacebox && (
+  const createPostCallback = (createdPost) => {
+    const newListOfPosts = [createdPost, ...posts];
+
+    setPosts(newListOfPosts);
+    composePostsHistory(newListOfPosts);
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        loadingSetAction(true);
+
+        let spaceboxData = {};
+
+        if (location.state) {
+          setSpacebox(location.state.spacebox);
+          spaceboxData = location.state.spacebox;
+        } else {
+          spaceboxData = await getSpacebox(match.params.spaceboxSlug);
+        }
+
+        const postsData = await getPosts(match.params.spaceboxSlug);
+        await composePostsHistory(postsData);
+        await getUser(spaceboxData.uid);
+
+        if (postsData.length > postsLimit) {
+          window.addEventListener('scroll', getMorePostsIfScrollIsAtTheEnd);
+        }
+
+        setAllTasksFinished(true);
+      } catch (error) {
+        alertSetAction({
+          message: error.id ? error : error.message,
+          type: 'danger',
+        });
+
+        if (error.id === 'pages.space.spaceboxNotFoundAlertMessage') {
+          history.push(ROUTES.HOME);
+        }
+      } finally {
+        loadingSetAction(false);
+      }
+    };
+
+    getData();
+
+    return () => {
+      window.removeEventListener('scroll', getMorePostsIfScrollIsAtTheEnd);
+    };
+  }, []);
+
+  return (
+    <Fragment>
+      {isLoading && <LoadingSpinner />}
+
+      {allTasksFinished && (
+        <Fragment>
           <HelmetTitle
             title={{
               id: 'pages.post.title',
               values: { postTitle: spacebox.title },
             }}
           />
-        )}
 
-        {isLoading && <LoadingSpinner />}
-
-        {!isLoading && (
           <StyledGrid>
             <div>
               {spacebox && user && (
@@ -340,7 +323,7 @@ class SpacePage extends Component {
                 </StyledSpaceboxInfoSectionWrapper>
               )}
 
-              {posts && posts.length > 0 && (
+              {posts.length > 0 && (
                 <Box
                   collapsed
                   collapseTitle="pages.space.postsHistory.boxCollapseTitle"
@@ -412,10 +395,11 @@ class SpacePage extends Component {
             </div>
 
             <div>
-              {authUser && spacebox && authUser.uid === spacebox.uid && (
+              {authUser && authUser.uid === spacebox.uid && (
                 <StyledPostFormWrapper>
                   <PostForm
                     alertSetAction={alertSetAction}
+                    createPostCallback={createPostCallback}
                     firebase={firebase}
                     sid={spacebox.slug}
                     uid={authUser.uid}
@@ -423,13 +407,15 @@ class SpacePage extends Component {
                 </StyledPostFormWrapper>
               )}
 
-              {posts && posts.length > 0
+              {posts.length > 0
                 ? (
                   <StyledPostsWrapper>
                     {posts.slice(0, postsLimit).map(post => (
                       <Post
                         alertSetAction={alertSetAction}
                         authUser={authUser}
+                        createPostCallback={createPostCallback}
+                        deletePostCallback={deletePostCallback}
                         firebase={firebase}
                         key={post.createdAt}
                         page="space"
@@ -444,7 +430,7 @@ class SpacePage extends Component {
                     <StyledNoPostsText>
                       <FormattedMessage
                         id={
-                          authUser && spacebox && authUser.uid === spacebox.uid
+                          authUser && authUser.uid === spacebox.uid
                             ? 'pages.space.noPostsText.authUserIsTheOwner'
                             : 'pages.space.noPostsText.authUserIsNotTheOwner'
                         }
@@ -455,11 +441,11 @@ class SpacePage extends Component {
               }
             </div>
           </StyledGrid>
-        )}
-      </Fragment>
-    );
-  }
-}
+        </Fragment>
+      )}
+    </Fragment>
+  );
+};
 
 SpacePage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,

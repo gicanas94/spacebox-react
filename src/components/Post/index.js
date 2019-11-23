@@ -35,7 +35,9 @@ const StyledContent = styled.p`
 const StyledCreatedAtDate = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 3%;
   text-align: right;
+  width: 50%;
 `;
 
 const StyledDateFromNow = styled.span`
@@ -105,14 +107,6 @@ const StyledLikeHeartIcon = styled(Heart)`
 
     transition: transform ${transition.speed.superfast} linear;
   `}
-
-  ${({ userIsLikingOrDisliking, theme }) => userIsLikingOrDisliking === 'like' && `
-    color: ${theme.components.Post.likeHeartIcon.likeColor};
-  `}
-
-  ${({ userIsLikingOrDisliking, theme }) => userIsLikingOrDisliking === 'dislike' && `
-    color: ${theme.components.Post.likeHeartIcon.noLikeColor};
-  `}
 `;
 
 const StyledCommentIcon = styled(CommentAlt)`
@@ -169,7 +163,9 @@ const StyledSeeOrHideCommentsSpan = styled.span`
 const Post = ({
   alertSetAction,
   authUser,
+  deletePostCallback,
   firebase,
+  history,
   page,
   post,
   spacebox,
@@ -179,7 +175,8 @@ const Post = ({
   const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
   const [deletePostInProgress, setDeletePostInProgress] = useState(false);
   const [likeInProgress, setLikeInProgress] = useState(false);
-  const [userIsLikingOrDisliking, setUserIsLikingOrDisliking] = useState(false);
+  const [postLikes, setPostLikes] = useState(post.likes);
+  const [postComments, setPostComments] = useState(post.comments);
   const commentFormId = `comment-form_${post.slug}`;
   const intl = useIntl();
 
@@ -187,88 +184,125 @@ const Post = ({
     commentFormIsVisible,
     setCommentFormIsVisible,
   ] = useStateWithCallback(false, () => {
-    if (commentFormIsVisible) {
-      document.getElementById(commentFormId).focus();
-    }
+    if (commentFormIsVisible) document.getElementById(commentFormId).focus();
   });
 
-  const handleDeletePostClick = (spaceboxSlug, postSlug) => {
-    alertSetAction();
-    setDeletePostInProgress(true);
+  const handleDeletePostClick = () => {
+    const deletePost = async () => {
+      try {
+        alertSetAction();
+        setDeletePostInProgress(true);
 
-    firebase.deletePost(spaceboxSlug, postSlug)
-      .then(() => {
+        await firebase.db.runTransaction(async (transaction) => {
+          const spaceboxRef = firebase.spacebox(spacebox.slug);
+          const postRef = firebase.post(spacebox.slug, post.slug);
+          const spaceboxDocument = await transaction.get(spaceboxRef);
+          const postDocument = await transaction.get(postRef);
+
+          transaction.update(spaceboxRef, {
+            likes: spaceboxDocument.data().likes - postDocument.data().likes.length,
+          });
+
+          transaction.delete(postRef);
+        });
+
+        if (page === 'space') deletePostCallback(post);
+
         setConfirmationModalIsOpen(false);
+
+        if (page === 'post') {
+          history.push(
+            `${ROUTES.SPACE_BASE}/${spacebox.slug}`,
+            { spacebox },
+          );
+        }
 
         alertSetAction({
           message: { id: 'components.post.deletePost.successAlertMessage' },
           type: 'success',
         });
-      })
-      .catch((error) => {
-        setConfirmationModalIsOpen(false);
+      } catch (error) {
         setDeletePostInProgress(false);
+        setConfirmationModalIsOpen(false);
 
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
-      });
+      }
+    };
+
+    deletePost();
   };
 
-  const handleLikeHeartIconClick = (likedPost) => {
-    const postRef = firebase.getPost(likedPost.sid, likedPost.slug);
-    const spaceboxRef = firebase.getSpacebox(likedPost.sid);
-
-    setLikeInProgress(true);
-
-    // [If like process is in progress,
-    // If user is liking (false) or disliking(true)]
-    setUserIsLikingOrDisliking(
-      likedPost.likes.includes(authUser.uid)
-        ? 'dislike'
-        : 'like',
-    );
-
+  const handleLikePostClick = () => {
     firebase.db.runTransaction(async (transaction) => {
-      const postDocument = await transaction.get(postRef);
-      const spaceboxDocument = await transaction.get(spaceboxRef);
-      const postData = postDocument.data();
-      const spaceboxData = spaceboxDocument.data();
-      const postAlreadyLiked = post.likes.includes(authUser.uid);
+      try {
+        alertSetAction();
+        setLikeInProgress(true);
 
-      postData.likes = postAlreadyLiked
-        ? postData.likes.splice(postData.likes.indexOf(authUser.uid), 0)
-        : postData.likes.concat([authUser.uid]);
+        const spaceboxRef = firebase.spacebox(spacebox.slug);
+        const postRef = firebase.post(spacebox.slug, post.slug);
+        const spaceboxDocument = await transaction.get(spaceboxRef);
+        const postDocument = await transaction.get(postRef);
 
-      transaction.update(postRef, { likes: postData.likes });
+        const userAlreadyLikeThePost = postDocument.data().likes.includes(
+          authUser.uid,
+        );
 
-      transaction.update(spaceboxRef, {
-        likes: postAlreadyLiked
-          ? spaceboxData.likes - 1
-          : spaceboxData.likes + 1,
-      });
-    })
-      .then(() => setLikeInProgress(false))
-      .catch((error) => {
+        if (userAlreadyLikeThePost) {
+          const newPostLikes = postDocument.data().likes.filter(
+            like => like.uid === authUser.uid,
+          );
+
+          setPostLikes(newPostLikes);
+
+          transaction.update(postRef, { likes: newPostLikes });
+
+          transaction.update(
+            spaceboxRef,
+            { likes: spaceboxDocument.data().likes -= 1 },
+          );
+        } else {
+          setPostLikes([...postDocument.data().likes, authUser.uid]);
+
+          transaction.update(
+            postRef,
+            { likes: [...postDocument.data().likes, authUser.uid] },
+          );
+
+          transaction.update(
+            spaceboxRef,
+            { likes: spaceboxDocument.data().likes += 1 },
+          );
+        }
+      } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
-
+      } finally {
         setLikeInProgress(false);
-      });
+      }
+    });
   };
 
   const handleSeeCommentsClick = () => setCommentsLimit(commentsLimit + 3);
 
   const handleHideCommentsClick = () => setCommentsLimit(0);
 
+  const updatePostCommentsHandler = (comment, typeOfUpdate) => {
+    switch (typeOfUpdate) {
+      case 'add':
+        setPostComments([...postComments, comment]);
+        break;
+      default:
+    }
+  };
+
   const likeHeartIcon = (
     <StyledLikeHeartIcon
-      authUserLike={
-        authUser && post.likes && post.likes.includes(authUser.uid)
-      }
+      authUserLike={authUser && postLikes.includes(authUser.uid)}
       data-for={`like-heart-icon_${post.slug}`}
       data-tip={!authUser
         ? intl.formatMessage({
@@ -278,10 +312,9 @@ const Post = ({
         })
       }
       disabled={likeInProgress || !authUser || !authUser.emailVerified}
-      userIsLikingOrDisliking={userIsLikingOrDisliking}
       onClick={likeInProgress || !authUser || !authUser.emailVerified
         ? null
-        : () => handleLikeHeartIconClick(post)
+        : () => handleLikePostClick()
       }
     />
   );
@@ -401,17 +434,17 @@ const Post = ({
         </StyledActions>
 
         <StyledStats>
-          {post.likes.length > 0 && (
+          {postLikes.length > 0 && (
             <Fragment>
               <StyledLikesStatIcon />
-              {intl.formatNumber(post.likes.length)}
+              {intl.formatNumber(postLikes.length)}
             </Fragment>
           )}
 
-          {post.comments.length > 0 && (
+          {postComments.length > 0 && (
             <Fragment>
               <StyledCommentsStatIcon />
-              {intl.formatNumber(post.comments.length)}
+              {intl.formatNumber(postComments.length)}
             </Fragment>
           )}
         </StyledStats>
@@ -420,27 +453,28 @@ const Post = ({
       {authUser && authUser.emailVerified && commentFormIsVisible && (
         <StyledCommentFormWrapper>
           <CommentForm
+            authUser={authUser}
             postSlug={post.slug}
             sid={post.sid}
             textareaId={commentFormId}
-            user={{
-              slug: authUser.slug,
-              username: authUser.username,
-              uid: authUser.uid,
-            }}
+            updatePostCommentsHandler={updatePostCommentsHandler}
           />
         </StyledCommentFormWrapper>
       )}
 
-      {post.comments && post.comments.length > 0 && (
+      {postComments.length > 0 && (
         <StyledCommentsWrapper>
-          {_.orderBy(post.comments, 'createdAt', 'desc')
+          {_.orderBy(postComments, 'createdAt', 'desc')
             .slice(0, commentsLimit).map(comment => (
-              <Comment authUser={authUser} comment={comment} key={comment.slug} />
+              <Comment
+                authUser={authUser}
+                comment={comment}
+                key={comment.slug}
+              />
             ))
           }
 
-          {post.comments.length > commentsLimit && (
+          {postComments.length > commentsLimit && (
             <StyledSeeOrHideCommentsSpan
               onClick={() => handleSeeCommentsClick()}
             >
@@ -448,14 +482,14 @@ const Post = ({
                 { id: 'components.post.seeCommentsText' },
                 {
                   remainingComments: intl.formatNumber(
-                    post.comments.length - commentsLimit,
+                    postComments.length - commentsLimit,
                   ),
                 },
               )}
             </StyledSeeOrHideCommentsSpan>
           )}
 
-          {commentsLimit >= post.comments.length && (
+          {commentsLimit >= postComments.length && (
             <StyledSeeOrHideCommentsSpan
               onClick={() => handleHideCommentsClick()}
             >
@@ -486,9 +520,7 @@ const Post = ({
           buttonsAreDisabled={deletePostInProgress}
           content="components.post.deletePost.confirmationModal.content"
           onCancelHandler={() => setConfirmationModalIsOpen(false)}
-          onConfirmHandler={() => (
-            handleDeletePostClick(spacebox.slug, post.slug)
-          )}
+          onConfirmHandler={() => handleDeletePostClick()}
           title="components.post.deletePost.confirmationModal.title"
         />
       )}
@@ -499,7 +531,9 @@ const Post = ({
 Post.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  deletePostCallback: PropTypes.func,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any),
   page: PropTypes.oneOf(['space', 'post']).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -508,6 +542,8 @@ Post.propTypes = {
 
 Post.defaultProps = {
   authUser: null,
+  deletePostCallback: null,
+  history: null,
 };
 
 export default Post;

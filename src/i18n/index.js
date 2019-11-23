@@ -18,7 +18,6 @@ const messages = {
           home: 'Home',
           createSpacebox: 'Create Spacebox',
           account: 'Account',
-          admin: 'ADMIN',
           signOut: 'Sign out',
           faq: 'WT#?',
           signUp: 'Sign up',
@@ -213,6 +212,7 @@ const messages = {
           changePasswordSubtitle: 'Complete the following inputs to change your password. Don\'t forget your current one, just in case ',
           changePasswordSubtitleEmojiLabel: 'Slightly smiling face',
           linkPasswordSubtitle: 'You don\'t have a password linked to your account, but let\'s do that right now.',
+          reachedMaxCurrentPasswordAttempsSubtitle: 'Right now you can\'t change your password as you reached the limit of attempts to enter your current one, please try again later.',
         },
         loginManagement: {
           title: 'Login management - Spacebox',
@@ -319,6 +319,8 @@ const messages = {
       },
       post: {
         title: '{postTitle} - Spacebox',
+        spaceboxNotFoundAlertMessage: 'We couldn\'t find the Spacebox you wanted to see so we redirected you to the home page. Sorry!',
+        postNotFoundAlertMessage: 'We couldn\t find the post you wanted to see, but we redirected you to the Spacebox! it\'s something...',
       },
       signIn: {
         title: 'Sign in - Spacebox',
@@ -336,6 +338,7 @@ const messages = {
         postsHistory: {
           boxCollapseTitle: '<h3>Posts history</h3>',
         },
+        spaceboxNotFoundAlertMessage: 'We couldn\'t find the Spacebox you wanted to see so we redirected you to the home page. Sorry!',
       },
       verifyEmail: {
         title: 'Verify e-mail address - Spacebox',
@@ -371,7 +374,6 @@ const messages = {
           home: 'Inicio',
           createSpacebox: 'Crear Spacebox',
           account: 'Cuenta',
-          admin: 'ADMIN',
           signOut: 'Salir',
           faq: 'WT#?',
           signUp: 'Registro',
@@ -566,6 +568,7 @@ const messages = {
           changePasswordSubtitle: 'Completa los siguientes campos para cambiar tu contraseña. No olvides la actual, solo por si acaso ',
           changePasswordSubtitleEmojiLabel: 'Cara ligeramente sonriente',
           linkPasswordSubtitle: 'No tienes una contraseña vinculada a tu cuenta, pero hagámoslo ahora mismo.',
+          reachedMaxCurrentPasswordAttempsSubtitle: 'Ahora mismo no puedes cambiar tu contraseña ya que alcanzaste el límite de intentos para ingresar tu contraseña actual, por favor intenta más tarde.',
         },
         loginManagement: {
           title: 'Inicio de sesión - Spacebox',
@@ -672,6 +675,8 @@ const messages = {
       },
       post: {
         title: '{postTitle} - Spacebox',
+        spaceboxNotFoundAlertMessage: 'No pudimos encontrar el Spacebox que querías ver así que te redireccionamos a la página de inicio. ¡Lo sentimos!',
+        postNotFoundAlertMessage: 'No pudimos encontrar la publicación que querías ver, pero te redireccionamos al Spacebox. Algo es algo...',
       },
       signIn: {
         title: 'Ingreso - Spacebox',
@@ -689,6 +694,7 @@ const messages = {
         postsHistory: {
           boxCollapseTitle: '<h3>Historial de publicaciones</h3>',
         },
+        spaceboxNotFoundAlertMessage: 'No pudimos encontrar el Spacebox que querías ver así que te redireccionamos a la página de inicio. ¡Lo sentimos!',
       },
       verifyEmail: {
         title: 'Verificar dirección de correo electrónico - Spacebox',

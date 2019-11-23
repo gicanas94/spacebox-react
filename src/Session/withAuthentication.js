@@ -2,7 +2,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import SecureLS from 'secure-ls';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { authUserSet } from '../Redux/actions';
 import { withFirebase } from '../Firebase';
@@ -10,11 +10,9 @@ import { withFirebase } from '../Firebase';
 const ls = new SecureLS();
 
 const withAuthentication = (Component) => {
-  class WithAuthentication extends React.Component {
-    componentDidMount() {
-      const { authUserSetAction, firebase } = this.props;
-
-      this.listener = firebase.onAuthUserListener(
+  const WithAuthentication = ({ authUserSetAction, firebase, ...props }) => {
+    useEffect(() => {
+      const listener = firebase.onAuthUserListener(
         (authUser) => {
           ls.set('au', authUser);
           authUserSetAction(authUser);
@@ -24,16 +22,12 @@ const withAuthentication = (Component) => {
           authUserSetAction(null);
         },
       );
-    }
 
-    componentWillUnmount() {
-      this.listener();
-    }
+      return () => listener();
+    }, []);
 
-    render() {
-      return <Component {...this.props} />;
-    }
-  }
+    return <Component {...props} />;
+  };
 
   WithAuthentication.propTypes = {
     authUserSetAction: PropTypes.func.isRequired,

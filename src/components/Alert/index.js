@@ -20,7 +20,7 @@ const StyledAlert = styled.div`
   position: fixed;
   text-align: justify;
   width: 100%;
-  z-index: 1400;
+  z-index: 1500;
 
   @media ${device.laptop} {
     padding: 5px 0;
@@ -30,7 +30,7 @@ const StyledAlert = styled.div`
   ${({ type, theme }) => type && `
     background: linear-gradient(
       ${theme.components.Alert.type[type].bgColor},
-      ${Color(theme.components.Alert.type[type].bgColor).darken(0.07)}
+      ${Color(theme.components.Alert.type[type].bgColor).darken(0.05)}
     );
     color: ${theme.components.Alert.type[type].color};
   `}

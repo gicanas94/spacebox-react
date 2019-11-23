@@ -27,28 +27,78 @@ class Firebase {
   // Auth API ------------------------------------------------------------------
   // ---------------------------------------------------------------------------
   doCreateUserWithEmailAndPassword = (email, password) => (
-    this.auth.createUserWithEmailAndPassword(email, password)
-  )
+    new Promise((resolve, reject) => (
+      this.auth.createUserWithEmailAndPassword(email, password)
+        .then(createdAuthUser => resolve(createdAuthUser))
+        .catch(error => reject(error))
+    ))
+  );
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+  doLinkAndRetrieveDataWithCredential = credential => (
+    new Promise((resolve, reject) => (
+      this.auth.currentUser.linkAndRetrieveDataWithCredential(credential)
+        .then(() => resolve())
+        .catch(error => reject(error))
+    ))
+  );
 
-  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
+  doPasswordReset = email => (
+    new Promise((resolve, reject) => (
+      this.auth.sendPasswordResetEmail(email)
+        .then(() => resolve())
+        .catch(error => reject(error))
+    ))
+  );
+
+  doPasswordUpdate = password => (
+    new Promise((resolve, reject) => (
+      this.auth.currentUser.updatePassword(password)
+        .then(() => resolve())
+        .catch(error => reject(error))
+    ))
+  );
 
   doSendEmailVerification = () => (
-    this.auth.currentUser.sendEmailVerification({
-      url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
-    })
-  )
+    new Promise((resolve, reject) => (
+      this.auth.currentUser.sendEmailVerification({
+        url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
+      })
+        .then(() => resolve())
+        .catch(error => reject(error))
+    ))
+  );
 
   doSignInWithEmailAndPassword = (email, password) => (
-    this.auth.signInWithEmailAndPassword(email, password)
-  )
+    new Promise((resolve, reject) => (
+      this.auth.signInWithEmailAndPassword(email, password)
+        .then(() => resolve())
+        .catch(error => reject(error))
+    ))
+  );
 
-  doSignInWithGoogle = () => this.auth.signInWithPopup(this.googleProvider);
+  doSignInWithGoogle = () => (
+    new Promise((resolve, reject) => (
+      this.auth.signInWithPopup(this.googleProvider)
+        .then(socialAuthUser => resolve(socialAuthUser))
+        .catch(error => reject(error))
+    ))
+  );
 
-  doSignInWithFacebook = () => this.auth.signInWithPopup(this.facebookProvider);
+  doSignInWithFacebook = () => (
+    new Promise((resolve, reject) => (
+      this.auth.signInWithPopup(this.facebookProvider)
+        .then(socialAuthUser => resolve(socialAuthUser))
+        .catch(error => reject(error))
+    ))
+  );
 
-  doSignInWithTwitter = () => this.auth.signInWithPopup(this.twitterProvider);
+  doSignInWithTwitter = () => (
+    new Promise((resolve, reject) => (
+      this.auth.signInWithPopup(this.twitterProvider)
+        .then(socialAuthUser => resolve(socialAuthUser))
+        .catch(error => reject(error))
+    ))
+  );
 
   doSignOut = () => this.auth.signOut();
 
@@ -57,18 +107,12 @@ class Firebase {
   // ---------------------------------------------------------------------------
   onAuthUserListener = (next, fallback) => this.auth.onAuthStateChanged((authUser) => {
     if (authUser) {
-      this.getUser(authUser.uid).onSnapshot(document => (
-        next({
-          createdAt: (document.data() && document.data().createdAt) || '',
-          email: authUser.email,
-          emailVerified: authUser.emailVerified,
-          isAdmin: (document.data() && document.data().isAdmin) || '',
-          providerData: authUser.providerData,
-          slug: (document.data() && document.data().slug) || '',
-          uid: authUser.uid,
-          username: (document.data() && document.data().username) || '',
-        })
-      ));
+      next({
+        email: authUser.email,
+        emailVerified: authUser.emailVerified,
+        providerData: authUser.providerData,
+        uid: authUser.uid,
+      });
     } else {
       fallback();
     }
@@ -77,50 +121,35 @@ class Firebase {
   // ---------------------------------------------------------------------------
   // Spacebox API --------------------------------------------------------------
   // ---------------------------------------------------------------------------
-  createSpacebox = spacebox => (
-    this.db.collection('spaceboxes').doc(spacebox.slug).set(spacebox)
-  );
+  spacebox = sid => this.db.collection('spaceboxes').doc(sid);
 
-  deleteSpacebox = sid => this.db.collection('spaceboxes').doc(sid).delete();
-
-  getAllVisibleSpaceboxes = () => (
+  allVisibleSpaceboxes = () => (
     this.db.collection('spaceboxes').where('visible', '==', true)
-  );
-
-  getSpacebox = sid => this.db.collection('spaceboxes').doc(sid);
-
-  updateSpacebox = (sid, newData) => (
-    this.db.collection('spaceboxes').doc(sid).update(newData)
   );
 
   // ---------------------------------------------------------------------------
   // Post API ------------------------------------------------------------------
   // ---------------------------------------------------------------------------
-  createPost = (post, sid) => (
-    this.getSpacebox(sid).collection('posts').doc(post.slug).set(post)
-  )
+  post = (sid, pid) => this.spacebox(sid).collection('posts').doc(pid);
 
-  deletePost = (sid, pid) => (
-    this.getSpacebox(sid).collection('posts').doc(pid).delete()
-  );
-
-  getPost = (sid, pid) => (
-    this.getSpacebox(sid).collection('posts').doc(pid)
-  )
-
-  getSpaceboxPosts = sid => (
-    this.getSpacebox(sid).collection('posts')
-  );
+  spaceboxPosts = sid => this.spacebox(sid).collection('posts');
 
   // ---------------------------------------------------------------------------
   // User API ------------------------------------------------------------------
   // ---------------------------------------------------------------------------
-  getAllUsers = () => this.db.collection('users');
+  user = uid => this.db.collection('users').doc(uid);
 
-  getUser = uid => this.db.collection('users').doc(uid);
+  allUsers = () => this.db.collection('users');
 
-  getUserSpaceboxes = uid => (
+  userSpaceboxes = uid => (
     this.db.collection('spaceboxes').where('uid', '==', uid)
+  );
+
+  // ---------------------------------------------------------------------------
+  // Restricted user data API --------------------------------------------------
+  // ---------------------------------------------------------------------------
+  userRestrictedData = uid => (
+    this.user(uid).collection('restricted').doc('data')
   );
 }
 

@@ -42,11 +42,14 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
   const handleSubmit = (values, actions) => {
     const { email, password } = values;
 
-    alertSetAction();
+    const signInUser = async () => {
+      try {
+        alertSetAction();
 
-    firebase.doSignInWithEmailAndPassword(email, password)
-      .then(() => history.push(ROUTES.HOME))
-      .catch((error) => {
+        await firebase.doSignInWithEmailAndPassword(email, password);
+
+        history.push(ROUTES.HOME);
+      } catch (error) {
         alertSetAction({
           message: error.code === ERRORS.FIREBASE.ACCOUNT_EXISTS.CODE
             ? { id: ERRORS.FIREBASE.ACCOUNT_EXISTS.MESSAGE }
@@ -54,8 +57,13 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
           type: 'danger',
         });
 
+        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+
         actions.setSubmitting(false);
-      });
+      }
+    };
+
+    signInUser();
   };
 
   return (

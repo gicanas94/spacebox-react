@@ -62,8 +62,9 @@ const HomePage = ({
   useEffect(() => {
     loadingSetAction(true);
 
-    firebase.getAllVisibleSpaceboxes().onSnapshot((documents) => {
+    firebase.allVisibleSpaceboxes().onSnapshot((documents) => {
       const spaceboxes = [];
+
       documents.forEach(document => spaceboxes.push(document.data()));
 
       if (componentIsMounted) {
@@ -83,11 +84,11 @@ const HomePage = ({
     return () => {
       setComponentIsMounted(false);
 
-      const unsubscribe = firebase.db.collection('spaceboxes').onSnapshot(
+      const listener = firebase.db.collection('spaceboxes').onSnapshot(
         () => {},
       );
 
-      unsubscribe();
+      listener();
     };
   }, []);
 

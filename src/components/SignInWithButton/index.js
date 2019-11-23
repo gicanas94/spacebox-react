@@ -1,3 +1,5 @@
+import Color from 'color';
+
 import {
   FacebookSquare as FacebookIcon,
 } from 'styled-icons/boxicons-logos/FacebookSquare';
@@ -26,7 +28,6 @@ const StyledButton = styled.button`
   width: 270px;
 
   &:active {
-    // transform: scale(0.98);
     transform: translateY(2px);
   }
 
@@ -37,16 +38,31 @@ const StyledButton = styled.button`
   ${({ account }) => account === 'Facebook' && `
     background-color: #3b5998;
     color: #ffffff;
+
+    &:focus,
+    &:hover {
+      background-color: ${Color('#3b5998').darken(0.2).hex()};
+    }
   `}
 
   ${({ account }) => (account === 'Google') && `
     background-color: #db4437;
     color: #ffffff;
+
+    &:focus,
+    &:hover {
+      background-color: ${Color('#db4437').darken(0.2).hex()};
+    }
   `}
 
   ${({ account }) => account === 'Twitter' && `
     background-color: #00acee;
     color: #ffffff;
+
+    &:focus,
+    &:hover {
+      background-color: ${Color('#00acee').darken(0.2).hex()};
+    }
   `}
 
   ${({ fullWidth }) => fullWidth && `

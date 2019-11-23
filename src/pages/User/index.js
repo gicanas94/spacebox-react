@@ -1,5 +1,3 @@
-import React from 'react';
-
-const UserPage = ({ location }) => <h1>User page {console.log(location.state)}</h1>;
+const UserPage = ({ location }) => console.log(location.state);
 
 export default UserPage;

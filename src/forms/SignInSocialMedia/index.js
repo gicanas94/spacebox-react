@@ -7,44 +7,38 @@ import SignInWithButton from '../../components/SignInWithButton';
 
 const SignInSocialMedia = ({ alertSetAction, firebase, history }) => {
   const handleSignInWithClick = (doSignInWith) => {
-    alertSetAction();
+    const signInUser = async () => {
+      try {
+        alertSetAction();
 
-    doSignInWith()
-      .then((socialAuthUser) => {
-        const user = firebase.getUser(socialAuthUser.user.uid);
+        const socialAuthUser = await doSignInWith();
 
-        user.get()
-          .then((document) => {
-            if (socialAuthUser.additionalUserInfo.isNewUser) {
-              user.set({
-                createdAt: new Date().toISOString(),
-                email: socialAuthUser.additionalUserInfo.profile.email,
-                isAdmin: false,
-                slug: `${_.kebabCase(
-                  socialAuthUser.additionalUserInfo.profile.name,
-                )}-${Math.floor(Math.random() * 10000)}`,
-                username: socialAuthUser.additionalUserInfo.profile.name,
-              });
-            } else {
-              user.set({
-                createdAt: document.data().createdAt,
-                email: socialAuthUser.additionalUserInfo.profile.email,
-                isAdmin: document.data().isAdmin,
-                slug: document.data().slug,
-                username: document.data().username,
-              });
-            }
+        if (socialAuthUser.additionalUserInfo.isNewUser) {
+          await firebase.user(socialAuthUser.user.uid).set({
+            createdAt: new Date().toISOString(),
+            slug: `${_.kebabCase(
+              socialAuthUser.additionalUserInfo.profile.name,
+            )}-${Math.floor(Math.random() * 10000)}`,
+            username: socialAuthUser.additionalUserInfo.profile.name,
           });
-      })
-      .then(() => history.push(ROUTES.HOME))
-      .catch(error => (
+
+          await firebase.userRestrictedData(socialAuthUser.user.uid).set({
+            isAdmin: false,
+          });
+        }
+
+        history.push(ROUTES.HOME);
+      } catch (error) {
         alertSetAction({
           message: error.code === ERRORS.FIREBASE.ACCOUNT_EXISTS.CODE
-            ? ERRORS.FIREBASE.ACCOUNT_EXISTS.MESSAGE
+            ? { id: ERRORS.FIREBASE.ACCOUNT_EXISTS.MESSAGE }
             : error.message,
           type: 'danger',
-        })
-      ));
+        });
+      }
+    };
+
+    signInUser();
   };
 
   return (

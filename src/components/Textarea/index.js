@@ -9,6 +9,7 @@ import { keyframe, transition } from '../../styles';
 
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.components.Input.color.default};
+  display: block;
   font-size: ${({ theme }) => theme.components.Input.label.fontSize};
   font-weight: ${({ theme }) => theme.components.Input.label.fontWeight};
   overflow: hidden;
@@ -23,11 +24,13 @@ const StyledLabel = styled.label`
 `;
 
 const StyledTextarea = styled.textarea`
-  background-color: transparent;
+  background-color: ${({ theme }) => theme.components.Input.bgColor};
   border: 0;
+  border-bottom-width: ${({ theme }) => (
+    theme.components.Input.borderBottomWidth
+  )};
   border-color: ${({ theme }) => theme.components.Input.color.default};
   border-style: solid;
-  border-width: ${({ theme }) => theme.components.Input.borderWidth};
   padding: 10px;
   resize: none;
   transition: border ${transition.speed.superfast} linear;
@@ -55,13 +58,15 @@ const StyledTextarea = styled.textarea`
   `}
 
   ${({ rounded, theme }) => rounded && `
-    border-radius: ${theme.global.borderRadius};
+    border-top-left-radius: ${theme.global.borderRadius};
+    border-top-right-radius: ${theme.global.borderRadius};
   `}
 `;
 
 const StyledErrorIcon = styled(ErrorOutline)`
   animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
-  bottom: 30px;
+  background-color: ${({ theme }) => theme.components.Input.bgColor};
+  bottom: 34px;
   color: ${({ theme }) => theme.components.Input.color.error};
   position: absolute;
   right: 10px;
@@ -72,16 +77,10 @@ const StyledErrorMessage = styled.div`
   color: ${({ theme }) => theme.components.Input.color.error};
   font-size: ${({ theme }) => theme.components.Input.errorMessage.fontSize};
   font-weight: ${({ theme }) => theme.components.Input.errorMessage.fontWeight};
-  overflow: hidden;
-  padding-top: 5px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 const StyledWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  overflow: hidden;
   position: relative;
 
   ${({ error, theme }) => error && `
@@ -166,7 +165,7 @@ Textarea.defaultProps = {
   disabled: false,
   error: undefined,
   margin: undefined,
-  rounded: false,
+  rounded: undefined,
   success: false,
 };
 

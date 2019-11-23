@@ -27,11 +27,12 @@ const VerifyEmailPage = ({ alertSetAction, authUser, firebase }) => {
   const [emailSent, setEmailSent] = useState(false);
 
   const handleClick = () => {
-    alertSetAction();
+    const sendEmailVerification = async () => {
+      try {
+        alertSetAction();
 
-    firebase
-      .doSendEmailVerification()
-      .then(() => {
+        await firebase.doSendEmailVerification();
+
         alertSetAction({
           message: { id: 'pages.verifyEmail.successAlertMessage' },
           type: 'success',
@@ -44,17 +45,19 @@ const VerifyEmailPage = ({ alertSetAction, authUser, firebase }) => {
           '',
           new Date(new Date().getTime() + 5 * 60 * 1000).toGMTString(),
         );
-      })
-      .catch(error => (
+      } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
-        })
-      ));
+        });
+      }
+    };
+
+    sendEmailVerification();
   };
 
   return (
-    authUser
+    !authUser
     || (authUser && authUser.emailVerified)
       ? <Redirect to={ROUTES.HOME} />
       : (

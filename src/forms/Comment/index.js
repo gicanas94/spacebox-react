@@ -11,12 +11,35 @@ import { useIntl } from 'react-intl';
 
 import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
-import { color, transition } from '../../styles';
+import { color, device, transition } from '../../styles';
 import { withFirebase } from '../../Firebase';
 
 const StyledWrapper = styled.div`
   align-items: flex-end;
   display: flex;
+  flex-direction: column;
+
+  textarea {
+    margin-bottom: 25px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  @media ${device.mobileL} {
+    flex-direction: row;
+
+    textarea {
+      margin-bottom: 0;
+      margin-right: 25px;
+    }
+
+    button {
+      overflow: visible;
+      width: fit-content;
+    }
+  }
 `;
 
 const StyledTextarea = styled.textarea`
@@ -25,10 +48,9 @@ const StyledTextarea = styled.textarea`
   border-color: ${({ theme }) => theme.forms.Comment.textarea.color.default};
   border-style: solid;
   border-bottom-width: ${({ theme }) => (
-    theme.forms.Comment.textarea.borderWidth
+    theme.forms.Comment.textarea.borderBottomWidth
   )};
   height: 40px;
-  margin-right: 25px;
   padding: 5px;
   resize: none;
   transition: border ${transition.speed.superfast} linear;
@@ -59,11 +81,12 @@ const StyledTextarea = styled.textarea`
 
 const CommentForm = ({
   alertSetAction,
+  authUser,
   firebase,
   postSlug,
   sid,
   textareaId,
-  user,
+  updatePostCommentsHandler,
 }) => {
   const intl = useIntl();
 
@@ -72,39 +95,49 @@ const CommentForm = ({
   });
 
   const handleSubmit = (values, actions) => {
-    const { content } = values;
-    const postRef = firebase.getPost(sid, postSlug);
+    const createdComment = {
+      bgColor: color.specific.commentBgColor[
+        Math.floor(Math.random() * color.specific.commentBgColor.length)
+      ],
+      content: values.content.trim(),
+      createdAt: new Date().toISOString(),
+      slug: `${_.kebabCase(values.content)}-${Math.floor(Math.random() * 10000)}`,
+    };
 
-    alertSetAction();
+    const createComment = async () => {
+      try {
+        alertSetAction();
 
-    postRef.get()
-      .then((document) => {
-        const postComments = document.data().comments;
+        const postRef = firebase.post(sid, postSlug);
+        const dbAuthUser = await firebase.user(authUser.uid).get();
+        const post = await postRef.get();
 
-        postComments.push({
-          bgColor: color.specific.commentBgColor[
-            Math.floor(Math.random() * color.specific.commentBgColor.length)
-          ],
-          content: content.trim(),
-          createdAt: new Date().toISOString(),
-          slug: `${_.kebabCase(content)}-${Math.floor(Math.random() * 10000)}`,
-          user,
-        });
+        createdComment.user = {
+          slug: dbAuthUser.data().slug,
+          uid: authUser.uid,
+          username: dbAuthUser.data().username,
+        };
 
-        postRef.update({ comments: postComments });
-      })
-      .then(() => {
+        await postRef.update(
+          { comments: [...post.data().comments, createdComment] },
+        );
+
+        updatePostCommentsHandler(createdComment, 'add');
         actions.resetForm();
         autosize.destroy(document.getElementById(textareaId));
-      })
-      .catch((error) => {
+      } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
 
+        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+
         actions.setSubmitting(false);
-      });
+      }
+    };
+
+    createComment();
   };
 
   useEffect(() => {
@@ -158,11 +191,12 @@ const CommentForm = ({
 
 CommentForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
+  authUser: PropTypes.objectOf(PropTypes.any).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   postSlug: PropTypes.string.isRequired,
   sid: PropTypes.string.isRequired,
   textareaId: PropTypes.string.isRequired,
-  user: PropTypes.objectOf(PropTypes.any).isRequired,
+  updatePostCommentsHandler: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = { alertSetAction: alertSet };

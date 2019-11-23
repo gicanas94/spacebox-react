@@ -19,6 +19,7 @@ const StyledButtonsWrapper = styled.div`
 
 const PostForm = ({
   alertSetAction,
+  createPostCallback,
   firebase,
   sid,
   uid,
@@ -31,33 +32,40 @@ const PostForm = ({
   const handleSubmit = (values, actions) => {
     const { title, content } = values;
 
-    alertSetAction();
-
-    firebase.createPost(
-      {
-        comments: [],
-        content: content.trim(),
-        createdAt: new Date().toISOString(),
-        likes: [],
-        sid,
-        slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,
-        title: title.trim(),
-        uid,
-      },
+    const createdPost = {
+      content: content.trim(),
+      comments: [],
+      createdAt: new Date().toISOString(),
+      likes: [],
       sid,
-    )
-      .then(() => {
+      slug: `${_.kebabCase(title)}-${Math.floor(Math.random() * 10000)}`,
+      title: title.trim(),
+      uid,
+    };
+
+    const createPost = async () => {
+      try {
+        alertSetAction();
+
+        await firebase.post(sid, createdPost.slug).set(createdPost);
+
+        createPostCallback(createdPost);
         actions.resetForm();
         autosize.destroy(document.getElementById('textarea-component_content'));
-      })
-      .catch((error) => {
+        autosize(document.getElementById('textarea-component_content'));
+      } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
 
+        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+
         actions.setSubmitting(false);
-      });
+      }
+    };
+
+    createPost();
   };
 
   return (
@@ -124,6 +132,7 @@ const PostForm = ({
 
 PostForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
+  createPostCallback: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   sid: PropTypes.string.isRequired,
   uid: PropTypes.string.isRequired,

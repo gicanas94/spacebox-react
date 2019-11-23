@@ -9,11 +9,10 @@ import Button from '../../components/Button';
 import { device } from '../../styles';
 import { ERRORS } from '../../constants';
 import Input from '../../components/Input';
-import Hr from '../../components/Hr';
 import { setCookie, getCookie } from '../../utils';
 
 const StyledNewPasswordWrapper = styled.div`
-  & > div:first-of-type {
+  div {
     margin-bottom: 25px;
   }
 
@@ -21,7 +20,6 @@ const StyledNewPasswordWrapper = styled.div`
     display: flex;
 
     & > div:first-of-type {
-      margin-bottom: 0;
       margin-right: 25px;
     }
 
@@ -40,13 +38,13 @@ const StyledCurrentPasswordAndButtonWrapper = styled.div`
     display: flex;
     justify-content: space-between;
 
-    button {
-      margin-top: 24px;
-    }
-
     & > div {
       margin-bottom: 0;
       margin-right: 25px;
+    }
+
+    button {
+      margin-top: 24px;
     }
 
     & > * {
@@ -88,27 +86,20 @@ const PasswordChangeForm = ({
   const handleSubmit = (values, actions) => {
     const { password, passwordOne } = values;
 
-    alertSetAction();
+    const updatePassword = async () => {
+      try {
+        alertSetAction();
 
-    firebase.doSignInWithEmailAndPassword(authUser.email, password)
-      .then(() => {
-        firebase.doPasswordUpdate(passwordOne)
-          .then(() => {
-            alertSetAction({
-              message: { id: 'forms.passwordChange.successAlertMessage' },
-              type: 'success',
-            });
-          })
-          .catch((error) => {
-            alertSetAction({
-              text: error.message,
-              type: 'danger',
-            });
+        await firebase.doSignInWithEmailAndPassword(authUser.email, password);
+        await firebase.doPasswordUpdate(passwordOne);
 
-            actions.setSubmitting(false);
-          });
-      })
-      .catch((error) => {
+        alertSetAction({
+          message: { id: 'forms.passwordChange.successAlertMessage' },
+          type: 'success',
+        });
+
+        actions.resetForm();
+      } catch (error) {
         if (error.code === ERRORS.FIREBASE.WRONG_PASSWORD.CODE) {
           actions.setStatus({
             currentPasswordIsWrong: ERRORS.FIREBASE.WRONG_PASSWORD.MESSAGE,
@@ -140,8 +131,13 @@ const PasswordChangeForm = ({
           });
         }
 
+        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+
         actions.setSubmitting(false);
-      });
+      }
+    };
+
+    updatePassword();
   };
 
   return (
@@ -200,8 +196,6 @@ const PasswordChangeForm = ({
               value={values.passwordTwo}
             />
           </StyledNewPasswordWrapper>
-
-          <Hr margin="25px 0" />
 
           <StyledCurrentPasswordAndButtonWrapper>
             <Input

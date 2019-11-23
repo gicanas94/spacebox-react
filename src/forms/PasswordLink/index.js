@@ -65,19 +65,20 @@ const PasswordLinkForm = ({
       .oneOf([Yup.ref('passwordOne'), null], 'yup.passwordsMustMatch'),
   });
 
-  const handleSubmit = (values) => {
+  const handleSubmit = (values, actions) => {
     const { passwordOne } = values;
 
-    alertSetAction();
+    const linkPassword = async () => {
+      try {
+        alertSetAction();
 
-    const credential = firebase.emailAuthProvider.credential(
-      authUserEmail,
-      passwordOne,
-    );
+        const credential = firebase.emailAuthProvider.credential(
+          authUserEmail,
+          passwordOne,
+        );
 
-    firebase.auth.currentUser
-      .linkAndRetrieveDataWithCredential(credential)
-      .then(() => {
+        await firebase.doLinkAndRetrieveDataWithCredential(credential);
+
         setPasswordLinkFormIsVisibleHandler(false);
         fetchSignInMethodsHandler();
 
@@ -85,15 +86,21 @@ const PasswordLinkForm = ({
           message: { id: 'forms.passwordLink.successAlertMessage' },
           type: 'success',
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
 
+        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+
+        actions.setSubmitting(false);
+
         setPasswordLinkFormIsVisibleHandler(false);
-      });
+      }
+    };
+
+    linkPassword();
   };
 
   return (

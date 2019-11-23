@@ -8,6 +8,7 @@ import { keyframe, transition } from '../../styles';
 
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.components.Input.color.default};
+  display: block;
   font-size: ${({ theme }) => theme.components.Input.label.fontSize};
   font-weight: ${({ theme }) => theme.components.Input.label.fontWeight};
   overflow: hidden;
@@ -22,11 +23,13 @@ const StyledLabel = styled.label`
 `;
 
 const StyledInput = styled.input`
-  background-color: transparent;
+  background-color: ${({ theme }) => theme.components.Input.bgColor};
   border: 0;
+  border-bottom-width: ${({ theme }) => (
+    theme.components.Input.borderBottomWidth
+  )};
   border-color: ${({ theme }) => theme.components.Input.color.default};
   border-style: solid;
-  border-width: ${({ theme }) => theme.components.Input.borderWidth};
   padding: 0 10px;
   padding-top: 5px;
   height: 45px;
@@ -55,7 +58,8 @@ const StyledInput = styled.input`
   `}
 
   ${({ rounded, theme }) => rounded && `
-    border-radius: ${theme.global.borderRadius};
+    border-top-left-radius: ${theme.global.borderRadius};
+    border-top-right-radius: ${theme.global.borderRadius};
   `}
 `;
 
@@ -78,7 +82,6 @@ const StyledErrorMessage = styled.div`
 const StyledWrapper = styled.div`
   overflow: hidden;
   position: relative;
-  text-overflow: ellipsis;
 
   ${({ error, theme }) => error && `
     ${StyledLabel} {
@@ -149,7 +152,7 @@ Input.defaultProps = {
   disabled: false,
   error: undefined,
   margin: undefined,
-  rounded: false,
+  rounded: undefined,
   success: false,
 };
 

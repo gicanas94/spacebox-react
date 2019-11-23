@@ -1,7 +1,7 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
@@ -32,194 +32,141 @@ const StyledGrid = styled.div`
 `;
 
 const StyledPostsWrapper = styled.div`
-  div:last-child {
+  > div:last-child {
     margin-bottom: 0 !important;
   }
 `;
 
-class PostPage extends Component {
-  constructor(props) {
-    super(props);
+const PostPage = ({
+  alertSetAction,
+  authUser,
+  firebase,
+  history,
+  isLoading,
+  loadingSetAction,
+  location,
+  match,
+}) => {
+  const [spacebox, setSpacebox] = useState(null);
+  const [post, setPost] = useState(null);
+  const [user, setUser] = useState(null);
+  const [allTasksFinished, setAllTasksFinished] = useState(false);
 
-    this.state = {
-      post: null,
-      spacebox: null,
-      user: null,
-    };
-  }
+  const getSpacebox = spaceboxSlug => (
+    new Promise((resolve, reject) => {
+      firebase.spacebox(spaceboxSlug).get()
+        .then((document) => {
+          if (document.data()) {
+            setSpacebox(document.data());
+            resolve(document.data());
+          } else {
+            /* eslint-disable */
+            reject({ id: 'pages.post.spaceboxNotFoundAlertMessage' });
+            /* eslint-enable */
+          }
+        })
+        .catch(error => reject(error));
+    })
+  );
 
-  componentDidMount() {
-    const {
-      alertSetAction,
-      loadingSetAction,
-      location,
-      match,
-    } = this.props;
+  const getPost = (spaceboxSlug, postSlug) => (
+    new Promise((resolve, reject) => {
+      firebase.post(spaceboxSlug, postSlug).get()
+        .then((document) => {
+          if (document.data()) {
+            setPost(document.data());
+            resolve(document.data());
+          } else {
+            /* eslint-disable */
+            reject({ id: 'pages.post.postNotFoundAlertMessage' });
+            /* eslint-enable */
+          }
+        })
+        .catch(error => reject(error));
+    })
+  );
 
-    this.componentIsMounted = true;
+  const getUser = uid => (
+    new Promise((resolve, reject) => {
+      firebase.user(uid).get()
+        .then((document) => {
+          setUser(document.data());
+          resolve(document.data());
+        })
+        .catch(error => reject(error));
+    })
+  );
 
-    if (location.state) {
-      this.setState(
-        {
-          spacebox: location.state.spacebox,
-          user: location.state.user,
-        }, () => {
-          loadingSetAction(true);
+  useEffect(() => {
+    const getData = async () => {
+      let spaceboxData = {};
 
-          this.getPost(location.state.spacebox.slug, match.params.postSlug)
-            .then(() => loadingSetAction(false))
-            .catch((error) => {
-              alertSetAction({
-                message: error.message,
-                type: 'danger',
-              });
+      try {
+        loadingSetAction(true);
 
-              loadingSetAction(false);
-            });
-        },
-      );
-    } else {
-      this.getSpacebox(match.params.spaceboxSlug, match.params.postSlug);
-    }
-  }
-
-  componentWillUnmount() {
-    const { firebase } = this.props;
-
-    this.componentIsMounted = false;
-
-    const unsubscribe = firebase.db.collection('posts').onSnapshot(() => {});
-    unsubscribe();
-  }
-
-  getSpacebox = (spaceboxSlug, postSlug) => {
-    const {
-      alertSetAction,
-      firebase,
-      history,
-      loadingSetAction,
-    } = this.props;
-
-    loadingSetAction(true);
-
-    firebase.getSpacebox(spaceboxSlug).get()
-      .then((document) => {
-        if (document.data()) {
-          this.setState(
-            { spacebox: document.data() },
-            () => {
-              Promise.all([
-                this.getUser(document.data().uid),
-                this.getPost(spaceboxSlug, postSlug),
-              ])
-                .then(() => loadingSetAction(false))
-                .catch((error) => {
-                  alertSetAction({
-                    message: error.message,
-                    type: 'danger',
-                  });
-
-                  loadingSetAction(false);
-                });
-            },
-          );
+        if (location.state) {
+          setSpacebox(location.state.spacebox);
+          setUser(location.state.user);
+          spaceboxData = location.state.spacebox;
         } else {
-          // Spacebox does not exist
-          loadingSetAction(false);
-          history.push(ROUTES.NOT_FOUND);
+          spaceboxData = await getSpacebox(match.params.spaceboxSlug);
+          await getUser(spaceboxData.uid);
         }
-      })
-      .catch((error) => {
+
+        await getPost(match.params.spaceboxSlug, match.params.postSlug);
+
+        setAllTasksFinished(true);
+      } catch (error) {
         alertSetAction({
-          text: error.message,
+          message: error.id ? error : error.message,
           type: 'danger',
         });
 
+        if (error.id === 'pages.post.spaceboxNotFoundAlertMessage') {
+          history.push(ROUTES.HOME);
+        } else if (error.id === 'pages.post.postNotFoundAlertMessage') {
+          history.push(
+            `${ROUTES.SPACE_BASE}/${spaceboxData.slug}`,
+            { spacebox: spaceboxData },
+          );
+        }
+      } finally {
         loadingSetAction(false);
-      });
-  }
+      }
+    };
 
-  getUser = (uid) => {
-    const { firebase } = this.props;
+    getData();
+  }, []);
 
-    return new Promise((resolvePromise, rejectPromise) => {
-      firebase.getUser(uid).get()
-        .then(document => this.setState(
-          { user: document.data() },
-          () => resolvePromise(),
-        ))
-        .catch(error => rejectPromise(error));
-    });
-  }
+  return (
+    <Fragment>
+      {isLoading && <LoadingSpinner />}
 
-  getPost = (spaceboxSlug, postSlug) => {
-    const { firebase, history, loadingSetAction } = this.props;
-    const { spacebox } = this.state;
-
-    return new Promise((resolvePromise, rejectPromise) => {
-      firebase.getPost(spaceboxSlug, postSlug)
-        .onSnapshot((document) => {
-          if (document.data()) {
-            if (this.componentIsMounted) {
-              this.setState(
-                { post: document.data() },
-                () => resolvePromise(),
-              );
-            }
-          } else {
-            // Post does not exist
-            loadingSetAction(false);
-            history.push(`${ROUTES.SPACE_BASE}/${spaceboxSlug}`, { spacebox });
-          }
-        }, error => rejectPromise(error));
-    });
-  };
-
-  render() {
-    const {
-      alertSetAction,
-      authUser,
-      firebase,
-      history,
-      isLoading,
-      location,
-    } = this.props;
-
-    const { post, spacebox, user } = this.state;
-
-    return (
-      <Fragment>
-        {post && (
+      {allTasksFinished && (
+        <Fragment>
           <HelmetTitle
             title={{
               id: 'pages.post.title',
               values: { postTitle: post.title },
             }}
           />
-        )}
 
-        {isLoading && <LoadingSpinner />}
-
-        {!isLoading && post && (
           <StyledGrid>
-            {spacebox && user && (
-              <SpaceboxInfoSection
-                authUserIsTheOwner={
-                  authUser && authUser.uid === spacebox.uid
-                }
-                history={history}
-                location={location}
-                page="post"
-                spacebox={spacebox}
-                user={user}
-              />
-            )}
+            <SpaceboxInfoSection
+              authUserIsTheOwner={authUser && authUser.uid === spacebox.uid}
+              history={history}
+              location={location}
+              page="post"
+              spacebox={spacebox}
+              user={user}
+            />
 
             <StyledPostsWrapper>
               <Post
                 alertSetAction={alertSetAction}
                 authUser={authUser}
                 firebase={firebase}
+                history={history}
                 page="post"
                 post={post}
                 spacebox={spacebox}
@@ -227,11 +174,11 @@ class PostPage extends Component {
               />
             </StyledPostsWrapper>
           </StyledGrid>
-        )}
-      </Fragment>
-    );
-  }
-}
+        </Fragment>
+      )}
+    </Fragment>
+  );
+};
 
 PostPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,

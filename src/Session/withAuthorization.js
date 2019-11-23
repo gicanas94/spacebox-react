@@ -1,39 +1,36 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { ROUTES } from '../constants';
 import { withFirebase } from '../Firebase';
 
 const withAuthorization = condition => (Component) => {
-  class WithAuthorization extends React.Component {
-    componentDidMount() {
-      const { firebase, history } = this.props;
-
-      this.listener = firebase.onAuthUserListener(
-        (authUser) => {
+  const WithAuthorization = ({
+    authUser,
+    firebase,
+    history,
+    ...props
+  }) => {
+    useEffect(() => {
+      const listener = firebase.onAuthUserListener(
+        () => {
           if (!condition(authUser)) {
             history.push(ROUTES.NOT_FOUND);
           }
         },
         () => history.push(ROUTES.SIGN_IN),
       );
-    }
 
-    componentWillUnmount() {
-      this.listener();
-    }
+      return () => listener();
+    }, []);
 
-    render() {
-      const { authUser } = this.props;
-
-      return condition(authUser) ? (
-        <Component {...this.props} />
-      ) : null;
-    }
-  }
+    return condition(authUser)
+      ? <Component authUser={authUser} {...props} />
+      : null;
+  };
 
   WithAuthorization.propTypes = {
     authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),

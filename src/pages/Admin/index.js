@@ -1,11 +1,22 @@
+import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import React, {
+  Fragment,
+  useEffect,
+  useState,
+} from 'react';
+
+import { Route, Switch, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { alertSet, loadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import { device } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import { ROUTES } from '../../constants';
 import Sidebar from '../../components/Sidebar';
 import { withAuthorization } from '../../Session';
 import { withFirebase } from '../../Firebase';
@@ -29,7 +40,14 @@ const StyledGrid = styled.div`
   }
 `;
 
-const AdminPage = () => {
+const AdminPage = ({
+  alertSetAction,
+  authUser,
+  firebase,
+  history,
+  isLoading,
+  loadingSetAction,
+}) => {
   const sidebarContent = (
     [
       {
@@ -62,24 +80,93 @@ const AdminPage = () => {
     ]
   );
 
+  const [authUserIsAdmin, setAuthUserIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const getUserRestrictedData = async () => {
+      try {
+        alertSetAction();
+        loadingSetAction(true);
+
+        const userRestrictedData = await firebase.userRestrictedData(
+          authUser.uid,
+        ).get();
+
+        console.log(userRestrictedData.data());
+
+        if (userRestrictedData.data().isAdmin) {
+          setAuthUserIsAdmin(true);
+        } else {
+          history.push(ROUTES.HOME);
+        }
+      } catch (error) {
+        alertSetAction({
+          message: error.message,
+          type: 'danger',
+        });
+
+        history.push(ROUTES.HOME);
+      } finally {
+        loadingSetAction(false);
+      }
+    };
+
+    getUserRestrictedData();
+  }, []);
+
   return (
-    <StyledGrid>
-      <HelmetTitle title={{ id: 'pages.admin.title' }} />
+    <Fragment>
+      {isLoading && <LoadingSpinner />}
 
-      <Sidebar content={sidebarContent} />
+      {!isLoading && authUserIsAdmin && (
+        <StyledGrid>
+          <HelmetTitle title={{ id: 'pages.admin.title' }} />
 
-      <Box fullWidth margin="0">
-        <Switch>
-          <Route />
-          <Route />
-          <Route />
-          <Route />
-        </Switch>
-      </Box>
-    </StyledGrid>
+          <Sidebar content={sidebarContent} />
+
+          <Box fullWidth margin="0">
+            <Switch>
+              <Route />
+              <Route />
+              <Route />
+              <Route />
+            </Switch>
+          </Box>
+        </StyledGrid>
+      )}
+    </Fragment>
   );
 };
 
-const condition = authUser => authUser && authUser.isAdmin;
+AdminPage.propTypes = {
+  alertSetAction: PropTypes.func.isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  isLoading: PropTypes.bool,
+  loadingSetAction: PropTypes.func.isRequired,
+};
 
-export default compose(withAuthorization(condition), withFirebase)(AdminPage);
+AdminPage.defaultProps = {
+  authUser: null,
+  isLoading: false,
+};
+
+const mapStateToProps = state => ({
+  authUser: state.session.authUser,
+  isLoading: state.isLoading,
+});
+
+const mapDispatchToProps = {
+  alertSetAction: alertSet,
+  loadingSetAction: loadingSet,
+};
+
+const condition = authUser => !!authUser;
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withAuthorization(condition),
+  withFirebase,
+  withRouter,
+)(AdminPage);

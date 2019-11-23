@@ -32,7 +32,6 @@ const StyledButton = styled.button`
     cursor: pointer;
 
     &:active {
-      // transform: scale(0.97);
       transform: translateY(2px);
     }
 
