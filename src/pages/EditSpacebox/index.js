@@ -30,13 +30,13 @@ const StyledTitleAndDeleteSpaceboxWrapper = styled.div`
 
 const StyledDeleteSpacebox = styled.span`
   color: ${({ theme }) => (
-    theme.pages.EditSpacebox.deleteSpacebox.color
+    theme.pages.editSpacebox.deleteSpacebox.color
   )} !important;
   font-size: ${({ theme }) => (
-    theme.pages.EditSpacebox.deleteSpacebox.fontSize
+    theme.pages.editSpacebox.deleteSpacebox.fontSize
   )} !important;
   font-weight: ${({ theme }) => (
-    theme.pages.EditSpacebox.deleteSpacebox.fontWeight
+    theme.pages.editSpacebox.deleteSpacebox.fontWeight
   )} !important;
   text-align: right;
 `;
@@ -64,7 +64,7 @@ const EditSpaceboxPage = ({
   ] = useState(false);
 
   useEffect(() => {
-    const getUserSpaceboxes = async () => {
+    (async () => {
       try {
         alertSetAction();
         loadingSetAction(true);
@@ -93,13 +93,11 @@ const EditSpaceboxPage = ({
       } finally {
         loadingSetAction(false);
       }
-    };
-
-    getUserSpaceboxes();
+    })();
   }, []);
 
   const handleDeleteSpaceboxClick = () => {
-    const deleteSpacebox = async () => {
+    (async () => {
       try {
         alertSetAction();
         setDeleteSpaceboxInProgress(true);
@@ -125,9 +123,7 @@ const EditSpaceboxPage = ({
           type: 'danger',
         });
       }
-    };
-
-    deleteSpacebox();
+    })();
   };
 
   return (

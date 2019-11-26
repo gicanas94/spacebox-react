@@ -12,7 +12,7 @@ import { ERRORS, ROUTES } from '../../constants';
 import Input from '../../components/Input';
 
 const StyledLink = styled(Link)`
-  font-size: ${({ theme }) => theme.forms.SignIn.forgotPasswordLink.fontSize};
+  font-size: ${({ theme }) => theme.forms.signIn.forgotPasswordLink.fontSize};
 `;
 
 const StyledBottomWrapper = styled.div`
@@ -42,7 +42,7 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
   const handleSubmit = (values, actions) => {
     const { email, password } = values;
 
-    const signInUser = async () => {
+    (async () => {
       try {
         alertSetAction();
 
@@ -61,9 +61,7 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
 
         actions.setSubmitting(false);
       }
-    };
-
-    signInUser();
+    })();
   };
 
   return (

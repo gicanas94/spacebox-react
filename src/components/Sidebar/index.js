@@ -1,8 +1,9 @@
 import { FormattedMessage } from 'react-intl';
-import { NavLink, withRouter } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 
 import Box from '../Box';
 import { device } from '../../styles';
@@ -21,6 +22,12 @@ const StyledLaptopView = styled.div`
 
   @media ${device.tablet} {
     display: flex;
+    position: sticky;
+    top: 70px;
+  }
+
+  @media ${device.laptop} {
+    top: 80px;
   }
 `;
 
@@ -44,34 +51,31 @@ const StyledSections = styled.div`
 `;
 
 const StyledHeading = styled.div`
-  font-weight: ${({ theme }) => theme.components.Sidebar.heading.fontWeight};
+  font-weight: ${({ theme }) => theme.components.sidebar.heading.fontWeight};
   margin-bottom: 15px;
 `;
 
-const StyledUl = styled.ul`
-  margin: 0;
+const StyledLi = styled.li`
+  margin-bottom: 5px;
 
-  li {
-    margin-bottom: 5px;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 
-    &:last-of-type {
-      margin-bottom: 0;
+  a {
+    font-size: ${({ theme }) => theme.components.sidebar.link.fontSize};
+    font-weight: ${({ theme }) => theme.components.sidebar.link.fontWeight};
+    word-break: break-all;
+
+    &.active {
+      font-weight: ${({ theme }) => (
+        theme.components.sidebar.activeLink.fontWeight
+      )};
     }
-  }
-`;
 
-const StyledNavLink = styled(NavLink)`
-  font-size: ${({ theme }) => theme.components.Sidebar.link.fontSize};
-  font-weight: ${({ theme }) => theme.components.Sidebar.link.fontWeight};
-
-  &.active {
-    font-weight: ${({ theme }) => (
-      theme.components.Sidebar.activeLink.fontWeight
-    )};
-  }
-
-  &.not-active {
-    font-weight: inherit;
+    &.not-active {
+      font-weight: inherit;
+    }
   }
 `;
 
@@ -84,18 +88,24 @@ const Sidebar = ({ content, location }) => {
             <FormattedMessage id={section.heading} />
           </StyledHeading>
 
-          <StyledUl>
+          <ul>
             {section.links.map(link => (
-              <li key={link.text}>
-                <StyledNavLink
-                  className={location.pathname === link.to ? 'active' : 'not-active'}
-                  to={link.to}
-                >
-                  <FormattedMessage id={link.text} />
-                </StyledNavLink>
-              </li>
+              link.visible && (
+                <StyledLi key={link.text}>
+                  <HashLink
+                    className={
+                      location.pathname + location.hash === link.to
+                        ? 'active'
+                        : 'not-active'
+                    }
+                    to={link.to}
+                  >
+                    <FormattedMessage id={link.text} />
+                  </HashLink>
+                </StyledLi>
+              )
             ))}
-          </StyledUl>
+          </ul>
 
           {section.separator && <Hr margin="15px 0" />}
         </Fragment>
@@ -112,7 +122,7 @@ const Sidebar = ({ content, location }) => {
       </StyledMobileView>
 
       <StyledLaptopView>
-        <Box minMaxWidth={['240px', '100%']} padding="15px">
+        <Box minMaxWidth={['280px', '280px']} padding="15px">
           {myContent}
         </Box>
       </StyledLaptopView>

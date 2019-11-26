@@ -27,7 +27,7 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
   const handleSubmit = (values, actions) => {
     const { email } = values;
 
-    const resetPassword = async () => {
+    (async () => {
       try {
         alertSetAction();
 
@@ -47,9 +47,7 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
 
         actions.setSubmitting(false);
       }
-    };
-
-    resetPassword();
+    })();
   };
 
   return (

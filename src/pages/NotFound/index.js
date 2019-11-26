@@ -22,7 +22,7 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledContent = styled.p`
-  font-size: ${({ theme }) => theme.pages.NotFound.content.fontSize};
+  font-size: ${({ theme }) => theme.pages.notFound.content.fontSize};
   margin-bottom: 0;
   margin-top: 25px;
 
@@ -33,7 +33,7 @@ const StyledContent = styled.p`
 `;
 
 const StyledBoldFragment = styled.span`
-  font-weight: ${({ theme }) => theme.pages.NotFound.content.fontWeight};
+  font-weight: ${({ theme }) => theme.pages.notFound.content.fontWeight};
 `;
 
 const NotFoundPage = () => {

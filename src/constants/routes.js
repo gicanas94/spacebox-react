@@ -1,7 +1,8 @@
 export default {
   ACCOUNT_BASE: '/account',
-  ACCOUNT_CHANGE_PASSWORD: '/account/change-password',
-  ACCOUNT_LOGIN_MANAGEMENT: '/account/login-management',
+  ACCOUNT_GENERAL_SETTINGS: '/account#general-settings',
+  ACCOUNT_CHANGE_PASSWORD: '/account#change-password',
+  ACCOUNT_LOGIN_MANAGEMENT: '/account#login-management',
   ADMIN: '/admin',
   CREATE_SPACEBOX: '/create-spacebox',
   EDIT_SPACEBOX_BASE: '/edit-spacebox',

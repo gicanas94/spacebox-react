@@ -1,9 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
+import styled from 'styled-components';
 import useStateWithCallback from 'use-state-with-callback';
 
 import Button from '../../../../components/Button';
 import PasswordLinkForm from '../../../../forms/PasswordLink';
+
+const StyledPasswordLinkFormWrapper = styled.div`
+  padding-top: 25px !important;
+  width: 100%;
+`;
 
 const PasswordLoginToggle = ({
   alertSetAction,
@@ -59,14 +65,16 @@ const PasswordLoginToggle = ({
       )}
 
       {passwordLinkFormIsVisible && (
-        <PasswordLinkForm
-          alertSetAction={alertSetAction}
-          authUserEmail={authUserEmail}
-          fetchSignInMethodsHandler={fetchSignInMethodsHandler}
-          firebase={firebase}
-          page="loginManagement"
-          setPasswordLinkFormIsVisibleHandler={setPasswordLinkFormIsVisible}
-        />
+        <StyledPasswordLinkFormWrapper>
+          <PasswordLinkForm
+            alertSetAction={alertSetAction}
+            authUserEmail={authUserEmail}
+            fetchSignInMethodsHandler={fetchSignInMethodsHandler}
+            firebase={firebase}
+            page="loginManagement"
+            setPasswordLinkFormIsVisibleHandler={setPasswordLinkFormIsVisible}
+          />
+        </StyledPasswordLinkFormWrapper>
       )}
     </Fragment>
   );

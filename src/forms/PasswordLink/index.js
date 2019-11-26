@@ -11,14 +11,6 @@ import Input from '../../components/Input';
 
 const StyledWrapper = styled.div`
   width: 100%;
-
-  ${({ page }) => page === 'changePassword' && `
-    padding-top: 0;
-  `};
-
-  ${({ page }) => page === 'loginManagement' && `
-    padding-top: 25px;
-  `};
 `;
 
 const StyledNewPasswordWrapper = styled.div`
@@ -45,7 +37,6 @@ const PasswordLinkForm = ({
   authUserEmail,
   fetchSignInMethodsHandler,
   firebase,
-  page,
   setPasswordLinkFormIsVisibleHandler,
 }) => {
   const intl = useIntl();
@@ -68,7 +59,7 @@ const PasswordLinkForm = ({
   const handleSubmit = (values, actions) => {
     const { passwordOne } = values;
 
-    const linkPassword = async () => {
+    (async () => {
       try {
         alertSetAction();
 
@@ -98,13 +89,11 @@ const PasswordLinkForm = ({
 
         setPasswordLinkFormIsVisibleHandler(false);
       }
-    };
-
-    linkPassword();
+    })();
   };
 
   return (
-    <StyledWrapper page={page}>
+    <StyledWrapper>
       <Formik
         initialValues={{
           passwordOne: '',
@@ -180,7 +169,6 @@ PasswordLinkForm.propTypes = {
   authUserEmail: PropTypes.string.isRequired,
   fetchSignInMethodsHandler: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  page: PropTypes.oneOf(['changePassword', 'loginManagement']).isRequired,
   setPasswordLinkFormIsVisibleHandler: PropTypes.func,
 };
 

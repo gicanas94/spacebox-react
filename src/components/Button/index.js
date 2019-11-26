@@ -10,9 +10,9 @@ import { transition } from '../../styles';
 const StyledButton = styled.button`
   align-items: center;
   display: flex;
-  filter: ${({ theme }) => theme.components.Button.filter};
-  font-size: ${({ theme }) => theme.components.Button.fontSize};
-  font-weight: ${({ theme }) => theme.components.Button.fontWeight};
+  filter: ${({ theme }) => theme.components.button.filter};
+  font-size: ${({ theme }) => theme.components.button.fontSize};
+  font-weight: ${({ theme }) => theme.components.button.fontWeight};
   height: 45px;
   justify-content: center;
   line-height: 1;
@@ -45,23 +45,23 @@ const StyledButton = styled.button`
         background-color: ${
           color
             ? colors.palette[color]
-            : theme.components.Button.color.default
+            : theme.components.button.color.default
         };
         color: ${
           Color(
             color
               ? colors.palette[color]
-              : theme.components.Button.color.default
+              : theme.components.button.color.default
           ).isDark()
             ? Color(
               color
                 ? colors.palette[color]
-                : theme.components.Button.color.default
+                : theme.components.button.color.default
             ).lighten(0.8).hex()
             : Color(
               color
                 ? colors.palette[color]
-                : theme.components.Button.color.default
+                : theme.components.button.color.default
             ).darken(0.7).hex()
         };
       `};
@@ -71,7 +71,7 @@ const StyledButton = styled.button`
           Color(
             color
               ? colors.palette[color]
-              : theme.components.Button.color.default
+              : theme.components.button.color.default
           ).darken(0.2).hex()
         };
       `}
@@ -106,7 +106,7 @@ const StyledButton = styled.button`
     color: ${
       color
         ? colors.palette[color]
-        : theme.components.Button.color.default
+        : theme.components.button.color.default
     };
   `}
 
@@ -114,43 +114,43 @@ const StyledButton = styled.button`
     border-color: ${
       color
         ? colors.palette[color]
-        : theme.components.Button.color.default
+        : theme.components.button.color.default
     };
     border-style: solid;
-    border-width: ${theme.components.Button.borderWidth};
+    border-width: ${theme.components.button.borderWidth};
   `}
 
   ${({ styleType, disabled, theme }) => (
     styleType === 'bordered' && disabled
   ) && `
-    border-color: ${theme.components.Button.color.disabled};
-    color: ${theme.components.Button.color.disabled};
+    border-color: ${theme.components.button.color.disabled};
+    color: ${theme.components.button.color.disabled};
   `}
 
   ${({ styleType, color, theme }) => styleType === 'filled' && `
     background-color: ${
       color
         ? colors.palette[color]
-        : theme.components.Button.color.default
+        : theme.components.button.color.default
     };
     border-color: transparent;
     border-style: solid;
-    border-width: ${theme.components.Button.borderWidth};
+    border-width: ${theme.components.button.borderWidth};
     color: ${
       Color(
         color
           ? colors.palette[color]
-          : theme.components.Button.color.default
+          : theme.components.button.color.default
       ).isDark()
         ? Color(
           color
             ? colors.palette[color]
-            : theme.components.Button.color.default
+            : theme.components.button.color.default
         ).lighten(0.8).hex()
         : Color(
           color
             ? colors.palette[color]
-            : theme.components.Button.color.default
+            : theme.components.button.color.default
         ).darken(0.7).hex()
     };
   `}
@@ -158,20 +158,20 @@ const StyledButton = styled.button`
   ${({ styleType, disabled, theme }) => (
     styleType === 'filled' && disabled
   ) && `
-    background-color: ${theme.components.Button.color.disabled};
-    color: ${Color(theme.components.Button.color.disabled).darken(0.2).hex()};
+    background-color: ${theme.components.button.color.disabled};
+    color: ${Color(theme.components.button.color.disabled).darken(0.2).hex()};
   `}
 
   ${({ styleType, theme }) => styleType === 'unbordered' && `
     border-color: transparent;
     border-style: solid;
-    border-width: ${theme.components.Button.borderWidth};
+    border-width: ${theme.components.button.borderWidth};
   `}
 
   ${({ styleType, disabled, theme }) => (
     styleType === 'unbordered' && disabled
   ) && `
-    color: ${theme.components.Button.color.disabled};
+    color: ${theme.components.button.color.disabled};
   `}
 
   ${({ width }) => width && `

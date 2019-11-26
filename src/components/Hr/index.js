@@ -8,13 +8,12 @@ const StyledHr = styled.hr`
   border-color: ${({ color, theme }) => (
     color
       ? colors.palette[color]
-      : theme.components.Hr.color.default
+      : theme.components.hr.color.default
   )};
   border-style: ${({ dashed }) => (dashed ? 'dashed' : 'solid')};
-  border-width: ${({ theme }) => theme.components.Hr.borderWidth};
+  border-width: ${({ theme }) => theme.components.hr.borderWidth};
   border-radius: ${({ theme }) => theme.global.borderRadius};
   display: block;
-  height: 0.5px !important;
   margin: 0;
   width: 100%;
 

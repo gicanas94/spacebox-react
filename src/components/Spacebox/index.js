@@ -12,8 +12,8 @@ import { device, transition } from '../../styles';
 
 const StyledTitle = styled.div`
   display: -webkit-box;
-  font-size: ${({ theme }) => theme.components.Spacebox.title.fontSize};
-  font-weight: ${({ theme }) => theme.components.Spacebox.title.fontWeight};
+  font-size: ${({ theme }) => theme.components.spacebox.title.fontSize};
+  font-weight: ${({ theme }) => theme.components.spacebox.title.fontWeight};
   line-height: 1em;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -36,9 +36,9 @@ const StyledTitle = styled.div`
 
 const StyledDescription = styled.div`
   display: -webkit-box;
-  font-size: ${({ theme }) => theme.components.Spacebox.description.fontSize};
+  font-size: ${({ theme }) => theme.components.spacebox.description.fontSize};
   font-weight: ${({ theme }) => (
-    theme.components.Spacebox.description.fontWeight
+    theme.components.spacebox.description.fontWeight
   )};
   line-height: 1em;
   overflow: hidden;
@@ -73,11 +73,11 @@ const StyledBubblesWrapper = styled.div`
 const StyledBubble = styled.div`
   align-items: center;
   border-radius: ${({ theme }) => (
-    theme.components.Spacebox.bubble.borderRadius
+    theme.components.spacebox.bubble.borderRadius
   )};
   display: flex;
-  font-size: ${({ theme }) => theme.components.Spacebox.bubble.fontSize};
-  font-weight: ${({ theme }) => theme.components.Spacebox.bubble.fontWeight};
+  font-size: ${({ theme }) => theme.components.spacebox.bubble.fontSize};
+  font-weight: ${({ theme }) => theme.components.spacebox.bubble.fontWeight};
   height: 25px;
   padding: 0 5px;
 `;
@@ -91,7 +91,7 @@ const StyledLeftBubblesWrapper = styled.div`
 `;
 
 const StyledTotalLikesHeartIcon = styled(Heart)`
-  color: ${({ theme }) => theme.components.Spacebox.totalLikesHeartIcon.color};
+  color: ${({ theme }) => theme.components.spacebox.totalLikesHeartIcon.color};
   width: 16px;
   margin-right: 5px;
 `;
@@ -129,7 +129,7 @@ const StyledSpacebox = styled.div`
       : Color(bgColor).darken(0.3).hex()
   )};
   border-style: solid;
-  border-width: ${({ theme }) => theme.components.Spacebox.borderWidth};
+  border-width: ${({ theme }) => theme.components.spacebox.borderWidth};
   display: flex;
   flex-direction: column;
   height: 220px;
@@ -158,19 +158,19 @@ const StyledSpacebox = styled.div`
   }
 
   ${({ authUserIsTheOwner, theme }) => authUserIsTheOwner && `
-    border: ${theme.components.Spacebox.authUserIsTheOwner.border};
+    border: ${theme.components.spacebox.authUserIsTheOwner.border};
     height: 208px;
   `}
 
   ${({ informative, theme }) => informative && `
     background: linear-gradient(
       ${Color(
-        theme.components.Spacebox.informative.bgColor,
+        theme.components.spacebox.informative.bgColor,
       ).lighten(0.3).hex()},
-      ${Color(theme.components.Spacebox.informative.bgColor).hex()}
+      ${Color(theme.components.spacebox.informative.bgColor).hex()}
     );
-    border: ${theme.components.Spacebox.informative.border};
-    color: ${theme.components.Spacebox.informative.color};
+    border: ${theme.components.spacebox.informative.border};
+    color: ${theme.components.spacebox.informative.color};
   `}
 
   ${({ order }) => order && `
@@ -210,9 +210,9 @@ const StyledLink = styled(Link)`
 
 const StyledAuthUserIsTheOwnerWrapper = styled.div`
   background: ${({ theme }) => (
-    theme.components.Spacebox.authUserIsTheOwner.backgroundBorder
+    theme.components.spacebox.authUserIsTheOwner.backgroundBorder
   )};
-  border: ${({ theme }) => theme.components.Spacebox.authUserIsTheOwner.border};
+  border: ${({ theme }) => theme.components.spacebox.authUserIsTheOwner.border};
   padding: 5px;
 
   ${({ rounded, theme }) => rounded && `

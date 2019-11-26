@@ -1,12 +1,11 @@
-import { ArrowAltCircleUp } from 'styled-icons/fa-solid/ArrowAltCircleUp';
 import Color from 'color';
 import { FormattedHTMLMessage } from 'react-intl';
+import { KeyboardArrowUp } from 'styled-icons/material/KeyboardArrowUp';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 
 import { color, device, transition } from '../../styles';
-import Hr from '../Hr';
 
 const StyledCollapseTitle = styled.div`
   align-items: center;
@@ -20,33 +19,37 @@ const StyledCollapseTitle = styled.div`
   }
 `;
 
-const StyledArrowIcon = styled(ArrowAltCircleUp)`
-  color: ${({ theme }) => theme.components.Box.arrowIcon.color};
-  min-height: 25px;
+const StyledArrowIcon = styled(KeyboardArrowUp)`
+  color: ${({ theme }) => theme.components.box.arrowIcon.color};
+  height: 30px;
   transition: transform ${transition.speed.superfast} linear;
-  min-width: 25px;
+  width: 30px;
 `;
 
 const StyledBox = styled.div`
   background-color: ${({ bgColor, theme }) => (
     bgColor
       ? color.palette[bgColor]
-      : theme.components.Box.bgColor
+      : theme.components.box.bgColor
   )};
   border-color: ${({ bgColor, theme }) => (
     Color(
       bgColor
         ? color.palette[bgColor]
-        : theme.components.Box.bgColor,
+        : theme.components.box.bgColor,
     ).darken(0.2).hex()
   )};
   border-style: solid;
-  border-width: ${({ theme }) => theme.components.Box.borderWidth};
+  border-width: ${({ theme }) => theme.components.box.borderWidth};
   margin: auto;
   position: relative;
 
   ${({ collapsed, padding }) => !collapsed && `
     padding: ${padding};
+
+    ${StyledCollapseTitle} {
+      margin-bottom: ${padding};
+    }
   `}
 
   ${({ collapsed, padding }) => collapsed && `
@@ -130,12 +133,7 @@ const Box = ({
               <StyledArrowIcon collapsed={boxIsCollapsed} />
             </StyledCollapseTitle>
 
-            {!boxIsCollapsed && (
-              <Fragment>
-                <Hr margin={`${padding} 0`} />
-                {children}
-              </Fragment>
-            )}
+            {!boxIsCollapsed && children}
           </Fragment>
         ) : children
       }
@@ -150,7 +148,6 @@ Box.propTypes = {
   collapseTitle: PropTypes.string,
   fullHeight: PropTypes.bool,
   fullWidth: PropTypes.bool,
-  hrMargin: PropTypes.string,
   margin: PropTypes.string,
   minMaxWidth: PropTypes.arrayOf(PropTypes.string),
   noBorder: PropTypes.bool,

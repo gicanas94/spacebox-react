@@ -83,7 +83,7 @@ const AdminPage = ({
   const [authUserIsAdmin, setAuthUserIsAdmin] = useState(false);
 
   useEffect(() => {
-    const getUserRestrictedData = async () => {
+    (async () => {
       try {
         alertSetAction();
         loadingSetAction(true);
@@ -91,8 +91,6 @@ const AdminPage = ({
         const userRestrictedData = await firebase.userRestrictedData(
           authUser.uid,
         ).get();
-
-        console.log(userRestrictedData.data());
 
         if (userRestrictedData.data().isAdmin) {
           setAuthUserIsAdmin(true);
@@ -109,9 +107,7 @@ const AdminPage = ({
       } finally {
         loadingSetAction(false);
       }
-    };
-
-    getUserRestrictedData();
+    })();
   }, []);
 
   return (

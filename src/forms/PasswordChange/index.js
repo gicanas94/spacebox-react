@@ -86,7 +86,7 @@ const PasswordChangeForm = ({
   const handleSubmit = (values, actions) => {
     const { password, passwordOne } = values;
 
-    const updatePassword = async () => {
+    (async () => {
       try {
         alertSetAction();
 
@@ -135,9 +135,7 @@ const PasswordChangeForm = ({
 
         actions.setSubmitting(false);
       }
-    };
-
-    updatePassword();
+    })();
   };
 
   return (
@@ -162,7 +160,6 @@ const PasswordChangeForm = ({
         <Form>
           <StyledNewPasswordWrapper>
             <Input
-              autoFocus
               disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
               error={
                 errors.passwordOne

@@ -18,9 +18,9 @@ const StyledButton = styled.button`
   border: 0;
   cursor: pointer;
   display: flex;
-  filter: ${({ theme }) => theme.components.SignInWithButton.filter};
-  font-size: ${({ theme }) => theme.components.SignInWithButton.fontSize};
-  font-weight: ${({ theme }) => theme.components.SignInWithButton.fontWeight};
+  filter: ${({ theme }) => theme.components.signInWithButton.filter};
+  font-size: ${({ theme }) => theme.components.signInWithButton.fontSize};
+  font-weight: ${({ theme }) => theme.components.signInWithButton.fontWeight};
   padding: 10px;
   padding-left: 13px;
   transition: all ${transition.speed.superfast} linear;

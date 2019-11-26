@@ -202,21 +202,19 @@ const messages = {
     },
     pages: {
       account: {
-        general: {
-          title: 'General - Spacebox',
-          h1: 'General',
+        title: 'Account - Spacebox',
+        h1: 'Account',
+        generalSettings: {
+          h2: 'General settings',
         },
         changePassword: {
-          title: 'Change password - Spacebox',
-          h1: 'Change password',
-          changePasswordSubtitle: 'Complete the following inputs to change your password. Don\'t forget your current one, just in case ',
-          changePasswordSubtitleEmojiLabel: 'Slightly smiling face',
-          linkPasswordSubtitle: 'You don\'t have a password linked to your account, but let\'s do that right now.',
+          h2: 'Change password',
+          subtitle: 'Complete the following inputs to change your password. Don\'t forget your current one, just in case ',
+          subtitleEmojiLabel: 'Slightly smiling face',
           reachedMaxCurrentPasswordAttempsSubtitle: 'Right now you can\'t change your password as you reached the limit of attempts to enter your current one, please try again later.',
         },
         loginManagement: {
-          title: 'Login management - Spacebox',
-          h1: 'Login management',
+          h2: 'Login management',
           subtitle: 'Manage how you sign in and link your social media accounts.',
           buttons: {
             loading: '...',
@@ -234,7 +232,7 @@ const messages = {
           section1: {
             heading: 'Account',
             links: {
-              general: 'General',
+              generalSettings: 'General settings',
               changePassword: 'Change password',
               loginManagement: 'Login management',
             },
@@ -558,21 +556,19 @@ const messages = {
     },
     pages: {
       account: {
-        general: {
-          title: 'General - Spacebox',
-          h1: 'General',
+        title: 'Cuenta - Spacebox',
+        h1: 'Cuenta',
+        generalSettings: {
+          h2: 'Ajustes generales',
         },
         changePassword: {
-          title: 'Cambiar contraseña - Spacebox',
-          h1: 'Cambiar contraseña',
-          changePasswordSubtitle: 'Completa los siguientes campos para cambiar tu contraseña. No olvides la actual, solo por si acaso ',
-          changePasswordSubtitleEmojiLabel: 'Cara ligeramente sonriente',
-          linkPasswordSubtitle: 'No tienes una contraseña vinculada a tu cuenta, pero hagámoslo ahora mismo.',
+          h2: 'Cambiar contraseña',
+          subtitle: 'Completa los siguientes campos para cambiar tu contraseña. No olvides la actual, solo por si acaso ',
+          subtitleEmojiLabel: 'Cara ligeramente sonriente',
           reachedMaxCurrentPasswordAttempsSubtitle: 'Ahora mismo no puedes cambiar tu contraseña ya que alcanzaste el límite de intentos para ingresar tu contraseña actual, por favor intenta más tarde.',
         },
         loginManagement: {
-          title: 'Inicio de sesión - Spacebox',
-          h1: 'Inicio de sesión',
+          h2: 'Inicio de sesión',
           subtitle: 'Administra cómo iniciar sesión y vincula tus cuentas de redes sociales.',
           buttons: {
             loading: '...',
@@ -590,7 +586,7 @@ const messages = {
           section1: {
             heading: 'Cuenta',
             links: {
-              general: 'General',
+              generalSettings: 'Ajustes generales',
               changePassword: 'Cambiar contraseña',
               loginManagement: 'Inicio de sesión',
             },

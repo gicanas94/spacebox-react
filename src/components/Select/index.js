@@ -9,11 +9,11 @@ import { useIntl } from 'react-intl';
 import { keyframe, transition } from '../../styles';
 
 const StyledLabel = styled.label`
-  color: ${({ theme }) => theme.components.Select.color.default};
+  color: ${({ theme }) => theme.components.select.color.default};
   cursor: pointer;
   display: block;
-  font-size: ${({ theme }) => theme.components.Select.label.fontSize};
-  font-weight: ${({ theme }) => theme.components.Select.label.fontWeight};
+  font-size: ${({ theme }) => theme.components.select.label.fontSize};
+  font-weight: ${({ theme }) => theme.components.select.label.fontWeight};
   overflow: hidden;
   padding-bottom: 2px;
   text-overflow: ellipsis;
@@ -22,12 +22,12 @@ const StyledLabel = styled.label`
 `;
 
 const StyledSimulatedSelect = styled.div`
-  background-color: ${({ theme }) => theme.components.Select.bgColor};
+  background-color: ${({ theme }) => theme.components.select.bgColor};
   border: 0;
   border-bottom-width: ${({ theme }) => (
-    theme.components.Select.borderBottomWidth
+    theme.components.select.borderBottomWidth
   )};
-  border-color: ${({ theme }) => theme.components.Select.color.default};
+  border-color: ${({ theme }) => theme.components.select.color.default};
   border-style: solid;
   cursor: pointer;
   height: 45px;
@@ -49,7 +49,7 @@ const StyledSelectedOption = styled.span`
 `;
 
 const StyledArrowDownIcon = styled(KeyboardArrowDown)`
-  color: ${({ theme }) => theme.components.Select.color.default};
+  color: ${({ theme }) => theme.components.select.color.default};
   position: absolute;
   right: 10px;
   top: 33px;
@@ -107,8 +107,8 @@ const StyledSpan = styled.span`
 `;
 
 const StyledUl = styled.ul`
-  background-color: ${({ theme }) => theme.components.Select.ul.bgColor};
-  box-shadow: ${({ theme }) => theme.components.Select.ul.boxShadow};
+  background-color: ${({ theme }) => theme.components.select.ul.bgColor};
+  box-shadow: ${({ theme }) => theme.components.select.ul.boxShadow};
   list-style: none;
   margin: 0;
   margin-top: 0.5px;
@@ -123,13 +123,13 @@ const StyledUl = styled.ul`
 
   ::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) => (
-      theme.components.Select.ul.scrollBar.thumb.bgColor
+      theme.components.select.ul.scrollBar.thumb.bgColor
     )};
   }
 
   ::-webkit-scrollbar-track {
     background-color: ${({ theme }) => (
-      theme.components.Select.ul.scrollBar.track.bgColor
+      theme.components.select.ul.scrollBar.track.bgColor
     )};
   }
 
@@ -149,13 +149,13 @@ const StyledLi = styled.li`
   padding-left: 10px;
 
   &:hover {
-    background-color: ${({ theme }) => theme.components.Select.li.hoverColor};
+    background-color: ${({ theme }) => theme.components.select.li.hoverColor};
   }
 `;
 
 const StyledErrorIcon = styled(ErrorOutline)`
   animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
-  color: ${({ theme }) => theme.components.Select.color.error};
+  color: ${({ theme }) => theme.components.select.color.error};
   position: absolute;
   right: 40px;
   top: 33px;
@@ -164,9 +164,9 @@ const StyledErrorIcon = styled(ErrorOutline)`
 `;
 
 const StyledErrorMessage = styled.div`
-  color: ${({ theme }) => theme.components.Select.color.error};
-  font-size: ${({ theme }) => theme.components.Select.errorMessage.fontSize};
-  font-weight: ${({ theme }) => theme.components.Select.errorMessage.fontWeight};
+  color: ${({ theme }) => theme.components.select.color.error};
+  font-size: ${({ theme }) => theme.components.select.errorMessage.fontSize};
+  font-weight: ${({ theme }) => theme.components.select.errorMessage.fontWeight};
   padding-top: 5px;
 `;
 

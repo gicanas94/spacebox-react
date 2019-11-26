@@ -16,9 +16,9 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledLabel = styled.span`
-  color: ${({ theme }) => theme.components.ColorPicker.color};
-  font-size: ${({ theme }) => theme.components.ColorPicker.fontSize};
-  font-weight: ${({ theme }) => theme.components.ColorPicker.fontWeight};
+  color: ${({ theme }) => theme.components.colorPicker.color};
+  font-size: ${({ theme }) => theme.components.colorPicker.fontSize};
+  font-weight: ${({ theme }) => theme.components.colorPicker.fontWeight};
   margin-bottom: 20px;
   word-break: break-all;
 `;

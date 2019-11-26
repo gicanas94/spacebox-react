@@ -95,7 +95,7 @@ const EditSpaceboxForm = ({
       visible: values.visible,
     };
 
-    const updateSpacebox = async () => {
+    (async () => {
       try {
         alertSetAction();
 
@@ -120,9 +120,7 @@ const EditSpaceboxForm = ({
 
         actions.setSubmitting(false);
       }
-    };
-
-    updateSpacebox();
+    })();
   };
 
   return (
@@ -148,7 +146,7 @@ const EditSpaceboxForm = ({
                 category={values.category}
                 color={values.color}
                 description={values.description}
-                likes={0}
+                likes={values.likes}
                 title={values.title}
               />
             </StyledSpacebox>

@@ -10,7 +10,7 @@ import { device } from '../../styles';
 const StyledWrapper = styled.div`
   align-items: center;
   background-color: ${({ theme }) => (
-    theme.components.ConfirmationModal.bgColor1
+    theme.components.confirmationModal.bgColor1
   )};
   display: flex;
   height: 100%;
@@ -23,7 +23,7 @@ const StyledWrapper = styled.div`
 
   @media ${device.mobileL} {
     background-color: ${({ theme }) => (
-      theme.components.ConfirmationModal.bgColor2
+      theme.components.confirmationModal.bgColor2
     )};
   }
 `;

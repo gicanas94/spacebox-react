@@ -45,10 +45,10 @@ const StyledWrapper = styled.div`
 const StyledTextarea = styled.textarea`
   background-color: transparent;
   border: 0;
-  border-color: ${({ theme }) => theme.forms.Comment.textarea.color.default};
+  border-color: ${({ theme }) => theme.forms.comment.textarea.color.default};
   border-style: solid;
   border-bottom-width: ${({ theme }) => (
-    theme.forms.Comment.textarea.borderBottomWidth
+    theme.forms.comment.textarea.borderBottomWidth
   )};
   height: 40px;
   padding: 5px;
@@ -57,24 +57,24 @@ const StyledTextarea = styled.textarea`
   width: 100%;
 
   &:focus {
-    border-color: ${({ theme }) => theme.forms.Comment.textarea.color.focus};
+    border-color: ${({ theme }) => theme.forms.comment.textarea.color.focus};
     outline: none;
   }
 
   ${({ disabled, theme }) => disabled && `
-    border-color: ${theme.forms.Comment.textarea.color.disabled} !important;
-    color: ${theme.forms.Comment.textarea.color.disabled} !important;
+    border-color: ${theme.forms.comment.textarea.color.disabled} !important;
+    color: ${theme.forms.comment.textarea.color.disabled} !important;
 
     ::placeholder {
-      color: ${theme.forms.Comment.textarea.color.disabled} !important;
+      color: ${theme.forms.comment.textarea.color.disabled} !important;
     }
 
     :-ms-input-placeholder {
-      color: ${theme.forms.Comment.textarea.color.disabled} !important;
+      color: ${theme.forms.comment.textarea.color.disabled} !important;
     }
 
     ::-ms-input-placeholder {
-      color: ${theme.forms.Comment.textarea.color.disabled} !important;
+      color: ${theme.forms.comment.textarea.color.disabled} !important;
     }
   `}
 `;
@@ -104,7 +104,7 @@ const CommentForm = ({
       slug: `${_.kebabCase(values.content)}-${Math.floor(Math.random() * 10000)}`,
     };
 
-    const createComment = async () => {
+    (async () => {
       try {
         alertSetAction();
 
@@ -135,9 +135,7 @@ const CommentForm = ({
 
         actions.setSubmitting(false);
       }
-    };
-
-    createComment();
+    })();
   };
 
   useEffect(() => {

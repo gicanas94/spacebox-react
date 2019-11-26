@@ -98,7 +98,7 @@ const PostPage = ({
   );
 
   useEffect(() => {
-    const getData = async () => {
+    (async () => {
       let spaceboxData = {};
 
       try {
@@ -133,9 +133,7 @@ const PostPage = ({
       } finally {
         loadingSetAction(false);
       }
-    };
-
-    getData();
+    })();
   }, []);
 
   return (

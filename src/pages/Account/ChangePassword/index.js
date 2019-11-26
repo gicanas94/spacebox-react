@@ -4,90 +4,47 @@ import React, { Fragment } from 'react';
 
 import Emoji from '../../../components/Emoji';
 import { getCookie } from '../../../utils';
-import HelmetTitle from '../../../components/HelmetTitle';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import PasswordChangeForm from '../../../forms/PasswordChange';
-import PasswordLinkForm from '../../../forms/PasswordLink';
 
-const ChangePasswordSubpage = ({
-  alertSetAction,
-  authUser,
-  authUserHasPassword,
-  fetchSignInMethodsHandler,
-  firebase,
-  isLoading,
-}) => (
+const ChangePasswordSubpage = ({ alertSetAction, authUser, firebase }) => (
   <Fragment>
-    <HelmetTitle title={{ id: 'pages.account.changePassword.title' }} />
+    <h2>
+      <FormattedMessage id="pages.account.changePassword.h2" />
+    </h2>
 
-    <h1>
-      <FormattedMessage id="pages.account.changePassword.h1" />
-    </h1>
-
-    {isLoading && <LoadingSpinner />}
-
-    {!isLoading && (
-      authUserHasPassword ? (
-        <Fragment>
-          {getCookie('reachedMaxCurrentPasswordAttemps', false)
-            ? (
-              <p>
-                <FormattedMessage
-                  id="pages.account.changePassword.reachedMaxCurrentPasswordAttempsSubtitle"
-                />
-              </p>
-            ) : (
-              <p>
-                <FormattedMessage
-                  id="pages.account.changePassword.changePasswordSubtitle"
-                />
-
-                <Emoji
-                  label="pages.account.changePassword.changePasswordSubtitleEmojiLabel"
-                  symbol="🙂"
-                />
-              </p>
-            )
-          }
-
-          <PasswordChangeForm
-            alertSetAction={alertSetAction}
-            authUser={authUser}
-            firebase={firebase}
+    {getCookie('reachedMaxCurrentPasswordAttemps', false)
+      ? (
+        <p>
+          <FormattedMessage
+            id="pages.account.changePassword.reachedMaxCurrentPasswordAttempsSubtitle"
           />
-        </Fragment>
+        </p>
       ) : (
-        <Fragment>
-          <p>
-            <FormattedMessage
-              id="pages.account.changePassword.linkPasswordSubtitle"
-            />
-          </p>
-
-          <PasswordLinkForm
-            alertSetAction={alertSetAction}
-            authUserEmail={authUser.email}
-            firebase={firebase}
-            page="changePassword"
-            fetchSignInMethodsHandler={fetchSignInMethodsHandler}
+        <p>
+          <FormattedMessage
+            id="pages.account.changePassword.subtitle"
           />
-        </Fragment>
+
+          <Emoji
+            label="pages.account.changePassword.subtitleEmojiLabel"
+            symbol="🙂"
+          />
+        </p>
       )
-    )}
+    }
+
+    <PasswordChangeForm
+      alertSetAction={alertSetAction}
+      authUser={authUser}
+      firebase={firebase}
+    />
   </Fragment>
 );
 
 ChangePasswordSubpage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-  authUserHasPassword: PropTypes.bool.isRequired,
-  fetchSignInMethodsHandler: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  isLoading: PropTypes.bool,
-};
-
-ChangePasswordSubpage.defaultProps = {
-  isLoading: false,
 };
 
 export default ChangePasswordSubpage;

@@ -20,14 +20,14 @@ const StyledButtonWrapper = styled.div`
 `;
 
 const StyledEmail = styled.span`
-  font-weight: ${({ theme }) => theme.pages.VerifyEmail.email.fontWeight};
+  font-weight: ${({ theme }) => theme.pages.verifyEmail.email.fontWeight};
 `;
 
 const VerifyEmailPage = ({ alertSetAction, authUser, firebase }) => {
   const [emailSent, setEmailSent] = useState(false);
 
   const handleClick = () => {
-    const sendEmailVerification = async () => {
+    (async () => {
       try {
         alertSetAction();
 
@@ -51,9 +51,7 @@ const VerifyEmailPage = ({ alertSetAction, authUser, firebase }) => {
           type: 'danger',
         });
       }
-    };
-
-    sendEmailVerification();
+    })();
   };
 
   return (

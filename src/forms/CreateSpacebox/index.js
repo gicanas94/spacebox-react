@@ -96,7 +96,7 @@ const CreateSpaceboxForm = ({
       visible: values.visible,
     };
 
-    const createSpacebox = async () => {
+    (async () => {
       try {
         alertSetAction();
 
@@ -121,9 +121,7 @@ const CreateSpaceboxForm = ({
 
         actions.setSubmitting(false);
       }
-    };
-
-    createSpacebox();
+    })();
   };
 
   return (

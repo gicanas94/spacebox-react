@@ -11,7 +11,7 @@ const themeSecondaryGreyColor = color.palette.lava;
 
 export default {
   components: {
-    Alert: {
+    alert: {
       fontWeight: font.weight.medium,
       laptopWidth: '80%',
       maxWidth: '1280px',
@@ -34,19 +34,19 @@ export default {
         },
       },
     },
-    App: {
+    app: {
       laptopWidth: '80%',
       maxWidth: '1280px',
       mobileWidth: '100%',
     },
-    Box: {
+    box: {
       arrowIcon: {
         color: themeMainGreyColor,
       },
       bgColor: color.palette.white,
       borderWidth: '1px',
     },
-    Button: {
+    button: {
       borderWidth: '2px',
       color: {
         default: themeMainColor,
@@ -56,7 +56,7 @@ export default {
       fontSize: font.size.m,
       fontWeight: font.weight.bold,
     },
-    Checkbox: {
+    checkbox: {
       borderWidth: '2px',
       color: {
         checked: themeMainColor,
@@ -66,12 +66,12 @@ export default {
       },
       fontSize: font.size.s,
     },
-    ColorPicker: {
+    colorPicker: {
       color: themeSecondaryGreyColor,
       fontSize: font.size.s,
       fontWeight: font.weight.bold,
     },
-    Comment: {
+    comment: {
       borderWidth: '2px',
       createdAtDate: {
         color: themeSecondaryGreyColor,
@@ -81,24 +81,24 @@ export default {
         fontWeight: font.weight.medium,
       },
     },
-    ConfirmationModal: {
+    confirmationModal: {
       bgColor1: color.palette.white,
       bgColor2: Color(themeMainColor).alpha(0.8).string(),
     },
-    Header: {
+    header: {
       bgColor: color.palette.asphalt,
       color: color.palette.cloud,
       laptopWidth: '80%',
       maxWidth: '1280px',
       mobileWidth: '100%',
     },
-    Hr: {
+    hr: {
       borderWidth: '1.5px',
       color: {
         default: color.palette.abalone,
       },
     },
-    Input: {
+    input: {
       bgColor: color.palette.cloud,
       borderBottomWidth: '2px',
       color: {
@@ -116,11 +116,11 @@ export default {
         fontWeight: font.weight.bold,
       },
     },
-    LoadingSpinner: {
+    loadingSpinner: {
       bgColor: 'rgba(255, 255, 255, 0.8)',
       spinnerColor: themeMainColor,
     },
-    Post: {
+    post: {
       commentIcon: {
         color: themeMainGreyColor,
       },
@@ -151,7 +151,7 @@ export default {
         fontSize: font.size.s,
       },
     },
-    SearchBar: {
+    searchBar: {
       bgColor: color.palette.cloud,
       border: `2px solid ${themeMainColor}`,
       color: textColor,
@@ -159,7 +159,7 @@ export default {
         color: themeMainColor,
       },
     },
-    Select: {
+    select: {
       bgColor: color.palette.cloud,
       borderBottomWidth: '2px',
       color: {
@@ -193,7 +193,7 @@ export default {
         },
       },
     },
-    Sidebar: {
+    sidebar: {
       activeLink: {
         fontWeight: font.weight.bold,
       },
@@ -205,12 +205,12 @@ export default {
         fontWeight: font.weight.regular,
       },
     },
-    SignInWithButton: {
+    signInWithButton: {
       filter: 'none',
       fontSize: font.size.m,
       fontWeight: font.weight.medium,
     },
-    Spacebox: {
+    spacebox: {
       authUserIsTheOwner: {
         backgroundBorder: `linear-gradient(${color.gradient.pastelRainbow})`,
         border: '1px solid rgba(0, 0, 0, 0.5)',
@@ -238,7 +238,7 @@ export default {
         color: heartColor,
       },
     },
-    SpaceboxInfoSection: {
+    spaceboxInfoSection: {
       spaceboxCategory: {
         fontSize: font.size.s,
         titleFontWeight: font.weight.bold,
@@ -255,13 +255,13 @@ export default {
         bgColor: Color(themeMainColor).lighten(0.6).hex(),
       },
     },
-    Tooltip: {
+    tooltip: {
       fontSize: font.size.xs,
       fontWeight: font.weight.regular,
     },
   },
   forms: {
-    Comment: {
+    comment: {
       textarea: {
         borderBottomWidth: '2px',
         color: {
@@ -271,12 +271,12 @@ export default {
         },
       },
     },
-    SignIn: {
+    signIn: {
       forgotPasswordLink: {
         fontSize: font.size.s,
       },
     },
-    SignUp: {
+    signUp: {
       signInLink: {
         fontSize: font.size.s,
       },
@@ -334,20 +334,20 @@ export default {
     },
   },
   pages: {
-    EditSpacebox: {
+    editSpacebox: {
       deleteSpacebox: {
         color: color.palette.salmon,
         fontSize: font.size.xs,
         fontWeight: font.weight.bold,
       },
     },
-    NotFound: {
+    notFound: {
       content: {
         fontSize: font.size.l,
         fontWeight: font.weight.bold,
       },
     },
-    Space: {
+    space: {
       postsHistory: {
         link: {
           fontSize: font.size.s,
@@ -362,7 +362,7 @@ export default {
         },
       },
     },
-    VerifyEmail: {
+    verifyEmail: {
       email: {
         fontWeight: font.weight.bold,
       },

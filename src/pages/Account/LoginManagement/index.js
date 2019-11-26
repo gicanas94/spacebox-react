@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import { Twitter } from 'styled-icons/boxicons-logos/Twitter';
 
 import { device } from '../../../styles';
-import HelmetTitle from '../../../components/HelmetTitle';
 import Hr from '../../../components/Hr';
 import PasswordLoginToggle from './PasswordLoginToggle';
 import SocialLoginToggle from './SocialLoginToggle';
@@ -134,16 +133,16 @@ const LoginManagementSubpage = ({
   ];
 
   const handleSocialLoginLink = (provider) => {
-    alertSetAction();
+    (async () => {
+      try {
+        alertSetAction();
 
-    const providerToLink = signInMethods.filter(eachProvider => (
-      eachProvider.provider === provider
-    ));
+        const providerToLink = signInMethods.filter(eachProvider => (
+          eachProvider.provider === provider
+        ));
 
-    firebase.auth.currentUser
-      .linkWithPopup(firebase[provider])
-      .then(() => {
-        fetchSignInMethodsHandler();
+        await firebase.doLinkWithPopup(provider);
+        await fetchSignInMethodsHandler();
 
         alertSetAction({
           message: {
@@ -152,23 +151,23 @@ const LoginManagementSubpage = ({
           },
           type: 'success',
         });
-      })
-      .catch(error => (
+      } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
-        })
-      ));
+        });
+      }
+    })();
   };
 
   const handleUnlink = (providerId) => {
-    alertSetAction();
-    loadingSetAction(true);
+    (async () => {
+      try {
+        alertSetAction();
+        loadingSetAction(true);
 
-    firebase.auth.currentUser
-      .unlink(providerId)
-      .then(() => {
-        fetchSignInMethodsHandler();
+        await firebase.doUnlink(providerId);
+        await fetchSignInMethodsHandler();
 
         alertSetAction({
           message: {
@@ -179,24 +178,22 @@ const LoginManagementSubpage = ({
           },
           type: 'success',
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
 
         loadingSetAction(false);
-      });
+      }
+    })();
   };
 
   return (
     <Fragment>
-      <HelmetTitle title={{ id: 'pages.account.loginManagement.title' }} />
-
-      <h1>
-        <FormattedMessage id="pages.account.loginManagement.h1" />
-      </h1>
+      <h2>
+        <FormattedMessage id="pages.account.loginManagement.h2" />
+      </h2>
 
       <p>
         <FormattedMessage id="pages.account.loginManagement.subtitle" />

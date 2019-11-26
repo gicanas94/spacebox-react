@@ -93,6 +93,25 @@ const GlobalStyle = createGlobalStyle`
   textarea {
     color: ${theme.htmlTags.textarea.color};
   }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 15px;
+  }
+
+  ul li::before {
+    content: '•';
+    display: inline-block;
+    font-size: 1.4em;
+    font-weight: bold;
+    line-height: 0.8em;
+    position: absolute;
+  }
+
+  ul li * {
+    padding-left: 1em;
+  }
 `;
 
 export default GlobalStyle;

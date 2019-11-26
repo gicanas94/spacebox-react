@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { alertSet, loadingSet } from '../../Redux/actions';
@@ -26,6 +25,16 @@ const StyledGrid = styled.div`
   max-width: 900px;
   width: 100%;
 
+  .content {
+    & > div {
+      margin-bottom: 10px;
+    }
+
+    & div:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
   @media ${device.tablet} {
     grid-template-columns: auto 1fr;
   }
@@ -33,6 +42,16 @@ const StyledGrid = styled.div`
   @media ${device.laptop} {
     grid-gap: 20px;
     max-width: 910px;
+
+    .content {
+      & > div {
+        margin-bottom: 20px;
+      }
+
+      & > div:last-of-type {
+        margin-bottom: 0;
+      }
+    }
   }
 `;
 
@@ -43,42 +62,45 @@ const AccountPage = ({
   isLoading,
   loadingSetAction,
 }) => {
+  const [authUserHasPassword, setAuthUserHasPassword] = useState(false);
+  const [activeSignInMethods, setActiveSignInMethods] = useState([]);
+
   const sidebarContent = [
     {
       heading: 'pages.account.sidebarContent.section1.heading',
       links: [
         {
-          text: 'pages.account.sidebarContent.section1.links.general',
-          to: ROUTES.ACCOUNT_BASE,
+          text: 'pages.account.sidebarContent.section1.links.generalSettings',
+          to: ROUTES.ACCOUNT_GENERAL_SETTINGS,
+          visible: true,
         },
         {
           text: 'pages.account.sidebarContent.section1.links.changePassword',
           to: ROUTES.ACCOUNT_CHANGE_PASSWORD,
+          visible: authUserHasPassword,
         },
         {
           text: 'pages.account.sidebarContent.section1.links.loginManagement',
           to: ROUTES.ACCOUNT_LOGIN_MANAGEMENT,
+          visible: true,
         },
       ],
     },
   ];
 
-  const [authUserHasPassword, setAuthUserHasPassword] = useState(false);
-  const [activeSignInMethods, setActiveSignInMethods] = useState([]);
-
   const fetchSignInMethods = async () => {
     try {
       loadingSetAction(true);
 
-      const data = await firebase.auth.fetchSignInMethodsForEmail(
+      const signInMethods = await firebase.doFetchSignInMethodsForEmail(
         authUser.email,
       );
 
-      setAuthUserHasPassword(data.filter(
+      setAuthUserHasPassword(signInMethods.filter(
         provider => provider === 'password',
       ).length > 0);
 
-      setActiveSignInMethods(data);
+      setActiveSignInMethods(signInMethods);
     } catch (error) {
       alertSetAction({
         message: error.message,
@@ -89,54 +111,46 @@ const AccountPage = ({
     }
   };
 
-  useEffect(() => {
-    fetchSignInMethods();
-  }, []);
+  useEffect(() => { fetchSignInMethods(); }, []);
 
   return (
     <StyledGrid>
+      <HelmetTitle title={{ id: 'pages.account.title' }} />
       <Sidebar content={sidebarContent} />
 
-      <Box fullWidth margin="0">
-        <Switch>
-          <Route exact path={ROUTES.ACCOUNT_BASE}>
-            <HelmetTitle title={{ id: 'pages.account.general.title' }} />
+      <div className="content">
+        <Box fullWidth id="general-settings">
+          <h1>
+            <FormattedMessage id="pages.account.h1" />
+          </h1>
 
-            <h1>
-              <FormattedMessage id="pages.account.general.h1" />
-            </h1>
-          </Route>
+          <h2>
+            <FormattedMessage id="pages.account.generalSettings.h2" />
+          </h2>
+        </Box>
 
-          <Route
-            path={ROUTES.ACCOUNT_CHANGE_PASSWORD}
-            render={() => (
-              <ChangePasswordSubpage
-                alertSetAction={alertSetAction}
-                authUserHasPassword={authUserHasPassword}
-                authUser={authUser}
-                fetchSignInMethodsHandler={fetchSignInMethods}
-                firebase={firebase}
-                isLoading={isLoading}
-              />
-            )}
+        {authUserHasPassword && (
+          <Box fullWidth id="change-password">
+            <ChangePasswordSubpage
+              alertSetAction={alertSetAction}
+              authUser={authUser}
+              firebase={firebase}
+            />
+          </Box>
+        )}
+
+        <Box fullWidth id="login-management">
+          <LoginManagementSubpage
+            activeSignInMethods={activeSignInMethods}
+            alertSetAction={alertSetAction}
+            authUser={authUser}
+            fetchSignInMethodsHandler={fetchSignInMethods}
+            firebase={firebase}
+            isLoading={isLoading}
+            loadingSetAction={loadingSetAction}
           />
-
-          <Route
-            path={ROUTES.ACCOUNT_LOGIN_MANAGEMENT}
-            render={() => (
-              <LoginManagementSubpage
-                activeSignInMethods={activeSignInMethods}
-                alertSetAction={alertSetAction}
-                authUser={authUser}
-                fetchSignInMethodsHandler={fetchSignInMethods}
-                firebase={firebase}
-                isLoading={isLoading}
-                loadingSetAction={loadingSetAction}
-              />
-            )}
-          />
-        </Switch>
-      </Box>
+        </Box>
+      </div>
     </StyledGrid>
   );
 };

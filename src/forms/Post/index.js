@@ -43,7 +43,7 @@ const PostForm = ({
       uid,
     };
 
-    const createPost = async () => {
+    (async () => {
       try {
         alertSetAction();
 
@@ -63,9 +63,7 @@ const PostForm = ({
 
         actions.setSubmitting(false);
       }
-    };
-
-    createPost();
+    })();
   };
 
   return (

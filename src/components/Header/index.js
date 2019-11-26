@@ -14,8 +14,8 @@ import SearchBar from './SearchBar';
 import smallLogo from '../../assets/images/logo.png';
 
 const StyledWrapper = styled.div`
-  background-color: ${({ theme }) => theme.components.Header.bgColor};
-  color: ${({ theme }) => theme.components.Header.color};
+  background-color: ${({ theme }) => theme.components.header.bgColor};
+  color: ${({ theme }) => theme.components.header.color};
   position: sticky;
   top: 0;
   width: 100%;
@@ -24,13 +24,13 @@ const StyledWrapper = styled.div`
 
 const StyledHeader = styled.header`
   margin: auto;
-  max-width: ${({ theme }) => theme.components.Header.maxWidth};
+  max-width: ${({ theme }) => theme.components.header.maxWidth};
   padding: 10px;
-  width: ${({ theme }) => theme.components.Header.mobileWidth};
+  width: ${({ theme }) => theme.components.header.mobileWidth};
 
   @media ${device.laptop} {
     padding: 10px 0;
-    width: ${({ theme }) => theme.components.Header.laptopWidth};
+    width: ${({ theme }) => theme.components.header.laptopWidth};
   }
 `;
 
@@ -61,7 +61,7 @@ const StyledSmallLogoLink = styled(Link)`
 
 const StyledOverlay = styled.div`
   align-items: center;
-  background-color: ${({ theme }) => theme.components.Header.bgColor};
+  background-color: ${({ theme }) => theme.components.header.bgColor};
   display: flex;
   height: 100vh;
   justify-content: center;

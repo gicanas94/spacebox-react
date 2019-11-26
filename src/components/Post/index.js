@@ -42,22 +42,22 @@ const StyledCreatedAtDate = styled.div`
 
 const StyledDateFromNow = styled.span`
   color: ${({ theme }) => (
-    theme.components.Post.createdAtDate.dateFromNow.color
+    theme.components.post.createdAtDate.dateFromNow.color
   )};
   font-size: ${({ theme }) => (
-    theme.components.Post.createdAtDate.dateFromNow.fontSize
+    theme.components.post.createdAtDate.dateFromNow.fontSize
   )};
   font-weight: ${({ theme }) => (
-    theme.components.Post.createdAtDate.dateFromNow.fontWeight
+    theme.components.post.createdAtDate.dateFromNow.fontWeight
   )};
 `;
 
 const StyledLongDate = styled.span`
   color: ${({ theme }) => (
-    theme.components.Post.createdAtDate.longDate.color
+    theme.components.post.createdAtDate.longDate.color
   )};
   font-size: ${({ theme }) => (
-    theme.components.Post.createdAtDate.longDate.fontSize
+    theme.components.post.createdAtDate.longDate.fontSize
   )};
 `;
 
@@ -72,8 +72,8 @@ const StyledActions = styled.div`
 `;
 
 const StyledStats = styled.div`
-  color: ${({ theme }) => theme.components.Post.stats.color};
-  font-size: ${({ theme }) => theme.components.Post.stats.fontSize};
+  color: ${({ theme }) => theme.components.post.stats.color};
+  font-size: ${({ theme }) => theme.components.post.stats.fontSize};
   user-select: none;
 `;
 
@@ -93,11 +93,11 @@ const StyledLikeHeartIcon = styled(Heart)`
   width: 30px;
 
   ${({ authUserLike, theme }) => authUserLike && `
-    color: ${theme.components.Post.likeHeartIcon.likeColor};
+    color: ${theme.components.post.likeHeartIcon.likeColor};
   `}
 
   ${({ authUserLike, theme }) => !authUserLike && `
-    color: ${theme.components.Post.likeHeartIcon.noLikeColor};
+    color: ${theme.components.post.likeHeartIcon.noLikeColor};
   `}
 
   ${({ disabled }) => !disabled && `
@@ -110,7 +110,7 @@ const StyledLikeHeartIcon = styled(Heart)`
 `;
 
 const StyledCommentIcon = styled(CommentAlt)`
-  color: ${({ theme }) => theme.components.Post.commentIcon.color};
+  color: ${({ theme }) => theme.components.post.commentIcon.color};
   cursor: pointer;
   margin-right: 20px;
   width: 28px;
@@ -125,7 +125,7 @@ const StyledCommentIcon = styled(CommentAlt)`
 `;
 
 const StyledTrashIcon = styled(Trash)`
-  color: ${({ theme }) => theme.components.Post.trashIcon.color};
+  color: ${({ theme }) => theme.components.post.trashIcon.color};
   cursor: pointer;
   height: 30px;
   width: 28px;
@@ -149,10 +149,10 @@ const StyledCommentsWrapper = styled.div`
 `;
 
 const StyledSeeOrHideCommentsSpan = styled.span`
-  color: ${({ theme }) => theme.components.Post.seeOrHideComments.color};
+  color: ${({ theme }) => theme.components.post.seeOrHideComments.color};
   cursor: pointer
   font-weight: ${({ theme }) => (
-    theme.components.Post.seeOrHideComments.fontWeight
+    theme.components.post.seeOrHideComments.fontWeight
   )};
 
   &:hover {
@@ -188,7 +188,7 @@ const Post = ({
   });
 
   const handleDeletePostClick = () => {
-    const deletePost = async () => {
+    (async () => {
       try {
         alertSetAction();
         setDeletePostInProgress(true);
@@ -230,9 +230,7 @@ const Post = ({
           type: 'danger',
         });
       }
-    };
-
-    deletePost();
+    })();
   };
 
   const handleLikePostClick = () => {

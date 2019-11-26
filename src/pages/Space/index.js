@@ -76,19 +76,19 @@ const StyledGrid = styled.div`
 `;
 
 const StyledPostsHistoryYear = styled.div`
-  font-size: ${({ theme }) => theme.pages.Space.postsHistory.year.fontSize};
-  font-weight: ${({ theme }) => theme.pages.Space.postsHistory.year.fontWeight};
+  font-size: ${({ theme }) => theme.pages.space.postsHistory.year.fontSize};
+  font-weight: ${({ theme }) => theme.pages.space.postsHistory.year.fontWeight};
 `;
 
 const StyledPostsHistoryMonth = styled.div`
-  font-size: ${({ theme }) => theme.pages.Space.postsHistory.month.fontSize};
-  font-weight: ${({ theme }) => theme.pages.Space.postsHistory.month.fontWeight};
+  font-size: ${({ theme }) => theme.pages.space.postsHistory.month.fontSize};
+  font-weight: ${({ theme }) => theme.pages.space.postsHistory.month.fontWeight};
   margin-left: 10px;
   margin-top: 5px;
 `;
 
 const StyledPostsHistoryLink = styled(Link)`
-  font-size: ${({ theme }) => theme.pages.Space.postsHistory.link.fontSize};
+  font-size: ${({ theme }) => theme.pages.space.postsHistory.link.fontSize};
   display: block;
   margin-left: 20px;
   margin-top: 10px;
@@ -250,7 +250,7 @@ const SpacePage = ({
   };
 
   useEffect(() => {
-    const getData = async () => {
+    (async () => {
       try {
         loadingSetAction(true);
 
@@ -284,9 +284,7 @@ const SpacePage = ({
       } finally {
         loadingSetAction(false);
       }
-    };
-
-    getData();
+    })();
 
     return () => {
       window.removeEventListener('scroll', getMorePostsIfScrollIsAtTheEnd);

@@ -8,10 +8,10 @@ import styled from 'styled-components';
 import { keyframe, transition } from '../../styles';
 
 const StyledLabel = styled.label`
-  color: ${({ theme }) => theme.components.Input.color.default};
+  color: ${({ theme }) => theme.components.input.color.default};
   display: block;
-  font-size: ${({ theme }) => theme.components.Input.label.fontSize};
-  font-weight: ${({ theme }) => theme.components.Input.label.fontWeight};
+  font-size: ${({ theme }) => theme.components.input.label.fontSize};
+  font-weight: ${({ theme }) => theme.components.input.label.fontWeight};
   overflow: hidden;
   padding-bottom: 2px;
   text-overflow: ellipsis;
@@ -19,17 +19,17 @@ const StyledLabel = styled.label`
   white-space: nowrap;
 
   ${({ disabled, theme }) => disabled && `
-    color: ${theme.components.Input.color.disabled} !important;
+    color: ${theme.components.input.color.disabled} !important;
   `}
 `;
 
 const StyledTextarea = styled.textarea`
-  background-color: ${({ theme }) => theme.components.Input.bgColor};
+  background-color: ${({ theme }) => theme.components.input.bgColor};
   border: 0;
   border-bottom-width: ${({ theme }) => (
-    theme.components.Input.borderBottomWidth
+    theme.components.input.borderBottomWidth
   )};
-  border-color: ${({ theme }) => theme.components.Input.color.default};
+  border-color: ${({ theme }) => theme.components.input.color.default};
   border-style: solid;
   padding: 10px;
   resize: none;
@@ -41,19 +41,19 @@ const StyledTextarea = styled.textarea`
   }
 
   ${({ disabled, theme }) => disabled && `
-    color: ${theme.components.Input.color.disabled} !important;
-    border-color: ${theme.components.Input.color.disabled} !important;
+    color: ${theme.components.input.color.disabled} !important;
+    border-color: ${theme.components.input.color.disabled} !important;
 
     ::placeholder {
-      color: ${theme.components.Input.color.disabled} !important;
+      color: ${theme.components.input.color.disabled} !important;
     }
 
     :-ms-input-placeholder {
-      color: ${theme.components.Input.color.disabled} !important;
+      color: ${theme.components.input.color.disabled} !important;
     }
 
     ::-ms-input-placeholder {
-      color: ${theme.components.Input.color.disabled} !important;
+      color: ${theme.components.input.color.disabled} !important;
     }
   `}
 
@@ -65,18 +65,18 @@ const StyledTextarea = styled.textarea`
 
 const StyledErrorIcon = styled(ErrorOutline)`
   animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
-  background-color: ${({ theme }) => theme.components.Input.bgColor};
+  background-color: ${({ theme }) => theme.components.input.bgColor};
   bottom: 34px;
-  color: ${({ theme }) => theme.components.Input.color.error};
+  color: ${({ theme }) => theme.components.input.color.error};
   position: absolute;
   right: 10px;
   width: 30px;
 `;
 
 const StyledErrorMessage = styled.div`
-  color: ${({ theme }) => theme.components.Input.color.error};
-  font-size: ${({ theme }) => theme.components.Input.errorMessage.fontSize};
-  font-weight: ${({ theme }) => theme.components.Input.errorMessage.fontWeight};
+  color: ${({ theme }) => theme.components.input.color.error};
+  font-size: ${({ theme }) => theme.components.input.errorMessage.fontSize};
+  font-weight: ${({ theme }) => theme.components.input.errorMessage.fontWeight};
 `;
 
 const StyledWrapper = styled.div`
@@ -85,11 +85,11 @@ const StyledWrapper = styled.div`
 
   ${({ error, theme }) => error && `
     ${StyledLabel} {
-      color: ${theme.components.Input.color.error};
+      color: ${theme.components.input.color.error};
     }
 
     ${StyledTextarea} {
-      border-color: ${theme.components.Input.color.error};
+      border-color: ${theme.components.input.color.error};
     }
   `}
 
@@ -99,11 +99,11 @@ const StyledWrapper = styled.div`
 
   ${({ success, theme }) => success && `
     ${StyledLabel} {
-      color: ${theme.components.Input.color.success};
+      color: ${theme.components.input.color.success};
     }
 
     ${StyledTextarea} {
-      border-color: ${theme.components.Input.color.success};
+      border-color: ${theme.components.input.color.success};
     }
   `}
 `;

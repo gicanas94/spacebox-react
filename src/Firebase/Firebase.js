@@ -34,9 +34,33 @@ class Firebase {
     ))
   );
 
+  doFetchSignInMethodsForEmail = email => (
+    new Promise((resolve, reject) => (
+      this.auth.fetchSignInMethodsForEmail(email)
+        .then(signInMethods => resolve(signInMethods))
+        .catch(error => reject(error))
+    ))
+  );
+
   doLinkAndRetrieveDataWithCredential = credential => (
     new Promise((resolve, reject) => (
       this.auth.currentUser.linkAndRetrieveDataWithCredential(credential)
+        .then(() => resolve())
+        .catch(error => reject(error))
+    ))
+  );
+
+  doLinkWithPopup = provider => (
+    new Promise((resolve, reject) => (
+      this.auth.currentUser.linkWithPopup(this[provider])
+        .then(() => resolve())
+        .catch(error => reject(error))
+    ))
+  );
+
+  doUnlink = providerId => (
+    new Promise((resolve, reject) => (
+      this.auth.currentUser.unlink(providerId)
         .then(() => resolve())
         .catch(error => reject(error))
     ))

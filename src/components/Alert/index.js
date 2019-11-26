@@ -11,7 +11,7 @@ const StyledAlert = styled.div`
   bottom: 0;
   cursor: pointer;
   display: flex;
-  font-weight: ${({ theme }) => theme.components.Alert.fontWeight};
+  font-weight: ${({ theme }) => theme.components.alert.fontWeight};
   height: fit-content;
   justify-content: center;
   left: 0;
@@ -29,18 +29,18 @@ const StyledAlert = styled.div`
 
   ${({ type, theme }) => type && `
     background: linear-gradient(
-      ${theme.components.Alert.type[type].bgColor},
-      ${Color(theme.components.Alert.type[type].bgColor).darken(0.05)}
+      ${theme.components.alert.type[type].bgColor},
+      ${Color(theme.components.alert.type[type].bgColor).darken(0.05)}
     );
-    color: ${theme.components.Alert.type[type].color};
+    color: ${theme.components.alert.type[type].color};
   `}
 
   ${({ withBorder, type, theme }) => withBorder && `
     border-bottom: 0;
-    border-top: ${theme.components.Alert.type[type].border};
+    border-top: ${theme.components.alert.type[type].border};
 
     @media ${device.laptop} {
-      border-bottom: ${theme.components.Alert.type[type].border};
+      border-bottom: ${theme.components.alert.type[type].border};
       border-top: 0;
     }
   `}
@@ -51,11 +51,11 @@ const StyledWrapper = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  max-width: ${({ theme }) => theme.components.Alert.maxWidth};
-  width: ${({ theme }) => theme.components.Alert.mobileWidth};
+  max-width: ${({ theme }) => theme.components.alert.maxWidth};
+  width: ${({ theme }) => theme.components.alert.mobileWidth};
 
   @media ${device.laptop} {
-    width: ${({ theme }) => theme.components.Alert.laptopWidth};
+    width: ${({ theme }) => theme.components.alert.laptopWidth};
   }
 `;
 

@@ -7,7 +7,7 @@ import SignInWithButton from '../../components/SignInWithButton';
 
 const SignInSocialMedia = ({ alertSetAction, firebase, history }) => {
   const handleSignInWithClick = (doSignInWith) => {
-    const signInUser = async () => {
+    (async () => {
       try {
         alertSetAction();
 
@@ -36,9 +36,7 @@ const SignInSocialMedia = ({ alertSetAction, firebase, history }) => {
           type: 'danger',
         });
       }
-    };
-
-    signInUser();
+    })();
   };
 
   return (

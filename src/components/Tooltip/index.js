@@ -7,8 +7,8 @@ import { transition } from '../../styles';
 const StyledReactTooltipWrapper = styled.div`
   div {
     border-radius: ${({ theme }) => theme.global.borderRadius};
-    font-size: ${({ theme }) => theme.components.Tooltip.fontSize};
-    font-weight: ${({ theme }) => theme.components.Tooltip.fontWeight};
+    font-size: ${({ theme }) => theme.components.tooltip.fontSize};
+    font-weight: ${({ theme }) => theme.components.tooltip.fontWeight};
     padding: 7px;
     transition: opacity ${transition.speed.fast} linear;
 

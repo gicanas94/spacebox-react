@@ -29,12 +29,12 @@ const StyledGrid = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  font-size: ${({ theme }) => theme.forms.SignUp.signInLink.fontSize};
+  font-size: ${({ theme }) => theme.forms.signUp.signInLink.fontSize};
 `;
 
 const StyledTermsOfUseNotice = styled.p`
-  color: ${({ theme }) => theme.forms.SignUp.termsOfUseNotice.color};
-  font-size: ${({ theme }) => theme.forms.SignUp.termsOfUseNotice.fontSize};
+  color: ${({ theme }) => theme.forms.signUp.termsOfUseNotice.color};
+  font-size: ${({ theme }) => theme.forms.signUp.termsOfUseNotice.fontSize};
 `;
 
 const StyledBottomWrapper = styled.div`
@@ -108,7 +108,7 @@ const SignUpForm = ({
 
     const { email, passwordOne, username } = values;
 
-    const signUpUser = async () => {
+    (async () => {
       try {
         alertSetAction();
 
@@ -145,9 +145,7 @@ const SignUpForm = ({
 
         actions.setSubmitting(false);
       }
-    };
-
-    signUpUser();
+    })();
   };
 
   return (

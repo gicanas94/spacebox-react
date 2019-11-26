@@ -5,9 +5,9 @@ import styled from 'styled-components';
 
 const StyledCheckbox = styled.span`
   background-color: transparent;
-  border-color: ${({ theme }) => theme.components.Checkbox.color.unchecked};
+  border-color: ${({ theme }) => theme.components.checkbox.color.unchecked};
   border-style: solid;
-  border-width: ${({ theme }) => theme.components.Checkbox.borderWidth};
+  border-width: ${({ theme }) => theme.components.checkbox.borderWidth};
   display: flex;
   height: 25px;
   justify-content: center;
@@ -15,12 +15,12 @@ const StyledCheckbox = styled.span`
   width: 25px;
 
   ${({ checked, theme }) => checked && `
-    border-color: ${theme.components.Checkbox.color.checked};
-    color: ${theme.components.Checkbox.color.checked};
+    border-color: ${theme.components.checkbox.color.checked};
+    color: ${theme.components.checkbox.color.checked};
 
     &:after {
       content: '✔';
-      font-size: ${theme.components.Checkbox.fontSize};
+      font-size: ${theme.components.checkbox.fontSize};
     }
   `}
 
@@ -30,7 +30,7 @@ const StyledCheckbox = styled.span`
 `;
 
 const StyledLabel = styled.span`
-  font-size: ${({ theme }) => theme.components.Checkbox.fontSize};
+  font-size: ${({ theme }) => theme.components.checkbox.fontSize};
 `;
 
 const StyledWrapper = styled.div`
@@ -42,22 +42,22 @@ const StyledWrapper = styled.div`
 
   ${({ disabled, theme }) => disabled && `
     ${StyledCheckbox} {
-      border-color: ${theme.components.Checkbox.color.disabled};
-      color: ${theme.components.Checkbox.color.disabled};
+      border-color: ${theme.components.checkbox.color.disabled};
+      color: ${theme.components.checkbox.color.disabled};
     }
 
     ${StyledLabel} {
-      color: ${theme.components.Checkbox.color.disabled};
+      color: ${theme.components.checkbox.color.disabled};
     }
   `}
 
   ${({ error, theme }) => error && `
     ${StyledCheckbox} {
-      border-color: ${theme.components.Checkbox.color.error};
+      border-color: ${theme.components.checkbox.color.error};
     }
 
     ${StyledLabel} {
-      color: ${theme.components.Checkbox.color.error};
+      color: ${theme.components.checkbox.color.error};
     }
   `}
 

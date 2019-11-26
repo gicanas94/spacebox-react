@@ -13,22 +13,22 @@ import { ROUTES } from '../../constants';
 const StyledSpaceboxTitle = styled.h1`
   color: inherit;
   font-size: ${({ theme }) => (
-    theme.components.SpaceboxInfoSection.spaceboxTitle.smallFontSize
+    theme.components.spaceboxInfoSection.spaceboxTitle.smallFontSize
   )};
   font-weight: ${({ theme }) => (
-    theme.components.SpaceboxInfoSection.spaceboxTitle.fontWeight
+    theme.components.spaceboxInfoSection.spaceboxTitle.fontWeight
   )};
   line-height: 1;
 
   @media ${device.mobileL} {
     font-size: ${({ theme }) => (
-      theme.components.SpaceboxInfoSection.spaceboxTitle.largeFontSize
+      theme.components.spaceboxInfoSection.spaceboxTitle.largeFontSize
     )};
   }
 
   @media ${device.tablet} {
     font-size: ${({ theme }) => (
-      theme.components.SpaceboxInfoSection.spaceboxTitle.smallFontSize
+      theme.components.spaceboxInfoSection.spaceboxTitle.smallFontSize
     )};
   }
 `;
@@ -36,21 +36,21 @@ const StyledSpaceboxTitle = styled.h1`
 const StyledSpaceboxDescription = styled.h2`
   color: inherit;
   font-size: ${({ theme }) => (
-    theme.components.SpaceboxInfoSection.spaceboxDescription.fontSize
+    theme.components.spaceboxInfoSection.spaceboxDescription.fontSize
   )};
   font-weight: inherit;
 `;
 
 const StyledSpaceboxCategory = styled.div`
   font-size: ${({ theme }) => (
-    theme.components.SpaceboxInfoSection.spaceboxCategory.fontSize
+    theme.components.spaceboxInfoSection.spaceboxCategory.fontSize
   )};
   line-height: 1;
   margin-bottom: 0;
 
   span {
     font-weight: ${({ theme }) => (
-      theme.components.SpaceboxInfoSection.spaceboxCategory.titleFontWeight
+      theme.components.spaceboxInfoSection.spaceboxCategory.titleFontWeight
     )};
   }
 `;

@@ -34,9 +34,9 @@ const StyledWrapper = styled.div`
 const StyledComment = styled.div`
   background-color: ${({ bgColor }) => bgColor};
   border: 0;
-  border-bottom-width: ${({ theme }) => theme.components.Comment.borderWidth};
+  border-bottom-width: ${({ theme }) => theme.components.comment.borderWidth};
   border-color: ${({ bgColor }) => Color(bgColor).darken(0.2).hex()};
-  border-left-width: ${({ theme }) => theme.components.Comment.borderWidth};
+  border-left-width: ${({ theme }) => theme.components.comment.borderWidth};
   border-style: solid;
   margin: 0;
   padding: 8px;
@@ -52,14 +52,14 @@ const StyledP = styled.p`
 
 const StyledUsername = styled(Link)`
   color: inherit;
-  font-weight: ${({ theme }) => theme.components.Comment.username.fontWeight};
+  font-weight: ${({ theme }) => theme.components.comment.username.fontWeight};
   margin-right: 10px;
 `;
 
 const StyledCreatedAtDate = styled.div`
   display: flex;
-  color: ${({ theme }) => theme.components.Comment.createdAtDate.color};
-  font-size: ${({ theme }) => theme.components.Comment.createdAtDate.fontSize};
+  color: ${({ theme }) => theme.components.comment.createdAtDate.color};
+  font-size: ${({ theme }) => theme.components.comment.createdAtDate.fontSize};
   justify-content: space-between;
   padding-left: 4px;
   padding-top: 4px;

@@ -28,13 +28,13 @@ import { withAuthentication } from './Session';
 
 const StyledRoutesContainer = styled.div`
   margin: auto;
-  max-width: ${({ theme }) => theme.components.App.maxWidth};
+  max-width: ${({ theme }) => theme.components.app.maxWidth};
   padding: 10px;
-  width: ${({ theme }) => theme.components.App.mobileWidth};
+  width: ${({ theme }) => theme.components.app.mobileWidth};
 
   @media ${device.laptop} {
     padding: 20px 0;
-    width: ${({ theme }) => theme.components.App.laptopWidth};
+    width: ${({ theme }) => theme.components.app.laptopWidth};
   }
 `;
 

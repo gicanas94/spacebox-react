@@ -72,7 +72,6 @@ const CommonLinks = ({ location, onLinkClickHandler }) => (
 );
 
 const AuthLinks = ({
-  authUser,
   firebase,
   location,
   onLinkClickHandler,
@@ -202,14 +201,9 @@ CommonLinks.propTypes = {
 };
 
 AuthLinks.propTypes = {
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
   onLinkClickHandler: PropTypes.func.isRequired,
-};
-
-AuthLinks.defaultProps = {
-  authUser: null,
 };
 
 NonAuthLinks.propTypes = {
