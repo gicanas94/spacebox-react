@@ -35,8 +35,9 @@ const StyledNewPasswordWrapper = styled.div`
 const PasswordLinkForm = ({
   alertSetAction,
   authUserEmail,
-  fetchSignInMethodsHandler,
   firebase,
+  getSignInMethodsHandler,
+  isLoadingSetAction,
   setPasswordLinkFormIsVisibleHandler,
 }) => {
   const intl = useIntl();
@@ -69,9 +70,10 @@ const PasswordLinkForm = ({
         );
 
         await firebase.doLinkAndRetrieveDataWithCredential(credential);
+        isLoadingSetAction(true);
+        await getSignInMethodsHandler();
 
         setPasswordLinkFormIsVisibleHandler(false);
-        fetchSignInMethodsHandler();
 
         alertSetAction({
           message: { id: 'forms.passwordLink.successAlertMessage' },
@@ -88,6 +90,8 @@ const PasswordLinkForm = ({
         actions.setSubmitting(false);
 
         setPasswordLinkFormIsVisibleHandler(false);
+      } finally {
+        isLoadingSetAction(false);
       }
     })();
   };
@@ -167,8 +171,9 @@ const PasswordLinkForm = ({
 PasswordLinkForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUserEmail: PropTypes.string.isRequired,
-  fetchSignInMethodsHandler: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  getSignInMethodsHandler: PropTypes.func.isRequired,
+  isLoadingSetAction: PropTypes.func.isRequired,
   setPasswordLinkFormIsVisibleHandler: PropTypes.func,
 };
 

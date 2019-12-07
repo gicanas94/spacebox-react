@@ -35,17 +35,26 @@ export const authUserSet = authUser => ({
   authUser,
 });
 
-export const loadingSet = isLoading => ({
-  type: 'LOADING_SET',
+export const confirmationModalOpen = content => ({
+  type: 'CONFIRMATION_MODAL_OPEN',
+  content,
+});
+
+export const confirmationModalClose = () => ({
+  type: 'CONFIRMATION_MODAL_CLOSE',
+});
+
+export const homepageSpaceboxesSet = spaceboxes => ({
+  type: 'HOMEPAGE_SPACEBOXES_SET',
+  spaceboxes,
+});
+
+export const isLoadingSet = isLoading => ({
+  type: 'IS_LOADING_SET',
   isLoading,
 });
 
 export const searchBarChange = draft => ({
   type: 'SEARCH_BAR_CHANGE',
   draft,
-});
-
-export const spaceboxesSet = spaceboxes => ({
-  type: 'SPACEBOXES_SET',
-  spaceboxes,
 });

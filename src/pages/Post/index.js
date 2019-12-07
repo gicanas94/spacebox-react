@@ -5,10 +5,15 @@ import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
-import { alertSet, loadingSet } from '../../Redux/actions';
+import {
+  alertSet,
+  confirmationModalClose,
+  confirmationModalOpen,
+  isLoadingSet,
+} from '../../Redux/actions';
+
 import { device } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import { ROUTES } from '../../constants';
 import Post from '../../components/Post';
 import SpaceboxInfoSection from '../../components/SpaceboxInfoSection';
@@ -40,10 +45,11 @@ const StyledPostsWrapper = styled.div`
 const PostPage = ({
   alertSetAction,
   authUser,
+  confirmationModalCloseAction,
+  confirmationModalOpenAction,
   firebase,
   history,
-  isLoading,
-  loadingSetAction,
+  isLoadingSetAction,
   location,
   match,
 }) => {
@@ -102,7 +108,7 @@ const PostPage = ({
       let spaceboxData = {};
 
       try {
-        loadingSetAction(true);
+        isLoadingSetAction(true);
 
         if (location.state) {
           setSpacebox(location.state.spacebox);
@@ -131,15 +137,13 @@ const PostPage = ({
           );
         }
       } finally {
-        loadingSetAction(false);
+        isLoadingSetAction(false);
       }
     })();
   }, []);
 
   return (
     <Fragment>
-      {isLoading && <LoadingSpinner />}
-
       {allTasksFinished && (
         <Fragment>
           <HelmetTitle
@@ -163,6 +167,8 @@ const PostPage = ({
               <Post
                 alertSetAction={alertSetAction}
                 authUser={authUser}
+                confirmationModalCloseAction={confirmationModalCloseAction}
+                confirmationModalOpenAction={confirmationModalOpenAction}
                 firebase={firebase}
                 history={history}
                 page="post"
@@ -180,28 +186,23 @@ const PostPage = ({
 
 PostPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  confirmationModalCloseAction: PropTypes.func.isRequired,
+  confirmationModalOpenAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
-  isLoading: PropTypes.bool,
-  loadingSetAction: PropTypes.func.isRequired,
+  isLoadingSetAction: PropTypes.func.isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-PostPage.defaultProps = {
-  authUser: null,
-  isLoading: false,
-};
-
-const mapStateToProps = state => ({
-  authUser: state.session.authUser,
-  isLoading: state.isLoading,
-});
+const mapStateToProps = state => ({ authUser: state.authUser });
 
 const mapDispatchToProps = {
   alertSetAction: alertSet,
-  loadingSetAction: loadingSet,
+  confirmationModalCloseAction: confirmationModalClose,
+  confirmationModalOpenAction: confirmationModalOpen,
+  isLoadingSetAction: isLoadingSet,
 };
 
 export default compose(

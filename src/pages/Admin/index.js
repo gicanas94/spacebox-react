@@ -1,21 +1,14 @@
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
-
-import React, {
-  Fragment,
-  useEffect,
-  useState,
-} from 'react';
-
+import React, { Fragment, useEffect, useState } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { alertSet, loadingSet } from '../../Redux/actions';
+import { alertSet, isLoadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import { device } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import { ROUTES } from '../../constants';
 import Sidebar from '../../components/Sidebar';
 import { withAuthorization } from '../../Session';
@@ -46,7 +39,7 @@ const AdminPage = ({
   firebase,
   history,
   isLoading,
-  loadingSetAction,
+  isLoadingSetAction,
 }) => {
   const sidebarContent = (
     [
@@ -86,7 +79,7 @@ const AdminPage = ({
     (async () => {
       try {
         alertSetAction();
-        loadingSetAction(true);
+        isLoadingSetAction(true);
 
         const userRestrictedData = await firebase.userRestrictedData(
           authUser.uid,
@@ -105,15 +98,13 @@ const AdminPage = ({
 
         history.push(ROUTES.HOME);
       } finally {
-        loadingSetAction(false);
+        isLoadingSetAction(false);
       }
     })();
   }, []);
 
   return (
     <Fragment>
-      {isLoading && <LoadingSpinner />}
-
       {!isLoading && authUserIsAdmin && (
         <StyledGrid>
           <HelmetTitle title={{ id: 'pages.admin.title' }} />
@@ -136,26 +127,21 @@ const AdminPage = ({
 
 AdminPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
-  isLoading: PropTypes.bool,
-  loadingSetAction: PropTypes.func.isRequired,
-};
-
-AdminPage.defaultProps = {
-  authUser: null,
-  isLoading: false,
+  isLoading: PropTypes.bool.isRequired,
+  isLoadingSetAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  authUser: state.session.authUser,
+  authUser: state.authUser,
   isLoading: state.isLoading,
 });
 
 const mapDispatchToProps = {
   alertSetAction: alertSet,
-  loadingSetAction: loadingSet,
+  isLoadingSetAction: isLoadingSet,
 };
 
 const condition = authUser => !!authUser;

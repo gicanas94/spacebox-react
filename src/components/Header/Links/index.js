@@ -185,14 +185,10 @@ const NonAuthLinks = ({ location, onLinkClickHandler }) => (
 );
 
 Links.propTypes = {
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
   onLinkClickHandler: PropTypes.func.isRequired,
-};
-
-Links.defaultProps = {
-  authUser: null,
 };
 
 CommonLinks.propTypes = {
@@ -211,7 +207,7 @@ NonAuthLinks.propTypes = {
   onLinkClickHandler: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({ authUser: state.session.authUser });
+const mapStateToProps = state => ({ authUser: state.authUser });
 
 export default compose(
   connect(mapStateToProps),

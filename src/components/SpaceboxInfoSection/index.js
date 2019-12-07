@@ -141,8 +141,10 @@ const SpaceboxInfoSection = ({
             <StyledLink to={{
               pathname: `${ROUTES.USER_BASE}/${user.slug}`,
               state: {
-                user,
-                uid: spacebox.uid,
+                user: {
+                  ...user,
+                  uid: spacebox.uid,
+                },
               },
             }}
             >

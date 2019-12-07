@@ -5,24 +5,24 @@ import styled from 'styled-components';
 import colors from '../../styles/color';
 
 const StyledHr = styled.hr`
-  border-color: ${({ color, theme }) => (
+  background-color: ${({ color, theme }) => (
     color
       ? colors.palette[color]
       : theme.components.hr.color.default
   )};
-  border-style: ${({ dashed }) => (dashed ? 'dashed' : 'solid')};
-  border-width: ${({ theme }) => theme.components.hr.borderWidth};
+  border: none;
   border-radius: ${({ theme }) => theme.global.borderRadius};
   display: block;
+  height: ${({ theme }) => theme.components.hr.height};
   margin: 0;
   width: 100%;
 
-  ${({ borderWidth }) => borderWidth && `
-    border-width: ${borderWidth};
-  `}
-
   ${({ centered }) => centered && `
     margin-left: 25% !important;
+  `}
+
+  ${({ height }) => height && `
+    height: ${height};
   `}
 
   ${({ margin }) => margin && `
@@ -37,19 +37,17 @@ const StyledHr = styled.hr`
 const Hr = ({ ...props }) => <StyledHr {...props} />;
 
 Hr.propTypes = {
-  borderWidth: PropTypes.string,
   centered: PropTypes.bool,
   color: PropTypes.string,
-  dashed: PropTypes.bool,
+  height: PropTypes.string,
   margin: PropTypes.string,
   width: PropTypes.string,
 };
 
 Hr.defaultProps = {
-  borderWidth: undefined,
   centered: false,
   color: undefined,
-  dashed: false,
+  height: undefined,
   margin: undefined,
   width: undefined,
 };

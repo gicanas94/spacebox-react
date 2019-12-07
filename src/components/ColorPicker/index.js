@@ -20,7 +20,7 @@ const StyledLabel = styled.span`
   font-size: ${({ theme }) => theme.components.colorPicker.fontSize};
   font-weight: ${({ theme }) => theme.components.colorPicker.fontWeight};
   margin-bottom: 20px;
-  word-break: break-all;
+  word-break: break-word;
 `;
 
 const ColorPicker = ({

@@ -339,12 +339,12 @@ const CreateSpaceboxForm = ({
 
 CreateSpaceboxForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapStateToProps = state => ({ authUser: state.session.authUser });
+const mapStateToProps = state => ({ authUser: state.authUser });
 
 const mapDispatchToProps = { alertSetAction: alertSet };
 

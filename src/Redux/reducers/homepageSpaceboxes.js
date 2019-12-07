@@ -1,6 +1,6 @@
-const spaceboxReducer = (state = {}, action) => {
+const homepageSpaceboxesReducer = (state = {}, action) => {
   switch (action.type) {
-    case 'SPACEBOXES_SET': {
+    case 'HOMEPAGE_SPACEBOXES_SET': {
       return {
         ...state,
         all: action.spaceboxes,
@@ -11,4 +11,4 @@ const spaceboxReducer = (state = {}, action) => {
   }
 };
 
-export default spaceboxReducer;
+export default homepageSpaceboxesReducer;

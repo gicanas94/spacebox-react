@@ -21,8 +21,8 @@ const StyledTitle = styled.div`
   transition: blur ${transition.speed.superfast} linear,
               opacity ${transition.speed.superfast} linear;
   width: 100%;
+  word-break: break-word;
   word-spacing: 5px;
-  word-wrap: break-word;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 
@@ -45,7 +45,7 @@ const StyledDescription = styled.div`
   transition: opacity ${transition.speed.superfast} linear,
               visibility ${transition.speed.superfast} linear;
   width: 100%;
-  word-wrap: break-word;
+  word-break: break-word;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 
@@ -273,7 +273,12 @@ const Spacebox = ({
       {title && (
         <StyledTitle>
           {informative
-            ? <FormattedMessage id={title} />
+            ? (
+              <FormattedMessage
+                id={typeof title === 'object' ? title[0] : title}
+                values={typeof title === 'object' ? title[1] : null}
+              />
+            )
             : title
           }
         </StyledTitle>
@@ -320,7 +325,10 @@ Spacebox.propTypes = {
   onEditSpaceboxClickHandler: PropTypes.func,
   order: PropTypes.number,
   rounded: PropTypes.bool,
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+  ]),
 };
 
 Spacebox.defaultProps = {

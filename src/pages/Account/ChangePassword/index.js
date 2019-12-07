@@ -43,7 +43,7 @@ const ChangePasswordSubpage = ({ alertSetAction, authUser, firebase }) => (
 
 ChangePasswordSubpage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

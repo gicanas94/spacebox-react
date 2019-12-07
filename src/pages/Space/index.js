@@ -13,12 +13,17 @@ import React, {
 
 import styled from 'styled-components';
 
-import { alertSet, loadingSet } from '../../Redux/actions';
+import {
+  alertSet,
+  confirmationModalClose,
+  confirmationModalOpen,
+  isLoadingSet,
+} from '../../Redux/actions';
+
 import Box from '../../components/Box';
 import { device } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
 import Hr from '../../components/Hr';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import Post from '../../components/Post';
 import PostForm from '../../forms/Post';
 import { ROUTES } from '../../constants';
@@ -39,10 +44,6 @@ const StyledGrid = styled.div`
   grid-template-columns: 1fr;
   margin: auto;
   width: 100%;
-
-  div {
-    overflow: hidden;
-  }
 
   ${StyledSpaceboxInfoSectionWrapper},
   ${StyledPostFormWrapper} {
@@ -102,11 +103,12 @@ const StyledNoPostsText = styled.p`
 const SpacePage = ({
   alertSetAction,
   authUser,
+  confirmationModalCloseAction,
+  confirmationModalOpenAction,
   firebase,
   history,
   intl,
-  isLoading,
-  loadingSetAction,
+  isLoadingSetAction,
   location,
   match,
 }) => {
@@ -252,7 +254,7 @@ const SpacePage = ({
   useEffect(() => {
     (async () => {
       try {
-        loadingSetAction(true);
+        isLoadingSetAction(true);
 
         let spaceboxData = {};
 
@@ -282,7 +284,7 @@ const SpacePage = ({
           history.push(ROUTES.HOME);
         }
       } finally {
-        loadingSetAction(false);
+        isLoadingSetAction(false);
       }
     })();
 
@@ -293,8 +295,6 @@ const SpacePage = ({
 
   return (
     <Fragment>
-      {isLoading && <LoadingSpinner />}
-
       {allTasksFinished && (
         <Fragment>
           <HelmetTitle
@@ -412,6 +412,8 @@ const SpacePage = ({
                       <Post
                         alertSetAction={alertSetAction}
                         authUser={authUser}
+                        confirmationModalCloseAction={confirmationModalCloseAction}
+                        confirmationModalOpenAction={confirmationModalOpenAction}
                         createPostCallback={createPostCallback}
                         deletePostCallback={deletePostCallback}
                         firebase={firebase}
@@ -447,29 +449,24 @@ const SpacePage = ({
 
 SpacePage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  confirmationModalCloseAction: PropTypes.func.isRequired,
+  confirmationModalOpenAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   intl: PropTypes.objectOf(PropTypes.any).isRequired,
-  isLoading: PropTypes.bool,
-  loadingSetAction: PropTypes.func.isRequired,
+  isLoadingSetAction: PropTypes.func.isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-SpacePage.defaultProps = {
-  authUser: null,
-  isLoading: false,
-};
-
-const mapStateToProps = state => ({
-  authUser: state.session.authUser,
-  isLoading: state.isLoading,
-});
+const mapStateToProps = state => ({ authUser: state.authUser });
 
 const mapDispatchToProps = {
   alertSetAction: alertSet,
-  loadingSetAction: loadingSet,
+  confirmationModalCloseAction: confirmationModalClose,
+  confirmationModalOpenAction: confirmationModalOpen,
+  isLoadingSetAction: isLoadingSet,
 };
 
 export default compose(

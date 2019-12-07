@@ -65,7 +65,7 @@ const StyledLi = styled.li`
   a {
     font-size: ${({ theme }) => theme.components.sidebar.link.fontSize};
     font-weight: ${({ theme }) => theme.components.sidebar.link.fontWeight};
-    word-break: break-all;
+    word-break: break-word;
 
     &.active {
       font-weight: ${({ theme }) => (

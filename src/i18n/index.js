@@ -27,6 +27,9 @@ const messages = {
           placeholder: 'Search',
         },
       },
+      loadingScreen: {
+        text: 'Loading',
+      },
       post: {
         comment: {
           postAuthor: 'Post author',
@@ -296,6 +299,8 @@ const messages = {
         informativeSpaceboxTitles: {
           loading: 'Loading...',
           error: 'ERROR.',
+          resultsCount: 'Results: {count}',
+          noResults: 'No results',
         },
       },
       notFound: {
@@ -380,6 +385,9 @@ const messages = {
         searchBar: {
           placeholder: 'Buscar',
         },
+      },
+      loadingScreen: {
+        text: 'Cargando',
       },
       post: {
         comment: {

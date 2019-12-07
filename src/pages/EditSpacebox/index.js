@@ -7,12 +7,16 @@ import styled from 'styled-components';
 import { Trash } from 'styled-icons/fa-solid/Trash';
 import { withRouter } from 'react-router-dom';
 
-import { alertSet, loadingSet } from '../../Redux/actions';
+import {
+  alertSet,
+  confirmationModalClose,
+  confirmationModalOpen,
+  isLoadingSet,
+} from '../../Redux/actions';
+
 import Box from '../../components/Box';
-import ConfirmationModal from '../../components/ConfirmationModal';
 import EditSpaceboxForm from '../../forms/EditSpacebox';
 import HelmetTitle from '../../components/HelmetTitle';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import { ROUTES } from '../../constants';
 import { withAuthorization } from '../../Session';
 import { withFirebase } from '../../Firebase';
@@ -49,13 +53,14 @@ const StyledTrashIcon = styled(Trash)`
 const EditSpaceboxPage = ({
   alertSetAction,
   authUser,
+  confirmationModalCloseAction,
+  confirmationModalOpenAction,
   firebase,
   history,
   isLoading,
-  loadingSetAction,
+  isLoadingSetAction,
   match,
 }) => {
-  const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
   const [spacebox, setSpacebox] = useState(null);
 
   const [
@@ -67,7 +72,7 @@ const EditSpaceboxPage = ({
     (async () => {
       try {
         alertSetAction();
-        loadingSetAction(true);
+        isLoadingSetAction(true);
 
         const userSpaceboxes = [];
         const data = await firebase.userSpaceboxes(authUser.uid).get();
@@ -91,45 +96,45 @@ const EditSpaceboxPage = ({
 
         history.push(ROUTES.HOME);
       } finally {
-        loadingSetAction(false);
+        isLoadingSetAction(false);
       }
     })();
   }, []);
 
-  const handleDeleteSpaceboxClick = () => {
-    (async () => {
-      try {
-        alertSetAction();
-        setDeleteSpaceboxInProgress(true);
+  const handleDeleteSpaceboxClick = () => (
+    new Promise((resolve, reject) => (
+      (async () => {
+        try {
+          alertSetAction();
+          setDeleteSpaceboxInProgress(true);
 
-        await firebase.spacebox(spacebox.slug).delete();
+          await firebase.spacebox(spacebox.slug).delete();
 
-        setConfirmationModalIsOpen(false);
-        history.push(ROUTES.HOME);
+          resolve();
+          history.push(ROUTES.HOME);
 
-        alertSetAction({
-          message: {
-            id: 'pages.editSpacebox.deleteSpacebox.successAlertMessage',
-            values: { spaceboxTitle: spacebox.title },
-          },
-          type: 'success',
-        });
-      } catch (error) {
-        setConfirmationModalIsOpen(false);
-        setDeleteSpaceboxInProgress(false);
+          alertSetAction({
+            message: {
+              id: 'pages.editSpacebox.deleteSpacebox.successAlertMessage',
+              values: { spaceboxTitle: spacebox.title },
+            },
+            type: 'success',
+          });
+        } catch (error) {
+          reject();
+          setDeleteSpaceboxInProgress(false);
 
-        alertSetAction({
-          message: error.message,
-          type: 'danger',
-        });
-      }
-    })();
-  };
+          alertSetAction({
+            message: error.message,
+            type: 'danger',
+          });
+        }
+      })()
+    ))
+  );
 
   return (
     <Fragment>
-      {isLoading && <LoadingSpinner />}
-
       {!isLoading && spacebox && (
         <Box size="medium">
           <HelmetTitle title={{ id: 'pages.editSpacebox.title' }} />
@@ -141,7 +146,12 @@ const EditSpaceboxPage = ({
 
             <StyledDeleteSpacebox
               className="linkStyle"
-              onClick={() => setConfirmationModalIsOpen(true)}
+              onClick={() => confirmationModalOpenAction({
+                buttonsAreDisabled: deleteSpaceboxInProgress,
+                content: 'pages.editSpacebox.deleteSpacebox.confirmationModal.content',
+                onConfirmHandler: handleDeleteSpaceboxClick,
+                title: 'pages.editSpacebox.deleteSpacebox.confirmationModal.title',
+              })}
               tabIndex="0"
             >
               <StyledTrashIcon />
@@ -158,16 +168,6 @@ const EditSpaceboxPage = ({
             history={history}
             spacebox={spacebox}
           />
-
-          {confirmationModalIsOpen && (
-            <ConfirmationModal
-              buttonsAreDisabled={deleteSpaceboxInProgress}
-              content="pages.editSpacebox.deleteSpacebox.confirmationModal.content"
-              onCancelHandler={() => setConfirmationModalIsOpen(false)}
-              onConfirmHandler={() => handleDeleteSpaceboxClick()}
-              title="pages.editSpacebox.deleteSpacebox.confirmationModal.title"
-            />
-          )}
         </Box>
       )}
     </Fragment>
@@ -176,27 +176,26 @@ const EditSpaceboxPage = ({
 
 EditSpaceboxPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  confirmationModalCloseAction: PropTypes.func.isRequired,
+  confirmationModalOpenAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
-  isLoading: PropTypes.bool,
-  loadingSetAction: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  isLoadingSetAction: PropTypes.func.isRequired,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-EditSpaceboxPage.defaultProps = {
-  authUser: null,
-  isLoading: false,
-};
-
 const mapStateToProps = state => ({
-  authUser: state.session.authUser,
+  authUser: state.authUser,
   isLoading: state.isLoading,
 });
 
 const mapDispatchToProps = {
   alertSetAction: alertSet,
-  loadingSetAction: loadingSet,
+  isLoadingSetAction: isLoadingSet,
+  confirmationModalCloseAction: confirmationModalClose,
+  confirmationModalOpenAction: confirmationModalOpen,
 };
 
 const condition = authUser => !!authUser;

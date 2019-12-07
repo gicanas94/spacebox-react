@@ -2,18 +2,20 @@ import { combineReducers } from 'redux';
 
 import alertReducer from './alert';
 import appLocaleReducer from './appLocale';
-import loadingReducer from './loading';
-import searchReducer from './search';
-import sessionReducer from './session';
-import spaceboxReducer from './spacebox';
+import authUserReducer from './authUser';
+import confirmationModalReducer from './confirmationModal';
+import homepageSpaceboxesReducer from './homepageSpaceboxes';
+import isLoadingReducer from './isLoading';
+import spaceboxToSearchReducer from './spaceboxToSearch';
 
 const rootReducer = combineReducers({
-  activeAlert: alertReducer,
+  alert: alertReducer,
   appLocale: appLocaleReducer,
-  isLoading: loadingReducer,
-  session: sessionReducer,
-  spacebox: spaceboxReducer,
-  spaceboxToSearch: searchReducer,
+  authUser: authUserReducer,
+  confirmationModal: confirmationModalReducer,
+  homepageSpaceboxes: homepageSpaceboxesReducer,
+  isLoading: isLoadingReducer,
+  spaceboxToSearch: spaceboxToSearchReducer,
 });
 
 export default rootReducer;

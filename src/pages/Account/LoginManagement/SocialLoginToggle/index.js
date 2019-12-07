@@ -6,15 +6,15 @@ import Button from '../../../../components/Button';
 const SocialLoginToggle = ({
   isEnabled,
   isLoading,
-  onLinkHandler,
+  linkHandler,
   onlyOneLeft,
-  onUnlinkHandler,
   signInMethod,
+  unlinkHandler,
 }) => (isEnabled ? (
   <Button
     color="salmon"
     disabled={onlyOneLeft || isLoading}
-    onClick={() => onUnlinkHandler(signInMethod.id)}
+    onClick={() => unlinkHandler(signInMethod.id)}
     rounded
     size="small"
     styleType="unbordered"
@@ -29,7 +29,7 @@ const SocialLoginToggle = ({
   <Button
     color="green"
     disabled={isLoading}
-    onClick={() => onLinkHandler(signInMethod.provider)}
+    onClick={() => linkHandler(signInMethod.provider)}
     rounded
     size="small"
     styleType="bordered"
@@ -44,15 +44,11 @@ const SocialLoginToggle = ({
 
 SocialLoginToggle.propTypes = {
   isEnabled: PropTypes.bool.isRequired,
-  isLoading: PropTypes.bool,
-  onLinkHandler: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  linkHandler: PropTypes.func.isRequired,
   onlyOneLeft: PropTypes.bool.isRequired,
-  onUnlinkHandler: PropTypes.func.isRequired,
   signInMethod: PropTypes.objectOf(PropTypes.any).isRequired,
-};
-
-SocialLoginToggle.defaultProps = {
-  isLoading: false,
+  unlinkHandler: PropTypes.func.isRequired,
 };
 
 export default SocialLoginToggle;

@@ -83,7 +83,7 @@ export default {
     },
     confirmationModal: {
       bgColor1: color.palette.white,
-      bgColor2: Color(themeMainColor).alpha(0.8).string(),
+      bgColor2: Color(themeMainColor).darken(0.7).alpha(0.7).string(),
     },
     header: {
       bgColor: color.palette.asphalt,
@@ -93,10 +93,10 @@ export default {
       mobileWidth: '100%',
     },
     hr: {
-      borderWidth: '1.5px',
       color: {
         default: color.palette.abalone,
       },
+      height: '2px',
     },
     input: {
       bgColor: color.palette.cloud,
@@ -116,9 +116,14 @@ export default {
         fontWeight: font.weight.bold,
       },
     },
-    loadingSpinner: {
-      bgColor: 'rgba(255, 255, 255, 0.8)',
-      spinnerColor: themeMainColor,
+    loadingScreen: {
+      bgColor: Color(themeMainColor).darken(0.7).alpha(0.7).string(),
+      heartColor: color.palette.white,
+      text: {
+        color: color.palette.white,
+        fontSize: '50px',
+        fontWeight: font.weight.bold,
+      },
     },
     post: {
       commentIcon: {

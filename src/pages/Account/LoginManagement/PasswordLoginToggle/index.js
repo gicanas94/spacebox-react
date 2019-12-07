@@ -14,13 +14,14 @@ const StyledPasswordLinkFormWrapper = styled.div`
 const PasswordLoginToggle = ({
   alertSetAction,
   authUserEmail,
-  fetchSignInMethodsHandler,
   firebase,
+  getSignInMethodsHandler,
   isEnabled,
   isLoading,
+  isLoadingSetAction,
   onlyOneLeft,
-  onUnlinkHandler,
   signInMethod,
+  unlinkHandler,
 }) => {
   const [
     passwordLinkFormIsVisible,
@@ -37,7 +38,7 @@ const PasswordLoginToggle = ({
         <Button
           color="salmon"
           disabled={onlyOneLeft || isLoading}
-          onClick={() => onUnlinkHandler(signInMethod.id)}
+          onClick={() => unlinkHandler(signInMethod.id)}
           rounded
           size="small"
           styleType="unbordered"
@@ -69,9 +70,9 @@ const PasswordLoginToggle = ({
           <PasswordLinkForm
             alertSetAction={alertSetAction}
             authUserEmail={authUserEmail}
-            fetchSignInMethodsHandler={fetchSignInMethodsHandler}
             firebase={firebase}
-            page="loginManagement"
+            getSignInMethodsHandler={getSignInMethodsHandler}
+            isLoadingSetAction={isLoadingSetAction}
             setPasswordLinkFormIsVisibleHandler={setPasswordLinkFormIsVisible}
           />
         </StyledPasswordLinkFormWrapper>
@@ -83,17 +84,14 @@ const PasswordLoginToggle = ({
 PasswordLoginToggle.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUserEmail: PropTypes.string.isRequired,
-  fetchSignInMethodsHandler: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  getSignInMethodsHandler: PropTypes.func.isRequired,
   isEnabled: PropTypes.bool.isRequired,
-  isLoading: PropTypes.bool,
+  isLoading: PropTypes.bool.isRequired,
+  isLoadingSetAction: PropTypes.func.isRequired,
   onlyOneLeft: PropTypes.bool.isRequired,
-  onUnlinkHandler: PropTypes.func.isRequired,
   signInMethod: PropTypes.objectOf(PropTypes.any).isRequired,
-};
-
-PasswordLoginToggle.defaultProps = {
-  isLoading: false,
+  unlinkHandler: PropTypes.func.isRequired,
 };
 
 export default PasswordLoginToggle;

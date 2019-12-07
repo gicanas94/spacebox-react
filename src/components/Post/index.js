@@ -13,7 +13,6 @@ import useStateWithCallback from 'use-state-with-callback';
 import Box from '../Box';
 import Comment from './Comment';
 import CommentForm from '../../forms/Comment';
-import ConfirmationModal from '../ConfirmationModal';
 import { ROUTES } from '../../constants';
 import Tooltip from '../Tooltip';
 import { transition } from '../../styles';
@@ -163,6 +162,8 @@ const StyledSeeOrHideCommentsSpan = styled.span`
 const Post = ({
   alertSetAction,
   authUser,
+  confirmationModalCloseAction,
+  confirmationModalOpenAction,
   deletePostCallback,
   firebase,
   history,
@@ -172,8 +173,6 @@ const Post = ({
   user,
 }) => {
   const [commentsLimit, setCommentsLimit] = useState(3);
-  const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
-  const [deletePostInProgress, setDeletePostInProgress] = useState(false);
   const [likeInProgress, setLikeInProgress] = useState(false);
   const [postLikes, setPostLikes] = useState(post.likes);
   const [postComments, setPostComments] = useState(post.comments);
@@ -187,51 +186,51 @@ const Post = ({
     if (commentFormIsVisible) document.getElementById(commentFormId).focus();
   });
 
-  const handleDeletePostClick = () => {
-    (async () => {
-      try {
-        alertSetAction();
-        setDeletePostInProgress(true);
+  const handleDeletePostClick = () => (
+    new Promise((resolve, reject) => (
+      (async () => {
+        try {
+          alertSetAction();
 
-        await firebase.db.runTransaction(async (transaction) => {
-          const spaceboxRef = firebase.spacebox(spacebox.slug);
-          const postRef = firebase.post(spacebox.slug, post.slug);
-          const spaceboxDocument = await transaction.get(spaceboxRef);
-          const postDocument = await transaction.get(postRef);
+          await firebase.db.runTransaction(async (transaction) => {
+            const spaceboxRef = firebase.spacebox(spacebox.slug);
+            const postRef = firebase.post(spacebox.slug, post.slug);
+            const spaceboxDocument = await transaction.get(spaceboxRef);
+            const postDocument = await transaction.get(postRef);
 
-          transaction.update(spaceboxRef, {
-            likes: spaceboxDocument.data().likes - postDocument.data().likes.length,
+            transaction.update(spaceboxRef, {
+              likes: spaceboxDocument.data().likes - postDocument.data().likes.length,
+            });
+
+            transaction.delete(postRef);
           });
 
-          transaction.delete(postRef);
-        });
+          if (page === 'space') deletePostCallback(post);
 
-        if (page === 'space') deletePostCallback(post);
+          resolve();
 
-        setConfirmationModalIsOpen(false);
+          if (page === 'post') {
+            history.push(
+              `${ROUTES.SPACE_BASE}/${spacebox.slug}`,
+              { spacebox },
+            );
+          }
 
-        if (page === 'post') {
-          history.push(
-            `${ROUTES.SPACE_BASE}/${spacebox.slug}`,
-            { spacebox },
-          );
+          alertSetAction({
+            message: { id: 'components.post.deletePost.successAlertMessage' },
+            type: 'success',
+          });
+        } catch (error) {
+          reject();
+
+          alertSetAction({
+            message: error.message,
+            type: 'danger',
+          });
         }
-
-        alertSetAction({
-          message: { id: 'components.post.deletePost.successAlertMessage' },
-          type: 'success',
-        });
-      } catch (error) {
-        setDeletePostInProgress(false);
-        setConfirmationModalIsOpen(false);
-
-        alertSetAction({
-          message: error.message,
-          type: 'danger',
-        });
-      }
-    })();
-  };
+      })()
+    ))
+  );
 
   const handleLikePostClick = () => {
     firebase.db.runTransaction(async (transaction) => {
@@ -342,7 +341,11 @@ const Post = ({
         id: 'components.post.iconsTooltips.deletePost',
       })}
       onClick={
-        () => !likeInProgress && setConfirmationModalIsOpen(true)
+        () => !likeInProgress && confirmationModalOpenAction({
+          content: 'components.post.deletePost.confirmationModal.content',
+          onConfirmHandler: handleDeletePostClick,
+          title: 'components.post.deletePost.confirmationModal.title',
+        })
       }
     />
   );
@@ -512,23 +515,15 @@ const Post = ({
           />
         </Fragment>
       )}
-
-      {confirmationModalIsOpen && (
-        <ConfirmationModal
-          buttonsAreDisabled={deletePostInProgress}
-          content="components.post.deletePost.confirmationModal.content"
-          onCancelHandler={() => setConfirmationModalIsOpen(false)}
-          onConfirmHandler={() => handleDeletePostClick()}
-          title="components.post.deletePost.confirmationModal.title"
-        />
-      )}
     </Box>
   );
 };
 
 Post.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  confirmationModalCloseAction: PropTypes.func.isRequired,
+  confirmationModalOpenAction: PropTypes.func.isRequired,
   deletePostCallback: PropTypes.func,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any),
@@ -539,7 +534,6 @@ Post.propTypes = {
 };
 
 Post.defaultProps = {
-  authUser: null,
   deletePostCallback: null,
   history: null,
 };

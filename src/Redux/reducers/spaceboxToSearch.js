@@ -1,4 +1,4 @@
-const searchReducer = (state = '', action) => {
+const spaceboxToSearchReducer = (state = '', action) => {
   switch (action.type) {
     case 'SEARCH_BAR_CHANGE':
       return action.draft;
@@ -7,4 +7,4 @@ const searchReducer = (state = '', action) => {
   }
 };
 
-export default searchReducer;
+export default spaceboxToSearchReducer;

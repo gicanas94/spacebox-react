@@ -100,10 +100,10 @@ const LoginManagementSubpage = ({
   activeSignInMethods,
   alertSetAction,
   authUser,
-  fetchSignInMethodsHandler,
   firebase,
+  getSignInMethodsHandler,
   isLoading,
-  loadingSetAction,
+  isLoadingSetAction,
 }) => {
   const signInMethods = [
     {
@@ -142,7 +142,8 @@ const LoginManagementSubpage = ({
         ));
 
         await firebase.doLinkWithPopup(provider);
-        await fetchSignInMethodsHandler();
+        isLoadingSetAction(true);
+        await getSignInMethodsHandler();
 
         alertSetAction({
           message: {
@@ -156,6 +157,8 @@ const LoginManagementSubpage = ({
           message: error.message,
           type: 'danger',
         });
+      } finally {
+        isLoadingSetAction(false);
       }
     })();
   };
@@ -164,10 +167,10 @@ const LoginManagementSubpage = ({
     (async () => {
       try {
         alertSetAction();
-        loadingSetAction(true);
+        isLoadingSetAction(true);
 
         await firebase.doUnlink(providerId);
-        await fetchSignInMethodsHandler();
+        await getSignInMethodsHandler();
 
         alertSetAction({
           message: {
@@ -183,8 +186,8 @@ const LoginManagementSubpage = ({
           message: error.message,
           type: 'danger',
         });
-
-        loadingSetAction(false);
+      } finally {
+        isLoadingSetAction(false);
       }
     })();
   };
@@ -225,22 +228,23 @@ const LoginManagementSubpage = ({
                 <PasswordLoginToggle
                   alertSetAction={alertSetAction}
                   authUserEmail={authUser.email}
-                  fetchSignInMethodsHandler={fetchSignInMethodsHandler}
                   firebase={firebase}
+                  getSignInMethodsHandler={getSignInMethodsHandler}
                   isEnabled={isEnabled}
                   isLoading={isLoading}
+                  isLoadingSetAction={isLoadingSetAction}
                   onlyOneLeft={onlyOneLeft}
-                  onUnlinkHandler={handleUnlink}
                   signInMethod={signInMethod}
+                  unlinkHandler={handleUnlink}
                 />
               ) : (
                 <SocialLoginToggle
                   isEnabled={isEnabled}
                   isLoading={isLoading}
-                  onLinkHandler={handleSocialLoginLink}
+                  linkHandler={handleSocialLoginLink}
                   onlyOneLeft={onlyOneLeft}
-                  onUnlinkHandler={handleUnlink}
                   signInMethod={signInMethod}
+                  unlinkHandler={handleUnlink}
                 />
               )
             }
@@ -258,15 +262,11 @@ const LoginManagementSubpage = ({
 LoginManagementSubpage.propTypes = {
   activeSignInMethods: PropTypes.arrayOf(PropTypes.string).isRequired,
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-  fetchSignInMethodsHandler: PropTypes.func.isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  isLoading: PropTypes.bool,
-  loadingSetAction: PropTypes.func.isRequired,
-};
-
-LoginManagementSubpage.defaultProps = {
-  isLoading: false,
+  getSignInMethodsHandler: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  isLoadingSetAction: PropTypes.func.isRequired,
 };
 
 export default LoginManagementSubpage;

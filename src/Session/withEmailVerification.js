@@ -23,15 +23,11 @@ const withEmailVerification = (Component) => {
   );
 
   WithEmailVerification.propTypes = {
-    authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
     firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   };
 
-  WithEmailVerification.defaultProps = {
-    authUser: null,
-  };
-
-  const mapStateToProps = state => ({ authUser: state.session.authUser });
+  const mapStateToProps = state => ({ authUser: state.authUser });
 
   return compose(
     connect(mapStateToProps),

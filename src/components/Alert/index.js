@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import { device } from '../../styles';
 
 const StyledAlert = styled.div`
-  bottom: 0;
   cursor: pointer;
   display: flex;
   font-weight: ${({ theme }) => theme.components.alert.fontWeight};
@@ -19,13 +18,9 @@ const StyledAlert = styled.div`
   padding: 10px;
   position: fixed;
   text-align: justify;
+  top: 0;
   width: 100%;
   z-index: 1500;
-
-  @media ${device.laptop} {
-    padding: 5px 0;
-    top: 0;
-  }
 
   ${({ type, theme }) => type && `
     background: linear-gradient(
@@ -36,15 +31,8 @@ const StyledAlert = styled.div`
   `}
 
   ${({ withBorder, type, theme }) => withBorder && `
-    border-bottom: 0;
-    border-top: ${theme.components.alert.type[type].border};
-
-    @media ${device.laptop} {
-      border-bottom: ${theme.components.alert.type[type].border};
-      border-top: 0;
-    }
+    border-bottom: ${theme.components.alert.type[type].border};
   `}
-  }
 `;
 
 const StyledWrapper = styled.div`

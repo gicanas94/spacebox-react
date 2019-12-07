@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Box from '../Box';
@@ -80,64 +80,79 @@ const StyledButtonsWrapper = styled.div`
 `;
 
 const ConfirmationModal = ({
-  buttonsAreDisabled,
   buttonsContent,
   content,
-  onCancelHandler,
+  onCloseHandler,
   onConfirmHandler,
   rounded,
   title,
-}) => (
-  <StyledWrapper>
-    <StyledCloserOnClick onClick={onCancelHandler} />
+  ...props
+}) => {
+  const [confirmInProgress, setConfirmInProgress] = useState(false);
 
-    <StyledBox rounded={rounded} noBorder>
-      <h1>
-        <FormattedMessage id={title} />
-      </h1>
+  useEffect(() => {
+    document.getElementById('page-content').style.filter = 'blur(2px)';
 
-      <StyledContent>
-        <FormattedMessage id={content} />
-      </StyledContent>
+    return () => {
+      document.getElementById('page-content').style.filter = 'none';
+    };
+  }, []);
 
-      <StyledButtonsWrapper>
-        <Button
-          color="abalone"
-          disabled={buttonsAreDisabled}
-          onClick={onCancelHandler}
-          rounded
-          styleType="unbordered"
-          type="button"
-        >
-          {buttonsContent[0]}
-        </Button>
+  const handleConfirm = () => {
+    setConfirmInProgress(true);
+    onConfirmHandler().then(() => onCloseHandler());
+  };
 
-        <Button
-          disabled={buttonsAreDisabled}
-          onClick={onConfirmHandler}
-          rounded
-          styleType="bordered"
-          type="submit"
-        >
-          {buttonsContent[1]}
-        </Button>
-      </StyledButtonsWrapper>
-    </StyledBox>
-  </StyledWrapper>
-);
+  return (
+    <StyledWrapper {...props}>
+      <StyledCloserOnClick onClick={onCloseHandler} />
+
+      <StyledBox rounded={rounded} noBorder>
+        <h1>
+          <FormattedMessage id={title} />
+        </h1>
+
+        <StyledContent>
+          <FormattedMessage id={content} />
+        </StyledContent>
+
+        <StyledButtonsWrapper>
+          <Button
+            color="abalone"
+            disabled={confirmInProgress}
+            onClick={onCloseHandler}
+            rounded
+            styleType="unbordered"
+            type="button"
+          >
+            {buttonsContent[0]}
+          </Button>
+
+          <Button
+            disabled={confirmInProgress}
+            onClick={handleConfirm}
+            rounded
+            styleType="bordered"
+            type="submit"
+          >
+            {buttonsContent[1]}
+          </Button>
+        </StyledButtonsWrapper>
+      </StyledBox>
+    </StyledWrapper>
+  );
+};
 
 ConfirmationModal.propTypes = {
-  buttonsAreDisabled: PropTypes.bool,
   buttonsContent: PropTypes.arrayOf(PropTypes.string),
   content: PropTypes.string.isRequired,
-  onCancelHandler: PropTypes.func.isRequired,
+  onCloseHandler: PropTypes.func.isRequired,
   onConfirmHandler: PropTypes.func.isRequired,
   rounded: PropTypes.bool,
   title: PropTypes.string.isRequired,
 };
 
 ConfirmationModal.defaultProps = {
-  buttonsAreDisabled: false,
   buttonsContent: [
     'components.confirmationModal.buttons.defaultCancel',
     'components.confirmationModal.buttons.defaultConfirm',

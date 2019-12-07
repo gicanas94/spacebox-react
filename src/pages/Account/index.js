@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { alertSet, loadingSet } from '../../Redux/actions';
+import { alertSet, isLoadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import ChangePasswordSubpage from './ChangePassword';
 import { device } from '../../styles';
+import GeneralSettingsSubpage from './GeneralSettings';
 import HelmetTitle from '../../components/HelmetTitle';
 import LoginManagementSubpage from './LoginManagement';
 import { ROUTES } from '../../constants';
@@ -60,10 +61,11 @@ const AccountPage = ({
   authUser,
   firebase,
   isLoading,
-  loadingSetAction,
+  isLoadingSetAction,
 }) => {
   const [authUserHasPassword, setAuthUserHasPassword] = useState(false);
   const [activeSignInMethods, setActiveSignInMethods] = useState([]);
+  const [databaseAuthUser, setDatabaseAuthUser] = useState({});
 
   const sidebarContent = [
     {
@@ -88,30 +90,48 @@ const AccountPage = ({
     },
   ];
 
-  const fetchSignInMethods = async () => {
-    try {
-      loadingSetAction(true);
+  const getDatabaseAuthUser = () => (
+    new Promise((resolve, reject) => {
+      firebase.user(authUser.uid).get()
+        .then((document) => {
+          setDatabaseAuthUser(document.data());
+          resolve();
+        })
+        .catch(error => reject(error));
+    })
+  );
 
-      const signInMethods = await firebase.doFetchSignInMethodsForEmail(
-        authUser.email,
-      );
+  const getSignInMethods = () => (
+    new Promise((resolve, reject) => {
+      firebase.doFetchSignInMethodsForEmail(authUser.email)
+        .then((signInMethods) => {
+          setAuthUserHasPassword(signInMethods.filter(
+            provider => provider === 'password',
+          ).length > 0);
 
-      setAuthUserHasPassword(signInMethods.filter(
-        provider => provider === 'password',
-      ).length > 0);
+          setActiveSignInMethods(signInMethods);
+          resolve();
+        })
+        .catch(error => reject(error));
+    })
+  );
 
-      setActiveSignInMethods(signInMethods);
-    } catch (error) {
-      alertSetAction({
-        message: error.message,
-        type: 'danger',
-      });
-    } finally {
-      loadingSetAction(false);
-    }
-  };
-
-  useEffect(() => { fetchSignInMethods(); }, []);
+  useEffect(() => {
+    (async () => {
+      try {
+        isLoadingSetAction(true);
+        await getDatabaseAuthUser();
+        await getSignInMethods();
+      } catch (error) {
+        alertSetAction({
+          message: error.message,
+          type: 'danger',
+        });
+      } finally {
+        isLoadingSetAction(false);
+      }
+    })();
+  }, []);
 
   return (
     <StyledGrid>
@@ -124,9 +144,13 @@ const AccountPage = ({
             <FormattedMessage id="pages.account.h1" />
           </h1>
 
-          <h2>
-            <FormattedMessage id="pages.account.generalSettings.h2" />
-          </h2>
+          <GeneralSettingsSubpage
+            alertSetAction={alertSetAction}
+            authUser={authUser}
+            databaseAuthUser={databaseAuthUser}
+            firebase={firebase}
+            getDatabaseAuthUserHandler={getDatabaseAuthUser}
+          />
         </Box>
 
         {authUserHasPassword && (
@@ -144,10 +168,10 @@ const AccountPage = ({
             activeSignInMethods={activeSignInMethods}
             alertSetAction={alertSetAction}
             authUser={authUser}
-            fetchSignInMethodsHandler={fetchSignInMethods}
             firebase={firebase}
+            getSignInMethodsHandler={getSignInMethods}
             isLoading={isLoading}
-            loadingSetAction={loadingSetAction}
+            isLoadingSetAction={isLoadingSetAction}
           />
         </Box>
       </div>
@@ -157,24 +181,20 @@ const AccountPage = ({
 
 AccountPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  isLoading: PropTypes.bool,
-  loadingSetAction: PropTypes.func.isRequired,
-};
-
-AccountPage.defaultProps = {
-  isLoading: false,
+  isLoading: PropTypes.bool.isRequired,
+  isLoadingSetAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  authUser: state.session.authUser,
+  authUser: state.authUser,
   isLoading: state.isLoading,
 });
 
 const mapDispatchToProps = {
   alertSetAction: alertSet,
-  loadingSetAction: loadingSet,
+  isLoadingSetAction: isLoadingSet,
 };
 
 const condition = authUser => !!authUser;

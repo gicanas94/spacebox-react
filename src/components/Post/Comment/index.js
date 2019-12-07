@@ -47,7 +47,7 @@ const StyledP = styled.p`
   line-height: 1;
   margin-bottom: 0;
   white-space: pre-wrap;
-  word-break: break-all;
+  word-break: break-word;
 `;
 
 const StyledUsername = styled(Link)`
@@ -124,12 +124,8 @@ const Comment = ({ comment }) => (
 );
 
 Comment.propTypes = {
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   comment: PropTypes.objectOf(PropTypes.any).isRequired,
-};
-
-Comment.defaultProps = {
-  authUser: null,
 };
 
 export default Comment;

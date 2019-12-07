@@ -63,12 +63,12 @@ const StyledWrapper = styled.div`
   ${({ disabled, theme }) => disabled && `
     ${StyledLabel},
     ${StyledSelectedOption} {
-      color: ${theme.components.Select.color.disabled} !important
+      color: ${theme.components.select.color.disabled} !important
       cursor: default;
     }
 
     ${StyledSimulatedSelect} {
-      border-color: ${theme.components.Select.color.disabled} !important;
+      border-color: ${theme.components.select.color.disabled} !important;
       cursor: default;
     }
   `}
@@ -76,11 +76,11 @@ const StyledWrapper = styled.div`
   ${({ error, theme }) => error && `
     ${StyledLabel},
     ${StyledArrowDownIcon} {
-      color: ${theme.components.Select.color.error};
+      color: ${theme.components.select.color.error};
     }
 
     ${StyledSimulatedSelect} {
-      border-color: ${theme.components.Select.color.error};
+      border-color: ${theme.components.select.color.error};
     }
   `}
 
@@ -91,11 +91,11 @@ const StyledWrapper = styled.div`
   ${({ success, theme }) => success && `
     ${StyledLabel},
     ${StyledArrowDownIcon} {
-      color: ${theme.components.Select.color.success};
+      color: ${theme.components.select.color.success};
     }
 
     ${StyledSimulatedSelect} {
-      border-color: ${theme.components.Select.color.success};
+      border-color: ${theme.components.select.color.success};
     }
   `}
 `;
@@ -150,6 +150,10 @@ const StyledLi = styled.li`
 
   &:hover {
     background-color: ${({ theme }) => theme.components.select.li.hoverColor};
+  }
+
+  &:before {
+    content: '';
   }
 `;
 

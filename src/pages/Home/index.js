@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
+import { alertSet, homepageSpaceboxesSet } from '../../Redux/actions';
 
-import { alertSet, loadingSet, spaceboxesSet } from '../../Redux/actions';
 import { device } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
 import { ROUTES } from '../../constants';
@@ -43,12 +44,12 @@ const HomePage = ({
   authUser,
   firebase,
   history,
-  isLoading,
-  loadingSetAction,
-  spaceboxesSetAction,
+  homepageSpaceboxesSetAction,
   spaceboxToSearch,
 }) => {
+  const intl = useIntl();
   const [componentIsMounted, setComponentIsMounted] = useState(true);
+  const [gettingSpaceboxes, setGettingSpaceboxes] = useState(false);
 
   const [
     getAllVisibleSpaceboxesFailed,
@@ -60,7 +61,7 @@ const HomePage = ({
   );
 
   useEffect(() => {
-    loadingSetAction(true);
+    setGettingSpaceboxes(true);
 
     firebase.allVisibleSpaceboxes().onSnapshot((documents) => {
       const spaceboxes = [];
@@ -68,8 +69,8 @@ const HomePage = ({
       documents.forEach(document => spaceboxes.push(document.data()));
 
       if (componentIsMounted) {
-        spaceboxesSetAction(spaceboxes);
-        loadingSetAction(false);
+        homepageSpaceboxesSetAction(spaceboxes);
+        setGettingSpaceboxes(false);
       }
     }, (error) => {
       alertSetAction({
@@ -78,7 +79,7 @@ const HomePage = ({
       });
 
       setGetAllVisibleSpaceboxesFailed(true);
-      loadingSetAction(false);
+      setGettingSpaceboxes(false);
     });
 
     return () => {
@@ -105,13 +106,16 @@ const HomePage = ({
           order={1}
           title={
             allSpaceboxes.length === 0
-              ? 'No results'
-              : `Results: ${allSpaceboxes.length}`
+              ? 'pages.home.informativeSpaceboxTitles.noResults'
+              : [
+                'pages.home.informativeSpaceboxTitles.resultsCount',
+                { count: intl.formatNumber(allSpaceboxes.length) },
+              ]
           }
         />
       )}
 
-      {isLoading && (
+      {gettingSpaceboxes && (
         <Spacebox
           informative
           order={allSpaceboxes ? allSpaceboxes.length + 1 : 1}
@@ -128,7 +132,7 @@ const HomePage = ({
       )}
 
       {allSpaceboxes
-        && !isLoading
+        && !gettingSpaceboxes
         && allSpaceboxes.map((spacebox, index) => (
           spacebox.visible && (
             <Spacebox
@@ -162,33 +166,27 @@ const HomePage = ({
 HomePage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   allSpaceboxes: PropTypes.arrayOf(PropTypes.object),
-  authUser: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
-  isLoading: PropTypes.bool,
-  loadingSetAction: PropTypes.func.isRequired,
-  spaceboxesSetAction: PropTypes.func.isRequired,
+  homepageSpaceboxesSetAction: PropTypes.func.isRequired,
   spaceboxToSearch: PropTypes.string,
 };
 
 HomePage.defaultProps = {
-  allSpaceboxes: null,
-  authUser: null,
-  isLoading: false,
+  allSpaceboxes: [],
   spaceboxToSearch: '',
 };
 
 const mapStateToProps = state => ({
-  allSpaceboxes: state.spacebox.all && searchSpaceboxSelector(state),
-  authUser: state.session.authUser,
-  isLoading: state.isLoading,
+  allSpaceboxes: state.homepageSpaceboxes.all && searchSpaceboxSelector(state),
+  authUser: state.authUser,
   spaceboxToSearch: state.spaceboxToSearch,
 });
 
 const mapDispatchToProps = {
   alertSetAction: alertSet,
-  loadingSetAction: loadingSet,
-  spaceboxesSetAction: spaceboxesSet,
+  homepageSpaceboxesSetAction: homepageSpaceboxesSet,
 };
 
 export default compose(

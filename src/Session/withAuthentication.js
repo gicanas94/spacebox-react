@@ -19,7 +19,7 @@ const withAuthentication = (Component) => {
         },
         () => {
           ls.remove('au');
-          authUserSetAction(null);
+          authUserSetAction(false);
         },
       );
 
