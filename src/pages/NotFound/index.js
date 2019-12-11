@@ -10,7 +10,7 @@ const StyledWrapper = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 60vh;
+  height: 75vh;
   justify-content: center;
   margin: auto;
   width: 80%;

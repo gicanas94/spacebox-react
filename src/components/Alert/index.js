@@ -11,10 +11,9 @@ const StyledAlert = styled.div`
   cursor: pointer;
   display: flex;
   font-weight: ${({ theme }) => theme.components.alert.fontWeight};
-  height: fit-content;
   justify-content: center;
-  left: 0;
   min-height: 60px;
+  left: 0;
   padding: 10px;
   position: fixed;
   text-align: justify;
@@ -48,11 +47,7 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledMessage = styled.div`
-  margin-right: 10px;
-
-  @media ${device.laptop} {
-    margin-right: 20px;
-  }
+  margin-right: 20px;
 `;
 
 const StyledCrossIcon = styled(Cross)`

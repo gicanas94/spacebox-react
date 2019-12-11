@@ -4,6 +4,7 @@ import { Menu } from 'styled-icons/boxicons-regular/Menu';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Transition } from 'react-spring/renderprops';
 import { useIntl } from 'react-intl';
 
 import { device } from '../../styles';
@@ -166,19 +167,28 @@ const Header = ({ location }) => {
             {location.pathname === '/' && <SearchBar intl={intl} />}
           </StyledSpan>
 
-          {mobileNavIsOpen
-            ? (
-              <StyledOverlay>
+          <Transition
+            items={mobileNavIsOpen}
+            from={{ marginTop: '-1000px' }}
+            enter={{ marginTop: '0' }}
+            leave={{ marginTop: '-1000px' }}
+            config={{ mass: 1, tension: 600, friction: 42 }}
+          >
+            {navIsOpen => navIsOpen && (transitionProps => (
+              <StyledOverlay style={transitionProps}>
                 <StyledCloserOnClick onClick={() => setMobileNavIsOpen(false)} />
                 <StyledCrossIcon onClick={() => setMobileNavIsOpen(false)} />
 
                 <StyledMobileViewNav>
-                  <Links onLinkClickHandler={setMobileNavIsOpen} />
+                  <Links buttonsSize="large" onLinkClickHandler={setMobileNavIsOpen} />
                 </StyledMobileViewNav>
               </StyledOverlay>
-            )
-            : <StyledMenuIcon onClick={() => setMobileNavIsOpen(true)} />
-          }
+            ))}
+          </Transition>
+
+          {!mobileNavIsOpen && (
+            <StyledMenuIcon onClick={() => setMobileNavIsOpen(true)} />
+          )}
         </StyledMobileView>
 
         <StyledLaptopView>
@@ -194,7 +204,7 @@ const Header = ({ location }) => {
           <StyledLaptopViewNav>
             {location.pathname === '/' && <SearchBar intl={intl} rounded />}
 
-            <Links onLinkClickHandler={setMobileNavIsOpen} />
+            <Links buttonsSize="small" onLinkClickHandler={setMobileNavIsOpen} />
           </StyledLaptopViewNav>
         </StyledLaptopView>
       </StyledHeader>

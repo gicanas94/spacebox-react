@@ -31,7 +31,7 @@ const StyledGrid = styled.div`
       margin-bottom: 10px;
     }
 
-    & div:last-of-type {
+    & > div:last-child {
       margin-bottom: 0;
     }
   }
@@ -49,7 +49,7 @@ const StyledGrid = styled.div`
         margin-bottom: 20px;
       }
 
-      & > div:last-of-type {
+      & > div:last-child {
         margin-bottom: 0;
       }
     }

@@ -25,6 +25,7 @@ import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 import SpacePage from './pages/Space';
 import PostPage from './pages/Post';
+import TestPage from './pages/Test';
 import UserPage from './pages/User';
 import VerifyEmailPage from './pages/VerifyEmail';
 import { withAuthentication } from './Session';
@@ -66,6 +67,11 @@ const App = ({
           <Route component={SignUpPage} path={ROUTES.SIGN_UP} />
           <Route component={SpacePage} exact path={ROUTES.SPACE_WITH_SLUG} />
           <Route component={PostPage} exact path={ROUTES.SPACE_POST} />
+
+          {process.env.ENV !== 'production' && (
+            <Route component={TestPage} exact path={ROUTES.TEST} />
+          )}
+
           <Route component={UserPage} path={ROUTES.USER_WITH_SLUG} />
           <Route component={VerifyEmailPage} path={ROUTES.VERIFY_EMAIL} />
           <Route component={NotFoundPage} />
@@ -75,9 +81,9 @@ const App = ({
 
     <Transition
       items={alert}
-      from={{ marginTop: '-60px' }}
+      from={{ marginTop: '-80px' }}
       enter={{ marginTop: '0' }}
-      leave={{ marginTop: '-60px' }}
+      leave={{ marginTop: '-80px' }}
       config={{ mass: 1, tension: 600, friction: 42 }}
     >
       {activeAlert => activeAlert && (transitionProps => (

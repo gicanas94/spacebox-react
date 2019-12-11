@@ -109,7 +109,7 @@ const GlobalStyle = createGlobalStyle`
     position: absolute;
   }
 
-  ul li * {
+  ul li > * {
     padding-left: 1em;
   }
 `;

@@ -51,6 +51,21 @@ const messages = {
         seeCommentsText: 'See comments ({remainingComments})...',
         hideCommentsText: 'Hide comments...',
       },
+      richTextEditor: {
+        buttons: {
+          bold: '<b>B</b>',
+          italic: '<i>i</i>',
+          underline: '<u>U</u>',
+          strikethrough: '<s>S</s>',
+          highlight: 'highlight',
+          h1: 'H1',
+          h2: 'H2',
+          h3: 'H3',
+          blockquote: 'BQ',
+          ol: 'OL',
+          ul: 'UL',
+        },
+      },
       signInWithButton: {
         signInWithText: 'Sign in with {account}',
       },

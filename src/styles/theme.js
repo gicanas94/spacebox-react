@@ -156,6 +156,25 @@ export default {
         fontSize: font.size.s,
       },
     },
+    richTextEditor: {
+      button: {
+        active: {
+          color: color.palette.white,
+          backgroundColor: themeMainColor,
+          border: `1.5px solid ${themeMainColor}`,
+        },
+        default: {
+          color: themeSecondaryGreyColor,
+          backgroundColor: 'transparent',
+          border: `1.5px solid ${themeSecondaryGreyColor}`,
+        },
+        hover: {
+          color: themeMainColor,
+          backgroundColor: 'transparent',
+          border: `1.5px solid ${themeMainColor}`,
+        },
+      },
+    },
     searchBar: {
       bgColor: color.palette.cloud,
       border: `2px solid ${themeMainColor}`,
