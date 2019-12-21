@@ -10,7 +10,7 @@ const StyledHr = styled.hr`
       ? colors.palette[color]
       : theme.components.hr.color.default
   )};
-  border: none;
+  border: 0;
   border-radius: ${({ theme }) => theme.global.borderRadius};
   display: block;
   height: ${({ theme }) => theme.components.hr.height};

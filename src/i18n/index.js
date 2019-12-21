@@ -52,18 +52,18 @@ const messages = {
         hideCommentsText: 'Hide comments...',
       },
       richTextEditor: {
-        buttons: {
+        richUtilButton: {
           bold: '<b>B</b>',
-          italic: '<i>i</i>',
+          italic: '<i>I</i>',
           underline: '<u>U</u>',
           strikethrough: '<s>S</s>',
           highlight: 'highlight',
           h1: 'H1',
           h2: 'H2',
           h3: 'H3',
-          blockquote: 'BQ',
-          ol: 'OL',
-          ul: 'UL',
+          blockquote: 'blockquote',
+          ol: 'ol',
+          ul: 'ul',
         },
       },
       signInWithButton: {

@@ -6,7 +6,9 @@ const heartColor = color.palette.ferrari;
 const textColor = color.palette.anchor;
 const themeMainColor = color.palette.mulberry;
 const themeDisabledColor = color.palette.pearlRiver;
+// Used of icons
 const themeMainGreyColor = color.palette.harborGray;
+// Default grey
 const themeSecondaryGreyColor = color.palette.lava;
 
 export default {
@@ -157,21 +159,43 @@ export default {
       },
     },
     richTextEditor: {
-      button: {
+      bgColor: color.palette.cloud,
+      borderBottomWidth: '2px',
+      color: {
+        default: themeSecondaryGreyColor,
+        disabled: themeDisabledColor,
+        error: color.palette.chili,
+        success: color.palette.green,
+      },
+      errorMessage: {
+        fontSize: font.size.xxs,
+        fontWeight: font.weight.bold,
+      },
+      label: {
+        fontSize: font.size.s,
+        fontWeight: font.weight.bold,
+      },
+      richUtilButton: {
+        fontSize: font.size.xs,
         active: {
+          bgColor: themeMainColor,
+          border: '0',
           color: color.palette.white,
-          backgroundColor: themeMainColor,
-          border: `1.5px solid ${themeMainColor}`,
         },
         default: {
+          bgColor: 'transparent',
+          border: '0',
           color: themeSecondaryGreyColor,
-          backgroundColor: 'transparent',
-          border: `1.5px solid ${themeSecondaryGreyColor}`,
+        },
+        disabled: {
+          bgColor: 'transparent',
+          border: '0',
+          color: themeDisabledColor,
         },
         hover: {
+          bgColor: 'transparent',
+          border: '0',
           color: themeMainColor,
-          backgroundColor: 'transparent',
-          border: `1.5px solid ${themeMainColor}`,
         },
       },
     },
@@ -318,6 +342,15 @@ export default {
     a: {
       color: themeMainColor,
       fontWeight: font.weight.medium,
+    },
+    blockquote: {
+      bgColor: color.palette.cloud,
+      borderLeftColor: themeMainColor,
+      borderLeftWidth: '8px',
+      textColor: color.palette.seal,
+      textFontSize: font.size.m,
+      quoteColor: themeMainColor,
+      quoteFontSize: '4rem',
     },
     body: {
       background: `linear-gradient(

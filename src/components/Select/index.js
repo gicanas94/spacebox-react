@@ -2,7 +2,14 @@ import _ from 'lodash';
 import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
 import { KeyboardArrowDown } from 'styled-icons/material/KeyboardArrowDown';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+
+import React, {
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
@@ -268,11 +275,15 @@ const Select = ({
       </StyledSimulatedSelect>
 
       {!disabled && <StyledArrowDownIcon />}
-      {!disabled && error && <StyledErrorIcon />}
+
       {!disabled && error && (
-        <StyledErrorMessage>
-          {intl.formatMessage({ id: error })}
-        </StyledErrorMessage>
+        <Fragment>
+          <StyledErrorIcon />
+
+          <StyledErrorMessage>
+            {intl.formatMessage({ id: error })}
+          </StyledErrorMessage>
+        </Fragment>
       )}
     </StyledWrapper>
   );

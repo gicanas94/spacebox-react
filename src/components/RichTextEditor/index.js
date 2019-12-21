@@ -7,19 +7,34 @@ import {
   RichUtils,
 } from 'draft-js';
 
-import { FormattedHTMLMessage } from 'react-intl';
-import React, { useState } from 'react';
+import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
+import PropTypes from 'prop-types';
+import { FormattedHTMLMessage, FormattedMessage } from 'react-intl';
+import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 
-import { transition } from '../../styles';
+import { keyframe, transition } from '../../styles';
 
-const StyledWrapper = styled.div``;
+const StyledLabel = styled.label`
+  color: ${({ theme }) => theme.components.richTextEditor.color.default};
+  display: block;
+  font-size: ${({ theme }) => theme.components.richTextEditor.label.fontSize};
+  font-weight: ${({ theme }) => (
+    theme.components.richTextEditor.label.fontWeight
+  )};
+  overflow: hidden;
+  padding-bottom: 2px;
+  text-overflow: ellipsis;
+  transition: color ${transition.speed.superfast} linear;
+  white-space: nowrap;
+`;
 
-const StyledButtonsWrapper = styled.div`
-  margin-bottom: 25px;
+const StyledRichUtilButtonsWrapper = styled.div`
+  padding: 10px 10px 5px 10px;
 
   button {
-    margin-right: 15px;
+    margin-right: 10px;
+    margin-bottom: 10px;
   }
 
   button:last-of-type {
@@ -27,20 +42,22 @@ const StyledButtonsWrapper = styled.div`
   }
 `;
 
-const StyledButton = styled.button`
+const StyledRichUtilButton = styled.button`
   background-color: ${({ theme }) => (
-    theme.components.richTextEditor.button.default.backgroundColor
+    theme.components.richTextEditor.richUtilButton.default.bgColor
   )};
-  border: ${({ theme }) => (
-    theme.components.richTextEditor.button.default.border
+  border ${({ theme }) => (
+    theme.components.richTextEditor.richUtilButton.default.border
   )};
-  border-radius: ${({ theme }) => theme.global.borderRadius};
   cursor: pointer;
   color: ${({ theme }) => (
-    theme.components.richTextEditor.button.default.color
+    theme.components.richTextEditor.richUtilButton.default.color
+  )};
+  font-size: ${({ theme }) => (
+    theme.components.richTextEditor.richUtilButton.fontSize
   )};
   line-height: 1;
-  padding: 7px 10px 5px 10px;
+  padding: 6px 10px 5px 10px;
   transition: all ${transition.speed.superfast} linear;
 
   &:active {
@@ -53,29 +70,157 @@ const StyledButton = styled.button`
 
   &:hover {
     background-color: ${({ theme }) => (
-      theme.components.richTextEditor.button.hover.backgroundColor
+      theme.components.richTextEditor.richUtilButton.hover.bgColor
     )};
-    border: ${({ theme }) => (
-      theme.components.richTextEditor.button.hover.border
+    border ${({ theme }) => (
+      theme.components.richTextEditor.richUtilButton.hover.border
     )};
     color: ${({ theme }) => (
-      theme.components.richTextEditor.button.hover.color
+      theme.components.richTextEditor.richUtilButton.hover.color
     )};
   }
 
   &.active {
     background-color: ${({ theme }) => (
-      theme.components.richTextEditor.button.active.backgroundColor
+      theme.components.richTextEditor.richUtilButton.active.bgColor
     )};
-    border: ${({ theme }) => (
-      theme.components.richTextEditor.button.active.border
+    border ${({ theme }) => (
+      theme.components.richTextEditor.richUtilButton.active.border
     )};
     color: ${({ theme }) => (
-      theme.components.richTextEditor.button.active.color
+      theme.components.richTextEditor.richUtilButton.active.color
     )};
 `;
 
-const RichTextEditor = () => {
+const StyledEditorAndRichUtilsButtonsWrapper = styled.div`
+  background-color: ${({ theme }) => theme.components.richTextEditor.bgColor};
+  border: 0;
+  border-bottom-width: ${({ theme }) => (
+    theme.components.richTextEditor.borderBottomWidth
+  )};
+  border-color: ${({ theme }) => (
+    theme.components.richTextEditor.color.default
+  )};
+  border-style: solid;
+  transition: border ${transition.speed.superfast} linear;
+
+  .DraftEditor-root {
+    padding: 10px;
+    padding-top: 0;
+
+    &:focus {
+      outline: none;
+    }
+  }
+`;
+
+const StyledErrorIcon = styled(ErrorOutline)`
+  animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
+  background-color: ${({ theme }) => theme.components.richTextEditor.bgColor};
+  bottom: 34px;
+  color: ${({ theme }) => theme.components.richTextEditor.color.error};
+  position: absolute;
+  right: 10px;
+  width: 30px;
+`;
+
+const StyledErrorMessage = styled.div`
+  color: ${({ theme }) => theme.components.richTextEditor.color.error};
+  font-size: ${({ theme }) => (
+    theme.components.richTextEditor.errorMessage.fontSize
+  )};
+  font-weight: ${({ theme }) => (
+    theme.components.richTextEditor.errorMessage.fontWeight
+  )};
+  padding-top: 5px;
+`;
+
+const StyledWrapper = styled.div`
+  overflow: hidden;
+  position: relative;
+
+  ${({ disabled, theme }) => disabled && `
+    ${StyledLabel} {
+      color: ${theme.components.richTextEditor.color.disabled} !important;
+    }
+
+    ${StyledEditorAndRichUtilsButtonsWrapper} {
+      border-color: ${theme.components.richTextEditor.color.disabled} !important;
+    }
+
+    ${StyledRichUtilButton} {
+      background-color: ${(
+        theme.components.richTextEditor.richUtilButton.disabled.bgColor
+      )};
+      border ${theme.components.richTextEditor.richUtilButton.disabled.border};
+      color: ${theme.components.richTextEditor.richUtilButton.disabled.color};
+      cursor: default;
+
+      &:active {
+        transform: none;
+      }
+    }
+
+    .DraftEditor-root {
+      ::placeholder {
+        color: ${theme.components.richTextEditor.color.disabled} !important;
+      }
+
+      :-ms-input-placeholder {
+        color: ${theme.components.richTextEditor.color.disabled} !important;
+      }
+
+      ::-ms-input-placeholder {
+        color: ${theme.components.richTextEditor.color.disabled} !important;
+      }
+    }
+  `}
+
+  ${({ error, theme }) => error && `
+    ${StyledLabel} {
+      color: ${theme.components.richTextEditor.color.error};
+    }
+
+    ${StyledEditorAndRichUtilsButtonsWrapper} {
+      border-color: ${theme.components.richTextEditor.color.error};
+    }
+  `}
+
+  ${({ margin }) => margin && `
+    margin: ${margin};
+  `}
+
+  ${({ rounded, theme }) => rounded && `
+    ${StyledEditorAndRichUtilsButtonsWrapper} {
+      border-top-left-radius: ${theme.global.borderRadius};
+      border-top-right-radius: ${theme.global.borderRadius};
+    }
+
+    ${StyledRichUtilButton} {
+      border-radius: ${theme.global.borderRadius};
+    }
+  `}
+
+  ${({ success, theme }) => success && `
+    ${StyledLabel} {
+      color: ${theme.components.richTextEditor.color.success};
+    }
+
+    ${StyledEditorAndRichUtilsButtonsWrapper} {
+      border-color: ${theme.components.richTextEditor.color.success};
+    }
+  `}
+`;
+
+const RichTextEditor = ({
+  disabled,
+  error,
+  label,
+  name,
+  ...props
+}) => {
+  const richTextEditorId = `richTextEditor-component_${name}`;
+
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const handleKeyCommand = (command) => {
@@ -119,109 +264,144 @@ const RichTextEditor = () => {
   const inlineStyleButtons = [
     {
       style: 'BOLD',
-      value: 'components.richTextEditor.buttons.bold',
+      value: 'components.richTextEditor.richUtilButton.bold',
     },
     {
       style: 'ITALIC',
-      value: 'components.richTextEditor.buttons.italic',
+      value: 'components.richTextEditor.richUtilButton.italic',
     },
     {
       style: 'UNDERLINE',
-      value: 'components.richTextEditor.buttons.underline',
+      value: 'components.richTextEditor.richUtilButton.underline',
     },
     {
       style: 'STRIKETHROUGH',
-      value: 'components.richTextEditor.buttons.strikethrough',
+      value: 'components.richTextEditor.richUtilButton.strikethrough',
     },
     {
       style: 'HIGHLIGHT',
-      value: 'components.richTextEditor.buttons.highlight',
+      value: 'components.richTextEditor.richUtilButton.highlight',
     },
   ];
 
   const blockTypeButtons = [
     {
       block: 'header-one',
-      value: 'components.richTextEditor.buttons.h1',
+      value: 'components.richTextEditor.richUtilButton.h1',
     },
     {
       block: 'header-two',
-      value: 'components.richTextEditor.buttons.h2',
+      value: 'components.richTextEditor.richUtilButton.h2',
     },
     {
       block: 'header-three',
-      value: 'components.richTextEditor.buttons.h3',
+      value: 'components.richTextEditor.richUtilButton.h3',
     },
     {
       block: 'blockquote',
-      value: 'components.richTextEditor.buttons.blockquote',
+      value: 'components.richTextEditor.richUtilButton.blockquote',
     },
     {
       block: 'ordered-list-item',
-      value: 'components.richTextEditor.buttons.ol',
+      value: 'components.richTextEditor.richUtilButton.ol',
     },
     {
       block: 'unordered-list-item',
-      value: 'components.richTextEditor.buttons.ul',
+      value: 'components.richTextEditor.richUtilButton.ul',
     },
   ];
 
   const customStyleMap = {
     HIGHLIGHT: {
-      backgroundColor: '#dedd43',
+      backgroundColor: '#abef1b',
     },
   };
 
   const plugins = [];
 
   return (
-    <StyledWrapper>
-      <StyledButtonsWrapper>
-        {inlineStyleButtons.map(inlineStyleButton => (
-          <StyledButton
-            className={
-              editorState.getCurrentInlineStyle().has(inlineStyleButton.style)
-                ? 'active'
-                : null
-            }
-            data-style={inlineStyleButton.style}
-            key={inlineStyleButton.style}
-            onClick={toggleInlineStyle}
-            onMouseDown={event => event.preventDefault()}
-            type="button"
-          >
-            <FormattedHTMLMessage id={inlineStyleButton.value} />
-          </StyledButton>
-        ))}
+    <StyledWrapper disabled={disabled} error={error} {...props}>
+      <StyledLabel htmlFor={richTextEditorId}>
+        <FormattedMessage id={label} />
+      </StyledLabel>
 
-        {blockTypeButtons.map(blockTypeButton => (
-          <StyledButton
-            className={
-              RichUtils.getCurrentBlockType(editorState) === blockTypeButton.block
-                ? 'active'
-                : null
-            }
-            data-block={blockTypeButton.block}
-            key={blockTypeButton.block}
-            onClick={toggleBlockType}
-            onMouseDown={event => event.preventDefault()}
-            type="button"
-          >
-            <FormattedHTMLMessage id={blockTypeButton.value} />
-          </StyledButton>
-        ))}
-      </StyledButtonsWrapper>
+      <StyledEditorAndRichUtilsButtonsWrapper>
+        <StyledRichUtilButtonsWrapper>
+          {inlineStyleButtons.map(inlineStyleButton => (
+            <StyledRichUtilButton
+              className={
+                editorState.getCurrentInlineStyle().has(inlineStyleButton.style)
+                  ? 'active'
+                  : null
+              }
+              data-style={inlineStyleButton.style}
+              key={inlineStyleButton.style}
+              onClick={!disabled && toggleInlineStyle}
+              onMouseDown={event => event.preventDefault()}
+              type="button"
+            >
+              <FormattedHTMLMessage id={inlineStyleButton.value} />
+            </StyledRichUtilButton>
+          ))}
 
-      <Editor
-        customStyleMap={customStyleMap}
-        editorState={editorState}
-        handleKeyCommand={handleKeyCommand}
-        keyBindingFn={keyBindingFn}
-        onChange={setEditorState}
-        plugins={plugins}
-      />
+          {blockTypeButtons.map(blockTypeButton => (
+            <StyledRichUtilButton
+              className={
+                RichUtils.getCurrentBlockType(editorState) === blockTypeButton.block
+                  ? 'active'
+                  : null
+              }
+              data-block={blockTypeButton.block}
+              key={blockTypeButton.block}
+              onClick={!disabled && toggleBlockType}
+              onMouseDown={event => event.preventDefault()}
+              type="button"
+            >
+              <FormattedHTMLMessage id={blockTypeButton.value} />
+            </StyledRichUtilButton>
+          ))}
+        </StyledRichUtilButtonsWrapper>
+
+        <Editor
+          customStyleMap={customStyleMap}
+          editorState={editorState}
+          handleKeyCommand={handleKeyCommand}
+          keyBindingFn={keyBindingFn}
+          onChange={setEditorState}
+          plugins={plugins}
+          readOnly={disabled}
+        />
+      </StyledEditorAndRichUtilsButtonsWrapper>
+
+      {!disabled && error && (
+        <Fragment>
+          <StyledErrorIcon />
+
+          <StyledErrorMessage>
+            <FormattedMessage defaultMessage={error} id={error} />
+          </StyledErrorMessage>
+        </Fragment>
+      )}
     </StyledWrapper>
   );
+};
+
+RichTextEditor.propTypes = {
+  disabled: PropTypes.bool,
+  error: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  margin: PropTypes.string,
+  rounded: PropTypes.bool,
+  success: PropTypes.bool,
+};
+
+RichTextEditor.defaultProps = {
+  disabled: false,
+  error: undefined,
+  margin: undefined,
+  rounded: undefined,
+  success: false,
 };
 
 export default RichTextEditor;

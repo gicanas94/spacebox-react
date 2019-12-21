@@ -6,7 +6,7 @@ const TestPage = () => (
   <Box size="medium">
     <h1>Test page</h1>
 
-    <RichTextEditor />
+    <RichTextEditor label="Content" name="content" rounded />
   </Box>
 );
 

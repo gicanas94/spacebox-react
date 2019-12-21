@@ -372,7 +372,7 @@ const Post = ({
           <StyledDateFromNow>
             <FormattedRelativeTime
               numeric="auto"
-              updateIntervalInSeconds={60}
+              updateIntervalInSeconds={1}
               value={
                 (new Date(post.createdAt).getTime() - new Date().getTime())
                 / 1000

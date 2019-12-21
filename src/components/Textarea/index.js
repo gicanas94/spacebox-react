@@ -2,7 +2,7 @@ import autosize from 'autosize';
 import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { keyframe, transition } from '../../styles';
@@ -140,12 +140,14 @@ const Textarea = ({
         {...props}
       />
 
-      {!disabled && error && <StyledErrorIcon />}
-
       {!disabled && error && (
-        <StyledErrorMessage>
-          <FormattedMessage defaultMessage={error} id={error} />
-        </StyledErrorMessage>
+        <Fragment>
+          <StyledErrorIcon />
+
+          <StyledErrorMessage>
+            <FormattedMessage defaultMessage={error} id={error} />
+          </StyledErrorMessage>
+        </Fragment>
       )}
     </StyledWrapper>
   );

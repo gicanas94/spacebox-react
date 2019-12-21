@@ -99,7 +99,7 @@ const Comment = ({ comment }) => (
       <span>
         <FormattedRelativeTime
           numeric="auto"
-          updateIntervalInSeconds={60}
+          updateIntervalInSeconds={1}
           value={
             (new Date(comment.createdAt).getTime() - new Date().getTime())
             / 1000

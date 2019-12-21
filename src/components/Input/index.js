@@ -1,7 +1,7 @@
 import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
 import { keyframe, transition } from '../../styles';
@@ -127,12 +127,15 @@ const Input = ({
       </StyledLabel>
 
       <StyledInput disabled={disabled} id={inputId} name={name} {...props} />
-      {!disabled && error && <StyledErrorIcon />}
 
       {!disabled && error && (
-        <StyledErrorMessage>
-          <FormattedMessage defaultMessage={error} id={error} />
-        </StyledErrorMessage>
+        <Fragment>
+          <StyledErrorIcon />
+
+          <StyledErrorMessage>
+            <FormattedMessage defaultMessage={error} id={error} />
+          </StyledErrorMessage>
+        </Fragment>
       )}
     </StyledWrapper>
   );

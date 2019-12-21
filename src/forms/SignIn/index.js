@@ -7,7 +7,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Button from '../../components/Button';
-import Checkbox from '../../components/Checkbox';
+// import Checkbox from '../../components/Checkbox';
 import { ERRORS, ROUTES } from '../../constants';
 import Input from '../../components/Input';
 
@@ -78,7 +78,7 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
         handleBlur,
         handleChange,
         isSubmitting,
-        setFieldValue,
+        // setFieldValue,
         touched,
         values,
       }) => (
@@ -112,7 +112,7 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
             value={values.password}
           />
 
-          <Checkbox
+          {/* <Checkbox
             checked={values.rememberAccess}
             disabled={isSubmitting}
             label="forms.signIn.labels.rememberAccessCheckbox"
@@ -122,7 +122,7 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
               !values.rememberAccess,
             )}
             rounded
-          />
+          /> */}
 
           <StyledBottomWrapper>
             <Button

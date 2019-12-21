@@ -33,6 +33,34 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  blockquote {
+    background-color: ${theme.htmlTags.blockquote.bgColor};
+    border: 0;
+    border-color: ${theme.htmlTags.blockquote.borderLeftColor};
+    border-left-width: ${theme.htmlTags.blockquote.borderLeftWidth};
+    border-style: solid;
+    color: ${theme.htmlTags.blockquote.textColor};
+    font-family: Arial;
+    font-size: ${theme.htmlTags.blockquote.textFontSize};
+    font-style: italic;
+    margin: 0;
+    padding: 20px 5px 20px 60px;
+    position: relative;
+  }
+
+  blockquote::before {
+    color: ${theme.htmlTags.blockquote.quoteColor};
+    content: '“';
+    font-size: ${theme.htmlTags.blockquote.quoteFontSize};
+    left: 10px;
+    position: absolute;
+    top: 5px;
+  }
+
+  blockquote::after {
+    content: '';
+  }
+
   body {
     @import url('https://fonts.googleapis.com/css?family=Alegreya+Sans:100,300,400,500,700,800,900');
     background: ${theme.htmlTags.body.background};
