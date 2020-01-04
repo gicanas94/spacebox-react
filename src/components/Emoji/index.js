@@ -3,6 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
+import { capitalizeEachStringWord } from '../../utils';
+
 const StyledSpan = styled.span`
   font-size: ${({ fontSize }) => fontSize};
 `;
@@ -10,27 +12,29 @@ const StyledSpan = styled.span`
 const Emoji = ({
   fontSize,
   label,
-  symbol,
+  emoji,
 }) => {
   const intl = useIntl();
-  const ariaLabel = intl.formatMessage({ id: label });
-  const iconWord = intl.formatMessage({ id: 'components.emoji.labelSuffix' });
+  const finalLabel = capitalizeEachStringWord(
+    intl.formatMessage({ id: label }),
+  );
 
   return (
     <StyledSpan
-      aria-label={`${ariaLabel} ${iconWord}`}
+      aria-label={finalLabel}
       role="img"
       fontSize={fontSize}
+      title={finalLabel}
     >
-      {symbol}
+      {emoji}
     </StyledSpan>
   );
 };
 
 Emoji.propTypes = {
+  emoji: PropTypes.string.isRequired,
   fontSize: PropTypes.string,
   label: PropTypes.string.isRequired,
-  symbol: PropTypes.string.isRequired,
 };
 
 Emoji.defaultProps = {

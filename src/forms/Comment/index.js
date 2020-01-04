@@ -5,41 +5,42 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Smile } from 'styled-icons/fa-regular/Smile';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
 import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
 import { color, device, transition } from '../../styles';
+import EmojiPicker from '../../components/EmojiPicker';
 import { withFirebase } from '../../Firebase';
 
 const StyledWrapper = styled.div`
-  align-items: flex-end;
+  align-items: center;
   display: flex;
   flex-direction: column;
 
-  textarea {
-    margin-bottom: 25px;
-  }
-
   button {
+    margin-top: 25px;
     width: 100%;
   }
 
   @media ${device.mobileL} {
     flex-direction: row;
 
-    textarea {
-      margin-bottom: 0;
-      margin-right: 25px;
-    }
-
     button {
+      margin-top: 0;
       overflow: visible;
       width: fit-content;
     }
   }
+`;
+
+const StyledTextareaAndSmileIconWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  width: 100%;
 `;
 
 const StyledTextarea = styled.textarea`
@@ -79,6 +80,29 @@ const StyledTextarea = styled.textarea`
   `}
 `;
 
+const StyledSmileIcon = styled(Smile)`
+  color: ${({ theme }) => theme.forms.comment.smileIcon.color};
+  cursor: pointer;
+  height: 28px;
+  margin-left: 10px;
+  min-height: 28px;
+  min-width: 28px;
+  transition: transform ${transition.speed.superfast} linear;
+  width: 28px;
+
+  &:active {
+    transform: translateY(2px);
+  }
+
+  @media ${device.mobileL} {
+    margin: 0 15px;
+  }
+`;
+
+const StyledEmojiPickerWrapper = styled.div`
+  padding-top: 20px;
+`;
+
 const CommentForm = ({
   alertSetAction,
   authUser,
@@ -89,6 +113,7 @@ const CommentForm = ({
   updatePostCommentsHandler,
 }) => {
   const intl = useIntl();
+  const [emojiPickerIsVisible, setEmojiPickerIsVisible] = useState(false);
 
   const CommentFormSchema = Yup.object().shape({
     content: Yup.string().trim().required(),
@@ -134,8 +159,33 @@ const CommentForm = ({
         Object.keys(values).map(field => actions.setFieldTouched(field, false));
 
         actions.setSubmitting(false);
+      } finally {
+        setEmojiPickerIsVisible(false);
       }
     })();
+  };
+
+  const insertEmojiIntoTextarea = (emoji) => {
+    const textarea = document.getElementById(textareaId);
+
+    textarea.focus();
+    const isSuccess = document.execCommand('insertText', false, emoji);
+
+    // Firefox
+    if (!isSuccess && typeof textarea.setRangeText === 'function') {
+      textarea.setRangeText(emoji);
+      textarea.selectionEnd = textarea.selectionStart + emoji.length;
+      textarea.selectionStart = textarea.selectionEnd;
+
+      const event = document.createEvent('UIEvent');
+      event.initEvent('input', true, false);
+      textarea.dispatchEvent(event);
+    }
+  };
+
+  const callbackForEmojiPicker = (emoji) => {
+    insertEmojiIntoTextarea(emoji);
+    setEmojiPickerIsVisible(false);
   };
 
   useEffect(() => {
@@ -159,17 +209,25 @@ const CommentForm = ({
       }) => (
         <Form>
           <StyledWrapper>
-            <StyledTextarea
-              disabled={isSubmitting}
-              id={textareaId}
-              name="content"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              placeholder={intl.formatMessage({
-                id: 'forms.comment.contentTextareaPlaceholder',
-              })}
-              value={values.content}
-            />
+            <StyledTextareaAndSmileIconWrapper>
+              <StyledTextarea
+                disabled={isSubmitting}
+                id={textareaId}
+                name="content"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                placeholder={intl.formatMessage({
+                  id: 'forms.comment.contentTextareaPlaceholder',
+                })}
+                value={values.content}
+              />
+
+              <StyledSmileIcon
+                onClick={() => (
+                  !isSubmitting && setEmojiPickerIsVisible(!emojiPickerIsVisible)
+                )}
+              />
+            </StyledTextareaAndSmileIconWrapper>
 
             <Button
               disabled={isSubmitting}
@@ -181,6 +239,12 @@ const CommentForm = ({
               {'forms.comment.submitButton'}
             </Button>
           </StyledWrapper>
+
+          {emojiPickerIsVisible && (
+            <StyledEmojiPickerWrapper>
+              <EmojiPicker callback={callbackForEmojiPicker} rounded />
+            </StyledEmojiPickerWrapper>
+          )}
         </Form>
       )}
     />

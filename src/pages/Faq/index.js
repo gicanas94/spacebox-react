@@ -47,7 +47,7 @@ const FaqPage = () => (
 
     <p>
       <FormattedMessage id="pages.faq.p4" />
-      <Emoji label="pages.faq.p4EmojiLabel" symbol="🙄" />
+      <Emoji emoji="🙄" label="pages.faq.p4EmojiLabel" />
     </p>
 
     <Link to={ROUTES.HOME}>

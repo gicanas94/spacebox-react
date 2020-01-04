@@ -26,8 +26,8 @@ const ChangePasswordSubpage = ({ alertSetAction, authUser, firebase }) => (
           />
 
           <Emoji
+            emoji="🙂"
             label="pages.account.changePassword.subtitleEmojiLabel"
-            symbol="🙂"
           />
         </p>
       )

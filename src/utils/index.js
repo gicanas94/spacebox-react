@@ -1,7 +1,6 @@
-export const setCookie = (cName, cValue, cExpirationTime) => {
-  const expirationTime = `expires=${cExpirationTime}`;
-  document.cookie = `${cName}=${cValue};${expirationTime};path=/`;
-};
+export const capitalizeEachStringWord = string => (
+  string.replace(/\b\w/g, firstLetter => firstLetter.toUpperCase())
+);
 
 export const getCookie = (cName, returnValue) => {
   const name = `${cName}=`;
@@ -21,4 +20,9 @@ export const getCookie = (cName, returnValue) => {
   }
 
   return false;
+};
+
+export const setCookie = (cName, cValue, cExpirationTime) => {
+  const expirationTime = `expires=${cExpirationTime}`;
+  document.cookie = `${cName}=${cValue};${expirationTime};path=/`;
 };

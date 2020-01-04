@@ -81,9 +81,9 @@ const App = ({
 
     <Transition
       items={alert}
-      from={{ marginTop: '-80px' }}
+      from={{ marginTop: '-70px' }}
       enter={{ marginTop: '0' }}
-      leave={{ marginTop: '-80px' }}
+      leave={{ marginTop: '-70px' }}
       config={{ mass: 1, tension: 600, friction: 42 }}
     >
       {activeAlert => activeAlert && (transitionProps => (

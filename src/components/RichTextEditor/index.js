@@ -1,6 +1,5 @@
-import Editor from 'draft-js-plugins-editor';
-
 import {
+  Editor,
   EditorState,
   getDefaultKeyBinding,
   KeyBindingUtil,
@@ -317,8 +316,6 @@ const RichTextEditor = ({
     },
   };
 
-  const plugins = [];
-
   return (
     <StyledWrapper disabled={disabled} error={error} {...props}>
       <StyledLabel htmlFor={richTextEditorId}>
@@ -368,7 +365,6 @@ const RichTextEditor = ({
           handleKeyCommand={handleKeyCommand}
           keyBindingFn={keyBindingFn}
           onChange={setEditorState}
-          plugins={plugins}
           readOnly={disabled}
         />
       </StyledEditorAndRichUtilsButtonsWrapper>

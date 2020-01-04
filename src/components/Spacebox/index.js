@@ -136,7 +136,7 @@ const StyledSpacebox = styled.div`
   justify-content: space-between;
   overflow: hidden;
   padding: 7px;
-  position: relative;
+  position: relative;z
   width: 100%;
 
   @media ${device.laptop} {

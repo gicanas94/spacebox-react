@@ -9,8 +9,11 @@ const messages = {
           defaultConfirm: 'Confirm',
         },
       },
-      emoji: {
-        labelSuffix: 'Emoji',
+      emojiPicker: {
+        recentlyUsedEmojisLabel: 'Recent Emojis',
+        allEmojisLabel: 'All Emojis',
+        searchResultsLabel: 'Search results',
+        searchInputPlaceholder: 'Search a Emoji',
       },
       header: {
         logoImageAlt: 'Spacebox logo',
@@ -77,6 +80,13 @@ const messages = {
           goToSpacebox: 'Go to Spacebox',
           userProfile: 'User\'s profile',
         },
+      },
+      userProfileImage: {
+        altImage: 'User profile image',
+        uploadImageButton: 'Upload image',
+        removeImageButton: 'Remove image',
+        badFileTypeErrorMessage: 'You can only upload images!',
+        badFileSizeErrorMessage: 'Image size cannot be larger than 10mb',
       },
       wizard: {
         buttons: {
@@ -228,7 +238,7 @@ const messages = {
         changePassword: {
           h2: 'Change password',
           subtitle: 'Complete the following inputs to change your password. Don\'t forget your current one, just in case ',
-          subtitleEmojiLabel: 'Slightly smiling face',
+          subtitleEmojiLabel: 'slightly smiling face emoji',
           reachedMaxCurrentPasswordAttempsSubtitle: 'Right now you can\'t change your password as you reached the limit of attempts to enter your current one, please try again later.',
         },
         loginManagement: {
@@ -299,7 +309,7 @@ const messages = {
         p2: 'On the home page you can filter the spaces depending on what you want to read, the idea is that you always find content that you find interesting.',
         p3: 'If you want to create your own space and start writing or maybe just make a comment in the space of another person, you can {signUpLink} (don\'t worry, is free) or {signInLink} using your favorite social media account.',
         p4: 'At the moment of thinking about the idea of creating this page I thought it would be longer, but I\'m running out of imagination so... I think this is it ',
-        p4EmojiLabel: 'Face Neutral Skeptical',
+        p4EmojiLabel: 'face Neutral skeptical emoji',
         links: {
           signUp: 'create an account',
           signIn: 'sign in',
@@ -321,12 +331,12 @@ const messages = {
       notFound: {
         title: '404 - Spacebox',
         randomEmojiLabels: {
-          emoji1: 'Face without mouth',
-          emoji2: 'Anguished face',
-          emoji3: 'Grimacing face',
-          emoji4: 'Pensive face',
-          emoji5: 'Dizzy face',
-          emoji6: 'Face screaming in fear',
+          emoji1: 'face without mouth emoji',
+          emoji2: 'anguished face emoji',
+          emoji3: 'grimacing face emoji',
+          emoji4: 'pensive face emoji',
+          emoji5: 'dizzy face emoji',
+          emoji6: 'face screaming in fear emoji',
         },
         content: 'This is embarrasing but... {boldPieceOfContent}',
         boldPieceOfContent: 'this page was not found.',
@@ -383,8 +393,11 @@ const messages = {
           defaultConfirm: 'Confirmar',
         },
       },
-      emoji: {
-        labelSuffix: 'Emoji',
+      emojiPicker: {
+        recentlyUsedEmojisLabel: 'Emojis recientes',
+        allEmojisLabel: 'Todos los emojis',
+        searchResultsLabel: 'Resultados de la búsqueda',
+        searchInputPlaceholder: 'Buscar un Emoji',
       },
       header: {
         logoImageAlt: 'Logo de Spacebox',
@@ -436,6 +449,13 @@ const messages = {
           goToSpacebox: 'Ir al Spacebox',
           userProfile: 'Perfil del usuario',
         },
+      },
+      userProfileImage: {
+        altImage: 'Imagen de perfil del usuario',
+        uploadImageButton: 'Subir imagen',
+        removeImageButton: 'Eliminar imagen',
+        badFileTypeErrorMessage: 'Solo puedes subir imágenes!',
+        badFileSizeErrorMessage: 'El tamaño de la imagen no puede ser mayor a 10mb',
       },
       wizard: {
         buttons: {
@@ -587,7 +607,7 @@ const messages = {
         changePassword: {
           h2: 'Cambiar contraseña',
           subtitle: 'Completa los siguientes campos para cambiar tu contraseña. No olvides la actual, solo por si acaso ',
-          subtitleEmojiLabel: 'Cara ligeramente sonriente',
+          subtitleEmojiLabel: 'emoji de cara ligeramente sonriente',
           reachedMaxCurrentPasswordAttempsSubtitle: 'Ahora mismo no puedes cambiar tu contraseña ya que alcanzaste el límite de intentos para ingresar tu contraseña actual, por favor intenta más tarde.',
         },
         loginManagement: {
@@ -658,7 +678,7 @@ const messages = {
         p2: 'En la página de inicio puedes filtrar los espacios según lo que quieras leer, la idea es que siempre encuentres contenido que te parezca interesante.',
         p3: 'Si deseas crear tu propio espacio y comenzar a escribir o simplemente hacer un comentario en el espacio de otra persona, puedes {signUpLink} (no te preocupes, es gratis) o {signInLink} utilizando tu cuenta de red social favorita.',
         p4: 'En el momento de pensar en la idea de crear esta página, pensé que sería más largo, pero me estoy quedando sin imaginación, así que... creo que eso es todo ',
-        p4EmojiLabel: 'Cara neutral escéptica',
+        p4EmojiLabel: 'emoji de cara neutral escéptica',
         links: {
           signUp: 'crear una cuenta',
           signIn: 'ingresar',
@@ -678,12 +698,12 @@ const messages = {
       notFound: {
         title: '404 - Spacebox',
         randomEmojiLabels: {
-          emoji1: 'Cara sin boca',
-          emoji2: 'Cara angustiada',
-          emoji3: 'Cara que hace muecas',
-          emoji4: 'Cara pensativa',
-          emoji5: 'Cara mareada',
-          emoji6: 'Cara gritando de miedo',
+          emoji1: 'emoji de cara sin boca',
+          emoji2: 'emoji de cara angustiada',
+          emoji3: 'emoji de cara que hace muecas',
+          emoji4: 'emoji de cara pensativa',
+          emoji5: 'emoji de cara mareada',
+          emoji6: 'emoji de cara gritando de miedo',
         },
         content: 'Esto es vergonzoso pero... {boldPieceOfContent}',
         boldPieceOfContent: 'esta página no fue encontrada.',

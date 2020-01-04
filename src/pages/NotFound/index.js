@@ -39,28 +39,28 @@ const StyledBoldFragment = styled.span`
 const NotFoundPage = () => {
   const emojisToRandom = [
     {
+      emoji: '😶',
       label: 'pages.notFound.randomEmojiLabels.emoji1',
-      symbol: '😶',
     },
     {
+      emoji: '😧',
       label: 'pages.notFound.randomEmojiLabels.emoji2',
-      symbol: '😧',
     },
     {
+      emoji: '😬',
       label: 'pages.notFound.randomEmojiLabels.emoji3',
-      symbol: '😬',
     },
     {
+      emoji: '😔',
       label: 'pages.notFound.randomEmojiLabels.emoji4',
-      symbol: '😔',
     },
     {
+      emoji: '😵',
       label: 'pages.notFound.randomEmojiLabels.emoji5',
-      symbol: '😵',
     },
     {
+      emoji: '😱',
       label: 'pages.notFound.randomEmojiLabels.emoji6',
-      symbol: '😱',
     },
   ];
 
@@ -71,9 +71,9 @@ const NotFoundPage = () => {
       <HelmetTitle title={{ id: 'pages.notFound.title' }} />
 
       <Emoji
+        emoji={emojisToRandom[randomEmoji].emoji}
         fontSize="120px"
         label={emojisToRandom[randomEmoji].label}
-        symbol={emojisToRandom[randomEmoji].symbol}
       />
 
       <StyledContent>

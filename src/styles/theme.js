@@ -6,8 +6,10 @@ const heartColor = color.palette.ferrari;
 const textColor = color.palette.anchor;
 const themeMainColor = color.palette.mulberry;
 const themeDisabledColor = color.palette.pearlRiver;
+
 // Used of icons
 const themeMainGreyColor = color.palette.harborGray;
+
 // Default grey
 const themeSecondaryGreyColor = color.palette.lava;
 
@@ -86,6 +88,30 @@ export default {
     confirmationModal: {
       bgColor1: color.palette.white,
       bgColor2: Color(themeMainColor).darken(0.7).alpha(0.7).string(),
+    },
+    emojiPicker: {
+      bgColor: color.palette.cloud,
+      boxShadow: `0 1px 7px 3px ${themeSecondaryGreyColor}`,
+      emojiHoverColor: Color(themeMainColor).lighten(0.7).hex(),
+      label: {
+        color: themeSecondaryGreyColor,
+        fontSize: font.size.xs,
+        fontWeight: font.weight.bold,
+      },
+      scrollBar: {
+        thumb: {
+          bgColor: themeSecondaryGreyColor,
+          borderRadius: '1px',
+        },
+        track: {
+          bgColor: 'transparent',
+        },
+      },
+      searchInput: {
+        bgColor: 'transparent',
+        borderBottom: `2px solid ${themeSecondaryGreyColor}`,
+        fontSize: font.size.s,
+      },
     },
     header: {
       bgColor: color.palette.asphalt,
@@ -299,17 +325,27 @@ export default {
         largeFontSize: font.size.l,
         smallFontSize: font.size.m,
       },
-      userImage: {
-        bgColor: Color(themeMainColor).lighten(0.6).hex(),
-      },
     },
     tooltip: {
       fontSize: font.size.xs,
       fontWeight: font.weight.regular,
     },
+    userProfileImage: {
+      actionsWrapperBgColor: Color(themeMainColor).darken(0.9).alpha(0.7).string(),
+      bgColor: Color(themeMainColor).lighten(0.6).hex(),
+      border: `2px solid ${themeMainColor}`,
+      errorMessage: {
+        color: color.palette.chili,
+        fontSize: font.size.xxs,
+        fontWeight: font.weight.bold,
+      },
+    },
   },
   forms: {
     comment: {
+      smileIcon: {
+        color: themeSecondaryGreyColor,
+      },
       textarea: {
         borderBottomWidth: '2px',
         color: {

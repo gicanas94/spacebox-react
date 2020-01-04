@@ -77,18 +77,27 @@ const StyledStats = styled.div`
 `;
 
 const StyledLikesStatIcon = styled(Heart)`
+  height: 13px;
   margin-right: 4px;
+  min-height: 13px;
+  min-width: 13px;
   width: 13px;
 `;
 
 const StyledCommentsStatIcon = styled(Comments)`
+  height: 13px;
   margin: 0 4px;
+  min-height: 13px;
+  min-width: 13px;
   width: 13px;
 `;
 
 const StyledLikeHeartIcon = styled(Heart)`
   cursor: pointer;
+  height: 30px;
   margin-right: 20px;
+  min-height: 30px;
+  min-width: 30px;
   width: 30px;
 
   ${({ authUserLike, theme }) => authUserLike && `
@@ -111,7 +120,10 @@ const StyledLikeHeartIcon = styled(Heart)`
 const StyledCommentIcon = styled(CommentAlt)`
   color: ${({ theme }) => theme.components.post.commentIcon.color};
   cursor: pointer;
+  height: 28px;
   margin-right: 20px;
+  min-height: 28px;
+  min-width: 28px;
   width: 28px;
 
   ${({ disabled }) => !disabled && `
@@ -126,6 +138,8 @@ const StyledCommentIcon = styled(CommentAlt)`
 const StyledTrashIcon = styled(Trash)`
   color: ${({ theme }) => theme.components.post.trashIcon.color};
   cursor: pointer;
+  min-height: 30px;
+  min-width: 28px;
   height: 30px;
   width: 28px;
   transition: transform ${transition.speed.superfast} linear;

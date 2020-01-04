@@ -185,18 +185,24 @@ const StyledButtonText = styled.div`
   white-space: nowrap;
 `;
 
-const Button = ({ children, ...props }) => (
+const Button = ({ children, dontTranslateChildren, ...props }) => (
   <StyledButton {...props}>
     <StyledButtonText>
-      <FormattedMessage id={children} />
+      {dontTranslateChildren
+        ? children
+        : <FormattedMessage id={children} />
+      }
     </StyledButtonText>
   </StyledButton>
 );
 
 Button.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType(
+    [PropTypes.string, PropTypes.object],
+  ).isRequired,
   color: PropTypes.string,
   disabled: PropTypes.bool,
+  dontTranslateChildren: PropTypes.bool,
   fullWidth: PropTypes.bool,
   margin: PropTypes.string,
   rounded: PropTypes.bool,
@@ -208,6 +214,7 @@ Button.propTypes = {
 Button.defaultProps = {
   color: undefined,
   disabled: false,
+  dontTranslateChildren: false,
   fullWidth: false,
   margin: undefined,
   rounded: false,

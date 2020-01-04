@@ -169,9 +169,9 @@ const Header = ({ location }) => {
 
           <Transition
             items={mobileNavIsOpen}
-            from={{ marginTop: '-1000px' }}
+            from={{ marginTop: `-${window.screen.height}px` }}
             enter={{ marginTop: '0' }}
-            leave={{ marginTop: '-1000px' }}
+            leave={{ marginTop: `-${window.screen.height}px` }}
             config={{ mass: 1, tension: 600, friction: 42 }}
           >
             {navIsOpen => navIsOpen && (transitionProps => (

@@ -144,6 +144,10 @@ const StyledUl = styled.ul`
     border-bottom-left-radius: ${theme.global.borderRadius};
     border-bottom-right-radius: ${theme.global.borderRadius};
 
+    ::-webkit-scrollbar-thumb {
+      border-bottom-right-radius: ${theme.global.borderRadius};
+    }
+
     ::-webkit-scrollbar-track {
       border-bottom-right-radius: ${theme.global.borderRadius};
     }
