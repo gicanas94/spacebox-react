@@ -1,6 +1,35 @@
+import { SUPPORTED_LOCALES } from '../constants';
+
 export const capitalizeEachStringWord = string => (
   string.replace(/\b\w/g, firstLetter => firstLetter.toUpperCase())
 );
+
+export const defineAppLocale = (locale) => {
+  if (locale) {
+    localStorage.setItem('appLocale', locale);
+    return locale;
+  }
+
+  const localStorageLocale = localStorage.getItem('appLocale');
+
+  if (localStorageLocale && SUPPORTED_LOCALES[
+    localStorageLocale.toUpperCase()
+  ]) {
+    return localStorageLocale;
+  }
+
+  const navigatorLanguage = navigator.language
+    || navigator.userLanguage
+    || SUPPORTED_LOCALES.EN;
+
+  if (navigatorLanguage.includes(SUPPORTED_LOCALES.ES)) {
+    localStorage.setItem('appLocale', SUPPORTED_LOCALES.ES);
+    return SUPPORTED_LOCALES.ES;
+  }
+
+  localStorage.setItem('appLocale', SUPPORTED_LOCALES.EN);
+  return SUPPORTED_LOCALES.EN;
+};
 
 export const getCookie = (cName, returnValue) => {
   const name = `${cName}=`;

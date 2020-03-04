@@ -1,10 +1,10 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
-import { withRouter } from 'react-router-dom';
 import { alertSet, homepageSpaceboxesSet } from '../../Redux/actions';
 
 import { device } from '../../styles';
@@ -36,6 +36,12 @@ const StyledWrapper = styled.div`
   @media ${device.laptopL} {
     grid-template-columns: repeat(5, 1fr);
   }
+`;
+
+const StyledSpaceboxLink = styled(Link)`
+  order: ${({ order }) => order};
+  overflow: hidden;
+  text-decoration: none !important;
 `;
 
 const HomePage = ({
@@ -135,27 +141,33 @@ const HomePage = ({
         && !gettingSpaceboxes
         && allSpaceboxes.map((spacebox, index) => (
           spacebox.visible && (
-            <Spacebox
-              authUserIsTheOwner={
-                authUser && authUser.uid === spacebox.uid
-              }
-              bgColor={spacebox.bgColor}
-              category={spacebox.category}
-              color={spacebox.color}
-              description={spacebox.description}
-              onEditSpaceboxClickHandler={
-                () => handleEditSpaceboxClick(spacebox.slug)
-              }
+            <StyledSpaceboxLink
               key={spacebox.slug}
-              likes={spacebox.likes}
-              link={[`${ROUTES.SPACE_BASE}/${spacebox.slug}`, spacebox]}
-              order={
-                authUser && authUser.uid === spacebox.uid
-                  ? -1
-                  : index + 10
-              }
-              title={spacebox.title}
-            />
+              to={{
+                pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}`,
+                state: { spacebox },
+              }}
+            >
+              <Spacebox
+                authUserIsTheOwner={
+                  authUser && authUser.uid === spacebox.uid
+                }
+                bgColor={spacebox.bgColor}
+                category={spacebox.category}
+                color={spacebox.color}
+                description={spacebox.description}
+                onEditSpaceboxClickHandler={
+                  () => handleEditSpaceboxClick(spacebox.slug)
+                }
+                likes={spacebox.likes}
+                order={
+                  authUser && authUser.uid === spacebox.uid
+                    ? -1
+                    : index + 10
+                }
+                title={spacebox.title}
+              />
+            </StyledSpaceboxLink>
           )
         ))
       }

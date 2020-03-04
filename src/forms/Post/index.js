@@ -75,7 +75,8 @@ const PostForm = ({
         }}
         onSubmit={handleSubmit}
         validationSchema={PostFormSchema}
-        render={({
+      >
+        {({
           errors,
           handleBlur,
           handleChange,
@@ -123,7 +124,7 @@ const PostForm = ({
             </StyledButtonsWrapper>
           </Form>
         )}
-      />
+      </Formik>
     </Box>
   );
 };

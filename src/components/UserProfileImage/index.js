@@ -6,11 +6,18 @@ import { useIntl } from 'react-intl';
 
 import Button from '../Button';
 import defaultUserImage from '../../assets/images/default-user-image.png';
-import { keyframe, transition } from '../../styles';
-import { withFirebase } from '../../Firebase';
+import { device, keyframe, transition } from '../../styles';
 
 const StyledWrapper = styled.div`
-  width: ${({ size }) => size};
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  &::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
 `;
 
 const StyledActionsWrapper = styled.div`
@@ -22,11 +29,15 @@ const StyledActionsWrapper = styled.div`
   flex-direction: column;
   height: 100%;
   justify-content: center;
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   transition: opacity ${transition.speed.superfast} linear;
   width: 100%;
   z-index: 100;
+
+  @media ${device.laptop} {
+    opacity: 0;
+  }
 
   button {
     max-width: 80%;
@@ -47,7 +58,6 @@ const StyledLabel = styled.label`
 const StyledFileInput = styled.input`
   height: 0.1px;
   opacity: 0;
-  overflow: hidden;
   position: absolute;
   width: 0.1px;
   z-index: -1;
@@ -55,9 +65,12 @@ const StyledFileInput = styled.input`
 
 const StyledImg = styled.img`
   height: 100%;
-  overflow: hidden;
   transition: filter ${transition.speed.superfast} linear;
   width: 100%;
+
+  @media ${device.laptop} {
+    filter: none;
+  }
 `;
 
 const StyledErrorWrapper = styled.div`
@@ -88,17 +101,20 @@ const StyledErrorMessage = styled.div`
 const StyledImageWrapper = styled.div`
   background-color: ${({ theme }) => theme.components.userProfileImage.bgColor};
   // border: ${({ theme }) => theme.components.userProfileImage.border};
-  height: ${({ size }) => size};
-  position: relative;
-  width: ${({ size }) => size};
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
 
-  &:hover {
-    ${StyledActionsWrapper} {
-      opacity: 1;
-    }
+  @media ${device.laptop} {
+    &:hover {
+      ${StyledActionsWrapper} {
+        opacity: 1;
+      }
 
-    ${StyledImg} {
-      filter: blur(5px);
+      ${StyledImg} {
+        filter: blur(5px);
+      }
     }
   }
 
@@ -108,23 +124,57 @@ const StyledImageWrapper = styled.div`
     ${StyledActionsWrapper} {
       border-radius: ${theme.global.borderRadius};
     }
+
+    ${StyledImg} {
+      border-radius: ${theme.global.borderRadius};
+    }
   `}
 `;
 
 const UserProfileImage = ({
-  authUserIsTheOwner,
+  alertSetAction,
+  authUser,
   firebase,
+  isLoadingSetAction,
   rounded,
-  size,
-  src,
 }) => {
   const intl = useIntl();
-
-  const [labelText, setLabelText] = useState(intl.formatMessage(
-    { id: 'components.userProfileImage.uploadImageButton' },
-  ));
-
   const [fileInputError, setFileInputError] = useState(null);
+
+  const uploadImageAndUpdateUser = async (image) => {
+    try {
+      isLoadingSetAction(true);
+      const storageRef = firebase.storage.ref(`user-profile-images/${authUser.uid}`);
+      await storageRef.put(image);
+      const imageUrl = await storageRef.getDownloadURL();
+      await firebase.user(authUser.uid).update({ profileImageUrl: imageUrl });
+    } catch (error) {
+      alertSetAction({
+        message: error.message,
+        type: 'danger',
+      });
+    } finally {
+      isLoadingSetAction(false);
+    }
+  };
+
+  const removeImageAndUpdateUser = async () => {
+    try {
+      isLoadingSetAction(true);
+      await firebase.user(authUser.uid).update({ profileImageUrl: null });
+      const storageRef = firebase.storage.ref(`user-profile-images/${authUser.uid}`);
+      await storageRef.delete();
+    } catch (error) {
+      if (error.code !== 'storage/object-not-found') {
+        alertSetAction({
+          message: error.message,
+          type: 'danger',
+        });
+      }
+    } finally {
+      isLoadingSetAction(false);
+    }
+  };
 
   const handleFileInputChange = (event) => {
     if (!event.target.files[0].type.includes('image')) {
@@ -132,64 +182,60 @@ const UserProfileImage = ({
     } else if (event.target.files[0].size > 10000000) {
       setFileInputError('components.userProfileImage.badFileSizeErrorMessage');
     } else {
-      setLabelText(event.target.files[0].name);
-
-      const storageRef = firebase.storage.ref('user-profile-images/test');
-      storageRef.put(event.target.files[0]);
-
-      storageRef.getDownloadURL().then(url => console.log(url));
+      uploadImageAndUpdateUser(event.target.files[0]);
     }
   };
 
   return (
-    <StyledWrapper size={size}>
-      <StyledImageWrapper
-        authUserIsTheOwner={authUserIsTheOwner}
-        rounded={rounded}
-        size={size}
-      >
-        {authUserIsTheOwner && (
-          <StyledActionsWrapper>
+    <StyledWrapper>
+      <StyledImageWrapper authUser={authUser} rounded={rounded}>
+        <StyledActionsWrapper>
+          <Button
+            color="emerald"
+            dontTranslateChildren
+            rounded
+            size="large"
+            styleType="bordered"
+            type="button"
+          >
+            <StyledLabel htmlFor="file">
+              {intl.formatMessage(
+                {
+                  id: authUser.profileImageUrl
+                    ? 'components.userProfileImage.changeImageButton'
+                    : 'components.userProfileImage.uploadNewImageButton',
+                },
+              )}
+            </StyledLabel>
+          </Button>
+
+          {authUser.profileImageUrl && (
             <Button
-              color="emerald"
-              dontTranslateChildren
+              color="salmon"
+              onClick={removeImageAndUpdateUser}
               rounded
               size="large"
-              styleType="filled"
+              styleType="unbordered"
               type="button"
             >
-              <StyledLabel htmlFor="file">
-                {labelText}
-              </StyledLabel>
+              {'components.userProfileImage.removeImageButton'}
             </Button>
+          )}
 
-            {src && (
-              <Button
-                color="salmon"
-                rounded
-                size="large"
-                styleType="unbordered"
-                type="button"
-              >
-                {'components.userProfileImage.removeImageButton'}
-              </Button>
-            )}
-
-            <StyledFileInput
-              accept="image/*"
-              id="file"
-              name="file"
-              onChange={handleFileInputChange}
-              type="file"
-            />
-          </StyledActionsWrapper>
-        )}
+          <StyledFileInput
+            accept="image/*"
+            id="file"
+            name="file"
+            onChange={handleFileInputChange}
+            type="file"
+          />
+        </StyledActionsWrapper>
 
         <StyledImg
-          src={src || defaultUserImage}
           alt={intl.formatMessage(
             { id: 'components.userProfileImage.altImage' },
           )}
+          src={authUser.profileImageUrl || defaultUserImage}
         />
       </StyledImageWrapper>
 
@@ -207,17 +253,15 @@ const UserProfileImage = ({
 };
 
 UserProfileImage.propTypes = {
-  authUserIsTheOwner: PropTypes.bool,
+  alertSetAction: PropTypes.func.isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  isLoadingSetAction: PropTypes.func.isRequired,
   rounded: PropTypes.bool,
-  size: PropTypes.string.isRequired,
-  src: PropTypes.string,
 };
 
 UserProfileImage.defaultProps = {
-  authUserIsTheOwner: false,
   rounded: false,
-  src: undefined,
 };
 
-export default withFirebase(UserProfileImage);
+export default UserProfileImage;

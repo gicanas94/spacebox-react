@@ -29,14 +29,6 @@ const StyledButton = styled.button`
   user-select: none;
   width: 270px;
 
-  &:active {
-    transform: translateY(2px);
-  }
-
-  &:focus {
-    outline: none;
-  }
-
   ${({ account }) => account === 'Facebook' && `
     background-color: #3b5998;
     color: #ffffff;
@@ -78,6 +70,10 @@ const StyledButton = styled.button`
   ${({ rounded, theme }) => rounded && `
     border-radius: ${theme.global.borderRadius};
   `}
+
+  &:active {
+    transform: translateY(2px);
+  }
 `;
 
 const StyledIconWrapper = styled.div`

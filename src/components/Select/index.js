@@ -163,7 +163,7 @@ const StyledLi = styled.li`
     background-color: ${({ theme }) => theme.components.select.li.hoverColor};
   }
 
-  &:before {
+  &::before {
     content: '';
   }
 `;
@@ -203,7 +203,7 @@ const Select = ({
 
   const translatedOptions = options.map(
     option => ({
-      category: intl.formatMessage({ id: option.messageId }),
+      visibleText: intl.formatMessage({ id: option.messageId }),
       index: option.index,
     }),
   );
@@ -265,13 +265,13 @@ const Select = ({
           <StyledUl rounded={rounded}>
             {_.sortBy(
               translatedOptions,
-              translatedOption => translatedOption.category,
+              translatedOption => translatedOption.visibleText,
             ).map(option => (
               <StyledLi
                 key={option.index}
                 onClick={!disabled ? () => handleOptionClick(option.index) : null}
               >
-                {option.category}
+                {option.visibleText}
               </StyledLi>
             ))}
           </StyledUl>

@@ -9,18 +9,18 @@ const StyledCheckbox = styled.span`
   border-style: solid;
   border-width: ${({ theme }) => theme.components.checkbox.borderWidth};
   display: flex;
-  height: 25px;
+  height: 30px;
   justify-content: center;
-  margin-right: 7px;
-  width: 25px;
+  margin-right: 10px;
+  width: 30px;
 
   ${({ checked, theme }) => checked && `
     border-color: ${theme.components.checkbox.color.checked};
     color: ${theme.components.checkbox.color.checked};
 
-    &:after {
+    &::after {
       content: '✔';
-      font-size: ${theme.components.checkbox.fontSize};
+      font-size: ${theme.components.checkbox.checkboxContent.fontSize};
     }
   `}
 
@@ -30,11 +30,12 @@ const StyledCheckbox = styled.span`
 `;
 
 const StyledLabel = styled.span`
-  font-size: ${({ theme }) => theme.components.checkbox.fontSize};
+  font-size: ${({ theme }) => theme.components.checkbox.label.fontSize};
+  padding-top: 3px;
 `;
 
 const StyledWrapper = styled.div`
-  align-items: flex-end;
+  align-items: center;
   cursor: pointer;
   display: flex;
   position: relative;

@@ -7,13 +7,7 @@ import styled from 'styled-components';
 import { Trash } from 'styled-icons/fa-solid/Trash';
 import { withRouter } from 'react-router-dom';
 
-import {
-  alertSet,
-  confirmationModalClose,
-  confirmationModalOpen,
-  isLoadingSet,
-} from '../../Redux/actions';
-
+import { alertSet, confirmationModalOpen, isLoadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
 import EditSpaceboxForm from '../../forms/EditSpacebox';
 import HelmetTitle from '../../components/HelmetTitle';
@@ -53,7 +47,6 @@ const StyledTrashIcon = styled(Trash)`
 const EditSpaceboxPage = ({
   alertSetAction,
   authUser,
-  confirmationModalCloseAction,
   confirmationModalOpenAction,
   firebase,
   history,
@@ -177,7 +170,6 @@ const EditSpaceboxPage = ({
 EditSpaceboxPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
-  confirmationModalCloseAction: PropTypes.func.isRequired,
   confirmationModalOpenAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -194,7 +186,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   alertSetAction: alertSet,
   isLoadingSetAction: isLoadingSet,
-  confirmationModalCloseAction: confirmationModalClose,
   confirmationModalOpenAction: confirmationModalOpen,
 };
 

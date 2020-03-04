@@ -92,6 +92,7 @@ const StyledSecondChild = styled.div`
 const StyledLink = styled(Link)`
   display: inline;
   text-decoration: none !important;
+  transform: none !important;
 `;
 
 const SpaceboxInfoSection = ({

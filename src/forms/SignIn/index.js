@@ -73,7 +73,8 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
       }}
       onSubmit={handleSubmit}
       validationSchema={SignInFormSchema}
-      render={({
+    >
+      {({
         errors,
         handleBlur,
         handleChange,
@@ -140,7 +141,7 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
           </StyledBottomWrapper>
         </Form>
       )}
-    />
+    </Formik>
   );
 };
 

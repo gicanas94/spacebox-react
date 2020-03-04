@@ -1,18 +1,21 @@
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 import { Cross } from 'styled-icons/icomoon/Cross';
-import { Link, withRouter } from 'react-router-dom';
 import { Menu } from 'styled-icons/boxicons-regular/Menu';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Transition } from 'react-spring/renderprops';
 import { useIntl } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 
-import { device } from '../../styles';
+import { appThemeSet } from '../../Redux/actions';
+import { device, transition } from '../../styles';
 import largeLogo from '../../assets/images/logo-with-name.png';
-import Links from './Links';
-import { ROUTES } from '../../constants';
+import Nav from './Nav';
 import SearchBar from './SearchBar';
 import smallLogo from '../../assets/images/logo.png';
+import themes from '../../styles/themes';
 
 const StyledWrapper = styled.div`
   background-color: ${({ theme }) => theme.components.header.bgColor};
@@ -53,11 +56,17 @@ const StyledSpan = styled.span`
   display: flex;
 `;
 
-const StyledSmallLogoLink = styled(Link)`
+const StyledSmallLogoImg = styled.img`
+  cursor: pointer;
   line-height: 0;
   margin-right: 10px;
   user-select: none;
+  transition: all ${transition.speed.superfast} linear;
   z-index: 1200;
+
+  &:active {
+    transform: translateY(2px);
+  }
 `;
 
 const StyledOverlay = styled.div`
@@ -95,7 +104,6 @@ const StyledMobileViewNav = styled.nav`
   align-items: center;
   display: flex;
   flex-direction: column;
-  width: 185px;
 
   > * {
     margin-bottom: 30px;
@@ -125,44 +133,75 @@ const StyledLaptopView = styled.div`
   }
 `;
 
-const StyledLargeLogoLink = styled(Link)`
+const StyledLargeLogoImg = styled.img`
+  cursor: pointer;
   line-height: 0;
   margin-right: 25px;
   user-select: none;
+  transition: all ${transition.speed.superfast} linear;
+
+  &:active {
+    transform: translateY(2px);
+  }
+`;
+
+const StyledLaptopViewSearchBarWrapper = styled.div`
+  margin-right: 25px;
 `;
 
 const StyledLaptopViewNav = styled.nav`
   display: flex;
+`;
 
-  > * {
+const StyledLaptopViewNavElementsWrapper = styled.div`
+  display: flex;
+
+  button {
     margin-right: 25px;
+    width: fit-content;
   }
 
-  > *:last-child {
+  button:last-child {
     margin-right: 0;
   }
 `;
 
-const Header = ({ location }) => {
+const Header = ({
+  appTheme,
+  appThemeSetAction,
+  authUser,
+  history,
+  location,
+}) => {
   const [mobileNavIsOpen, setMobileNavIsOpen] = useState(false);
   const intl = useIntl();
+
+  const handleOnLogoClick = () => {
+    themes.forEach((theme, index) => {
+      if (theme.name === appTheme.name) {
+        if (themes[index + 1]) {
+          appThemeSetAction(themes[index + 1]);
+        } else if (themes[index - 1]) {
+          appThemeSetAction(themes[index - 1]);
+        } else {
+          appThemeSetAction(themes[index]);
+        }
+      }
+    });
+  };
 
   return (
     <StyledWrapper>
       <StyledHeader>
         <StyledMobileView>
           <StyledSpan>
-            <StyledSmallLogoLink
-              onClick={() => setMobileNavIsOpen(false)}
-              to={ROUTES.HOME}
-            >
-              <img
-                alt={intl.formatMessage({
-                  id: 'components.header.logoImageAlt',
-                })}
-                src={smallLogo}
-              />
-            </StyledSmallLogoLink>
+            <StyledSmallLogoImg
+              alt={intl.formatMessage({
+                id: 'components.header.logoImageAlt',
+              })}
+              onClick={() => handleOnLogoClick()}
+              src={smallLogo}
+            />
 
             {location.pathname === '/' && <SearchBar intl={intl} />}
           </StyledSpan>
@@ -180,7 +219,13 @@ const Header = ({ location }) => {
                 <StyledCrossIcon onClick={() => setMobileNavIsOpen(false)} />
 
                 <StyledMobileViewNav>
-                  <Links buttonsSize="large" onLinkClickHandler={setMobileNavIsOpen} />
+                  <Nav
+                    authUser={authUser}
+                    buttonsSize="large"
+                    history={history}
+                    location={location}
+                    onLinkClickHandler={setMobileNavIsOpen}
+                  />
                 </StyledMobileViewNav>
               </StyledOverlay>
             ))}
@@ -192,19 +237,30 @@ const Header = ({ location }) => {
         </StyledMobileView>
 
         <StyledLaptopView>
-          <StyledLargeLogoLink to={ROUTES.HOME}>
-            <img
-              alt={intl.formatMessage({
-                id: 'components.header.logoImageAlt',
-              })}
-              src={largeLogo}
-            />
-          </StyledLargeLogoLink>
+          <StyledLargeLogoImg
+            alt={intl.formatMessage({
+              id: 'components.header.logoImageAlt',
+            })}
+            onClick={() => handleOnLogoClick()}
+            src={largeLogo}
+          />
 
           <StyledLaptopViewNav>
-            {location.pathname === '/' && <SearchBar intl={intl} rounded />}
+            {location.pathname === '/' && (
+              <StyledLaptopViewSearchBarWrapper>
+                <SearchBar intl={intl} rounded />
+              </StyledLaptopViewSearchBarWrapper>
+            )}
 
-            <Links buttonsSize="small" onLinkClickHandler={setMobileNavIsOpen} />
+            <StyledLaptopViewNavElementsWrapper>
+              <Nav
+                authUser={authUser}
+                buttonsSize="small"
+                history={history}
+                location={location}
+                onLinkClickHandler={setMobileNavIsOpen}
+              />
+            </StyledLaptopViewNavElementsWrapper>
           </StyledLaptopViewNav>
         </StyledLaptopView>
       </StyledHeader>
@@ -213,7 +269,21 @@ const Header = ({ location }) => {
 };
 
 Header.propTypes = {
+  appTheme: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  appThemeSetAction: PropTypes.func.isRequired,
+  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withRouter(Header);
+const mapStateToProps = state => ({
+  appTheme: state.appTheme,
+  authUser: state.authUser,
+});
+
+const mapDispatchToProps = { appThemeSetAction: appThemeSet };
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter,
+)(Header);

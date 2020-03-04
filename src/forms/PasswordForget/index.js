@@ -5,6 +5,7 @@ import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 
 import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
@@ -14,9 +15,14 @@ import { withFirebase } from '../../Firebase';
 const StyledButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: column;
+
+  button:first-of-type {
+    margin-bottom: 25px;
+  }
 `;
 
-const PasswordForgetForm = ({ alertSetAction, firebase }) => {
+const PasswordForgetForm = ({ alertSetAction, firebase, history }) => {
   const PasswordForgetFormSchema = Yup.object().shape({
     email: Yup.string()
       .trim()
@@ -55,7 +61,8 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
       initialValues={{ email: '' }}
       onSubmit={handleSubmit}
       validationSchema={PasswordForgetFormSchema}
-      render={({
+    >
+      {({
         errors,
         handleBlur,
         handleChange,
@@ -84,21 +91,34 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
               disabled={isSubmitting}
               fullWidth
               rounded
-              styleType="filled"
+              styleType="bordered"
               type="submit"
             >
               {'forms.passwordForget.submitButton'}
             </Button>
+
+            <Button
+              color="abalone"
+              disabled={isSubmitting}
+              fullWidth
+              onClick={() => history.goBack()}
+              rounded
+              styleType="unbordered"
+              type="button"
+            >
+              {'forms.passwordForget.backButton'}
+            </Button>
           </StyledButtonWrapper>
         </Form>
       )}
-    />
+    </Formik>
   );
 };
 
 PasswordForgetForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapDispatchToProps = { alertSetAction: alertSet };
@@ -106,4 +126,5 @@ const mapDispatchToProps = { alertSetAction: alertSet };
 export default compose(
   connect(null, mapDispatchToProps),
   withFirebase,
+  withRouter,
 )(PasswordForgetForm);

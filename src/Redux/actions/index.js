@@ -30,6 +30,11 @@ export const appLocaleSet = locale => ({
   locale,
 });
 
+export const appThemeSet = theme => ({
+  type: 'APP_THEME_SET',
+  theme,
+});
+
 export const authUserSet = authUser => ({
   type: 'AUTH_USER_SET',
   authUser,

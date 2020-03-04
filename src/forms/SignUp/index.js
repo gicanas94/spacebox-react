@@ -11,6 +11,7 @@ import styled from 'styled-components';
 
 import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
+import { defineAppLocale } from '../../utils';
 import { device } from '../../styles';
 import Input from '../../components/Input';
 import { ROUTES } from '../../constants';
@@ -119,6 +120,7 @@ const SignUpForm = ({
 
         await firebase.user(createdAuthUser.user.uid).set({
           createdAt: new Date().toISOString(),
+          language: defineAppLocale(),
           slug: `${_.kebabCase(username)}-${Math.floor(Math.random() * 10000)}`,
           username,
         });
@@ -158,7 +160,8 @@ const SignUpForm = ({
       }}
       onSubmit={handleSubmit}
       validationSchema={SignUpFormSchema}
-      render={({
+    >
+      {({
         errors,
         handleBlur,
         handleChange,
@@ -265,7 +268,7 @@ const SignUpForm = ({
           </StyledBottomWrapper>
         </Form>
       )}
-    />
+    </Formik>
   );
 };
 

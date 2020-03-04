@@ -105,7 +105,8 @@ const PasswordLinkForm = ({
         }}
         onSubmit={handleSubmit}
         validationSchema={PasswordLinkFormSchema}
-        render={({
+      >
+        {({
           errors,
           handleBlur,
           handleChange,
@@ -163,7 +164,7 @@ const PasswordLinkForm = ({
             </Button>
           </Form>
         )}
-      />
+      </Formik>
     </StyledWrapper>
   );
 };

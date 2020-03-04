@@ -28,53 +28,121 @@ const StyledButton = styled.button`
     disabled,
     styleType,
     theme,
-  }) => !disabled && `
+  }) => styleType === 'bordered' && `
+    background-color: transparent;
+    border-color: ${
+      color ? colors.palette[color] : theme.components.button.color.default
+    };
+    border-style: solid;
+    border-width: ${theme.components.button.borderWidth};
+    color: ${
+      color ? colors.palette[color] : theme.components.button.color.default
+    };
+
+    ${disabled ? `
+      border-color: ${disabled && theme.components.button.color.disabled};
+      color: ${disabled && theme.components.button.color.disabled};
+    ` : `
+      &:active,
+      &:focus,
+      &:hover {
+        background-color: ${!disabled && color
+          ? colors.palette[color]
+          : theme.components.button.color.default
+        };
+        color: ${Color(
+          color ? colors.palette[color] : theme.components.button.color.default
+        ).isDark()
+          ? Color(
+              color ? colors.palette[color] : theme.components.button.color.default
+            ).lighten(0.8).hex()
+          : Color(
+            color ? colors.palette[color] : theme.components.button.color.default
+          ).darken(0.7).hex()
+        };
+      }
+    `}
+  `}
+
+  ${({
+    color,
+    disabled,
+    styleType,
+    theme,
+  }) => styleType === 'filled' && `
+    background-color: ${
+      color ? colors.palette[color] : theme.components.button.color.default
+    };
+    border-color: transparent;
+    border-style: solid;
+    border-width: ${theme.components.button.borderWidth};
+    color: ${Color(
+      color ? colors.palette[color] : theme.components.button.color.default
+    ).isDark()
+      ? Color(
+          color ? colors.palette[color] : theme.components.button.color.default
+        ).lighten(0.8).hex()
+      : Color(
+          color ? colors.palette[color] : theme.components.button.color.default
+        ).darken(0.7).hex()
+    };
+
+    ${disabled ? `
+      background-color: ${theme.components.button.color.disabled};
+      color: ${Color(theme.components.button.color.disabled).darken(0.2).hex()};
+    ` : `
+      &:active,
+      &:focus,
+      &:hover {
+        background-color: ${Color(
+          color ? colors.palette[color] : theme.components.button.color.default
+        ).darken(0.2).hex()};
+      }
+    `}
+  `}
+
+  ${({
+    color,
+    disabled,
+    styleType,
+    theme,
+  }) => styleType === 'unbordered' && `
+    background-color: transparent;
+    color: ${
+      color ? colors.palette[color] : theme.components.button.color.default
+    };
+    border-color: transparent;
+    border-style: solid;
+    border-width: ${theme.components.button.borderWidth};
+
+    ${disabled ? `
+      color: ${theme.components.button.color.disabled};
+    ` : `
+      &:active,
+      &:focus,
+      &:hover {
+        background-color: ${
+          color ? colors.palette[color] : theme.components.button.color.default
+        };
+        color: ${Color(
+          color ? colors.palette[color] : theme.components.button.color.default
+        ).isDark()
+          ? Color(
+              color ? colors.palette[color] : theme.components.button.color.default
+            ).lighten(0.8).hex()
+          : Color(
+            color ? colors.palette[color] : theme.components.button.color.default
+          ).darken(0.7).hex()
+        };
+      }
+    `}
+  `}
+
+  ${({ disabled }) => !disabled && `
     cursor: pointer;
 
     &:active {
       transform: translateY(2px);
-    }
-
-    &:focus {
-      outline: none;
-    }
-
-    &:focus,
-    &:hover {
-      ${(styleType === 'bordered' || styleType === 'unbordered') && `
-        background-color: ${
-          color
-            ? colors.palette[color]
-            : theme.components.button.color.default
-        };
-        color: ${
-          Color(
-            color
-              ? colors.palette[color]
-              : theme.components.button.color.default
-          ).isDark()
-            ? Color(
-              color
-                ? colors.palette[color]
-                : theme.components.button.color.default
-            ).lighten(0.8).hex()
-            : Color(
-              color
-                ? colors.palette[color]
-                : theme.components.button.color.default
-            ).darken(0.7).hex()
-        };
-      `};
-
-      ${styleType === 'filled' && `
-        background-color: ${
-          Color(
-            color
-              ? colors.palette[color]
-              : theme.components.button.color.default
-          ).darken(0.2).hex()
-        };
-      `}
     }
   `}
 
@@ -97,81 +165,6 @@ const StyledButton = styled.button`
 
   ${({ size }) => size === 'large' && `
     height: 50px;
-  `}
-
-  ${({ styleType, color, theme }) => (
-    styleType === 'bordered' || styleType === 'unbordered'
-  ) && `
-    background-color: transparent;
-    color: ${
-      color
-        ? colors.palette[color]
-        : theme.components.button.color.default
-    };
-  `}
-
-  ${({ styleType, color, theme }) => styleType === 'bordered' && `
-    border-color: ${
-      color
-        ? colors.palette[color]
-        : theme.components.button.color.default
-    };
-    border-style: solid;
-    border-width: ${theme.components.button.borderWidth};
-  `}
-
-  ${({ styleType, disabled, theme }) => (
-    styleType === 'bordered' && disabled
-  ) && `
-    border-color: ${theme.components.button.color.disabled};
-    color: ${theme.components.button.color.disabled};
-  `}
-
-  ${({ styleType, color, theme }) => styleType === 'filled' && `
-    background-color: ${
-      color
-        ? colors.palette[color]
-        : theme.components.button.color.default
-    };
-    border-color: transparent;
-    border-style: solid;
-    border-width: ${theme.components.button.borderWidth};
-    color: ${
-      Color(
-        color
-          ? colors.palette[color]
-          : theme.components.button.color.default
-      ).isDark()
-        ? Color(
-          color
-            ? colors.palette[color]
-            : theme.components.button.color.default
-        ).lighten(0.8).hex()
-        : Color(
-          color
-            ? colors.palette[color]
-            : theme.components.button.color.default
-        ).darken(0.7).hex()
-    };
-  `}
-
-  ${({ styleType, disabled, theme }) => (
-    styleType === 'filled' && disabled
-  ) && `
-    background-color: ${theme.components.button.color.disabled};
-    color: ${Color(theme.components.button.color.disabled).darken(0.2).hex()};
-  `}
-
-  ${({ styleType, theme }) => styleType === 'unbordered' && `
-    border-color: transparent;
-    border-style: solid;
-    border-width: ${theme.components.button.borderWidth};
-  `}
-
-  ${({ styleType, disabled, theme }) => (
-    styleType === 'unbordered' && disabled
-  ) && `
-    color: ${theme.components.button.color.disabled};
   `}
 
   ${({ width }) => width && `

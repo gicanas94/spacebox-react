@@ -2,7 +2,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { alertSet, isLoadingSet } from '../../Redux/actions';
@@ -65,7 +65,6 @@ const AccountPage = ({
 }) => {
   const [authUserHasPassword, setAuthUserHasPassword] = useState(false);
   const [activeSignInMethods, setActiveSignInMethods] = useState([]);
-  const [databaseAuthUser, setDatabaseAuthUser] = useState({});
 
   const sidebarContent = [
     {
@@ -90,17 +89,6 @@ const AccountPage = ({
     },
   ];
 
-  const getDatabaseAuthUser = () => (
-    new Promise((resolve, reject) => {
-      firebase.user(authUser.uid).get()
-        .then((document) => {
-          setDatabaseAuthUser(document.data());
-          resolve();
-        })
-        .catch(error => reject(error));
-    })
-  );
-
   const getSignInMethods = () => (
     new Promise((resolve, reject) => {
       firebase.doFetchSignInMethodsForEmail(authUser.email)
@@ -120,7 +108,6 @@ const AccountPage = ({
     (async () => {
       try {
         isLoadingSetAction(true);
-        await getDatabaseAuthUser();
         await getSignInMethods();
       } catch (error) {
         alertSetAction({
@@ -135,46 +122,47 @@ const AccountPage = ({
 
   return (
     <StyledGrid>
-      <HelmetTitle title={{ id: 'pages.account.title' }} />
-      <Sidebar content={sidebarContent} />
+      <Fragment>
+        <HelmetTitle title={{ id: 'pages.account.title' }} />
+        <Sidebar content={sidebarContent} />
 
-      <div className="content">
-        <Box fullWidth id="general-settings">
-          <h1>
-            <FormattedMessage id="pages.account.h1" />
-          </h1>
+        <div className="content">
+          <Box fullWidth id="general-settings">
+            <h1>
+              <FormattedMessage id="pages.account.h1" />
+            </h1>
 
-          <GeneralSettingsSubpage
-            alertSetAction={alertSetAction}
-            authUser={authUser}
-            databaseAuthUser={databaseAuthUser}
-            firebase={firebase}
-            getDatabaseAuthUserHandler={getDatabaseAuthUser}
-          />
-        </Box>
-
-        {authUserHasPassword && (
-          <Box fullWidth id="change-password">
-            <ChangePasswordSubpage
+            <GeneralSettingsSubpage
               alertSetAction={alertSetAction}
               authUser={authUser}
               firebase={firebase}
+              isLoadingSetAction={isLoadingSetAction}
             />
           </Box>
-        )}
 
-        <Box fullWidth id="login-management">
-          <LoginManagementSubpage
-            activeSignInMethods={activeSignInMethods}
-            alertSetAction={alertSetAction}
-            authUser={authUser}
-            firebase={firebase}
-            getSignInMethodsHandler={getSignInMethods}
-            isLoading={isLoading}
-            isLoadingSetAction={isLoadingSetAction}
-          />
-        </Box>
-      </div>
+          {authUserHasPassword && (
+            <Box fullWidth id="change-password">
+              <ChangePasswordSubpage
+                alertSetAction={alertSetAction}
+                authUser={authUser}
+                firebase={firebase}
+              />
+            </Box>
+          )}
+
+          <Box fullWidth id="login-management">
+            <LoginManagementSubpage
+              activeSignInMethods={activeSignInMethods}
+              alertSetAction={alertSetAction}
+              authUser={authUser}
+              firebase={firebase}
+              getSignInMethodsHandler={getSignInMethods}
+              isLoading={isLoading}
+              isLoadingSetAction={isLoadingSetAction}
+            />
+          </Box>
+        </div>
+      </Fragment>
     </StyledGrid>
   );
 };

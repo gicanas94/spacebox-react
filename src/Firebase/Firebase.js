@@ -97,7 +97,7 @@ class Firebase {
   doSignInWithEmailAndPassword = (email, password) => (
     new Promise((resolve, reject) => (
       this.auth.signInWithEmailAndPassword(email, password)
-        .then(() => resolve())
+        .then(authUser => resolve(authUser))
         .catch(error => reject(error))
     ))
   );
@@ -133,12 +133,20 @@ class Firebase {
   // ---------------------------------------------------------------------------
   onAuthUserListener = (next, fallback) => this.auth.onAuthStateChanged((authUser) => {
     if (authUser) {
-      next({
-        email: authUser.email,
-        emailVerified: authUser.emailVerified,
-        providerData: authUser.providerData,
-        uid: authUser.uid,
-      });
+      this.user(authUser.uid).onSnapshot(document => (
+        next({
+          bio: document.data().bio,
+          createdAt: document.data().createdAt,
+          email: authUser.email,
+          emailVerified: authUser.emailVerified,
+          language: document.data().language,
+          profileImageUrl: document.data().profileImageUrl,
+          providerData: authUser.providerData,
+          slug: document.data().slug,
+          uid: authUser.uid,
+          username: document.data().username,
+        })
+      ));
     } else {
       fallback();
     }

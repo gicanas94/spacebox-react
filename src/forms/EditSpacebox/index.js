@@ -128,7 +128,8 @@ const EditSpaceboxForm = ({
       initialValues={spacebox}
       onSubmit={handleSubmit}
       validationSchema={EditSpaceboxFormSchema}
-      render={({
+    >
+      {({
         errors,
         handleBlur,
         handleChange,
@@ -255,7 +256,7 @@ const EditSpaceboxForm = ({
           </StyledButtonsWrapper>
         </Form>
       )}
-    />
+    </Formik>
   );
 };
 

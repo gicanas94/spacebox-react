@@ -56,7 +56,7 @@ const StyledCrossIcon = styled(Cross)`
 `;
 
 const Alert = ({ message, onAlertCloseHandler, ...props }) => (
-  <StyledAlert id="alert-component" onClick={onAlertCloseHandler} {...props}>
+  <StyledAlert onClick={onAlertCloseHandler} {...props}>
     <StyledWrapper>
       <StyledMessage>
         {message.id

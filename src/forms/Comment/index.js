@@ -134,13 +134,12 @@ const CommentForm = ({
         alertSetAction();
 
         const postRef = firebase.post(sid, postSlug);
-        const dbAuthUser = await firebase.user(authUser.uid).get();
         const post = await postRef.get();
 
         createdComment.user = {
-          slug: dbAuthUser.data().slug,
+          slug: authUser.slug,
           uid: authUser.uid,
-          username: dbAuthUser.data().username,
+          username: authUser.username,
         };
 
         await postRef.update(
@@ -201,7 +200,8 @@ const CommentForm = ({
       initialValues={{ content: '' }}
       onSubmit={handleSubmit}
       validationSchema={CommentFormSchema}
-      render={({
+    >
+      {({
         handleBlur,
         handleChange,
         isSubmitting,
@@ -247,7 +247,7 @@ const CommentForm = ({
           )}
         </Form>
       )}
-    />
+    </Formik>
   );
 };
 

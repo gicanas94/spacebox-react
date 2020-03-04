@@ -1,10 +1,8 @@
 import Color from 'color';
-import { Edit } from 'styled-icons/boxicons-regular/Edit';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { Heart } from 'styled-icons/fa-solid/Heart';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
 import colors from '../../styles/color';
@@ -14,7 +12,8 @@ const StyledTitle = styled.div`
   display: -webkit-box;
   font-size: ${({ theme }) => theme.components.spacebox.title.fontSize};
   font-weight: ${({ theme }) => theme.components.spacebox.title.fontWeight};
-  line-height: 1em;
+  line-height: 1.4em;
+  margin-bottom: -8px
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: uppercase;
@@ -30,7 +29,7 @@ const StyledTitle = styled.div`
     bottom: 7px;
     padding: 0 10px;
     position: absolute;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
   }
 `;
 
@@ -40,14 +39,14 @@ const StyledDescription = styled.div`
   font-weight: ${({ theme }) => (
     theme.components.spacebox.description.fontWeight
   )};
-  line-height: 1em;
+  line-height: 1.4em;
   overflow: hidden;
   transition: opacity ${transition.speed.superfast} linear,
               visibility ${transition.speed.superfast} linear;
   width: 100%;
   word-break: break-word;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
 
   @media ${device.laptop} {
     bottom: 7px;
@@ -55,7 +54,7 @@ const StyledDescription = styled.div`
     padding: 0 10px;
     position: absolute;
     visibility: hidden;
-    -webkit-line-clamp: 8;
+    -webkit-line-clamp: 5;
   }
 `;
 
@@ -71,48 +70,24 @@ const StyledBubblesWrapper = styled.div`
 `;
 
 const StyledBubble = styled.div`
-  align-items: center;
   border-radius: ${({ theme }) => (
     theme.components.spacebox.bubble.borderRadius
   )};
-  display: flex;
+  display: block;
   font-size: ${({ theme }) => theme.components.spacebox.bubble.fontSize};
   font-weight: ${({ theme }) => theme.components.spacebox.bubble.fontWeight};
-  height: 25px;
-  padding: 0 5px;
-`;
-
-const StyledLeftBubblesWrapper = styled.div`
-  display: flex;
-
-  & > ${StyledBubble} {
-    margin-right: 7px;
-  }
+  height: 28px;
+  max-width: 50%;
+  overflow: hidden;
+  padding: 5px 5px 0 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const StyledTotalLikesHeartIcon = styled(Heart)`
   color: ${({ theme }) => theme.components.spacebox.totalLikesHeartIcon.color};
   width: 16px;
   margin-right: 5px;
-`;
-
-const StyledEditSpaceboxIcon = styled(Edit)`
-  transition: transform ${transition.speed.superfast} linear;
-  width: 20px;
-`;
-
-const StyledEditSpaceboxIconBubble = styled(StyledBubble)`
-  &:hover {
-    ${StyledEditSpaceboxIcon} {
-      transform: scale(1.1);
-    }
-  }
-
-  &:active {
-    ${StyledEditSpaceboxIcon} {
-      transform: scale(0.97);
-    }
-  }
 `;
 
 const StyledSpacebox = styled.div`
@@ -203,11 +178,6 @@ const StyledSpacebox = styled.div`
   }
 `;
 
-const StyledLink = styled(Link)`
-  order: ${({ order }) => order};
-  text-decoration: none !important;
-`;
-
 const StyledAuthUserIsTheOwnerWrapper = styled.div`
   background: ${({ theme }) => (
     theme.components.spacebox.authUserIsTheOwner.backgroundBorder
@@ -226,7 +196,6 @@ const Spacebox = ({
   description,
   informative,
   likes,
-  link,
   onEditSpaceboxClickHandler,
   order,
   rounded,
@@ -238,30 +207,17 @@ const Spacebox = ({
       authUserIsTheOwner={authUserIsTheOwner}
       description={description}
       informative={informative}
-      order={!link ? order : undefined}
+      order={order || undefined}
       rounded={rounded}
       {...props}
     >
       <StyledBubblesWrapper>
-        <StyledLeftBubblesWrapper>
-          {likes !== undefined && (
-            <StyledBubble>
-              <StyledTotalLikesHeartIcon />
-              <FormattedNumber value={likes} />
-            </StyledBubble>
-          )}
-
-          {authUserIsTheOwner && (
-            <StyledEditSpaceboxIconBubble onClick={
-              (event) => {
-                event.preventDefault();
-                onEditSpaceboxClickHandler();
-              }}
-            >
-              <StyledEditSpaceboxIcon />
-            </StyledEditSpaceboxIconBubble>
-          )}
-        </StyledLeftBubblesWrapper>
+        {likes !== undefined && (
+          <StyledBubble>
+            <StyledTotalLikesHeartIcon />
+            <FormattedNumber value={likes} />
+          </StyledBubble>
+        )}
 
         {category && (
           <StyledBubble>
@@ -289,24 +245,14 @@ const Spacebox = ({
   );
 
   return (
-    link
-      ? (
-        <StyledLink
-          order={order}
-          to={{
-            pathname: link[0],
-            state: { spacebox: link[1] },
-          }}
-        >
-          {authUserIsTheOwner
-            ? (
-              <StyledAuthUserIsTheOwnerWrapper rounded={rounded}>
-                {box}
-              </StyledAuthUserIsTheOwnerWrapper>
-            ) : box}
-        </StyledLink>
-      )
-      : box
+    <Fragment>
+      {authUserIsTheOwner
+        ? (
+          <StyledAuthUserIsTheOwnerWrapper rounded={rounded}>
+            {box}
+          </StyledAuthUserIsTheOwnerWrapper>
+        ) : box}
+    </Fragment>
   );
 };
 
@@ -318,10 +264,6 @@ Spacebox.propTypes = {
   description: PropTypes.string,
   informative: PropTypes.bool,
   likes: PropTypes.number,
-  link: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array,
-  ]),
   onEditSpaceboxClickHandler: PropTypes.func,
   order: PropTypes.number,
   rounded: PropTypes.bool,
@@ -339,7 +281,6 @@ Spacebox.defaultProps = {
   category: undefined,
   informative: false,
   likes: undefined,
-  link: undefined,
   onEditSpaceboxClickHandler: () => false,
   order: undefined,
   rounded: false,

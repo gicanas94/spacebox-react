@@ -167,7 +167,7 @@ Box.defaultProps = {
   minMaxWidth: undefined,
   noBorder: false,
   padding: '25px',
-  rounded: false,
+  rounded: true,
   size: undefined,
 };
 

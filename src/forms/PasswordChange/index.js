@@ -12,7 +12,7 @@ import Input from '../../components/Input';
 import { setCookie, getCookie } from '../../utils';
 
 const StyledNewPasswordWrapper = styled.div`
-  div {
+  & > div {
     margin-bottom: 25px;
   }
 
@@ -147,7 +147,8 @@ const PasswordChangeForm = ({
       }}
       onSubmit={handleSubmit}
       validationSchema={PasswordChangeFormSchema}
-      render={({
+    >
+      {({
         errors,
         handleBlur,
         handleChange,
@@ -227,7 +228,7 @@ const PasswordChangeForm = ({
           </StyledCurrentPasswordAndButtonWrapper>
         </Form>
       )}
-    />
+    </Formik>
   );
 };
 

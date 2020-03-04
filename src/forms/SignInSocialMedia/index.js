@@ -2,6 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
+import { defineAppLocale } from '../../utils';
 import { ERRORS, ROUTES } from '../../constants';
 import SignInWithButton from '../../components/SignInWithButton';
 
@@ -16,6 +17,8 @@ const SignInSocialMedia = ({ alertSetAction, firebase, history }) => {
         if (socialAuthUser.additionalUserInfo.isNewUser) {
           await firebase.user(socialAuthUser.user.uid).set({
             createdAt: new Date().toISOString(),
+            language: defineAppLocale(),
+            profileImageUrl: socialAuthUser.user.photoURL,
             slug: `${_.kebabCase(
               socialAuthUser.additionalUserInfo.profile.name,
             )}-${Math.floor(Math.random() * 10000)}`,

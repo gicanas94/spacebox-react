@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 
-import theme from './theme';
 import { transition } from '.';
 
 const GlobalStyle = createGlobalStyle`
@@ -9,39 +8,44 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::selection {
-    background: ${theme.global.textSelectionColor};
+    background: ${({ theme }) => theme.global.textSelectionColor};
   }
 
   ::-moz-selection {
-    background: ${theme.global.textSelectionColor};
+    background: ${({ theme }) => theme.global.textSelectionColor};
   }
 
   a, .linkStyle {
-    color: ${theme.htmlTags.a.color};
+    color: ${({ theme }) => theme.htmlTags.a.color};
     cursor: pointer !important;
     display: inline-block;
-    font-weight: ${theme.htmlTags.a.fontWeight}
+    font-weight: ${({ theme }) => theme.htmlTags.a.fontWeight}
     text-decoration: none;
     transition: transform ${transition.speed.superfast} linear;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus,
+    &:hover {
+      text-decoration: underline;
+    }
 
     &:active {
       transform: translateY(2px);
     }
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 
   blockquote {
-    background-color: ${theme.htmlTags.blockquote.bgColor};
+    background-color: ${({ theme }) => theme.htmlTags.blockquote.bgColor};
     border: 0;
-    border-color: ${theme.htmlTags.blockquote.borderLeftColor};
-    border-left-width: ${theme.htmlTags.blockquote.borderLeftWidth};
+    border-color: ${({ theme }) => theme.htmlTags.blockquote.borderLeftColor};
+    border-left-width: ${({ theme }) => theme.htmlTags.blockquote.borderLeftWidth};
     border-style: solid;
-    color: ${theme.htmlTags.blockquote.textColor};
+    color: ${({ theme }) => theme.htmlTags.blockquote.textColor};
     font-family: Arial;
-    font-size: ${theme.htmlTags.blockquote.textFontSize};
+    font-size: ${({ theme }) => theme.htmlTags.blockquote.textFontSize};
     font-style: italic;
     margin: 0;
     padding: 20px 5px 20px 60px;
@@ -49,9 +53,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
   blockquote::before {
-    color: ${theme.htmlTags.blockquote.quoteColor};
+    color: ${({ theme }) => theme.htmlTags.blockquote.quoteColor};
     content: '“';
-    font-size: ${theme.htmlTags.blockquote.quoteFontSize};
+    font-size: ${({ theme }) => theme.htmlTags.blockquote.quoteFontSize};
     left: 10px;
     position: absolute;
     top: 5px;
@@ -63,45 +67,45 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     @import url('https://fonts.googleapis.com/css?family=Alegreya+Sans:100,300,400,500,700,800,900');
-    background: ${theme.htmlTags.body.background};
+    background: ${({ theme }) => theme.htmlTags.body.background};
     background-attachment: fixed;
     background-repeat: no-repeat;
-    color: ${theme.htmlTags.body.color};
-    filter: ${theme.htmlTags.body.filter};
-    font-family: ${theme.htmlTags.body.fontFamily};
-    font-size: ${theme.htmlTags.body.fontSize};
+    color: ${({ theme }) => theme.htmlTags.body.color};
+    filter: ${({ theme }) => theme.htmlTags.body.filter};
+    font-family: ${({ theme }) => theme.htmlTags.body.fontFamily};
+    font-size: ${({ theme }) => theme.htmlTags.body.fontSize};
     height: 100%;
     margin: 0;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    color: ${theme.htmlTags.h.color};
+    color: ${({ theme }) => theme.htmlTags.h.color};
     margin-bottom: 25px;
     margin-top: 0;
   }
 
   h1 {
-    font-size: ${theme.htmlTags.h1.fontSize};
+    font-size: ${({ theme }) => theme.htmlTags.h1.fontSize};
   }
 
   h2 {
-    font-size: ${theme.htmlTags.h2.fontSize};
+    font-size: ${({ theme }) => theme.htmlTags.h2.fontSize};
   }
 
   h3 {
-    font-size: ${theme.htmlTags.h3.fontSize};
+    font-size: ${({ theme }) => theme.htmlTags.h3.fontSize};
   }
 
   h4 {
-    font-size: ${theme.htmlTags.h4.fontSize};
+    font-size: ${({ theme }) => theme.htmlTags.h4.fontSize};
   }
 
   h5 {
-    font-size: ${theme.htmlTags.h5.fontSize};
+    font-size: ${({ theme }) => theme.htmlTags.h5.fontSize};
   }
 
   h6 {
-    font-size: ${theme.htmlTags.h6.fontSize};
+    font-size: ${({ theme }) => theme.htmlTags.h6.fontSize};
   }
 
   html {
@@ -109,7 +113,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   input {
-    color: ${theme.htmlTags.input.color};
+    color: ${({ theme }) => theme.htmlTags.input.color};
   }
 
   p {
@@ -119,7 +123,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   textarea {
-    color: ${theme.htmlTags.textarea.color};
+    color: ${({ theme }) => theme.htmlTags.textarea.color};
   }
 
   ul {

@@ -1,7 +1,9 @@
 import flatten from 'flat';
 
-const messages = {
-  en: flatten({
+import { SUPPORTED_LOCALES } from '../constants';
+
+export default {
+  [SUPPORTED_LOCALES.EN]: flatten({
     components: {
       confirmationModal: {
         buttons: {
@@ -83,7 +85,8 @@ const messages = {
       },
       userProfileImage: {
         altImage: 'User profile image',
-        uploadImageButton: 'Upload image',
+        changeImageButton: 'Change image',
+        uploadNewImageButton: 'New image',
         removeImageButton: 'Remove image',
         badFileTypeErrorMessage: 'You can only upload images!',
         badFileSizeErrorMessage: 'Image size cannot be larger than 10mb',
@@ -129,6 +132,10 @@ const messages = {
           wrongPassword: 'Your current password is wrong',
         },
       },
+      languages: {
+        en: 'English',
+        es: 'Spanish',
+      },
     },
     forms: {
       comment: {
@@ -170,7 +177,17 @@ const messages = {
           categorySelect: 'Category',
           visibleCheckbox: 'Visible on home page',
         },
-        cancelButton: 'Cancel',
+        cancelButton: 'Back',
+        submitButton: 'Save',
+      },
+      generalSettings: {
+        successAlertMessage: 'Your information has been successfully saved.',
+        labels: {
+          usernameInput: 'Name or Username',
+          emailInput: 'E-mail address',
+          bioTextarea: 'Something about you',
+          languageSelect: 'Language',
+        },
         submitButton: 'Save',
       },
       passwordChange: {
@@ -186,6 +203,7 @@ const messages = {
       passwordForget: {
         successAlertMessage: 'We sent you an e-mail so you can reset your password. We hope everything goes well!',
         emailInputLabel: 'E-mail address',
+        backButton: 'Back',
         submitButton: 'Send',
       },
       passwordLink: {
@@ -234,6 +252,7 @@ const messages = {
         h1: 'Account',
         generalSettings: {
           h2: 'General settings',
+          subtitle: 'Update your personal information.',
         },
         changePassword: {
           h2: 'Change password',
@@ -385,7 +404,7 @@ const messages = {
       required: 'This field is required!',
     },
   }),
-  es: flatten({
+  [SUPPORTED_LOCALES.ES]: flatten({
     components: {
       confirmationModal: {
         buttons: {
@@ -452,9 +471,10 @@ const messages = {
       },
       userProfileImage: {
         altImage: 'Imagen de perfil del usuario',
-        uploadImageButton: 'Subir imagen',
+        changeImageButton: 'Cambiar imagen',
+        uploadNewImageButton: 'Nueva imagen',
         removeImageButton: 'Eliminar imagen',
-        badFileTypeErrorMessage: 'Solo puedes subir imágenes!',
+        badFileTypeErrorMessage: 'Solo puedes cargar imágenes!',
         badFileSizeErrorMessage: 'El tamaño de la imagen no puede ser mayor a 10mb',
       },
       wizard: {
@@ -498,6 +518,10 @@ const messages = {
           wrongPassword: 'Tu contraseña actual es incorrecta',
         },
       },
+      languages: {
+        en: 'Inglés',
+        es: 'Español',
+      },
     },
     forms: {
       comment: {
@@ -539,7 +563,17 @@ const messages = {
           categorySelect: 'Categoría',
           visibleCheckbox: 'Visible en página de inicio',
         },
-        cancelButton: 'Cancelar',
+        cancelButton: 'Volver',
+        submitButton: 'Guardar',
+      },
+      generalSettings: {
+        successAlertMessage: 'Tu información fue exitosamente guardada.',
+        labels: {
+          usernameInput: 'Nombre de usuario',
+          emailInput: 'Dirección de correo electrónico',
+          bioTextarea: 'Algo acerca de ti',
+          languageSelect: 'Idioma',
+        },
         submitButton: 'Guardar',
       },
       passwordChange: {
@@ -555,6 +589,7 @@ const messages = {
       passwordForget: {
         successAlertMessage: 'Te enviamos un correo electrónico para que puedas restablecer tu contraseña. ¡Esperamos que todo salga bien!',
         emailInputLabel: 'Dirección de correo electrónico',
+        backButton: 'Volver',
         submitButton: 'Enviar',
       },
       passwordLink: {
@@ -603,6 +638,7 @@ const messages = {
         h1: 'Cuenta',
         generalSettings: {
           h2: 'Ajustes generales',
+          subtitle: 'Actualiza tu información personal.',
         },
         changePassword: {
           h2: 'Cambiar contraseña',
@@ -753,5 +789,3 @@ const messages = {
     },
   }),
 };
-
-export default messages;

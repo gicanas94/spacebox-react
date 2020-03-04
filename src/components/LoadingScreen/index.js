@@ -36,8 +36,8 @@ const StyledHeart = styled.div`
     width: 60px;
   }
 
-  div:after,
-  div:before {
+  div::after,
+  div::before {
     background: ${({ theme }) => theme.components.loadingScreen.heartColor};
     content: "";
     display: block;
@@ -46,12 +46,12 @@ const StyledHeart = styled.div`
     width: 60px;
   }
 
-  div:before {
+  div::before {
     border-radius: 50% 0 0 50%;
     left: -39px;
   }
 
-  div:after {
+  div::after {
     border-radius: 50% 50% 0 0;
     top: -39px;
   }

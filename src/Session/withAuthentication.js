@@ -4,22 +4,30 @@ import SecureLS from 'secure-ls';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 
-import { authUserSet } from '../Redux/actions';
+import { appLocaleSet, authUserSet } from '../Redux/actions';
+import { defineAppLocale } from '../utils';
 import { withFirebase } from '../Firebase';
 
 const ls = new SecureLS();
 
 const withAuthentication = (Component) => {
-  const WithAuthentication = ({ authUserSetAction, firebase, ...props }) => {
+  const WithAuthentication = ({
+    appLocaleSetAction,
+    authUserSetAction,
+    firebase,
+    ...props
+  }) => {
     useEffect(() => {
       const listener = firebase.onAuthUserListener(
         (authUser) => {
           ls.set('au', authUser);
           authUserSetAction(authUser);
+          appLocaleSetAction(defineAppLocale(authUser.language));
         },
         () => {
           ls.remove('au');
           authUserSetAction(false);
+          appLocaleSetAction(defineAppLocale());
         },
       );
 
@@ -30,11 +38,13 @@ const withAuthentication = (Component) => {
   };
 
   WithAuthentication.propTypes = {
+    appLocaleSetAction: PropTypes.func.isRequired,
     authUserSetAction: PropTypes.func.isRequired,
     firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   };
 
   const mapDispatchToProps = {
+    appLocaleSetAction: appLocaleSet,
     authUserSetAction: authUserSet,
   };
 

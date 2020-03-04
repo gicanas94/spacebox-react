@@ -68,6 +68,14 @@ const StyledActionsAndStatsWrapper = styled.div`
 
 const StyledActions = styled.div`
   user-select: none;
+
+  > * {
+    margin-right: 20px
+  }
+
+  > *:last-of-type {
+    margin-right: 0;
+  }
 `;
 
 const StyledStats = styled.div`
@@ -95,7 +103,6 @@ const StyledCommentsStatIcon = styled(Comments)`
 const StyledLikeHeartIcon = styled(Heart)`
   cursor: pointer;
   height: 30px;
-  margin-right: 20px;
   min-height: 30px;
   min-width: 30px;
   width: 30px;
@@ -109,11 +116,11 @@ const StyledLikeHeartIcon = styled(Heart)`
   `}
 
   ${({ disabled }) => !disabled && `
-    &:active {
-      transform: scale(0.9);
-    }
-
     transition: transform ${transition.speed.superfast} linear;
+
+    &:active {
+      transform: translateY(2px);
+    }
   `}
 `;
 
@@ -121,7 +128,6 @@ const StyledCommentIcon = styled(CommentAlt)`
   color: ${({ theme }) => theme.components.post.commentIcon.color};
   cursor: pointer;
   height: 28px;
-  margin-right: 20px;
   min-height: 28px;
   min-width: 28px;
   width: 28px;
@@ -130,7 +136,7 @@ const StyledCommentIcon = styled(CommentAlt)`
     transition: transform ${transition.speed.superfast} linear;
 
     &:active {
-      transform: scale(0.9);
+      transform: translateY(2px);
     }
   `}
 `;
@@ -145,7 +151,7 @@ const StyledTrashIcon = styled(Trash)`
   transition: transform ${transition.speed.superfast} linear;
 
   &:active {
-    transform: scale(0.9);
+    transform: translateY(2px);
   }
 `;
 
@@ -176,7 +182,6 @@ const StyledSeeOrHideCommentsSpan = styled.span`
 const Post = ({
   alertSetAction,
   authUser,
-  confirmationModalCloseAction,
   confirmationModalOpenAction,
   deletePostCallback,
   firebase,
@@ -536,7 +541,6 @@ const Post = ({
 Post.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
-  confirmationModalCloseAction: PropTypes.func.isRequired,
   confirmationModalOpenAction: PropTypes.func.isRequired,
   deletePostCallback: PropTypes.func,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
