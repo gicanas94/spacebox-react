@@ -283,7 +283,7 @@ Spacebox.defaultProps = {
   likes: undefined,
   onEditSpaceboxClickHandler: () => false,
   order: undefined,
-  rounded: false,
+  rounded: true,
   title: undefined,
 };
 

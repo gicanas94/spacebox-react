@@ -23,7 +23,7 @@ const StyledGrid = styled.div`
   grid-template-columns: 1fr;
   width: inherit;
 
-  @media ${device.mobileL} {
+  @media ${device.tablet} {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, auto);
   }

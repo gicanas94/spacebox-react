@@ -395,13 +395,19 @@ const SpacePage = ({
             <div>
               {authUser && authUser.uid === spacebox.uid && (
                 <StyledPostFormWrapper>
-                  <PostForm
-                    alertSetAction={alertSetAction}
-                    createPostCallback={createPostCallback}
-                    firebase={firebase}
-                    sid={spacebox.slug}
-                    uid={authUser.uid}
-                  />
+                  <Box padding="20px">
+                    <h2>
+                      <FormattedMessage id="pages.space.postForm.h2" />
+                    </h2>
+
+                    <PostForm
+                      alertSetAction={alertSetAction}
+                      createPostCallback={createPostCallback}
+                      firebase={firebase}
+                      sid={spacebox.slug}
+                      uid={authUser.uid}
+                    />
+                  </Box>
                 </StyledPostFormWrapper>
               )}
 

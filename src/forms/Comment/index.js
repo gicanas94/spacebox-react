@@ -26,7 +26,7 @@ const StyledWrapper = styled.div`
     width: 100%;
   }
 
-  @media ${device.mobileL} {
+  @media ${device.tablet} {
     flex-direction: row;
 
     button {
@@ -94,7 +94,7 @@ const StyledSmileIcon = styled(Smile)`
     transform: translateY(2px);
   }
 
-  @media ${device.mobileL} {
+  @media ${device.tablet} {
     margin: 0 15px;
   }
 `;
@@ -232,7 +232,7 @@ const CommentForm = ({
             <Button
               disabled={isSubmitting}
               size="small"
-              styleType="bordered"
+              styleType="filled"
               type="submit"
             >
               {'forms.comment.submitButton'}

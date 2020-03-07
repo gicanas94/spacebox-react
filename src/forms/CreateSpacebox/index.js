@@ -18,6 +18,7 @@ import Input from '../../components/Input';
 import Select from '../../components/Select';
 import Spacebox from '../../components/Spacebox';
 import { withFirebase } from '../../Firebase';
+import Textarea from '../../components/Textarea';
 import Wizard from '../../components/Wizard';
 
 const StyledH2 = styled.h2`
@@ -246,7 +247,7 @@ const CreateSpaceboxForm = ({
 
             <Field name="description">
               {({ field, form }) => (
-                <Input
+                <Textarea
                   disabled={form.isSubmitting}
                   error={
                     form.errors.description

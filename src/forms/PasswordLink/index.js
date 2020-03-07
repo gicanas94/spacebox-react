@@ -18,7 +18,7 @@ const StyledNewPasswordWrapper = styled.div`
     margin-bottom: 25px;
   }
 
-  @media ${device.mobileL} {
+  @media ${device.tablet} {
     display: flex;
 
     & > div:first-of-type {

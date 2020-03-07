@@ -21,7 +21,7 @@ const StyledWrapper = styled.div`
   width: 100%;
   z-index: 1300;
 
-  @media ${device.mobileL} {
+  @media ${device.tablet} {
     background-color: ${({ theme }) => (
       theme.components.confirmationModal.bgColor2
     )};
@@ -60,7 +60,7 @@ const StyledButtonsWrapper = styled.div`
     margin-bottom: 25px;
   }
 
-  @media ${device.mobileL} {
+  @media ${device.tablet} {
     display: flex;
     flex-direction: row;
     justify-content: space-around;

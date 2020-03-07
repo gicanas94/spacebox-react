@@ -378,6 +378,9 @@ export default {
       },
       space: {
         title: '{spaceboxTitle} - Spacebox',
+        postForm: {
+          h2: 'New post',
+        },
         noPostsText: {
           authUserIsTheOwner: 'You haven\'t made any post yet.',
           authUserIsNotTheOwner: 'The writer of this Spacebox hasn\'t made any post yet.',
@@ -764,6 +767,9 @@ export default {
       },
       space: {
         title: '{spaceboxTitle} - Spacebox',
+        postForm: {
+          h2: 'Nueva publicación',
+        },
         noPostsText: {
           authUserIsTheOwner: 'Aún no realizaste ninguna publicación.',
           authUserIsNotTheOwner: 'El escritor de este Spacebox aún no realizó ninguna publicación.',

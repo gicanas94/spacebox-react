@@ -102,6 +102,7 @@ const StyledImageWrapper = styled.div`
   background-color: ${({ theme }) => theme.components.userProfileImage.bgColor};
   // border: ${({ theme }) => theme.components.userProfileImage.border};
   height: 100%;
+  overflow: hidden;
   position: absolute;
   top: 0;
   width: 100%;

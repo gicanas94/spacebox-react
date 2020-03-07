@@ -58,35 +58,15 @@ const StyledSpaceboxCategory = styled.div`
 const StyledButtonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-
-  @media ${device.mobileL} {
-    flex-direction: row;
-    align-items: flex-end;
-  }
-
-  @media ${device.tablet} {
-    flex-direction: column;
-  }
 `;
 
 const StyledFirstChild = styled.div`
-  @media ${device.tablet} {
-    width: 100%;
-  }
+  width: 100%;
 `;
 
 const StyledSecondChild = styled.div`
   margin-top: 15px;
-
-  @media ${device.mobileL} {
-    margin-top: 0;
-  }
-
-  @media ${device.tablet} {
-    margin-top: 15px;
-    width: 100%;
-  }
+  width: 100%;
 `;
 
 const StyledLink = styled(Link)`
@@ -128,10 +108,10 @@ const SpaceboxInfoSection = ({
           ? (
             <StyledLink to={`${ROUTES.EDIT_SPACEBOX_BASE}/${spacebox.slug}`}>
               <Button
-                color="amethyst"
+                color="royal"
                 fullWidth
                 size="small"
-                styleType="bordered"
+                styleType="filled"
                 type="button"
               >
                 {'components.spaceboxInfoSection.buttons.editSpacebox'}
