@@ -259,7 +259,6 @@ const SignUpForm = ({
 
             <Button
               disabled={isSubmitting || authUser === true}
-              rounded
               styleType="filled"
               type="submit"
             >

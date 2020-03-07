@@ -1,11 +1,9 @@
-import { FacebookSquare } from 'styled-icons/boxicons-logos/FacebookSquare';
+import { FacebookSquare, Google, Twitter } from 'styled-icons/boxicons-logos';
 import { FormattedMessage } from 'react-intl';
-import { Google } from 'styled-icons/boxicons-logos/Google';
-import { LockAlt } from 'styled-icons/boxicons-regular/LockAlt';
+import { LockAlt } from 'styled-icons/boxicons-regular';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
-import { Twitter } from 'styled-icons/boxicons-logos/Twitter';
 
 import { device } from '../../../styles';
 import Hr from '../../../components/Hr';

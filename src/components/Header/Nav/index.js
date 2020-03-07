@@ -56,7 +56,6 @@ const CommonNav = ({
       history.push(ROUTES.HOME);
       onLinkClickHandler(false);
     }}
-    rounded
     size={buttonsSize}
     styleType={location.pathname === ROUTES.HOME
       ? 'filled'
@@ -83,7 +82,6 @@ const AuthNav = ({
         history.push(ROUTES.CREATE_SPACEBOX);
         onLinkClickHandler(false);
       }}
-      rounded
       size={buttonsSize}
       styleType={location.pathname === ROUTES.CREATE_SPACEBOX
         ? 'filled'
@@ -101,7 +99,6 @@ const AuthNav = ({
         history.push(ROUTES.ACCOUNT_BASE);
         onLinkClickHandler(false);
       }}
-      rounded
       size={buttonsSize}
       styleType={location.pathname.startsWith(ROUTES.ACCOUNT_BASE)
         ? 'filled'
@@ -119,7 +116,6 @@ const AuthNav = ({
         firebase.doSignOut();
         onLinkClickHandler(false);
       }}
-      rounded
       size={buttonsSize}
       styleType="unbordered"
       type="button"
@@ -144,7 +140,6 @@ const NonAuthNav = ({
         history.push(ROUTES.FAQ);
         onLinkClickHandler(false);
       }}
-      rounded
       size={buttonsSize}
       styleType={location.pathname === ROUTES.FAQ
         ? 'filled'
@@ -162,7 +157,6 @@ const NonAuthNav = ({
         history.push(ROUTES.SIGN_UP);
         onLinkClickHandler(false);
       }}
-      rounded
       size={buttonsSize}
       styleType={location.pathname === ROUTES.SIGN_UP
         ? 'filled'
@@ -180,7 +174,6 @@ const NonAuthNav = ({
         history.push(ROUTES.SIGN_IN);
         onLinkClickHandler(false);
       }}
-      rounded
       size={buttonsSize}
       styleType={location.pathname === ROUTES.SIGN_IN
         ? 'filled'

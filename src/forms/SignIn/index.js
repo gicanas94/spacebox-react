@@ -126,12 +126,7 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
           /> */}
 
           <StyledBottomWrapper>
-            <Button
-              disabled={isSubmitting}
-              rounded
-              styleType="filled"
-              type="submit"
-            >
+            <Button disabled={isSubmitting} styleType="filled" type="submit">
               {'forms.signIn.submitButton'}
             </Button>
 

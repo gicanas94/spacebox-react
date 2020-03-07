@@ -1,5 +1,5 @@
 import autosize from 'autosize';
-import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
+import { ErrorOutline } from 'styled-icons/material';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect } from 'react';
@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { keyframe, transition } from '../../styles';
 
 const StyledLabel = styled.label`
-  color: ${({ theme }) => theme.components.input.color.default};
+  color: ${({ theme }) => theme.components.input.status.default};
   display: block;
   font-size: ${({ theme }) => theme.components.input.label.fontSize};
   font-weight: ${({ theme }) => theme.components.input.label.fontWeight};
@@ -19,7 +19,7 @@ const StyledLabel = styled.label`
   white-space: nowrap;
 
   ${({ disabled, theme }) => disabled && `
-    color: ${theme.components.input.color.disabled} !important;
+    color: ${theme.components.input.status.disabled} !important;
   `}
 `;
 
@@ -29,7 +29,7 @@ const StyledTextarea = styled.textarea`
   border-bottom-width: ${({ theme }) => (
     theme.components.input.borderBottomWidth
   )};
-  border-color: ${({ theme }) => theme.components.input.color.default};
+  border-color: ${({ theme }) => theme.components.input.status.default};
   border-style: solid;
   padding: 10px;
   resize: none;
@@ -41,19 +41,19 @@ const StyledTextarea = styled.textarea`
   }
 
   ${({ disabled, theme }) => disabled && `
-    color: ${theme.components.input.color.disabled} !important;
-    border-color: ${theme.components.input.color.disabled} !important;
+    color: ${theme.components.input.status.disabled} !important;
+    border-color: ${theme.components.input.status.disabled} !important;
 
     ::placeholder {
-      color: ${theme.components.input.color.disabled} !important;
+      color: ${theme.components.input.status.disabled} !important;
     }
 
     :-ms-input-placeholder {
-      color: ${theme.components.input.color.disabled} !important;
+      color: ${theme.components.input.status.disabled} !important;
     }
 
     ::-ms-input-placeholder {
-      color: ${theme.components.input.color.disabled} !important;
+      color: ${theme.components.input.status.disabled} !important;
     }
   `}
 
@@ -67,14 +67,14 @@ const StyledErrorIcon = styled(ErrorOutline)`
   animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
   background-color: ${({ theme }) => theme.components.input.bgColor};
   bottom: 34px;
-  color: ${({ theme }) => theme.components.input.color.error};
+  color: ${({ theme }) => theme.components.input.status.error};
   position: absolute;
   right: 10px;
   width: 30px;
 `;
 
 const StyledErrorMessage = styled.div`
-  color: ${({ theme }) => theme.components.input.color.error};
+  color: ${({ theme }) => theme.components.input.status.error};
   font-size: ${({ theme }) => theme.components.input.errorMessage.fontSize};
   font-weight: ${({ theme }) => theme.components.input.errorMessage.fontWeight};
 `;
@@ -85,11 +85,11 @@ const StyledWrapper = styled.div`
 
   ${({ error, theme }) => error && `
     ${StyledLabel} {
-      color: ${theme.components.input.color.error};
+      color: ${theme.components.input.status.error};
     }
 
     ${StyledTextarea} {
-      border-color: ${theme.components.input.color.error};
+      border-color: ${theme.components.input.status.error};
     }
   `}
 
@@ -99,11 +99,11 @@ const StyledWrapper = styled.div`
 
   ${({ success, theme }) => success && `
     ${StyledLabel} {
-      color: ${theme.components.input.color.success};
+      color: ${theme.components.input.status.success};
     }
 
     ${StyledTextarea} {
-      border-color: ${theme.components.input.color.success};
+      border-color: ${theme.components.input.status.success};
     }
   `}
 `;

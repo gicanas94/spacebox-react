@@ -115,7 +115,6 @@ const PostForm = ({
             <StyledButtonsWrapper>
               <Button
                 disabled={isSubmitting}
-                rounded
                 styleType="filled"
                 type="submit"
               >

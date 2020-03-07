@@ -238,7 +238,6 @@ const EditSpaceboxForm = ({
             <Button
               color="abalone"
               onClick={() => history.goBack()}
-              rounded
               styleType="unbordered"
               type="button"
             >
@@ -247,7 +246,6 @@ const EditSpaceboxForm = ({
 
             <Button
               disabled={isSubmitting}
-              rounded
               styleType="bordered"
               type="submit"
             >

@@ -1,13 +1,17 @@
 import _ from 'lodash';
-import { CommentAlt } from 'styled-icons/fa-solid/CommentAlt';
-import { Comments } from 'styled-icons/fa-solid/Comments';
+
+import {
+  Comments,
+  CommentAlt,
+  Heart,
+  Trash,
+} from 'styled-icons/fa-solid';
+
 import { FormattedRelativeTime, useIntl } from 'react-intl';
-import { Heart } from 'styled-icons/fa-solid/Heart';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
-import { Trash } from 'styled-icons/fa-solid/Trash';
 import useStateWithCallback from 'use-state-with-callback';
 
 import Box from '../Box';
@@ -332,6 +336,7 @@ const Post = ({
         ? null
         : () => handleLikePostClick()
       }
+      role="button"
     />
   );
 

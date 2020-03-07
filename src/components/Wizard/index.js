@@ -103,7 +103,6 @@ class Wizard extends Component {
                 <Button
                   color="abalone"
                   onClick={this.previousStep}
-                  rounded
                   styleType="unbordered"
                   type="button"
                 >
@@ -112,14 +111,14 @@ class Wizard extends Component {
               )}
 
               {page === 0 && withStartPage && (
-                <Button rounded styleType="bordered" type="submit">
+                <Button styleType="bordered" type="submit">
                   {'components.wizard.buttons.start'}
                 </Button>
               )}
 
               {((!isLastPage && !withStartPage)
                 || (withStartPage && page > 0)) && (
-                <Button rounded styleType="bordered" type="submit">
+                <Button styleType="bordered" type="submit">
                   {'components.wizard.buttons.nextStep'}
                 </Button>
               )}
@@ -127,7 +126,6 @@ class Wizard extends Component {
               {isLastPage && (
                 <Button
                   disabled={isSubmitting}
-                  rounded
                   styleType="bordered"
                   type="submit"
                 >

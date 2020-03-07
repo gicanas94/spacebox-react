@@ -90,7 +90,6 @@ const PasswordForgetForm = ({ alertSetAction, firebase, history }) => {
             <Button
               disabled={isSubmitting}
               fullWidth
-              rounded
               styleType="bordered"
               type="submit"
             >
@@ -102,7 +101,6 @@ const PasswordForgetForm = ({ alertSetAction, firebase, history }) => {
               disabled={isSubmitting}
               fullWidth
               onClick={() => history.goBack()}
-              rounded
               styleType="unbordered"
               type="button"
             >

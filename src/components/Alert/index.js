@@ -1,5 +1,5 @@
 import Color from 'color';
-import { Cross } from 'styled-icons/icomoon/Cross';
+import { Cross } from 'styled-icons/icomoon';
 import { FormattedHTMLMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';

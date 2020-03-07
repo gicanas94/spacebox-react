@@ -1,9 +1,9 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { Transition } from 'react-spring/renderprops';
 
 import AccountPage from './pages/Account';
@@ -15,7 +15,6 @@ import CreateSpaceboxPage from './pages/CreateSpacebox';
 import { device } from './styles';
 import EditSpaceboxPage from './pages/EditSpacebox';
 import FaqPage from './pages/Faq';
-import GlobalStyle from './styles/GlobalStyle';
 import Header from './components/Header';
 import HomePage from './pages/Home';
 import LoadingScreen from './components/LoadingScreen';
@@ -46,14 +45,11 @@ const StyledRoutesContainer = styled.div`
 const App = ({
   alert,
   alertResetAction,
-  appTheme,
   confirmationModal,
   confirmationModalCloseAction,
   isLoading,
 }) => (
-  <ThemeProvider theme={appTheme}>
-    <GlobalStyle theme={appTheme} />
-
+  <Fragment>
     <div id="page-content">
       <Header />
 
@@ -130,13 +126,12 @@ const App = ({
         />
       ))}
     </Transition>
-  </ThemeProvider>
+  </Fragment>
 );
 
 App.propTypes = {
   alert: PropTypes.objectOf(PropTypes.any),
   alertResetAction: PropTypes.func.isRequired,
-  appTheme: PropTypes.objectOf(PropTypes.any).isRequired,
   confirmationModal: PropTypes.objectOf(PropTypes.any),
   confirmationModalCloseAction: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
@@ -149,7 +144,6 @@ App.defaultProps = {
 
 const mapStateToProps = state => ({
   alert: state.alert,
-  appTheme: state.appTheme,
   confirmationModal: state.confirmationModal,
   isLoading: state.isLoading,
 });

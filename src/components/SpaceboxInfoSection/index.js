@@ -128,9 +128,8 @@ const SpaceboxInfoSection = ({
           ? (
             <StyledLink to={`${ROUTES.EDIT_SPACEBOX_BASE}/${spacebox.slug}`}>
               <Button
-                color="cornflower"
+                color="amethyst"
                 fullWidth
-                rounded
                 size="small"
                 styleType="bordered"
                 type="button"
@@ -151,7 +150,6 @@ const SpaceboxInfoSection = ({
             >
               <Button
                 fullWidth
-                rounded
                 size="small"
                 styleType="filled"
                 type="button"
@@ -171,7 +169,6 @@ const SpaceboxInfoSection = ({
                 color="emerald"
                 fullWidth
                 onClick={() => history.goBack()}
-                rounded
                 size="large"
                 styleType="filled"
                 type="button"
@@ -187,7 +184,6 @@ const SpaceboxInfoSection = ({
                 <Button
                   color="emerald"
                   fullWidth
-                  rounded
                   size="large"
                   styleType="filled"
                   type="button"

@@ -1,8 +1,10 @@
 import themes from '../../styles/themes';
 
-const initialState = JSON.parse(
-  localStorage.getItem('appTheme'),
-) || themes[0];
+// const initialState = JSON.parse(
+//   localStorage.getItem('appTheme'),
+// ) || themes[0];
+
+const initialState = themes[0];
 
 const appThemeReducer = (state = initialState, action) => {
   switch (action.type) {

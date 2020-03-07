@@ -1,4 +1,4 @@
-import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
+import { ErrorOutline } from 'styled-icons/material';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -193,7 +193,6 @@ const UserProfileImage = ({
           <Button
             color="emerald"
             dontTranslateChildren
-            rounded
             size="large"
             styleType="bordered"
             type="button"
@@ -213,7 +212,6 @@ const UserProfileImage = ({
             <Button
               color="salmon"
               onClick={removeImageAndUpdateUser}
-              rounded
               size="large"
               styleType="unbordered"
               type="button"

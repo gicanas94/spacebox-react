@@ -1,7 +1,7 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { Cross } from 'styled-icons/icomoon/Cross';
-import { Menu } from 'styled-icons/boxicons-regular/Menu';
+import { Cross } from 'styled-icons/icomoon';
+import { Menu } from 'styled-icons/boxicons-regular';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -10,7 +10,7 @@ import { useIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 
 import { appThemeSet } from '../../Redux/actions';
-import { device, transition } from '../../styles';
+import { device, keyframe, transition } from '../../styles';
 import largeLogo from '../../assets/images/logo-with-name.png';
 import Nav from './Nav';
 import SearchBar from './SearchBar';
@@ -134,6 +134,7 @@ const StyledLaptopView = styled.div`
 `;
 
 const StyledLargeLogoImg = styled.img`
+  animation: ${keyframe.float(['1px', '-2px'])} ${transition.speed.ultraslow} ease-in-out infinite;
   cursor: pointer;
   line-height: 0;
   margin-right: 25px;
@@ -141,6 +142,7 @@ const StyledLargeLogoImg = styled.img`
   transition: all ${transition.speed.superfast} linear;
 
   &:active {
+    animation: none;
     transform: translateY(2px);
   }
 `;

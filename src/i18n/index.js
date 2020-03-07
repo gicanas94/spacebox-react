@@ -729,6 +729,8 @@ export default {
         informativeSpaceboxTitles: {
           loading: 'Cargando...',
           error: 'ERROR.',
+          resultsCount: 'Resultados: {count}',
+          noResults: 'No hay resultados',
         },
       },
       notFound: {

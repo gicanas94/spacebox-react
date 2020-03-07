@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const StyledCheckbox = styled.span`
   background-color: transparent;
-  border-color: ${({ theme }) => theme.components.checkbox.color.unchecked};
+  border-color: ${({ theme }) => theme.components.checkbox.status.unchecked};
   border-style: solid;
   border-width: ${({ theme }) => theme.components.checkbox.borderWidth};
   display: flex;
@@ -15,8 +15,8 @@ const StyledCheckbox = styled.span`
   width: 30px;
 
   ${({ checked, theme }) => checked && `
-    border-color: ${theme.components.checkbox.color.checked};
-    color: ${theme.components.checkbox.color.checked};
+    border-color: ${theme.components.checkbox.status.checked};
+    color: ${theme.components.checkbox.status.checked};
 
     &::after {
       content: '✔';
@@ -43,22 +43,22 @@ const StyledWrapper = styled.div`
 
   ${({ disabled, theme }) => disabled && `
     ${StyledCheckbox} {
-      border-color: ${theme.components.checkbox.color.disabled};
-      color: ${theme.components.checkbox.color.disabled};
+      border-color: ${theme.components.checkbox.status.disabled};
+      color: ${theme.components.checkbox.status.disabled};
     }
 
     ${StyledLabel} {
-      color: ${theme.components.checkbox.color.disabled};
+      color: ${theme.components.checkbox.status.disabled};
     }
   `}
 
   ${({ error, theme }) => error && `
     ${StyledCheckbox} {
-      border-color: ${theme.components.checkbox.color.error};
+      border-color: ${theme.components.checkbox.status.error};
     }
 
     ${StyledLabel} {
-      color: ${theme.components.checkbox.color.error};
+      color: ${theme.components.checkbox.status.error};
     }
   `}
 

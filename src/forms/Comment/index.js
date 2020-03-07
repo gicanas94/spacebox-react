@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { Smile } from 'styled-icons/fa-regular/Smile';
+import { Smile } from 'styled-icons/fa-regular';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
@@ -46,7 +46,7 @@ const StyledTextareaAndSmileIconWrapper = styled.div`
 const StyledTextarea = styled.textarea`
   background-color: transparent;
   border: 0;
-  border-color: ${({ theme }) => theme.forms.comment.textarea.color.default};
+  border-color: ${({ theme }) => theme.forms.comment.textarea.status.default};
   border-style: solid;
   border-bottom-width: ${({ theme }) => (
     theme.forms.comment.textarea.borderBottomWidth
@@ -58,24 +58,24 @@ const StyledTextarea = styled.textarea`
   width: 100%;
 
   &:focus {
-    border-color: ${({ theme }) => theme.forms.comment.textarea.color.focus};
+    border-color: ${({ theme }) => theme.forms.comment.textarea.status.focus};
     outline: none;
   }
 
   ${({ disabled, theme }) => disabled && `
-    border-color: ${theme.forms.comment.textarea.color.disabled} !important;
-    color: ${theme.forms.comment.textarea.color.disabled} !important;
+    border-color: ${theme.forms.comment.textarea.status.disabled} !important;
+    color: ${theme.forms.comment.textarea.status.disabled} !important;
 
     ::placeholder {
-      color: ${theme.forms.comment.textarea.color.disabled} !important;
+      color: ${theme.forms.comment.textarea.status.disabled} !important;
     }
 
     :-ms-input-placeholder {
-      color: ${theme.forms.comment.textarea.color.disabled} !important;
+      color: ${theme.forms.comment.textarea.status.disabled} !important;
     }
 
     ::-ms-input-placeholder {
-      color: ${theme.forms.comment.textarea.color.disabled} !important;
+      color: ${theme.forms.comment.textarea.status.disabled} !important;
     }
   `}
 `;
@@ -231,7 +231,6 @@ const CommentForm = ({
 
             <Button
               disabled={isSubmitting}
-              rounded
               size="small"
               styleType="bordered"
               type="submit"

@@ -39,7 +39,6 @@ const PasswordLoginToggle = ({
           color="salmon"
           disabled={onlyOneLeft || isLoading}
           onClick={() => unlinkHandler(signInMethod.id)}
-          rounded
           size="small"
           styleType="unbordered"
         >
@@ -53,7 +52,6 @@ const PasswordLoginToggle = ({
           color="green"
           disabled={isLoading}
           onClick={() => setPasswordLinkFormIsVisible(true)}
-          rounded
           size="small"
           styleType="bordered"
           type="button"

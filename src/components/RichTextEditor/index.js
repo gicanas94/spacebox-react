@@ -6,7 +6,7 @@ import {
   RichUtils,
 } from 'draft-js';
 
-import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
+import { ErrorOutline } from 'styled-icons/material';
 import PropTypes from 'prop-types';
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl';
 import React, { Fragment, useState } from 'react';
@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { keyframe, transition } from '../../styles';
 
 const StyledLabel = styled.label`
-  color: ${({ theme }) => theme.components.richTextEditor.color.default};
+  color: ${({ theme }) => theme.components.richTextEditor.status.default};
   display: block;
   font-size: ${({ theme }) => theme.components.richTextEditor.label.fontSize};
   font-weight: ${({ theme }) => (
@@ -43,14 +43,14 @@ const StyledRichUtilButtonsWrapper = styled.div`
 
 const StyledRichUtilButton = styled.button`
   background-color: ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.default.bgColor
+    theme.components.richTextEditor.richUtilButton.status.default.bgColor
   )};
   border ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.default.border
+    theme.components.richTextEditor.richUtilButton.status.default.border
   )};
   cursor: pointer;
   color: ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.default.color
+    theme.components.richTextEditor.richUtilButton.status.default.color
   )};
   font-size: ${({ theme }) => (
     theme.components.richTextEditor.richUtilButton.fontSize
@@ -69,25 +69,25 @@ const StyledRichUtilButton = styled.button`
 
   &:hover {
     background-color: ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.hover.bgColor
+      theme.components.richTextEditor.richUtilButton.status.hover.bgColor
     )};
     border ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.hover.border
+      theme.components.richTextEditor.richUtilButton.status.hover.border
     )};
     color: ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.hover.color
+      theme.components.richTextEditor.richUtilButton.status.hover.color
     )};
   }
 
   &.active {
     background-color: ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.active.bgColor
+      theme.components.richTextEditor.richUtilButton.status.active.bgColor
     )};
     border ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.active.border
+      theme.components.richTextEditor.richUtilButton.status.active.border
     )};
     color: ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.active.color
+      theme.components.richTextEditor.richUtilButton.status.active.color
     )};
 `;
 
@@ -98,7 +98,7 @@ const StyledEditorAndRichUtilsButtonsWrapper = styled.div`
     theme.components.richTextEditor.borderBottomWidth
   )};
   border-color: ${({ theme }) => (
-    theme.components.richTextEditor.color.default
+    theme.components.richTextEditor.status.default
   )};
   border-style: solid;
   transition: border ${transition.speed.superfast} linear;
@@ -117,14 +117,14 @@ const StyledErrorIcon = styled(ErrorOutline)`
   animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
   background-color: ${({ theme }) => theme.components.richTextEditor.bgColor};
   bottom: 34px;
-  color: ${({ theme }) => theme.components.richTextEditor.color.error};
+  color: ${({ theme }) => theme.components.richTextEditor.status.error};
   position: absolute;
   right: 10px;
   width: 30px;
 `;
 
 const StyledErrorMessage = styled.div`
-  color: ${({ theme }) => theme.components.richTextEditor.color.error};
+  color: ${({ theme }) => theme.components.richTextEditor.status.error};
   font-size: ${({ theme }) => (
     theme.components.richTextEditor.errorMessage.fontSize
   )};
@@ -140,19 +140,25 @@ const StyledWrapper = styled.div`
 
   ${({ disabled, theme }) => disabled && `
     ${StyledLabel} {
-      color: ${theme.components.richTextEditor.color.disabled} !important;
+      color: ${theme.components.richTextEditor.status.disabled} !important;
     }
 
     ${StyledEditorAndRichUtilsButtonsWrapper} {
-      border-color: ${theme.components.richTextEditor.color.disabled} !important;
+      border-color: ${(
+        theme.components.richTextEditor.status.disabled
+      )} !important;
     }
 
     ${StyledRichUtilButton} {
       background-color: ${(
-        theme.components.richTextEditor.richUtilButton.disabled.bgColor
+        theme.components.richTextEditor.richUtilButton.status.disabled.bgColor
       )};
-      border ${theme.components.richTextEditor.richUtilButton.disabled.border};
-      color: ${theme.components.richTextEditor.richUtilButton.disabled.color};
+      border ${(
+        theme.components.richTextEditor.richUtilButton.status.disabled.border
+      )};
+      color: ${(
+        theme.components.richTextEditor.richUtilButton.status.disabled.color
+      )};
       cursor: default;
 
       &:active {
@@ -162,26 +168,26 @@ const StyledWrapper = styled.div`
 
     .DraftEditor-root {
       ::placeholder {
-        color: ${theme.components.richTextEditor.color.disabled} !important;
+        color: ${theme.components.richTextEditor.status.disabled} !important;
       }
 
       :-ms-input-placeholder {
-        color: ${theme.components.richTextEditor.color.disabled} !important;
+        color: ${theme.components.richTextEditor.status.disabled} !important;
       }
 
       ::-ms-input-placeholder {
-        color: ${theme.components.richTextEditor.color.disabled} !important;
+        color: ${theme.components.richTextEditor.status.disabled} !important;
       }
     }
   `}
 
   ${({ error, theme }) => error && `
     ${StyledLabel} {
-      color: ${theme.components.richTextEditor.color.error};
+      color: ${theme.components.richTextEditor.status.error};
     }
 
     ${StyledEditorAndRichUtilsButtonsWrapper} {
-      border-color: ${theme.components.richTextEditor.color.error};
+      border-color: ${theme.components.richTextEditor.status.error};
     }
   `}
 
@@ -202,11 +208,11 @@ const StyledWrapper = styled.div`
 
   ${({ success, theme }) => success && `
     ${StyledLabel} {
-      color: ${theme.components.richTextEditor.color.success};
+      color: ${theme.components.richTextEditor.status.success};
     }
 
     ${StyledEditorAndRichUtilsButtonsWrapper} {
-      border-color: ${theme.components.richTextEditor.color.success};
+      border-color: ${theme.components.richTextEditor.status.success};
     }
   `}
 `;

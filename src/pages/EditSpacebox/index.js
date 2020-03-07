@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Trash } from 'styled-icons/fa-solid/Trash';
+import { Trash } from 'styled-icons/fa-solid';
 import { withRouter } from 'react-router-dom';
 
 import { alertSet, confirmationModalOpen, isLoadingSet } from '../../Redux/actions';

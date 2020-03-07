@@ -2,14 +2,14 @@ import Color from 'color';
 
 import {
   FacebookSquare as FacebookIcon,
-} from 'styled-icons/boxicons-logos/FacebookSquare';
+  Google as GoogleIcon,
+  Twitter as TwitterIcon,
+} from 'styled-icons/boxicons-logos';
 
 import { FormattedMessage } from 'react-intl';
-import { Google as GoogleIcon } from 'styled-icons/boxicons-logos/Google';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { Twitter as TwitterIcon } from 'styled-icons/boxicons-logos/Twitter';
 
 import { transition } from '../../styles';
 
@@ -36,6 +36,10 @@ const StyledButton = styled.button`
     &:focus,
     &:hover {
       background-color: ${Color('#3b5998').darken(0.2).hex()};
+    }
+
+    &:focus {
+      outline: none;
     }
   `}
 

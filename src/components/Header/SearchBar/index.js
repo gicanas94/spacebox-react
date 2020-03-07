@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { SearchAlt } from 'styled-icons/boxicons-regular/SearchAlt';
+import { SearchAlt } from 'styled-icons/boxicons-regular';
 import styled from 'styled-components';
 
 import { searchBarChange } from '../../../Redux/actions';

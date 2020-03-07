@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
 import Button from '../../components/Button';
-import { device } from '../../styles';
 import Input from '../../components/Input';
 import { LANGUAGES } from '../../constants';
 import Select from '../../components/Select';
@@ -22,11 +21,8 @@ const StyledWrapper = styled.div`
 
 const StyledUserProfileImageWrapper = styled.div`
   margin: 0 auto 25px auto;
+  max-width: 300px;
   width: 100%;
-
-  @media ${device.mobileL} {
-    width: 60%;
-  }
 `;
 
 const GeneralSettingsForm = ({
@@ -160,20 +156,6 @@ const GeneralSettingsForm = ({
               value={values.email}
             />
 
-            <Textarea
-              disabled={isSubmitting}
-              error={errors.bio && touched.bio && errors.bio}
-              label="forms.generalSettings.labels.bioTextarea"
-              margin="0 0 25px 0"
-              name="bio"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              rounded
-              success={!errors.bio && touched.bio}
-              type="text"
-              value={values.bio}
-            />
-
             <Select
               disabled={isSubmitting}
               error={errors.language && touched.language && errors.language}
@@ -189,12 +171,21 @@ const GeneralSettingsForm = ({
               value={values.language}
             />
 
-            <Button
+            <Textarea
               disabled={isSubmitting}
+              error={errors.bio && touched.bio && errors.bio}
+              label="forms.generalSettings.labels.bioTextarea"
+              margin="0 0 25px 0"
+              name="bio"
+              onBlur={handleBlur}
+              onChange={handleChange}
               rounded
-              styleType="filled"
-              type="submit"
-            >
+              success={!errors.bio && touched.bio}
+              type="text"
+              value={values.bio}
+            />
+
+            <Button disabled={isSubmitting} styleType="filled" type="submit">
               {'forms.generalSettings.submitButton'}
             </Button>
           </StyledWrapper>

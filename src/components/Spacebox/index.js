@@ -1,6 +1,6 @@
 import Color from 'color';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
-import { Heart } from 'styled-icons/fa-solid/Heart';
+import { Heart } from 'styled-icons/fa-solid';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import styled from 'styled-components';

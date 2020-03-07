@@ -8,7 +8,7 @@ const StyledHr = styled.hr`
   background-color: ${({ color, theme }) => (
     color
       ? colors.palette[color]
-      : theme.components.hr.color.default
+      : theme.components.hr.bgColor
   )};
   border: 0;
   border-radius: ${({ theme }) => theme.global.borderRadius};

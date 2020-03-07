@@ -15,7 +15,6 @@ const SocialLoginToggle = ({
     color="salmon"
     disabled={onlyOneLeft || isLoading}
     onClick={() => unlinkHandler(signInMethod.id)}
-    rounded
     size="small"
     styleType="unbordered"
     type="button"
@@ -30,7 +29,6 @@ const SocialLoginToggle = ({
     color="green"
     disabled={isLoading}
     onClick={() => linkHandler(signInMethod.provider)}
-    rounded
     size="small"
     styleType="bordered"
     type="button"

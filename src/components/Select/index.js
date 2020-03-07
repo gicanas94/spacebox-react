@@ -1,6 +1,5 @@
 import _ from 'lodash';
-import { ErrorOutline } from 'styled-icons/material/ErrorOutline';
-import { KeyboardArrowDown } from 'styled-icons/material/KeyboardArrowDown';
+import { ErrorOutline, KeyboardArrowDown } from 'styled-icons/material';
 import PropTypes from 'prop-types';
 
 import React, {
@@ -16,7 +15,7 @@ import { useIntl } from 'react-intl';
 import { keyframe, transition } from '../../styles';
 
 const StyledLabel = styled.label`
-  color: ${({ theme }) => theme.components.select.color.default};
+  color: ${({ theme }) => theme.components.select.status.default};
   cursor: pointer;
   display: block;
   font-size: ${({ theme }) => theme.components.select.label.fontSize};
@@ -34,7 +33,7 @@ const StyledSimulatedSelect = styled.div`
   border-bottom-width: ${({ theme }) => (
     theme.components.select.borderBottomWidth
   )};
-  border-color: ${({ theme }) => theme.components.select.color.default};
+  border-color: ${({ theme }) => theme.components.select.status.default};
   border-style: solid;
   cursor: pointer;
   height: 45px;
@@ -56,7 +55,7 @@ const StyledSelectedOption = styled.span`
 `;
 
 const StyledArrowDownIcon = styled(KeyboardArrowDown)`
-  color: ${({ theme }) => theme.components.select.color.default};
+  color: ${({ theme }) => theme.components.select.status.default};
   position: absolute;
   right: 10px;
   top: 33px;
@@ -70,12 +69,12 @@ const StyledWrapper = styled.div`
   ${({ disabled, theme }) => disabled && `
     ${StyledLabel},
     ${StyledSelectedOption} {
-      color: ${theme.components.select.color.disabled} !important
+      color: ${theme.components.select.status.disabled} !important
       cursor: default;
     }
 
     ${StyledSimulatedSelect} {
-      border-color: ${theme.components.select.color.disabled} !important;
+      border-color: ${theme.components.select.status.disabled} !important;
       cursor: default;
     }
   `}
@@ -83,11 +82,11 @@ const StyledWrapper = styled.div`
   ${({ error, theme }) => error && `
     ${StyledLabel},
     ${StyledArrowDownIcon} {
-      color: ${theme.components.select.color.error};
+      color: ${theme.components.select.status.error};
     }
 
     ${StyledSimulatedSelect} {
-      border-color: ${theme.components.select.color.error};
+      border-color: ${theme.components.select.status.error};
     }
   `}
 
@@ -98,11 +97,11 @@ const StyledWrapper = styled.div`
   ${({ success, theme }) => success && `
     ${StyledLabel},
     ${StyledArrowDownIcon} {
-      color: ${theme.components.select.color.success};
+      color: ${theme.components.select.status.success};
     }
 
     ${StyledSimulatedSelect} {
-      border-color: ${theme.components.select.color.success};
+      border-color: ${theme.components.select.status.success};
     }
   `}
 `;
@@ -170,7 +169,7 @@ const StyledLi = styled.li`
 
 const StyledErrorIcon = styled(ErrorOutline)`
   animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
-  color: ${({ theme }) => theme.components.select.color.error};
+  color: ${({ theme }) => theme.components.select.status.error};
   position: absolute;
   right: 40px;
   top: 33px;
@@ -179,7 +178,7 @@ const StyledErrorIcon = styled(ErrorOutline)`
 `;
 
 const StyledErrorMessage = styled.div`
-  color: ${({ theme }) => theme.components.select.color.error};
+  color: ${({ theme }) => theme.components.select.status.error};
   font-size: ${({ theme }) => theme.components.select.errorMessage.fontSize};
   font-weight: ${({ theme }) => theme.components.select.errorMessage.fontWeight};
   padding-top: 5px;

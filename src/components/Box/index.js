@@ -1,6 +1,6 @@
 import Color from 'color';
 import { FormattedHTMLMessage } from 'react-intl';
-import { KeyboardArrowUp } from 'styled-icons/material/KeyboardArrowUp';
+import { KeyboardArrowUp } from 'styled-icons/material';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
@@ -33,11 +33,9 @@ const StyledBox = styled.div`
       : theme.components.box.bgColor
   )};
   border-color: ${({ bgColor, theme }) => (
-    Color(
-      bgColor
-        ? color.palette[bgColor]
-        : theme.components.box.bgColor,
-    ).darken(0.2).hex()
+    bgColor
+      ? Color(color.palette[bgColor]).darken(0.2).hex()
+      : theme.components.box.borderColor
   )};
   border-style: solid;
   border-width: ${({ theme }) => theme.components.box.borderWidth};

@@ -2,56 +2,12 @@ import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
 import Button from '../../components/Button';
-import { device } from '../../styles';
 import { ERRORS } from '../../constants';
 import Input from '../../components/Input';
 import { setCookie, getCookie } from '../../utils';
-
-const StyledNewPasswordWrapper = styled.div`
-  & > div {
-    margin-bottom: 25px;
-  }
-
-  @media ${device.mobileL} {
-    display: flex;
-
-    & > div:first-of-type {
-      margin-right: 25px;
-    }
-
-    & > * {
-      width: 50%;
-    }
-  }
-`;
-
-const StyledCurrentPasswordAndButtonWrapper = styled.div`
-  & > div {
-    margin-bottom: 25px;
-  }
-
-  @media ${device.mobileL} {
-    display: flex;
-    justify-content: space-between;
-
-    & > div {
-      margin-bottom: 0;
-      margin-right: 25px;
-    }
-
-    button {
-      margin-top: 24px;
-    }
-
-    & > * {
-      width: 50%;
-    }
-  }
-`;
 
 const PasswordChangeForm = ({
   alertSetAction,
@@ -159,73 +115,71 @@ const PasswordChangeForm = ({
         values,
       }) => (
         <Form>
-          <StyledNewPasswordWrapper>
-            <Input
-              disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
-              error={
-                errors.passwordOne
-                && touched.passwordOne
-                && errors.passwordOne
-              }
-              label="forms.passwordChange.labels.passwordOneInput"
-              name="passwordOne"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              rounded
-              success={!errors.passwordOne && touched.passwordOne}
-              type="password"
-              value={values.passwordOne}
-            />
+          <Input
+            disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
+            error={
+              errors.passwordOne
+              && touched.passwordOne
+              && errors.passwordOne
+            }
+            label="forms.passwordChange.labels.passwordOneInput"
+            margin="0 0 25px 0"
+            name="passwordOne"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            rounded
+            success={!errors.passwordOne && touched.passwordOne}
+            type="password"
+            value={values.passwordOne}
+          />
 
-            <Input
-              disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
-              error={
-                errors.passwordTwo
-                && touched.passwordTwo
-                && errors.passwordTwo
-              }
-              label="forms.passwordChange.labels.passwordTwoInput"
-              name="passwordTwo"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              rounded
-              success={!errors.passwordTwo && touched.passwordTwo}
-              type="password"
-              value={values.passwordTwo}
-            />
-          </StyledNewPasswordWrapper>
+          <Input
+            disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
+            error={
+              errors.passwordTwo
+              && touched.passwordTwo
+              && errors.passwordTwo
+            }
+            label="forms.passwordChange.labels.passwordTwoInput"
+            margin="0 0 25px 0"
+            name="passwordTwo"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            rounded
+            success={!errors.passwordTwo && touched.passwordTwo}
+            type="password"
+            value={values.passwordTwo}
+          />
 
-          <StyledCurrentPasswordAndButtonWrapper>
-            <Input
-              disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
-              error={
-                (errors.password && touched.password && errors.password)
-                || (status && status.currentPasswordIsWrong)
-                || (status && status.reachedMaxCurrentPasswordAttemps)
-              }
-              label="forms.passwordChange.labels.passwordInput"
-              name="password"
-              onBlur={handleBlur}
-              onChange={(e) => {
-                if (status) setStatus(false);
-                handleChange(e);
-              }}
-              rounded
-              success={!errors.password && touched.password && !status}
-              type="password"
-              value={status ? '' : values.password}
-            />
+          <Input
+            disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
+            error={
+              (errors.password && touched.password && errors.password)
+              || (status && status.currentPasswordIsWrong)
+              || (status && status.reachedMaxCurrentPasswordAttemps)
+            }
+            label="forms.passwordChange.labels.passwordInput"
+            margin="0 0 25px 0"
+            name="password"
+            onBlur={handleBlur}
+            onChange={(e) => {
+              if (status) setStatus(false);
+              handleChange(e);
+            }}
+            rounded
+            success={!errors.password && touched.password && !status}
+            type="password"
+            value={status ? '' : values.password}
+          />
 
-            <Button
-              disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
-              fullWidth
-              rounded
-              styleType="filled"
-              type="submit"
-            >
-              {'forms.passwordChange.submitButton'}
-            </Button>
-          </StyledCurrentPasswordAndButtonWrapper>
+          <Button
+            disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
+            fullWidth
+            styleType="filled"
+            type="submit"
+          >
+            {'forms.passwordChange.submitButton'}
+          </Button>
         </Form>
       )}
     </Formik>

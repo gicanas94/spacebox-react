@@ -156,7 +156,6 @@ const PasswordLinkForm = ({
               disabled={isSubmitting}
               fullWidth
               margin="25px 0 0 0"
-              rounded
               styleType="filled"
               type="submit"
             >

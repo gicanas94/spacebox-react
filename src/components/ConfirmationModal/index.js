@@ -121,7 +121,6 @@ const ConfirmationModal = ({
             color="abalone"
             disabled={confirmInProgress}
             onClick={onCloseHandler}
-            rounded
             styleType="unbordered"
             type="button"
           >
@@ -131,7 +130,6 @@ const ConfirmationModal = ({
           <Button
             disabled={confirmInProgress}
             onClick={handleConfirm}
-            rounded
             styleType="bordered"
             type="submit"
           >

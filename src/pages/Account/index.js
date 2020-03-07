@@ -127,17 +127,19 @@ const AccountPage = ({
         <Sidebar content={sidebarContent} />
 
         <div className="content">
-          <Box fullWidth id="general-settings">
+          <Box fullWidth>
             <h1>
               <FormattedMessage id="pages.account.h1" />
             </h1>
 
-            <GeneralSettingsSubpage
-              alertSetAction={alertSetAction}
-              authUser={authUser}
-              firebase={firebase}
-              isLoadingSetAction={isLoadingSetAction}
-            />
+            <Box fullWidth id="general-settings" noBorder padding="0">
+              <GeneralSettingsSubpage
+                alertSetAction={alertSetAction}
+                authUser={authUser}
+                firebase={firebase}
+                isLoadingSetAction={isLoadingSetAction}
+              />
+            </Box>
           </Box>
 
           {authUserHasPassword && (

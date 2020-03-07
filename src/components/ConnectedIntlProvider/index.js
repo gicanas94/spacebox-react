@@ -20,8 +20,6 @@ ConnectedIntlProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const mapStateToProps = state => ({
-  appLocale: state.appLocale,
-});
+const mapStateToProps = state => ({ appLocale: state.appLocale });
 
 export default connect(mapStateToProps)(ConnectedIntlProvider);

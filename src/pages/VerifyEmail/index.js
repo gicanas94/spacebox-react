@@ -85,7 +85,6 @@ const VerifyEmailPage = ({ alertSetAction, authUser, firebase }) => {
               }
               fullWidth
               onClick={handleClick}
-              rounded
               styleType="filled"
               type="submit"
             >
