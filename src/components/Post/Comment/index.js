@@ -69,7 +69,7 @@ const StyledLongDate = styled.span`
   text-align: right;
 `;
 
-const Comment = ({ comment }) => (
+const Comment = ({ comment, postUid }) => (
   <StyledWrapper isPostAuthor={comment.uid === comment.postUid}>
     <StyledComment bgColor={comment.bgColor}>
 
@@ -84,7 +84,7 @@ const Comment = ({ comment }) => (
           }}
           >
 
-            {comment.uid === comment.postUid
+            {comment.user.uid === postUid
               ? (
                 <FormattedMessage id="components.post.comment.postAuthor" />
               ) : comment.user.username
@@ -126,6 +126,7 @@ const Comment = ({ comment }) => (
 Comment.propTypes = {
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   comment: PropTypes.objectOf(PropTypes.any).isRequired,
+  postUid: PropTypes.string.isRequired,
 };
 
 export default Comment;

@@ -206,7 +206,9 @@ const Post = ({
     commentFormIsVisible,
     setCommentFormIsVisible,
   ] = useStateWithCallback(false, () => {
-    if (commentFormIsVisible) document.getElementById(commentFormId).focus();
+    if (commentFormIsVisible && document.getElementById(commentFormId)) {
+      document.getElementById(commentFormId).focus();
+    }
   });
 
   const handleDeletePostClick = () => (
@@ -495,6 +497,7 @@ const Post = ({
                 authUser={authUser}
                 comment={comment}
                 key={comment.slug}
+                postUid={post.uid}
               />
             ))
           }
