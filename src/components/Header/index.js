@@ -1,21 +1,22 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Cross } from 'styled-icons/icomoon';
+import { Link, withRouter } from 'react-router-dom';
 import { Menu } from 'styled-icons/boxicons-regular';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Transition } from 'react-spring/renderprops';
 import { useIntl } from 'react-intl';
-import { withRouter } from 'react-router-dom';
 
 import { appThemeSet } from '../../Redux/actions';
 import { device, keyframe, transition } from '../../styles';
 import largeLogo from '../../assets/images/logo-with-name.png';
 import Nav from './Nav';
+import { ROUTES } from '../../constants';
 import SearchBar from './SearchBar';
 import smallLogo from '../../assets/images/logo.png';
-import themes from '../../styles/themes';
+// import themes from '../../styles/themes';
 
 const StyledWrapper = styled.div`
   background-color: ${({ theme }) => theme.components.header.bgColor};
@@ -56,17 +57,15 @@ const StyledSpan = styled.span`
   display: flex;
 `;
 
-const StyledSmallLogoImg = styled.img`
+const StyledLogoLink = styled(Link)`
   cursor: pointer;
   line-height: 0;
-  margin-right: 10px;
   user-select: none;
-  transition: all ${transition.speed.superfast} linear;
-  z-index: 1200;
+`;
 
-  &:active {
-    transform: translateY(2px);
-  }
+const StyledSmallLogoLink = styled(StyledLogoLink)`
+  margin-right: 10px;
+  z-index: 1200;
 `;
 
 const StyledOverlay = styled.div`
@@ -133,18 +132,9 @@ const StyledLaptopView = styled.div`
   }
 `;
 
-const StyledLargeLogoImg = styled.img`
-  animation: ${keyframe.float(['1px', '-2px'])} ${transition.speed.ultraslow} ease-in-out infinite;
-  cursor: pointer;
-  line-height: 0;
+const StyledLargeLogoLink = styled(StyledLogoLink)`
+  // animation: ${keyframe.float(['1px', '-2px'])} ${transition.speed.ultraslow} ease-in-out infinite;
   margin-right: 25px;
-  user-select: none;
-  transition: all ${transition.speed.superfast} linear;
-
-  &:active {
-    animation: none;
-    transform: translateY(2px);
-  }
 `;
 
 const StyledLaptopViewSearchBarWrapper = styled.div`
@@ -178,32 +168,33 @@ const Header = ({
   const [mobileNavIsOpen, setMobileNavIsOpen] = useState(false);
   const intl = useIntl();
 
-  const handleOnLogoClick = () => {
-    themes.forEach((theme, index) => {
-      if (theme.name === appTheme.name) {
-        if (themes[index + 1]) {
-          appThemeSetAction(themes[index + 1]);
-        } else if (themes[index - 1]) {
-          appThemeSetAction(themes[index - 1]);
-        } else {
-          appThemeSetAction(themes[index]);
-        }
-      }
-    });
-  };
+  // const handleOnLogoClick = () => {
+  //   themes.forEach((theme, index) => {
+  //     if (theme.name === appTheme.name) {
+  //       if (themes[index + 1]) {
+  //         appThemeSetAction(themes[index + 1]);
+  //       } else if (themes[index - 1]) {
+  //         appThemeSetAction(themes[index - 1]);
+  //       } else {
+  //         appThemeSetAction(themes[index]);
+  //       }
+  //     }
+  //   });
+  // };
 
   return (
     <StyledWrapper>
       <StyledHeader>
         <StyledMobileView>
           <StyledSpan>
-            <StyledSmallLogoImg
-              alt={intl.formatMessage({
-                id: 'components.header.logoImageAlt',
-              })}
-              onClick={() => handleOnLogoClick()}
-              src={smallLogo}
-            />
+            <StyledSmallLogoLink to={ROUTES.HOME}>
+              <img
+                alt={intl.formatMessage({
+                  id: 'components.header.logoImageAlt',
+                })}
+                src={smallLogo}
+              />
+            </StyledSmallLogoLink>
 
             {location.pathname === '/' && <SearchBar intl={intl} />}
           </StyledSpan>
@@ -239,13 +230,14 @@ const Header = ({
         </StyledMobileView>
 
         <StyledLaptopView>
-          <StyledLargeLogoImg
-            alt={intl.formatMessage({
-              id: 'components.header.logoImageAlt',
-            })}
-            onClick={() => handleOnLogoClick()}
-            src={largeLogo}
-          />
+          <StyledLargeLogoLink to={ROUTES.HOME}>
+            <img
+              alt={intl.formatMessage({
+                id: 'components.header.logoImageAlt',
+              })}
+              src={largeLogo}
+            />
+          </StyledLargeLogoLink>
 
           <StyledLaptopViewNav>
             {location.pathname === '/' && (

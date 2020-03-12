@@ -64,7 +64,7 @@ const GeneralSettingsForm = ({
         alertSetAction();
 
         await firebase.user(authUser.uid).update({
-          bio: values.bio,
+          bio: values.bio.trim() || null,
           language: values.language.substr(
             values.language.length - 2,
             values.language.length,

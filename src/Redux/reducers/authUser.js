@@ -1,7 +1,6 @@
 import SecureLS from 'secure-ls';
 
 const ls = new SecureLS();
-
 const initialState = ls.get('au');
 
 const authUserReducer = (state = initialState, action) => {

@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 import Box from '../Box';
 import Button from '../Button';
-import { device } from '../../styles';
 import Hr from '../Hr';
 import { ROUTES } from '../../constants';
 
