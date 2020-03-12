@@ -143,6 +143,11 @@ const HomePage = ({
           spacebox.visible && (
             <StyledSpaceboxLink
               key={spacebox.slug}
+              order={
+                authUser && authUser.uid === spacebox.uid
+                  ? 2
+                  : index + 10
+              }
               to={{
                 pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}`,
                 state: { spacebox },
@@ -160,11 +165,6 @@ const HomePage = ({
                   () => handleEditSpaceboxClick(spacebox.slug)
                 }
                 likes={spacebox.likes}
-                order={
-                  authUser && authUser.uid === spacebox.uid
-                    ? -1
-                    : index + 10
-                }
                 title={spacebox.title}
               />
             </StyledSpaceboxLink>

@@ -66,7 +66,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    @import url('https://fonts.googleapis.com/css?family=Alegreya+Sans:100,300,400,500,700,800,900');
     background: ${({ theme }) => theme.htmlTags.body.background};
     background-attachment: fixed;
     background-repeat: no-repeat;

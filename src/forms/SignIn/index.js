@@ -30,7 +30,12 @@ const StyledBottomWrapper = styled.div`
   }
 `;
 
-const SignInForm = ({ alertSetAction, firebase, history }) => {
+const SignInForm = ({
+  alertSetAction,
+  firebase,
+  history,
+  returnUrlIfUserNeedsToSignIn,
+}) => {
   const SignInFormSchema = Yup.object().shape({
     email: Yup.string()
       .trim()
@@ -48,7 +53,11 @@ const SignInForm = ({ alertSetAction, firebase, history }) => {
 
         await firebase.doSignInWithEmailAndPassword(email, password);
 
-        history.push(ROUTES.HOME);
+        if (returnUrlIfUserNeedsToSignIn) {
+          history.push(returnUrlIfUserNeedsToSignIn);
+        } else {
+          history.push(ROUTES.HOME);
+        }
       } catch (error) {
         alertSetAction({
           message: error.code === ERRORS.FIREBASE.ACCOUNT_EXISTS.CODE
@@ -144,6 +153,11 @@ SignInForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  returnUrlIfUserNeedsToSignIn: PropTypes.string,
+};
+
+SignInForm.defaultProps = {
+  returnUrlIfUserNeedsToSignIn: null,
 };
 
 export default SignInForm;

@@ -428,15 +428,53 @@ const Post = ({
         <StyledActions>
           {!authUser && (
             <Fragment>
-              <Link to={ROUTES.SIGN_IN}>{likeHeartIcon}</Link>
-              <Link to={ROUTES.SIGN_IN}>{commentIcon}</Link>
+              <Link
+                to={{
+                  pathname: ROUTES.SIGN_IN,
+                  state: {
+                    returnUrlIfUserNeedsToSignIn: history.location.pathname,
+                  },
+                }}
+              >
+                {likeHeartIcon}
+              </Link>
+
+              <Link
+                to={{
+                  pathname: ROUTES.SIGN_IN,
+                  state: {
+                    returnUrlIfUserNeedsToSignIn: history.location.pathname,
+                  },
+                }}
+              >
+                {commentIcon}
+              </Link>
             </Fragment>
           )}
 
           {authUser && !authUser.emailVerified && (
             <Fragment>
-              <Link to={ROUTES.VERIFY_EMAIL}>{likeHeartIcon}</Link>
-              <Link to={ROUTES.VERIFY_EMAIL}>{commentIcon}</Link>
+              <Link
+                to={{
+                  pathname: ROUTES.VERIFY_EMAIL,
+                  state: {
+                    returnUrlIfUserNeedsToSignIn: history.location.pathname,
+                  },
+                }}
+              >
+                {likeHeartIcon}
+              </Link>
+
+              <Link
+                to={{
+                  pathname: ROUTES.VERIFY_EMAIL,
+                  state: {
+                    returnUrlIfUserNeedsToSignIn: history.location.pathname,
+                  },
+                }}
+              >
+                {commentIcon}
+              </Link>
             </Fragment>
           )}
 
@@ -552,7 +590,7 @@ Post.propTypes = {
   confirmationModalOpenAction: PropTypes.func.isRequired,
   deletePostCallback: PropTypes.func,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any),
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   page: PropTypes.oneOf(['space', 'post']).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -561,7 +599,6 @@ Post.propTypes = {
 
 Post.defaultProps = {
   deletePostCallback: null,
-  history: null,
 };
 
 export default Post;

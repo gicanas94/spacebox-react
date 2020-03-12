@@ -165,13 +165,13 @@ const Input = ({
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
   const handleOpenedEyeIconClick = () => {
-    setPasswordIsVisible(true);
-    document.getElementById(inputId).type = 'text';
+    setPasswordIsVisible(false);
+    document.getElementById(inputId).type = 'password';
   };
 
   const handleClosedEyeIconClick = () => {
-    setPasswordIsVisible(false);
-    document.getElementById(inputId).type = 'password';
+    setPasswordIsVisible(true);
+    document.getElementById(inputId).type = 'text';
   };
 
   return (
@@ -204,11 +204,11 @@ const Input = ({
           {initialInputTypeIsPassword && (
             <Fragment>
               {!passwordIsVisible && (
-                <StyledOpenedEyeIcon onClick={handleOpenedEyeIconClick} />
+                <StyledClosedEyeIcon onClick={handleClosedEyeIconClick} />
               )}
 
               {passwordIsVisible && (
-                <StyledClosedEyeIcon onClick={handleClosedEyeIconClick} />
+                <StyledOpenedEyeIcon onClick={handleOpenedEyeIconClick} />
               )}
             </Fragment>
           )}

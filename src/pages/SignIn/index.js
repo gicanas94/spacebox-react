@@ -11,7 +11,11 @@ import SignInForm from '../../forms/SignIn';
 import SignInSocialMediaForm from '../../forms/SignInSocialMedia';
 import { withFirebase } from '../../Firebase';
 
-const SignInPage = ({ alertSetAction, firebase, history }) => (
+const SignInPage = ({
+  alertSetAction,
+  firebase,
+  history,
+}) => (
   <Box size="small">
     <HelmetTitle title={{ id: 'pages.signIn.title' }} />
 
@@ -19,12 +23,20 @@ const SignInPage = ({ alertSetAction, firebase, history }) => (
       alertSetAction={alertSetAction}
       firebase={firebase}
       history={history}
+      returnUrlIfUserNeedsToSignIn={(
+        history.location.state
+        && history.location.state.returnUrlIfUserNeedsToSignIn
+      )}
     />
 
     <SignInSocialMediaForm
       alertSetAction={alertSetAction}
       firebase={firebase}
       history={history}
+      returnUrlIfUserNeedsToSignIn={(
+        history.location.state
+        && history.location.state.returnUrlIfUserNeedsToSignIn
+      )}
     />
   </Box>
 );

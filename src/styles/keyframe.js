@@ -24,17 +24,14 @@ const beat = scale => keyframes`
 
 const float = translateY => keyframes`
   0% {
-    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
     transform: translateY(${translateY[0]});
   }
 
   50% {
-    box-shadow: 0 25px 15px 0px rgba(0, 0, 0, 0.2);
     transform: translateY(${translateY[1]});
   }
 
   100% {
-    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
     transform: translateY(${translateY[0]});
   }
 `;

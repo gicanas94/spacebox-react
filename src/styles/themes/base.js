@@ -344,8 +344,7 @@ export default {
       },
       spaceboxTitle: {
         fontWeight: font.weight.bold,
-        largeFontSize: font.size.l,
-        smallFontSize: font.size.m,
+        fontSize: font.size.m,
       },
     },
     tooltip: {

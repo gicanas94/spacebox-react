@@ -6,7 +6,12 @@ import { defineAppLocale } from '../../utils';
 import { ERRORS, ROUTES } from '../../constants';
 import SignInWithButton from '../../components/SignInWithButton';
 
-const SignInSocialMedia = ({ alertSetAction, firebase, history }) => {
+const SignInSocialMedia = ({
+  alertSetAction,
+  firebase,
+  history,
+  returnUrlIfUserNeedsToSignIn,
+}) => {
   const handleSignInWithClick = (doSignInWith) => {
     (async () => {
       try {
@@ -30,7 +35,11 @@ const SignInSocialMedia = ({ alertSetAction, firebase, history }) => {
           });
         }
 
-        history.push(ROUTES.HOME);
+        if (returnUrlIfUserNeedsToSignIn) {
+          history.push(returnUrlIfUserNeedsToSignIn);
+        } else {
+          history.push(ROUTES.HOME);
+        }
       } catch (error) {
         alertSetAction({
           message: error.code === ERRORS.FIREBASE.ACCOUNT_EXISTS.CODE
@@ -83,6 +92,11 @@ SignInSocialMedia.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  returnUrlIfUserNeedsToSignIn: PropTypes.string,
+};
+
+SignInSocialMedia.defaultProps = {
+  returnUrlIfUserNeedsToSignIn: null,
 };
 
 export default SignInSocialMedia;

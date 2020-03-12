@@ -424,6 +424,7 @@ const SpacePage = ({
                         deletePostCallback={deletePostCallback}
                         firebase={firebase}
                         key={post.createdAt}
+                        history={history}
                         page="space"
                         post={post}
                         spacebox={spacebox}

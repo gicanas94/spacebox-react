@@ -13,24 +13,12 @@ import { ROUTES } from '../../constants';
 const StyledSpaceboxTitle = styled.h1`
   color: inherit;
   font-size: ${({ theme }) => (
-    theme.components.spaceboxInfoSection.spaceboxTitle.smallFontSize
+    theme.components.spaceboxInfoSection.spaceboxTitle.fontSize
   )};
   font-weight: ${({ theme }) => (
     theme.components.spaceboxInfoSection.spaceboxTitle.fontWeight
   )};
   line-height: 1;
-
-  @media ${device.mobileL} {
-    font-size: ${({ theme }) => (
-      theme.components.spaceboxInfoSection.spaceboxTitle.largeFontSize
-    )};
-  }
-
-  @media ${device.tablet} {
-    font-size: ${({ theme }) => (
-      theme.components.spaceboxInfoSection.spaceboxTitle.smallFontSize
-    )};
-  }
 `;
 
 const StyledSpaceboxDescription = styled.h2`
