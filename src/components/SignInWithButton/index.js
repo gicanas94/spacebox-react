@@ -37,10 +37,6 @@ const StyledButton = styled.button`
     &:hover {
       background-color: ${Color('#3b5998').darken(0.2).hex()};
     }
-
-    &:focus {
-      outline: none;
-    }
   `}
 
   ${({ account }) => (account === 'Google') && `
@@ -77,6 +73,10 @@ const StyledButton = styled.button`
 
   &:active {
     transform: translateY(2px);
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 

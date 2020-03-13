@@ -67,11 +67,7 @@ const App = ({
           <Route component={SignUpPage} path={ROUTES.SIGN_UP} />
           <Route component={SpacePage} exact path={ROUTES.SPACE_WITH_SLUG} />
           <Route component={PostPage} exact path={ROUTES.SPACE_POST} />
-
-          {process.env.ENV !== 'production' && (
-            <Route component={TestPage} exact path={ROUTES.TEST} />
-          )}
-
+          <Route component={TestPage} exact path={ROUTES.TEST} />
           <Route component={UserPage} path={ROUTES.USER_WITH_SLUG} />
           <Route component={VerifyEmailPage} path={ROUTES.VERIFY_EMAIL} />
           <Route component={NotFoundPage} />
