@@ -55,3 +55,14 @@ export const setCookie = (cName, cValue, cExpirationTime) => {
   const expirationTime = `expires=${cExpirationTime}`;
   document.cookie = `${cName}=${cValue};${expirationTime};path=/`;
 };
+
+export const shuffleArray = (array) => {
+  const shuffledArray = array;
+
+  for (let i = shuffledArray.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+
+  return shuffledArray;
+};

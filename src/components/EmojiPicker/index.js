@@ -218,7 +218,6 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
   return (
     <StyledWrapper rounded={rounded} {...props}>
       <StyledInput
-        autoFocus
         onChange={handleInputChange}
         placeholder={intl.formatMessage(
           { id: 'components.emojiPicker.searchInputPlaceholder' },

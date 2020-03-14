@@ -98,7 +98,7 @@ const GeneralSettingsForm = ({
       initialValues={{
         username: authUser.username,
         email: authUser.email,
-        bio: authUser.bio,
+        bio: authUser.bio || '',
         language: LANGUAGES.filter(
           language => language.messageId.includes(`.${authUser.language}`),
         )[0].messageId,

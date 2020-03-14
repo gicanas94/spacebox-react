@@ -94,7 +94,6 @@ const SignInForm = ({
       }) => (
         <Form>
           <Input
-            autoFocus
             disabled={isSubmitting}
             error={errors.email && touched.email && errors.email}
             label="forms.signIn.labels.emailInput"

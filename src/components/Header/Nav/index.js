@@ -1,42 +1,49 @@
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
+import styled from 'styled-components';
 
 import Button from '../../Button';
 import { ROUTES } from '../../../constants';
 import { withFirebase } from '../../../Firebase';
 
+const StyledNavItem = styled(Link)`
+  text-decoration: none !important;
+  transform: none !important;
+`;
+
 const Nav = ({
   authUser,
+  buttonsPadding,
   buttonsSize,
   firebase,
-  history,
   location,
-  onLinkClickHandler,
+  onNavItemClickHandler,
 }) => (
   <Fragment>
     <CommonNav
+      buttonsPadding={buttonsPadding}
       buttonsSize={buttonsSize}
-      history={history}
       location={location}
-      onLinkClickHandler={onLinkClickHandler}
+      onNavItemClickHandler={onNavItemClickHandler}
     />
 
     {authUser
       ? (
         <AuthNav
           authUser={authUser}
+          buttonsPadding={buttonsPadding}
           buttonsSize={buttonsSize}
           firebase={firebase}
-          history={history}
           location={location}
-          onLinkClickHandler={onLinkClickHandler}
+          onNavItemClickHandler={onNavItemClickHandler}
         />
       ) : (
         <NonAuthNav
+          buttonsPadding={buttonsPadding}
           buttonsSize={buttonsSize}
-          history={history}
           location={location}
-          onLinkClickHandler={onLinkClickHandler}
+          onNavItemClickHandler={onNavItemClickHandler}
         />
       )
     }
@@ -44,177 +51,187 @@ const Nav = ({
 );
 
 const CommonNav = ({
+  buttonsPadding,
   buttonsSize,
-  history,
   location,
-  onLinkClickHandler,
+  onNavItemClickHandler,
 }) => (
-  <Button
-    color="punch"
-    fullWidth
-    onClick={() => {
-      history.push(ROUTES.HOME);
-      onLinkClickHandler(false);
-    }}
-    size={buttonsSize}
-    styleType={location.pathname === ROUTES.HOME
-      ? 'filled'
-      : 'unbordered'
-    }
-    type="button"
-  >
-    {'components.header.links.home'}
-  </Button>
-);
-
-const AuthNav = ({
-  buttonsSize,
-  firebase,
-  history,
-  location,
-  onLinkClickHandler,
-}) => (
-  <Fragment>
+  <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.HOME}>
     <Button
-      color="emerald"
+      color="punch"
       fullWidth
-      onClick={() => {
-        history.push(ROUTES.CREATE_SPACEBOX);
-        onLinkClickHandler(false);
-      }}
+      padding={buttonsPadding}
       size={buttonsSize}
-      styleType={location.pathname === ROUTES.CREATE_SPACEBOX
-        ? 'filled'
-        : 'bordered'
-      }
-      type="button"
-    >
-      {'components.header.links.createSpacebox'}
-    </Button>
-
-    <Button
-      color="flax"
-      fullWidth
-      onClick={() => {
-        history.push(ROUTES.ACCOUNT_BASE);
-        onLinkClickHandler(false);
-      }}
-      size={buttonsSize}
-      styleType={location.pathname.startsWith(ROUTES.ACCOUNT_BASE)
+      styleType={location.pathname === ROUTES.HOME
         ? 'filled'
         : 'unbordered'
       }
       type="button"
     >
-      {'components.header.links.account'}
+      {'components.header.links.home'}
     </Button>
+  </StyledNavItem>
+);
+
+const AuthNav = ({
+  buttonsPadding,
+  buttonsSize,
+  firebase,
+  location,
+  onNavItemClickHandler,
+}) => (
+  <Fragment>
+    <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.CREATE_SPACEBOX}>
+      <Button
+        color="emerald"
+        fullWidth
+        padding={buttonsPadding}
+        size={buttonsSize}
+        styleType={location.pathname === ROUTES.CREATE_SPACEBOX
+          ? 'filled'
+          : 'bordered'
+        }
+        type="button"
+      >
+        {'components.header.links.createSpacebox'}
+      </Button>
+    </StyledNavItem>
+
+    <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.ACCOUNT_BASE}>
+      <Button
+        color="flax"
+        fullWidth
+        padding={buttonsPadding}
+        size={buttonsSize}
+        styleType={location.pathname.startsWith(ROUTES.ACCOUNT_BASE)
+          ? 'filled'
+          : 'unbordered'
+        }
+        type="button"
+      >
+        {'components.header.links.account'}
+      </Button>
+    </StyledNavItem>
 
     <Button
       color="salmon"
       fullWidth
       onClick={() => {
         firebase.doSignOut();
-        onLinkClickHandler(false);
+        onNavItemClickHandler(false);
       }}
+      padding={buttonsPadding}
       size={buttonsSize}
       styleType="unbordered"
       type="button"
     >
       {'components.header.links.signOut'}
     </Button>
-
   </Fragment>
 );
 
 const NonAuthNav = ({
+  buttonsPadding,
   buttonsSize,
-  history,
   location,
-  onLinkClickHandler,
+  onNavItemClickHandler,
 }) => (
   <Fragment>
-    <Button
-      color="flax"
-      fullWidth
-      onClick={() => {
-        history.push(ROUTES.FAQ);
-        onLinkClickHandler(false);
-      }}
-      size={buttonsSize}
-      styleType={location.pathname === ROUTES.FAQ
-        ? 'filled'
-        : 'unbordered'
-      }
-      type="button"
-    >
-      {'components.header.links.faq'}
-    </Button>
+    <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.FAQ}>
+      <Button
+        color="flax"
+        fullWidth
+        padding={buttonsPadding}
+        size={buttonsSize}
+        styleType={location.pathname === ROUTES.FAQ
+          ? 'filled'
+          : 'unbordered'
+        }
+        type="button"
+      >
+        {'components.header.links.faq'}
+      </Button>
+    </StyledNavItem>
 
-    <Button
-      color="babyBlue"
-      fullWidth
-      onClick={() => {
-        history.push(ROUTES.SIGN_UP);
-        onLinkClickHandler(false);
-      }}
-      size={buttonsSize}
-      styleType={location.pathname === ROUTES.SIGN_UP
-        ? 'filled'
-        : 'unbordered'
-      }
-      type="button"
-    >
-      {'components.header.links.signUp'}
-    </Button>
+    <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.SIGN_UP}>
+      <Button
+        color="babyBlue"
+        fullWidth
+        padding={buttonsPadding}
+        size={buttonsSize}
+        styleType={location.pathname === ROUTES.SIGN_UP
+          ? 'filled'
+          : 'unbordered'
+        }
+        type="button"
+      >
+        {'components.header.links.signUp'}
+      </Button>
+    </StyledNavItem>
 
-    <Button
-      color="emerald"
-      fullWidth
-      onClick={() => {
-        history.push(ROUTES.SIGN_IN);
-        onLinkClickHandler(false);
-      }}
-      size={buttonsSize}
-      styleType={location.pathname === ROUTES.SIGN_IN
-        ? 'filled'
-        : 'bordered'
-      }
-      type="button"
-    >
-      {'components.header.links.signIn'}
-    </Button>
+    <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.SIGN_IN}>
+      <Button
+        color="emerald"
+        fullWidth
+        padding={buttonsPadding}
+        size={buttonsSize}
+        styleType={location.pathname === ROUTES.SIGN_IN
+          ? 'filled'
+          : 'bordered'
+        }
+        type="button"
+      >
+        {'components.header.links.signIn'}
+      </Button>
+    </StyledNavItem>
   </Fragment>
 );
 
 Nav.propTypes = {
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  buttonsPadding: PropTypes.string,
   buttonsSize: PropTypes.string.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
-  onLinkClickHandler: PropTypes.func.isRequired,
+  onNavItemClickHandler: PropTypes.func.isRequired,
 };
 
 CommonNav.propTypes = {
+  buttonsPadding: PropTypes.string,
   buttonsSize: PropTypes.string.isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
-  onLinkClickHandler: PropTypes.func.isRequired,
+  onNavItemClickHandler: PropTypes.func.isRequired,
 };
 
 AuthNav.propTypes = {
+  buttonsPadding: PropTypes.string,
   buttonsSize: PropTypes.string.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
-  onLinkClickHandler: PropTypes.func.isRequired,
+  onNavItemClickHandler: PropTypes.func.isRequired,
 };
 
 NonAuthNav.propTypes = {
+  buttonsPadding: PropTypes.string,
   buttonsSize: PropTypes.string.isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
-  onLinkClickHandler: PropTypes.func.isRequired,
+  onNavItemClickHandler: PropTypes.func.isRequired,
+};
+
+Nav.defaultProps = {
+  buttonsPadding: undefined,
+};
+
+CommonNav.defaultProps = {
+  buttonsPadding: undefined,
+};
+
+AuthNav.defaultProps = {
+  buttonsPadding: undefined,
+};
+
+NonAuthNav.defaultProps = {
+  buttonsPadding: undefined,
 };
 
 export default withFirebase(Nav);

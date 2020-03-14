@@ -225,7 +225,6 @@ const CreateSpaceboxForm = ({
             <Field name="title">
               {({ field, form }) => (
                 <Input
-                  autoFocus
                   disabled={form.isSubmitting}
                   error={
                     form.errors.title
@@ -296,7 +295,6 @@ const CreateSpaceboxForm = ({
             <Field name="category">
               {({ form }) => (
                 <Select
-                  autoFocus
                   disabled={form.isSubmitting}
                   error={form.errors.category
                     && form.touched.category

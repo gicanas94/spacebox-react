@@ -172,7 +172,6 @@ const SignUpForm = ({
         <Form>
           <StyledGrid>
             <Input
-              autoFocus
               disabled={isSubmitting}
               error={errors.username && touched.username && errors.username}
               label="forms.signUp.labels.usernameInput"

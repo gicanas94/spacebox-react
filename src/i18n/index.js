@@ -342,8 +342,8 @@ export default {
         },
         informativeSpaceboxTitles: {
           loading: 'Loading...',
-          error: 'ERROR.',
-          resultsCount: 'Results: {count}',
+          error: 'ERROR! Sorry.',
+          resultsCount: '{count} results',
           noResults: 'No results',
         },
       },
@@ -731,8 +731,8 @@ export default {
         },
         informativeSpaceboxTitles: {
           loading: 'Cargando...',
-          error: 'ERROR.',
-          resultsCount: 'Resultados: {count}',
+          error: 'ERROR! Lo sentimos.',
+          resultsCount: '{count} resultados',
           noResults: 'No hay resultados',
         },
       },

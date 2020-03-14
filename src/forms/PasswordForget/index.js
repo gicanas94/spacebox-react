@@ -72,7 +72,6 @@ const PasswordForgetForm = ({ alertSetAction, firebase, history }) => {
       }) => (
         <Form>
           <Input
-            autoFocus
             disabled={isSubmitting}
             error={errors.email && touched.email && errors.email}
             label="forms.passwordForget.emailInputLabel"

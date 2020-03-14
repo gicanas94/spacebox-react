@@ -124,7 +124,7 @@ const StyledLaptopView = styled.div`
   justify-content: space-between;
 
   img {
-    height: 30px;
+    height: 25px;
   }
 
   @media ${device.laptop} {
@@ -148,21 +148,21 @@ const StyledLaptopViewNav = styled.nav`
 const StyledLaptopViewNavElementsWrapper = styled.div`
   display: flex;
 
-  button {
+  a {
     margin-right: 25px;
     width: fit-content;
   }
 
-  button:last-child {
+  a:last-child {
     margin-right: 0;
   }
 `;
 
 const Header = ({
-  appTheme,
-  appThemeSetAction,
+  // appTheme,
+  // appThemeSetAction,
   authUser,
-  history,
+  // history,
   location,
 }) => {
   const [mobileNavIsOpen, setMobileNavIsOpen] = useState(false);
@@ -214,10 +214,10 @@ const Header = ({
                 <StyledMobileViewNav>
                   <Nav
                     authUser={authUser}
-                    buttonsSize="large"
-                    history={history}
+                    buttonsPadding="10px 40px"
+                    buttonsSize="headerOnMobile"
                     location={location}
-                    onLinkClickHandler={setMobileNavIsOpen}
+                    onNavItemClickHandler={setMobileNavIsOpen}
                   />
                 </StyledMobileViewNav>
               </StyledOverlay>
@@ -249,10 +249,10 @@ const Header = ({
             <StyledLaptopViewNavElementsWrapper>
               <Nav
                 authUser={authUser}
-                buttonsSize="small"
-                history={history}
+                buttonsPadding="0 7px"
+                buttonsSize="headerOnLaptop"
                 location={location}
-                onLinkClickHandler={setMobileNavIsOpen}
+                onNavItemClickHandler={setMobileNavIsOpen}
               />
             </StyledLaptopViewNavElementsWrapper>
           </StyledLaptopViewNav>
@@ -263,8 +263,8 @@ const Header = ({
 };
 
 Header.propTypes = {
-  appTheme: PropTypes.oneOfType([PropTypes.any]).isRequired,
-  appThemeSetAction: PropTypes.func.isRequired,
+  // appTheme: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  // appThemeSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,

@@ -12,7 +12,7 @@ const StyledTitle = styled.div`
   display: -webkit-box;
   font-size: ${({ theme }) => theme.components.spacebox.title.fontSize};
   font-weight: ${({ theme }) => theme.components.spacebox.title.fontWeight};
-  line-height: 1.4em;
+  line-height: 1.3em;
   margin-bottom: -8px
   overflow: hidden;
   text-overflow: ellipsis;
@@ -26,10 +26,10 @@ const StyledTitle = styled.div`
   -webkit-line-clamp: 2;
 
   @media ${device.laptop} {
-    bottom: 7px;
-    padding: 0 10px;
+    bottom: 12px;
+    padding: 0 12px;
     position: absolute;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
   }
 `;
 
@@ -39,22 +39,23 @@ const StyledDescription = styled.div`
   font-weight: ${({ theme }) => (
     theme.components.spacebox.description.fontWeight
   )};
-  line-height: 1.4em;
+  line-height: 1.2em;
+  margin-bottom: -4px;
   overflow: hidden;
   transition: opacity ${transition.speed.superfast} linear,
               visibility ${transition.speed.superfast} linear;
   width: 100%;
   word-break: break-word;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 4;
 
   @media ${device.laptop} {
-    bottom: 7px;
+    bottom: 12px;
     opacity: 0;
-    padding: 0 10px;
+    padding: 0 12px;
     position: absolute;
     visibility: hidden;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 6;
   }
 `;
 
@@ -65,7 +66,7 @@ const StyledBubblesWrapper = styled.div`
   width: 100%;
 
   @media ${device.laptop} {
-    padding: 7px 7px 0 7px;
+    padding: 10px 10px 0 10px;
   }
 `;
 
@@ -110,8 +111,8 @@ const StyledSpacebox = styled.div`
   height: 220px;
   justify-content: space-between;
   overflow: hidden;
-  padding: 7px;
-  position: relative;z
+  padding: 10px;
+  position: relative;
   width: 100%;
 
   @media ${device.laptop} {

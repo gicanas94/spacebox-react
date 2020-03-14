@@ -24,7 +24,7 @@ export default {
   components: {
     alert: {
       fontWeight: font.weight.medium,
-      laptopWidth: '80%',
+      laptopWidth: '70%',
       maxWidth: '1280px',
       mobileWidth: '100%',
       type: {
@@ -46,7 +46,7 @@ export default {
       },
     },
     app: {
-      laptopWidth: '80%',
+      laptopWidth: '70%',
       maxWidth: '1280px',
       mobileWidth: '100%',
     },
@@ -67,6 +67,16 @@ export default {
       filter: 'none',
       fontSize: font.size.m,
       fontWeight: font.weight.bold,
+      size: {
+        headerOnLaptop: {
+          fontSize: font.size.sm,
+          height: '35px',
+        },
+        headerOnMobile: {
+          fontSize: font.size.xxl,
+          height: 'auto',
+        },
+      },
     },
     checkbox: {
       borderWidth: '2px',
@@ -133,7 +143,7 @@ export default {
     header: {
       bgColor: color.palette.asphalt,
       color: color.palette.cloud,
-      laptopWidth: '80%',
+      laptopWidth: '70%',
       maxWidth: '1280px',
       mobileWidth: '100%',
     },
@@ -248,7 +258,8 @@ export default {
     },
     searchBar: {
       bgColor: someThemeColors.controls.bgColor,
-      border: `2px solid ${someThemeColors.main}`,
+      // border: `2px solid ${someThemeColors.main}`,
+      border: '0',
       color: someThemeColors.controls.color,
       searchIcon: {
         color: someThemeColors.main,
@@ -327,7 +338,7 @@ export default {
         color: color.palette.white,
       },
       title: {
-        fontSize: font.size.xxxl,
+        fontSize: font.size.xl,
         fontWeight: font.weight.bold,
       },
       totalLikesHeartIcon: {
@@ -418,6 +429,7 @@ export default {
         ${color.palette.cloud},
         ${Color(color.palette.frenchRose).lighten(0.55).hex()}
       )`,
+      // background: 'black',
       color: someThemeColors.mainText,
       filter: 'none',
       fontFamily: font.family.AlegreyaSans,

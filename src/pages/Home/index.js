@@ -5,12 +5,13 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
-import { alertSet, homepageSpaceboxesSet } from '../../Redux/actions';
 
+import { alertSet, homepageSpaceboxesSet } from '../../Redux/actions';
 import { device } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
 import { ROUTES } from '../../constants';
 import searchSpaceboxSelector from '../../Redux/selectors';
+import { shuffleArray } from '../../utils';
 import Spacebox from '../../components/Spacebox';
 import { withFirebase } from '../../Firebase';
 
@@ -34,7 +35,7 @@ const StyledWrapper = styled.div`
   }
 
   @media ${device.laptopL} {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 `;
 
@@ -75,7 +76,7 @@ const HomePage = ({
       documents.forEach(document => spaceboxes.push(document.data()));
 
       if (componentIsMounted) {
-        homepageSpaceboxesSetAction(spaceboxes);
+        homepageSpaceboxesSetAction(shuffleArray(spaceboxes));
         setGettingSpaceboxes(false);
       }
     }, (error) => {

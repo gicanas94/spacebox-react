@@ -17,7 +17,6 @@ const StyledButton = styled.button`
   justify-content: center;
   line-height: 1;
   overflow: hidden;
-  padding: 0 15px;
   position: relative;
   transition: all ${transition.speed.superfast} linear;
   user-select: none;
@@ -158,6 +157,14 @@ const StyledButton = styled.button`
     margin: ${margin};
   `}
 
+  ${({ padding }) => padding && `
+    padding: ${padding};
+  `}
+
+  ${({ padding }) => !padding && `
+    padding: 0 15px;
+  `}
+
   ${({ rounded, theme }) => rounded && `
     border-radius: ${theme.global.borderRadius};
   `}
@@ -169,6 +176,16 @@ const StyledButton = styled.button`
 
   ${({ size }) => size === 'large' && `
     height: 50px;
+  `}
+
+  ${({ size, theme }) => size === 'headerOnLaptop' && `
+    font-size: ${theme.components.button.size.headerOnLaptop.fontSize};
+    height: ${theme.components.button.size.headerOnLaptop.height};
+  `}
+
+  ${({ size, theme }) => size === 'headerOnMobile' && `
+    font-size: ${theme.components.button.size.headerOnMobile.fontSize};
+    height: ${theme.components.button.size.headerOnMobile.height};
   `}
 
   ${({ width }) => width && `
@@ -202,6 +219,7 @@ Button.propTypes = {
   dontTranslateChildren: PropTypes.bool,
   fullWidth: PropTypes.bool,
   margin: PropTypes.string,
+  padding: PropTypes.string,
   rounded: PropTypes.bool,
   size: PropTypes.string,
   styleType: PropTypes.oneOf(['bordered', 'filled', 'unbordered']).isRequired,
@@ -214,6 +232,7 @@ Button.defaultProps = {
   dontTranslateChildren: false,
   fullWidth: false,
   margin: undefined,
+  padding: undefined,
   rounded: true,
   size: undefined,
   width: undefined,

@@ -4,20 +4,25 @@ import React from 'react';
 import { SearchAlt } from 'styled-icons/boxicons-regular';
 import styled from 'styled-components';
 
+import { device, transition } from '../../../styles';
 import { searchBarChange } from '../../../Redux/actions';
-import { transition } from '../../../styles';
 
 const StyledWrapper = styled.div`
+  height: auto;
   position: relative;
   z-index: 1200;
+
+  @media ${device.laptop} {
+    height: 100%;
+  }
 `;
 
 const StyledInput = styled.input`
   background-color: ${({ theme }) => theme.components.searchBar.bgColor};
   border: ${({ theme }) => theme.components.searchBar.border};
   color: ${({ theme }) => theme.components.searchBar.color};
-  height: 40px;
-  padding: 5px 35px 0 10px;
+  height: 100%;
+  padding: 5px 35px 0 7px;
   transition: width ${transition.speed.fast} linear;
   width: 140px;
 
@@ -38,6 +43,11 @@ const StyledSearchIcon = styled(SearchAlt)`
   right: 5px;
   top: 7px;
   width: 30px;
+
+  @media ${device.laptop} {
+    right: 10px;
+    width: 25px;
+  }
 `;
 
 const SearchBar = ({
