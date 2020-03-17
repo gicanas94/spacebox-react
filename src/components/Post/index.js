@@ -518,9 +518,9 @@ const Post = ({
         <StyledCommentFormWrapper id={commentFormId}>
           <Transition
             items={commentFormIsVisible}
-            from={{ marginTop: '-50px' }}
+            from={{ marginTop: '-40px' }}
             enter={{ marginTop: '0' }}
-            leave={{ marginTop: '-50px' }}
+            leave={{ marginTop: '-40px' }}
             config={{ mass: 1, tension: 600, friction: 42 }}
           >
             {commentForm => commentForm && (transitionProps => (

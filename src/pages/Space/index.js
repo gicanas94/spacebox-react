@@ -109,7 +109,7 @@ const SpacePage = ({
   const [allTasksFinished, setAllTasksFinished] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [justCreatedPosts, setJustCreatedPosts] = useState([]);
-  const [postOfLocationPathname, setPostOfLocationPathname] = useState(null);
+  const [postOfLocationPathname, setPostOfLocationPathname] = useState({});
 
   const postsRef = useRef(posts);
   const postsLimitRef = useRef(postsLimit);
@@ -277,8 +277,8 @@ const SpacePage = ({
       history.push(`${ROUTES.SPACE_BASE}/${spacebox.slug}`);
     }
 
-    if (postOfLocationPathname && postOfLocationPathname.slug === deletedPost.slug) {
-      setPostOfLocationPathname(null);
+    if (postOfLocationPathname.slug === deletedPost.slug) {
+      setPostOfLocationPathname({});
       history.push(`${ROUTES.SPACE_BASE}/${spacebox.slug}`);
     }
 
@@ -312,7 +312,7 @@ const SpacePage = ({
     }
 
     history.push(`${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`);
-    setPostOfLocationPathname();
+    setPostOfLocationPathname({});
     setSelectedPost(post);
   };
 
@@ -459,7 +459,7 @@ const SpacePage = ({
               ))}
 
               {/* Post of location pathname */}
-              {postOfLocationPathname && (
+              {postOfLocationPathname.slug && (
                 <Transition
                   items={postOfLocationPathname}
                   from={{ transform: 'scale(0.1)' }}
@@ -493,20 +493,22 @@ const SpacePage = ({
               {posts.length > 0 && (
                 <StyledPostsWrapper>
                   {posts.slice(0, postsLimit).map(post => (
-                    <Post
-                      alertSetAction={alertSetAction}
-                      authUser={authUser}
-                      confirmationModalCloseAction={confirmationModalCloseAction}
-                      confirmationModalOpenAction={confirmationModalOpenAction}
-                      deletePostCallback={deletePostCallback}
-                      firebase={firebase}
-                      key={post.createdAt}
-                      post={post}
-                      selected={selectedPost && selectedPost.slug === post.slug}
-                      selectPostCallback={selectPostCallback}
-                      spacebox={spacebox}
-                      user={user}
-                    />
+                    post.slug !== postOfLocationPathname.slug && (
+                      <Post
+                        alertSetAction={alertSetAction}
+                        authUser={authUser}
+                        confirmationModalCloseAction={confirmationModalCloseAction}
+                        confirmationModalOpenAction={confirmationModalOpenAction}
+                        deletePostCallback={deletePostCallback}
+                        firebase={firebase}
+                        key={post.createdAt}
+                        post={post}
+                        selected={selectedPost && selectedPost.slug === post.slug}
+                        selectPostCallback={selectPostCallback}
+                        spacebox={spacebox}
+                        user={user}
+                      />
+                    )
                   ))}
                 </StyledPostsWrapper>
               )}
