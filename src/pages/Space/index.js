@@ -1,8 +1,8 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { FormattedMessage, FormattedDateParts, injectIntl } from 'react-intl';
-import { Link, withRouter } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 import React, {
   Fragment,
@@ -12,6 +12,7 @@ import React, {
 } from 'react';
 
 import styled from 'styled-components';
+import { Transition } from 'react-spring/renderprops';
 
 import {
   alertSet,
@@ -23,18 +24,19 @@ import {
 import Box from '../../components/Box';
 import { device } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
-import Hr from '../../components/Hr';
 import Post from '../../components/Post';
 import PostForm from '../../forms/Post';
+import PostsHistory from '../../components/PostsHistory';
 import { ROUTES } from '../../constants';
 import SpaceboxInfoSection from '../../components/SpaceboxInfoSection';
-import Tooltip from '../../components/Tooltip';
 import { withFirebase } from '../../Firebase';
 
 const StyledSpaceboxInfoSectionWrapper = styled.div``;
-
+const StyledPostsHistoryWrapper = styled.div``;
 const StyledPostFormWrapper = styled.div``;
-
+const StyledJustCreatedPostsWrapper = styled.div``;
+const StyledPostOfLocationPathnameWrapper = styled.div``;
+const StyledSelectedPostWrapper = styled.div``;
 const StyledPostsWrapper = styled.div``;
 
 const StyledGrid = styled.div`
@@ -46,7 +48,10 @@ const StyledGrid = styled.div`
   width: 100%;
 
   ${StyledSpaceboxInfoSectionWrapper},
-  ${StyledPostFormWrapper} {
+  ${StyledPostFormWrapper},
+  ${StyledJustCreatedPostsWrapper},
+  ${StyledPostOfLocationPathnameWrapper},
+  ${StyledSelectedPostWrapper} {
     margin-bottom: 10px;
   }
 
@@ -66,7 +71,10 @@ const StyledGrid = styled.div`
     grid-gap: 20px;
 
     ${StyledSpaceboxInfoSectionWrapper},
-    ${StyledPostFormWrapper} {
+    ${StyledPostFormWrapper},
+    ${StyledJustCreatedPostsWrapper},
+    ${StyledPostOfLocationPathnameWrapper},
+    ${StyledSelectedPostWrapper} {
       margin-bottom: 20px;
     }
 
@@ -74,25 +82,6 @@ const StyledGrid = styled.div`
       margin-bottom: 20px;
     }
   }
-`;
-
-const StyledPostsHistoryYear = styled.div`
-  font-size: ${({ theme }) => theme.pages.space.postsHistory.year.fontSize};
-  font-weight: ${({ theme }) => theme.pages.space.postsHistory.year.fontWeight};
-`;
-
-const StyledPostsHistoryMonth = styled.div`
-  font-size: ${({ theme }) => theme.pages.space.postsHistory.month.fontSize};
-  font-weight: ${({ theme }) => theme.pages.space.postsHistory.month.fontWeight};
-  margin-left: 10px;
-  margin-top: 5px;
-`;
-
-const StyledPostsHistoryLink = styled(Link)`
-  font-size: ${({ theme }) => theme.pages.space.postsHistory.link.fontSize};
-  display: block;
-  margin-left: 20px;
-  margin-top: 10px;
 `;
 
 const StyledNoPostsText = styled.p`
@@ -107,66 +96,35 @@ const SpacePage = ({
   confirmationModalOpenAction,
   firebase,
   history,
-  intl,
   isLoadingSetAction,
   location,
   match,
 }) => {
+  // ----- Declarations --------------------------------------------------------
   const [spacebox, setSpacebox] = useState(null);
   const [posts, _setPosts] = useState(null);
   const [postsHistory, setPostsHistory] = useState(null);
-  const [postsLimit, setPostsLimit] = useState(5);
+  const [postsLimit, _setPostsLimit] = useState(5);
   const [user, setUser] = useState(null);
   const [allTasksFinished, setAllTasksFinished] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [justCreatedPosts, setJustCreatedPosts] = useState([]);
+  const [postOfLocationPathname, setPostOfLocationPathname] = useState(null);
+
   const postsRef = useRef(posts);
+  const postsLimitRef = useRef(postsLimit);
 
   const setPosts = (newListOfPosts) => {
     postsRef.current = newListOfPosts;
     _setPosts(newListOfPosts);
   };
 
-  const getSpacebox = spaceboxSlug => (
-    new Promise((resolve, reject) => {
-      firebase.spacebox(spaceboxSlug).get()
-        .then((document) => {
-          if (document.data()) {
-            setSpacebox(document.data());
-            resolve(document.data());
-          } else {
-            /* eslint-disable */
-            reject({ id: 'pages.space.spaceboxNotFoundAlertMessage' });
-            /* eslint-enable */
-          }
-        })
-        .catch(error => reject(error));
-    })
-  );
+  const setPostsLimit = (newPostsLimit) => {
+    postsLimitRef.current = newPostsLimit;
+    _setPostsLimit(newPostsLimit);
+  };
 
-  const getPosts = spaceboxSlug => (
-    new Promise((resolve, reject) => {
-      firebase.spaceboxPosts(spaceboxSlug).orderBy('createdAt', 'desc').get()
-        .then((documents) => {
-          const postsArray = [];
-
-          documents.forEach(document => postsArray.push(document.data()));
-
-          setPosts(postsArray);
-          resolve(postsArray);
-        })
-        .catch(error => reject(error));
-    })
-  );
-
-  const getUser = uid => (
-    new Promise((resolve, reject) => {
-      firebase.user(uid).get()
-        .then((document) => {
-          setUser(document.data());
-          resolve(document.data());
-        })
-        .catch(error => reject(error));
-    })
-  );
+  // ----- Sync functions ------------------------------------------------------
 
   const composePostsHistory = (postsData) => {
     const reversedPosts = [...postsData].reverse();
@@ -220,7 +178,7 @@ const SpacePage = ({
 
     const html = document.documentElement;
 
-    const docHeight = Math.max(
+    const documentHeight = Math.max(
       document.body.scrollHeight,
       document.body.offsetHeight,
       html.clientHeight,
@@ -230,25 +188,132 @@ const SpacePage = ({
 
     const windowBottom = Math.round(windowHeight + window.pageYOffset);
 
-    return windowBottom >= docHeight && (
-      postsRef.current.length >= postsLimit
-        ? setPostsLimit(postsLimit + 1)
-        : window.removeEventListener('scroll', getMorePostsIfScrollIsAtTheEnd)
+    return (windowBottom >= documentHeight) && (
+      postsRef.current.length === postsLimitRef.current
+        ? setPostsLimit(postsLimitRef.current + 1)
+        : () => {
+          window.removeEventListener('scroll', getMorePostsIfScrollIsAtTheEnd);
+        }
     );
   };
 
-  const deletePostCallback = (deletedPost) => {
-    const newListOfPosts = posts.filter(post => post.slug !== deletedPost.slug);
+  // ----- Async functions -----------------------------------------------------
 
-    setPosts(newListOfPosts);
-    composePostsHistory(newListOfPosts);
+  const getSpacebox = spaceboxSlug => (
+    new Promise((resolve, reject) => {
+      firebase.spacebox(spaceboxSlug).get()
+        .then((document) => {
+          if (document.data()) {
+            setSpacebox(document.data());
+            resolve(document.data());
+          } else {
+            /* eslint-disable */
+            reject({ id: 'pages.space.spaceboxNotFoundAlertMessage' });
+            /* eslint-enable */
+          }
+        })
+        .catch(error => reject(error));
+    })
+  );
+
+  const getPosts = spaceboxSlug => (
+    new Promise((resolve, reject) => {
+      firebase.spaceboxPosts(spaceboxSlug).orderBy('createdAt', 'desc').get()
+        .then((documents) => {
+          const postsArray = [];
+
+          documents.forEach(document => postsArray.push(document.data()));
+
+          if (selectedPost) {
+            const postsArrayWithoutSelectedPost = postsArray.filter(post => (
+              post.slug === selectedPost.slug
+            ));
+
+            setPosts(postsArrayWithoutSelectedPost);
+            resolve(postsArrayWithoutSelectedPost);
+          } else {
+            setPosts(postsArray);
+            resolve(postsArray);
+          }
+        })
+        .catch(error => reject(error));
+    })
+  );
+
+  const getUser = uid => (
+    new Promise((resolve, reject) => {
+      firebase.user(uid).get()
+        .then((document) => {
+          setUser(document.data());
+          resolve(document.data());
+        })
+        .catch(error => reject(error));
+    })
+  );
+
+  const getPostOfLocationPathname = (spaceboxSlug, postSlug) => (
+    new Promise((resolve, reject) => {
+      firebase.post(spaceboxSlug, postSlug).get()
+        .then((document) => {
+          if (document.data()) {
+            setPostOfLocationPathname(document.data());
+            resolve(document.data());
+          } else {
+            history.push(`${ROUTES.SPACE_BASE}/${spaceboxSlug}`);
+            /* eslint-disable */
+            reject({ id: 'pages.space.postNotFoundAlertMessage' });
+            /* eslint-enable */
+          }
+
+          setAllTasksFinished(true);
+        })
+        .catch(error => reject(error));
+    })
+  );
+
+  const deletePostCallback = (deletedPost) => {
+    if (selectedPost && selectedPost.slug === deletedPost.slug) {
+      setSelectedPost(null);
+      history.push(`${ROUTES.SPACE_BASE}/${spacebox.slug}`);
+    }
+
+    if (postOfLocationPathname && postOfLocationPathname.slug === deletedPost.slug) {
+      setPostOfLocationPathname(null);
+      history.push(`${ROUTES.SPACE_BASE}/${spacebox.slug}`);
+    }
+
+    if (justCreatedPosts.indexOf(deletedPost) !== -1) {
+      const newListOfPosts = justCreatedPosts.filter(
+        post => post.slug !== deletedPost.slug,
+      );
+
+      setJustCreatedPosts(newListOfPosts);
+      composePostsHistory([...newListOfPosts, ...posts]);
+    } else {
+      const newListOfPosts = posts.filter(
+        post => post.slug !== deletedPost.slug,
+      );
+
+      setPosts(newListOfPosts);
+      composePostsHistory(newListOfPosts);
+    }
   };
 
-  const createPostCallback = (createdPost) => {
-    const newListOfPosts = [createdPost, ...posts];
+  const newPostCallback = (createdPost) => {
+    const newListOfJustCreatedPosts = [createdPost, ...justCreatedPosts];
 
-    setPosts(newListOfPosts);
-    composePostsHistory(newListOfPosts);
+    setJustCreatedPosts(newListOfJustCreatedPosts);
+    composePostsHistory([...newListOfJustCreatedPosts, ...posts]);
+  };
+
+  const selectPostCallback = (post) => {
+    if ((selectedPost && selectedPost.slug === post.slug)) {
+      return;
+    }
+
+    history.push(`${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`);
+    setPostOfLocationPathname();
+    setSelectedPost(post);
   };
 
   useEffect(() => {
@@ -273,7 +338,14 @@ const SpacePage = ({
           window.addEventListener('scroll', getMorePostsIfScrollIsAtTheEnd);
         }
 
-        setAllTasksFinished(true);
+        if (match.params.postSlug) {
+          await getPostOfLocationPathname(
+            spaceboxData.slug,
+            match.params.postSlug,
+          );
+        } else {
+          setAllTasksFinished(true);
+        }
       } catch (error) {
         alertSetAction({
           message: error.id ? error : error.message,
@@ -297,15 +369,19 @@ const SpacePage = ({
     <Fragment>
       {allTasksFinished && (
         <Fragment>
+          {/* Page title */}
           <HelmetTitle
             title={{
-              id: 'pages.post.title',
-              values: { postTitle: spacebox.title },
+              id: 'pages.space.title',
+              values: {
+                title: selectedPost ? selectedPost.title : spacebox.title,
+              },
             }}
           />
 
           <StyledGrid>
             <div>
+              {/* Spacebox Info Section */}
               {spacebox && user && (
                 <StyledSpaceboxInfoSectionWrapper>
                   <SpaceboxInfoSection
@@ -321,78 +397,19 @@ const SpacePage = ({
                 </StyledSpaceboxInfoSectionWrapper>
               )}
 
+              {/* Posts History */}
               {posts.length > 0 && (
-                <Box
-                  collapsed
-                  collapseTitle="pages.space.postsHistory.boxCollapseTitle"
-                  margin="0"
-                  padding="15px"
-                >
-
-                  {Object.keys(postsHistory).reverse().map((year, index) => (
-                    <Fragment key={year}>
-                      <StyledPostsHistoryYear>
-                        {year}
-                      </StyledPostsHistoryYear>
-
-                      {Object.keys(postsHistory[year]).map(month => (
-                        <Fragment key={month}>
-                          <StyledPostsHistoryMonth>
-                            <FormattedDateParts
-                              month="long"
-                              value={new Date(0, month).toISOString()}
-                            >
-                              {parts => parts[0].value.toUpperCase()}
-                            </FormattedDateParts>
-                          </StyledPostsHistoryMonth>
-
-                          {postsHistory[year][month].map(post => (
-                            <StyledPostsHistoryLink
-                              key={post.createdAt}
-                              to={{
-                                pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
-                                state: {
-                                  spacebox,
-                                  user,
-                                },
-                              }}
-                            >
-                              <span
-                                data-for={(post.createdAt + 1).toString()}
-                                data-tip={`${intl.formatDate(
-                                  post.createdAt,
-                                  {
-                                    day: 'numeric',
-                                    month: 'long',
-                                    weekday: 'long',
-                                    year: 'numeric',
-                                  },
-                                )} - ${intl.formatTime(post.createdAt)}`}
-                              >
-                                {post.title}
-                              </span>
-
-                              <Tooltip
-                                effect="solid"
-                                delayShow={500}
-                                id={(post.createdAt + 1).toString()}
-                                place="right"
-                              />
-                            </StyledPostsHistoryLink>
-                          ))}
-                        </Fragment>
-                      ))}
-
-                      {Object.keys(postsHistory).length > (index + 1) && (
-                        <Hr margin="10px 0" />
-                      )}
-                    </Fragment>
-                  ))}
-                </Box>
+                <StyledPostsHistoryWrapper>
+                  <PostsHistory
+                    history={postsHistory}
+                    spaceboxSlug={spacebox.slug}
+                  />
+                </StyledPostsHistoryWrapper>
               )}
             </div>
 
             <div>
+              {/* New post form */}
               {authUser && authUser.uid === spacebox.uid && (
                 <StyledPostFormWrapper>
                   <Box padding="20px">
@@ -402,8 +419,8 @@ const SpacePage = ({
 
                     <PostForm
                       alertSetAction={alertSetAction}
-                      createPostCallback={createPostCallback}
                       firebase={firebase}
+                      newPostCallback={newPostCallback}
                       sid={spacebox.slug}
                       uid={authUser.uid}
                     />
@@ -411,41 +428,103 @@ const SpacePage = ({
                 </StyledPostFormWrapper>
               )}
 
-              {posts.length > 0
-                ? (
-                  <StyledPostsWrapper>
-                    {posts.slice(0, postsLimit).map(post => (
+              {/* Just created posts */}
+              {justCreatedPosts.length > 0 && justCreatedPosts.map(justCreatedPost => (
+                <Transition
+                  items={justCreatedPost}
+                  from={{ transform: 'scale(0.1)' }}
+                  enter={{ transform: 'scale(1)' }}
+                  leave={{ opacity: '0' }}
+                  config={{ mass: 1, tension: 600, friction: 42 }}
+                  key={justCreatedPost.createdAt}
+                >
+                  {post => post && (transitionProps => (
+                    <StyledJustCreatedPostsWrapper style={transitionProps}>
                       <Post
                         alertSetAction={alertSetAction}
                         authUser={authUser}
                         confirmationModalCloseAction={confirmationModalCloseAction}
                         confirmationModalOpenAction={confirmationModalOpenAction}
-                        createPostCallback={createPostCallback}
                         deletePostCallback={deletePostCallback}
                         firebase={firebase}
-                        key={post.createdAt}
-                        history={history}
-                        page="space"
-                        post={post}
+                        post={justCreatedPost}
+                        selected={selectedPost && selectedPost.slug === post.slug}
+                        selectPostCallback={selectPostCallback}
                         spacebox={spacebox}
                         user={user}
                       />
-                    ))}
-                  </StyledPostsWrapper>
-                ) : (
-                  <Box fullWidth margin="0">
-                    <StyledNoPostsText>
-                      <FormattedMessage
-                        id={
-                          authUser && authUser.uid === spacebox.uid
-                            ? 'pages.space.noPostsText.authUserIsTheOwner'
-                            : 'pages.space.noPostsText.authUserIsNotTheOwner'
-                        }
+                    </StyledJustCreatedPostsWrapper>
+                  ))}
+                </Transition>
+              ))}
+
+              {/* Post of location pathname */}
+              {postOfLocationPathname && (
+                <Transition
+                  items={postOfLocationPathname}
+                  from={{ transform: 'scale(0.1)' }}
+                  enter={{ transform: 'scale(1)' }}
+                  leave={{ opacity: '0' }}
+                  config={{ mass: 1, tension: 600, friction: 42 }}
+                >
+                  {post => post && (transitionProps => (
+                    <StyledPostOfLocationPathnameWrapper
+                      key={postOfLocationPathname.createdAt}
+                      style={transitionProps}
+                    >
+                      <Post
+                        alertSetAction={alertSetAction}
+                        authUser={authUser}
+                        confirmationModalCloseAction={confirmationModalCloseAction}
+                        confirmationModalOpenAction={confirmationModalOpenAction}
+                        deletePostCallback={deletePostCallback}
+                        firebase={firebase}
+                        post={postOfLocationPathname}
+                        selected
+                        spacebox={spacebox}
+                        user={user}
                       />
-                    </StyledNoPostsText>
-                  </Box>
-                )
-              }
+                    </StyledPostOfLocationPathnameWrapper>
+                  ))}
+                </Transition>
+              )}
+
+              {/* All posts except just created */}
+              {posts.length > 0 && (
+                <StyledPostsWrapper>
+                  {posts.slice(0, postsLimit).map(post => (
+                    <Post
+                      alertSetAction={alertSetAction}
+                      authUser={authUser}
+                      confirmationModalCloseAction={confirmationModalCloseAction}
+                      confirmationModalOpenAction={confirmationModalOpenAction}
+                      deletePostCallback={deletePostCallback}
+                      firebase={firebase}
+                      key={post.createdAt}
+                      post={post}
+                      selected={selectedPost && selectedPost.slug === post.slug}
+                      selectPostCallback={selectPostCallback}
+                      spacebox={spacebox}
+                      user={user}
+                    />
+                  ))}
+                </StyledPostsWrapper>
+              )}
+
+              {/* No posts message */}
+              {posts.length === 0 && (
+                <Box fullWidth margin="0">
+                  <StyledNoPostsText>
+                    <FormattedMessage
+                      id={
+                        authUser && authUser.uid === spacebox.uid
+                          ? 'pages.space.noPostsText.authUserIsTheOwner'
+                          : 'pages.space.noPostsText.authUserIsNotTheOwner'
+                      }
+                    />
+                  </StyledNoPostsText>
+                </Box>
+              )}
             </div>
           </StyledGrid>
         </Fragment>
@@ -461,7 +540,6 @@ SpacePage.propTypes = {
   confirmationModalOpenAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
-  intl: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoadingSetAction: PropTypes.func.isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -478,7 +556,6 @@ const mapDispatchToProps = {
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  injectIntl,
   withFirebase,
   withRouter,
 )(SpacePage);

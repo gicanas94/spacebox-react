@@ -2,9 +2,9 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Cross } from 'styled-icons/icomoon';
 import { Link, withRouter } from 'react-router-dom';
-import { Menu } from 'styled-icons/boxicons-regular';
+import { Menu } from 'styled-icons/remix-fill';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Transition } from 'react-spring/renderprops';
 import { useIntl } from 'react-intl';
@@ -181,6 +181,16 @@ const Header = ({
   //     }
   //   });
   // };
+
+  useEffect(() => {
+    if (mobileNavIsOpen) {
+      document.querySelector('body').style.overflow = 'hidden';
+    }
+
+    if (!mobileNavIsOpen) {
+      document.querySelector('body').style.overflow = 'auto';
+    }
+  }, [mobileNavIsOpen]);
 
   return (
     <StyledWrapper>

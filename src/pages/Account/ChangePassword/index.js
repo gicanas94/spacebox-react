@@ -2,7 +2,6 @@ import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
-import Emoji from '../../../components/Emoji';
 import { getCookie } from '../../../utils';
 import PasswordChangeForm from '../../../forms/PasswordChange';
 
@@ -23,11 +22,6 @@ const ChangePasswordSubpage = ({ alertSetAction, authUser, firebase }) => (
         <p>
           <FormattedMessage
             id="pages.account.changePassword.subtitle"
-          />
-
-          <Emoji
-            emoji="🙂"
-            label="pages.account.changePassword.subtitleEmojiLabel"
           />
         </p>
       )

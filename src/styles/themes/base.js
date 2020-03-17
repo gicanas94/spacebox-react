@@ -182,7 +182,7 @@ export default {
       },
     },
     post: {
-      commentIcon: {
+      commentPostIcon: {
         color: someThemeColors.mainIcons,
       },
       createdAtDate: {
@@ -196,10 +196,10 @@ export default {
           fontSize: font.size.xxs,
         },
       },
-      trashIcon: {
+      deletePostIcon: {
         color: someThemeColors.mainIcons,
       },
-      likeHeartIcon: {
+      likePostIcon: {
         likeColor: color.palette.ferrari,
         noLikeColor: someThemeColors.mainIcons,
       },
@@ -207,9 +207,26 @@ export default {
         color: someThemeColors.main,
         fontWeight: font.weight.medium,
       },
+      selected: {
+        backgroundBorder: `linear-gradient(${color.gradient.pastelRainbow})`,
+        border: '1px solid rgba(0, 0, 0, 0.5)',
+      },
       stats: {
         color: someThemeColors.darkGray,
         fontSize: font.size.s,
+      },
+    },
+    postsHistory: {
+      link: {
+        fontSize: font.size.s,
+      },
+      monthTitle: {
+        fontSize: font.size.l,
+        fontWeight: font.weight.thin,
+      },
+      yearTitle: {
+        fontSize: font.size.l,
+        fontWeight: font.weight.light,
       },
     },
     richTextEditor: {
@@ -475,21 +492,6 @@ export default {
       content: {
         fontSize: font.size.l,
         fontWeight: font.weight.bold,
-      },
-    },
-    space: {
-      postsHistory: {
-        link: {
-          fontSize: font.size.s,
-        },
-        month: {
-          fontSize: font.size.l,
-          fontWeight: font.weight.thin,
-        },
-        year: {
-          fontSize: font.size.l,
-          fontWeight: font.weight.light,
-        },
       },
     },
     verifyEmail: {

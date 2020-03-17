@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
+import { Transition } from 'react-spring/renderprops';
 import useStateWithCallback from 'use-state-with-callback';
 
 import Box from '../Box';
@@ -20,6 +21,18 @@ import CommentForm from '../../forms/Comment';
 import { ROUTES } from '../../constants';
 import Tooltip from '../Tooltip';
 import { transition } from '../../styles';
+
+const StyledSelectedPostWrapper = styled.div`
+  background: ${({ theme }) => theme.components.post.selected.backgroundBorder};
+  border: ${({ theme }) => theme.components.post.selected.border};
+  padding: 5px;
+
+  ${({ selectedBoxWrapperRoundedBorder, theme }) => (
+    selectedBoxWrapperRoundedBorder && `
+      border-radius: ${theme.global.borderRadius};
+    `
+  )}
+`;
 
 const StyledTitleAndDateWrapper = styled.div`
   display: flex;
@@ -104,7 +117,7 @@ const StyledCommentsStatIcon = styled(Comments)`
   width: 13px;
 `;
 
-const StyledLikeHeartIcon = styled(Heart)`
+const StyledLikePostIcon = styled(Heart)`
   cursor: pointer;
   height: 30px;
   min-height: 30px;
@@ -112,11 +125,11 @@ const StyledLikeHeartIcon = styled(Heart)`
   width: 30px;
 
   ${({ authUserLike, theme }) => authUserLike && `
-    color: ${theme.components.post.likeHeartIcon.likeColor};
+    color: ${theme.components.post.likePostIcon.likeColor};
   `}
 
   ${({ authUserLike, theme }) => !authUserLike && `
-    color: ${theme.components.post.likeHeartIcon.noLikeColor};
+    color: ${theme.components.post.likePostIcon.noLikeColor};
   `}
 
   ${({ disabled }) => !disabled && `
@@ -128,8 +141,8 @@ const StyledLikeHeartIcon = styled(Heart)`
   `}
 `;
 
-const StyledCommentIcon = styled(CommentAlt)`
-  color: ${({ theme }) => theme.components.post.commentIcon.color};
+const StyledCommentPostIcon = styled(CommentAlt)`
+  color: ${({ theme }) => theme.components.post.commentPostIcon.color};
   cursor: pointer;
   height: 28px;
   min-height: 28px;
@@ -145,8 +158,8 @@ const StyledCommentIcon = styled(CommentAlt)`
   `}
 `;
 
-const StyledTrashIcon = styled(Trash)`
-  color: ${({ theme }) => theme.components.post.trashIcon.color};
+const StyledDeletePostIcon = styled(Trash)`
+  color: ${({ theme }) => theme.components.post.deletePostIcon.color};
   cursor: pointer;
   min-height: 30px;
   min-width: 28px;
@@ -189,29 +202,39 @@ const Post = ({
   confirmationModalOpenAction,
   deletePostCallback,
   firebase,
-  history,
-  page,
   post,
+  selected,
+  selectPostCallback,
+  selectedBoxWrapperRoundedBorder,
   spacebox,
   user,
 }) => {
-  const [commentsLimit, setCommentsLimit] = useState(3);
+  const [commentsLimit, setCommentsLimit] = useState(4);
   const [likeInProgress, setLikeInProgress] = useState(false);
   const [postLikes, setPostLikes] = useState(post.likes);
   const [postComments, setPostComments] = useState(post.comments);
   const commentFormId = `comment-form_${post.slug}`;
+  const commentFormTextareaId = `comment-form-textarea_${post.slug}`;
+
+  const returnUrlIfUserNeedsToSignIn = (
+    `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`
+  );
+
   const intl = useIntl();
 
   const [
     commentFormIsVisible,
     setCommentFormIsVisible,
   ] = useStateWithCallback(false, () => {
-    if (commentFormIsVisible && document.getElementById(commentFormId)) {
-      document.getElementById(commentFormId).focus();
+    if (commentFormIsVisible) {
+      setTimeout(
+        () => document.getElementById(commentFormTextareaId).focus(),
+        500,
+      );
     }
   });
 
-  const handleDeletePostClick = () => (
+  const handleDeletePostIconClick = () => (
     new Promise((resolve, reject) => (
       (async () => {
         try {
@@ -230,16 +253,8 @@ const Post = ({
             transaction.delete(postRef);
           });
 
-          if (page === 'space') deletePostCallback(post);
-
+          deletePostCallback(post);
           resolve();
-
-          if (page === 'post') {
-            history.push(
-              `${ROUTES.SPACE_BASE}/${spacebox.slug}`,
-              { spacebox },
-            );
-          }
 
           alertSetAction({
             message: { id: 'components.post.deletePost.successAlertMessage' },
@@ -257,7 +272,7 @@ const Post = ({
     ))
   );
 
-  const handleLikePostClick = () => {
+  const handleLikePostIconClick = () => {
     firebase.db.runTransaction(async (transaction) => {
       try {
         alertSetAction();
@@ -309,11 +324,11 @@ const Post = ({
     });
   };
 
-  const handleSeeCommentsClick = () => setCommentsLimit(commentsLimit + 3);
+  const handleSeeCommentsClick = () => setCommentsLimit(commentsLimit + 4);
 
   const handleHideCommentsClick = () => setCommentsLimit(0);
 
-  const updatePostCommentsHandler = (comment, typeOfUpdate) => {
+  const postCommentsChangeCallback = (comment, typeOfUpdate) => {
     switch (typeOfUpdate) {
       case 'add':
         setPostComments([...postComments, comment]);
@@ -322,8 +337,8 @@ const Post = ({
     }
   };
 
-  const likeHeartIcon = (
-    <StyledLikeHeartIcon
+  const likePostIcon = (
+    <StyledLikePostIcon
       authUserLike={authUser && postLikes.includes(authUser.uid)}
       data-for={`like-heart-icon_${post.slug}`}
       data-tip={!authUser
@@ -336,14 +351,14 @@ const Post = ({
       disabled={likeInProgress || !authUser || !authUser.emailVerified}
       onClick={likeInProgress || !authUser || !authUser.emailVerified
         ? null
-        : () => handleLikePostClick()
+        : () => handleLikePostIconClick()
       }
       role="button"
     />
   );
 
-  const commentIcon = (
-    <StyledCommentIcon
+  const commentPostIcon = (
+    <StyledCommentPostIcon
       data-for={`comment-icon_${post.slug}`}
       data-tip={!authUser
         ? intl.formatMessage({
@@ -360,8 +375,8 @@ const Post = ({
     />
   );
 
-  const trashIcon = (
-    <StyledTrashIcon
+  const deletePostIcon = (
+    <StyledDeletePostIcon
       data-for={`trash-icon_${post.slug}`}
       data-tip={intl.formatMessage({
         id: 'components.post.iconsTooltips.deletePost',
@@ -369,30 +384,22 @@ const Post = ({
       onClick={
         () => !likeInProgress && confirmationModalOpenAction({
           content: 'components.post.deletePost.confirmationModal.content',
-          onConfirmHandler: handleDeletePostClick,
+          onConfirmHandler: handleDeletePostIconClick,
           title: 'components.post.deletePost.confirmationModal.title',
         })
       }
     />
   );
 
-  return (
-    <Box padding="20px">
+  const postBox = (
+    <Box noBorder={selected} padding="20px">
       <StyledTitleAndDateWrapper>
-        {page === 'space' && (
-          <Link to={{
-            pathname: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
-            state: {
-              spacebox,
-              user,
-            },
-          }}
-          >
-            <StyledTitle>{post.title}</StyledTitle>
-          </Link>
-        )}
-
-        {page === 'post' && <StyledTitle>{post.title}</StyledTitle>}
+        <StyledTitle
+          className={!selected && 'linkStyle'}
+          onClick={() => selectPostCallback(post)}
+        >
+          {post.title}
+        </StyledTitle>
 
         <StyledCreatedAtDate>
           <StyledDateFromNow>
@@ -431,23 +438,19 @@ const Post = ({
               <Link
                 to={{
                   pathname: ROUTES.SIGN_IN,
-                  state: {
-                    returnUrlIfUserNeedsToSignIn: history.location.pathname,
-                  },
+                  state: { returnUrlIfUserNeedsToSignIn },
                 }}
               >
-                {likeHeartIcon}
+                {likePostIcon}
               </Link>
 
               <Link
                 to={{
                   pathname: ROUTES.SIGN_IN,
-                  state: {
-                    returnUrlIfUserNeedsToSignIn: history.location.pathname,
-                  },
+                  state: { returnUrlIfUserNeedsToSignIn },
                 }}
               >
-                {commentIcon}
+                {commentPostIcon}
               </Link>
             </Fragment>
           )}
@@ -457,37 +460,33 @@ const Post = ({
               <Link
                 to={{
                   pathname: ROUTES.VERIFY_EMAIL,
-                  state: {
-                    returnUrlIfUserNeedsToSignIn: history.location.pathname,
-                  },
+                  state: { returnUrlIfUserNeedsToSignIn },
                 }}
               >
-                {likeHeartIcon}
+                {likePostIcon}
               </Link>
 
               <Link
                 to={{
                   pathname: ROUTES.VERIFY_EMAIL,
-                  state: {
-                    returnUrlIfUserNeedsToSignIn: history.location.pathname,
-                  },
+                  state: { returnUrlIfUserNeedsToSignIn },
                 }}
               >
-                {commentIcon}
+                {commentPostIcon}
               </Link>
             </Fragment>
           )}
 
           {authUser && authUser.emailVerified && (
             <Fragment>
-              {likeHeartIcon}
-              {commentIcon}
+              {likePostIcon}
+              {commentPostIcon}
             </Fragment>
           )}
 
           {authUser && authUser.uid === spacebox.uid && (
             <Fragment>
-              {trashIcon}
+              {deletePostIcon}
 
               <Tooltip
                 effect="solid"
@@ -516,14 +515,28 @@ const Post = ({
       </StyledActionsAndStatsWrapper>
 
       {authUser && authUser.emailVerified && commentFormIsVisible && (
-        <StyledCommentFormWrapper>
-          <CommentForm
-            authUser={authUser}
-            postSlug={post.slug}
-            sid={post.sid}
-            textareaId={commentFormId}
-            updatePostCommentsHandler={updatePostCommentsHandler}
-          />
+        <StyledCommentFormWrapper id={commentFormId}>
+          <Transition
+            items={commentFormIsVisible}
+            from={{ marginTop: '-50px' }}
+            enter={{ marginTop: '0' }}
+            leave={{ marginTop: '-50px' }}
+            config={{ mass: 1, tension: 600, friction: 42 }}
+          >
+            {commentForm => commentForm && (transitionProps => (
+              <div style={transitionProps}>
+                <CommentForm
+                  alertSetAction={alertSetAction}
+                  authUser={authUser}
+                  firebase={firebase}
+                  postCommentsChangeCallback={postCommentsChangeCallback}
+                  postSlug={post.slug}
+                  sid={post.sid}
+                  textareaId={commentFormTextareaId}
+                />
+              </div>
+            ))}
+          </Transition>
         </StyledCommentFormWrapper>
       )}
 
@@ -582,23 +595,40 @@ const Post = ({
       )}
     </Box>
   );
+
+  return (
+    <Fragment>
+      {selected
+        ? (
+          <StyledSelectedPostWrapper
+            selectedBoxWrapperRoundedBorder={selectedBoxWrapperRoundedBorder}
+          >
+            {postBox}
+          </StyledSelectedPostWrapper>
+        ) : postBox
+      }
+    </Fragment>
+  );
 };
 
 Post.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   confirmationModalOpenAction: PropTypes.func.isRequired,
-  deletePostCallback: PropTypes.func,
+  deletePostCallback: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-  page: PropTypes.oneOf(['space', 'post']).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
+  selected: PropTypes.bool,
+  selectPostCallback: PropTypes.func,
+  selectedBoxWrapperRoundedBorder: PropTypes.bool,
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 Post.defaultProps = {
-  deletePostCallback: null,
+  selected: false,
+  selectPostCallback: () => true,
+  selectedBoxWrapperRoundedBorder: true,
 };
 
 export default Post;

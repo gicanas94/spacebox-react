@@ -26,7 +26,7 @@ const StyledButtonsWrapper = styled.div`
 
 const PostForm = ({
   alertSetAction,
-  createPostCallback,
+  newPostCallback,
   firebase,
   sid,
   uid,
@@ -56,7 +56,7 @@ const PostForm = ({
 
         await firebase.post(sid, createdPost.slug).set(createdPost);
 
-        createPostCallback(createdPost);
+        newPostCallback(createdPost);
         actions.resetForm();
         autosize.destroy(document.getElementById('textarea-component_content'));
         autosize(document.getElementById('textarea-component_content'));
@@ -131,8 +131,8 @@ const PostForm = ({
 
 PostForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
-  createPostCallback: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  newPostCallback: PropTypes.func.isRequired,
   sid: PropTypes.string.isRequired,
   uid: PropTypes.string.isRequired,
 };

@@ -87,8 +87,8 @@ const StyledBubble = styled.div`
 
 const StyledTotalLikesHeartIcon = styled(Heart)`
   color: ${({ theme }) => theme.components.spacebox.totalLikesHeartIcon.color};
-  width: 16px;
   margin-right: 5px;
+  width: 16px;
 `;
 
 const StyledSpacebox = styled.div`

@@ -27,8 +27,8 @@ const StyledInput = styled.input`
   width: 140px;
 
   &:focus {
-    width: 190px;
     outline: none;
+    width: 210px;
   }
 
   ${({ rounded, theme }) => rounded && `
@@ -46,6 +46,7 @@ const StyledSearchIcon = styled(SearchAlt)`
 
   @media ${device.laptop} {
     right: 10px;
+    top: 6px;
     width: 25px;
   }
 `;

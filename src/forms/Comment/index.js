@@ -1,8 +1,6 @@
 import * as Yup from 'yup';
 import _ from 'lodash';
 import autosize from 'autosize';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -10,11 +8,9 @@ import { Smile } from 'styled-icons/fa-regular';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
-import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
 import { color, device, transition } from '../../styles';
 import EmojiPicker from '../../components/EmojiPicker';
-import { withFirebase } from '../../Firebase';
 
 const StyledWrapper = styled.div`
   align-items: center;
@@ -107,10 +103,10 @@ const CommentForm = ({
   alertSetAction,
   authUser,
   firebase,
+  postCommentsChangeCallback,
   postSlug,
   sid,
   textareaId,
-  updatePostCommentsHandler,
 }) => {
   const intl = useIntl();
   const [emojiPickerIsVisible, setEmojiPickerIsVisible] = useState(false);
@@ -146,7 +142,7 @@ const CommentForm = ({
           { comments: [...post.data().comments, createdComment] },
         );
 
-        updatePostCommentsHandler(createdComment, 'add');
+        postCommentsChangeCallback(createdComment, 'add');
         actions.resetForm();
         autosize.destroy(document.getElementById(textareaId));
       } catch (error) {
@@ -254,15 +250,10 @@ CommentForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.objectOf(PropTypes.any).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
+  postCommentsChangeCallback: PropTypes.func.isRequired,
   postSlug: PropTypes.string.isRequired,
   sid: PropTypes.string.isRequired,
   textareaId: PropTypes.string.isRequired,
-  updatePostCommentsHandler: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = { alertSetAction: alertSet };
-
-export default compose(
-  connect(null, mapDispatchToProps),
-  withFirebase,
-)(CommentForm);
+export default CommentForm;

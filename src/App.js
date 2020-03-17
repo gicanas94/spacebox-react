@@ -24,7 +24,6 @@ import { ROUTES } from './constants';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 import SpacePage from './pages/Space';
-import PostPage from './pages/Post';
 import TestPage from './pages/Test';
 import UserPage from './pages/User';
 import VerifyEmailPage from './pages/VerifyEmail';
@@ -58,17 +57,16 @@ const App = ({
           <Route component={AccountPage} path={ROUTES.ACCOUNT_BASE} />
           <Route component={AdminPage} path={ROUTES.ADMIN} />
           <Route component={CreateSpaceboxPage} path={ROUTES.CREATE_SPACEBOX} />
-          <Route component={EditSpaceboxPage} path={ROUTES.EDIT_SPACEBOX_WITH_SLUG} />
+          <Route component={EditSpaceboxPage} path={ROUTES.EDIT_SPACEBOX} />
           <Route component={FaqPage} path={ROUTES.FAQ} />
           <Route component={HomePage} exact path={ROUTES.HOME} />
           <Route component={NotFoundPage} exact path={ROUTES.NOT_FOUND} />
           <Route component={PasswordForgetPage} path={ROUTES.PASSWORD_FORGET} />
           <Route component={SignInPage} path={ROUTES.SIGN_IN} />
           <Route component={SignUpPage} path={ROUTES.SIGN_UP} />
-          <Route component={SpacePage} exact path={ROUTES.SPACE_WITH_SLUG} />
-          <Route component={PostPage} exact path={ROUTES.SPACE_POST} />
+          <Route component={SpacePage} exact path={ROUTES.SPACE} />
           <Route component={TestPage} exact path={ROUTES.TEST} />
-          <Route component={UserPage} path={ROUTES.USER_WITH_SLUG} />
+          <Route component={UserPage} path={ROUTES.USER} />
           <Route component={VerifyEmailPage} path={ROUTES.VERIFY_EMAIL} />
           <Route component={NotFoundPage} />
         </Switch>

@@ -12,7 +12,7 @@ const StyledAlert = styled.div`
   display: flex;
   font-weight: ${({ theme }) => theme.components.alert.fontWeight};
   justify-content: center;
-  min-height: 60px;
+  min-height: 55px;
   left: 0;
   padding: 10px;
   position: fixed;

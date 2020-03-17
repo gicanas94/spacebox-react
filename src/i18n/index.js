@@ -56,6 +56,9 @@ export default {
         seeCommentsText: 'See comments ({remainingComments})...',
         hideCommentsText: 'Hide comments...',
       },
+      postsHistory: {
+        boxCollapseTitle: '<h3>Posts history</h3>',
+      },
       richTextEditor: {
         richUtilButton: {
           bold: '<b>B</b>',
@@ -256,8 +259,7 @@ export default {
         },
         changePassword: {
           h2: 'Change password',
-          subtitle: 'Complete the following inputs to change your password. Don\'t forget your current one, just in case ',
-          subtitleEmojiLabel: 'slightly smiling face emoji',
+          subtitle: 'Complete the following inputs to change your password.',
           reachedMaxCurrentPasswordAttempsSubtitle: 'Right now you can\'t change your password as you reached the limit of attempts to enter your current one, please try again later.',
         },
         loginManagement: {
@@ -364,11 +366,6 @@ export default {
         title: 'Reset password - Spacebox',
         p: 'Please enter the e-mail address of your account.',
       },
-      post: {
-        title: '{postTitle} - Spacebox',
-        spaceboxNotFoundAlertMessage: 'We couldn\'t find the Spacebox you wanted to see so we redirected you to the home page. Sorry!',
-        postNotFoundAlertMessage: 'We couldn\t find the post you wanted to see, but we redirected you to the Spacebox! it\'s something...',
-      },
       signIn: {
         title: 'Sign in - Spacebox',
       },
@@ -377,7 +374,7 @@ export default {
         h1: 'Good choice.',
       },
       space: {
-        title: '{spaceboxTitle} - Spacebox',
+        title: '{title} - Spacebox',
         postForm: {
           h2: 'New post',
         },
@@ -385,10 +382,8 @@ export default {
           authUserIsTheOwner: 'You haven\'t made any post yet.',
           authUserIsNotTheOwner: 'The writer of this Spacebox hasn\'t made any post yet.',
         },
-        postsHistory: {
-          boxCollapseTitle: '<h3>Posts history</h3>',
-        },
-        spaceboxNotFoundAlertMessage: 'We couldn\'t find the Spacebox you wanted to see so we redirected you to the home page. Sorry!',
+        postNotFoundAlertMessage: 'We couldn\t find the post you wanted to see, but we send you to the Spacebox! it\'s something...',
+        spaceboxNotFoundAlertMessage: 'We couldn\'t find the Spacebox you wanted to see so we send you to the home page. Sorry!',
       },
       verifyEmail: {
         title: 'Verify e-mail address - Spacebox',
@@ -460,6 +455,9 @@ export default {
         seeCommentsText: 'Mostrar comentarios ({remainingComments})...',
         hideCommentsText: 'Ocultar comentarios...',
       },
+      postsHistory: {
+        boxCollapseTitle: '<h3>Historial de publicaciones</h3>',
+      },
       signInWithButton: {
         signInWithText: 'Ingresar con {account}',
       },
@@ -528,7 +526,7 @@ export default {
     },
     forms: {
       comment: {
-        contentTextareaPlaceholder: 'Hacer un comentario...',
+        contentTextareaPlaceholder: 'Haz un comentario...',
         submitButton: 'Comentar',
       },
       createSpacebox: {
@@ -645,8 +643,7 @@ export default {
         },
         changePassword: {
           h2: 'Cambiar contraseña',
-          subtitle: 'Completa los siguientes campos para cambiar tu contraseña. No olvides la actual, solo por si acaso ',
-          subtitleEmojiLabel: 'emoji de cara ligeramente sonriente',
+          subtitle: 'Completa los siguientes campos para cambiar tu contraseña.',
           reachedMaxCurrentPasswordAttempsSubtitle: 'Ahora mismo no puedes cambiar tu contraseña ya que alcanzaste el límite de intentos para ingresar tu contraseña actual, por favor intenta más tarde.',
         },
         loginManagement: {
@@ -753,11 +750,6 @@ export default {
         title: 'Restablecer contraseña - Spacebox',
         p: 'Por favor ingresa la dirección de correo electrónico de tu cuenta.',
       },
-      post: {
-        title: '{postTitle} - Spacebox',
-        spaceboxNotFoundAlertMessage: 'No pudimos encontrar el Spacebox que querías ver así que te redireccionamos a la página de inicio. ¡Lo sentimos!',
-        postNotFoundAlertMessage: 'No pudimos encontrar la publicación que querías ver, pero te redireccionamos al Spacebox. Algo es algo...',
-      },
       signIn: {
         title: 'Ingreso - Spacebox',
       },
@@ -766,7 +758,7 @@ export default {
         h1: 'Buena elección.',
       },
       space: {
-        title: '{spaceboxTitle} - Spacebox',
+        title: '{title} - Spacebox',
         postForm: {
           h2: 'Nueva publicación',
         },
@@ -774,10 +766,8 @@ export default {
           authUserIsTheOwner: 'Aún no realizaste ninguna publicación.',
           authUserIsNotTheOwner: 'El escritor de este Spacebox aún no realizó ninguna publicación.',
         },
-        postsHistory: {
-          boxCollapseTitle: '<h3>Historial de publicaciones</h3>',
-        },
-        spaceboxNotFoundAlertMessage: 'No pudimos encontrar el Spacebox que querías ver así que te redireccionamos a la página de inicio. ¡Lo sentimos!',
+        postNotFoundAlertMessage: 'No pudimos encontrar la publicación que querías ver, pero te enviamos al Spacebox. Algo es algo...',
+        spaceboxNotFoundAlertMessage: 'No pudimos encontrar el Spacebox que querías ver así que te enviamos a la página de inicio. ¡Lo sentimos!',
       },
       verifyEmail: {
         title: 'Verificar dirección de correo electrónico - Spacebox',
