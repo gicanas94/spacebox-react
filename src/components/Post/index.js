@@ -209,10 +209,10 @@ const Post = ({
   spacebox,
   user,
 }) => {
-  const [commentsLimit, setCommentsLimit] = useState(4);
+  const [commentsLimit, setCommentsLimit] = useState(2);
   const [likeInProgress, setLikeInProgress] = useState(false);
-  const [postLikes, setPostLikes] = useState(post.likes);
-  const [postComments, setPostComments] = useState(post.comments);
+  const [postLikes, setPostLikes] = useState(post.likes || []);
+  const [postComments, setPostComments] = useState(post.comments || []);
   const commentFormId = `comment-form_${post.slug}`;
   const commentFormTextareaId = `comment-form-textarea_${post.slug}`;
 
@@ -324,7 +324,7 @@ const Post = ({
     });
   };
 
-  const handleSeeCommentsClick = () => setCommentsLimit(commentsLimit + 4);
+  const handleSeeCommentsClick = () => setCommentsLimit(commentsLimit + 2);
 
   const handleHideCommentsClick = () => setCommentsLimit(0);
 

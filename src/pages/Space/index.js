@@ -1,8 +1,8 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 
 import React, {
   Fragment,
@@ -22,24 +22,17 @@ import {
 } from '../../Redux/actions';
 
 import Box from '../../components/Box';
+import Button from '../../components/Button';
 import { device } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
 import Post from '../../components/Post';
 import PostForm from '../../forms/Post';
 import PostsHistory from '../../components/PostsHistory';
 import { ROUTES } from '../../constants';
-import SpaceboxInfoSection from '../../components/SpaceboxInfoSection';
+import SpaceboxInfoBox from '../../components/SpaceboxInfoBox';
 import { withFirebase } from '../../Firebase';
 
-const StyledSpaceboxInfoSectionWrapper = styled.div``;
-const StyledPostsHistoryWrapper = styled.div``;
-const StyledPostFormWrapper = styled.div``;
-const StyledJustCreatedPostsWrapper = styled.div``;
-const StyledPostOfLocationPathnameWrapper = styled.div``;
-const StyledSelectedPostWrapper = styled.div``;
-const StyledPostsWrapper = styled.div``;
-
-const StyledGrid = styled.div`
+const StyledMainGrid = styled.div`
   align-items: start;
   display: grid;
   grid-gap: 10px;
@@ -47,40 +40,72 @@ const StyledGrid = styled.div`
   margin: auto;
   width: 100%;
 
-  ${StyledSpaceboxInfoSectionWrapper},
-  ${StyledPostFormWrapper},
-  ${StyledJustCreatedPostsWrapper},
-  ${StyledPostOfLocationPathnameWrapper},
-  ${StyledSelectedPostWrapper} {
-    margin-bottom: 10px;
-  }
-
-  ${StyledPostsWrapper} > div {
-    margin-bottom: 10px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
   @media ${device.tablet} {
-    grid-template-columns: 270px 1fr;
+    grid-template-columns: 1fr 270px;
   }
 
   @media ${device.laptop} {
     grid-gap: 20px;
+  }
+`;
 
-    ${StyledSpaceboxInfoSectionWrapper},
-    ${StyledPostFormWrapper},
-    ${StyledJustCreatedPostsWrapper},
-    ${StyledPostOfLocationPathnameWrapper},
-    ${StyledSelectedPostWrapper} {
+const StyledLeftGrid = styled.div`
+  align-items: start;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 1fr;
+  margin: 0;
+  order: 2;
+  width: 100%;
+
+  @media ${device.tablet} {
+    order: 1;
+  }
+
+  @media ${device.laptop} {
+    grid-gap: 20px;
+  }
+`;
+
+const StyledRightGrid = styled.div`
+  align-items: start;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 1fr;
+  margin: 0;
+  order: 1;
+  width: 100%;
+
+  @media ${device.tablet} {
+    order: 2;
+    position: sticky;
+    top: 75px;
+  }
+
+  @media ${device.laptop} {
+    grid-gap: 20px;
+  }
+`;
+
+const StyledButtonsWrapper = styled.div`
+  a {
+    text-decoration: none !important;
+    transform: none !important;
+    width: 100%;
+  }
+
+  > * {
+    margin-bottom: 10px;
+  }
+
+  @media ${device.laptop} {
+    > * {
       margin-bottom: 20px;
     }
+  }
 
-    ${StyledPostsWrapper} > div {
-      margin-bottom: 20px;
-    }
+  > *:last-child {
+    margin-bottom: 0;
   }
 `;
 
@@ -103,13 +128,14 @@ const SpacePage = ({
   // ----- Declarations --------------------------------------------------------
   const [spacebox, setSpacebox] = useState(null);
   const [posts, _setPosts] = useState(null);
+  const [postOfLocationPathname, setPostOfLocationPathname] = useState({});
   const [postsHistory, setPostsHistory] = useState(null);
   const [postsLimit, _setPostsLimit] = useState(5);
   const [user, setUser] = useState(null);
   const [allTasksFinished, setAllTasksFinished] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [justCreatedPosts, setJustCreatedPosts] = useState([]);
-  const [postOfLocationPathname, setPostOfLocationPathname] = useState({});
+  const [postFormIsOpen, setPostFormIsOpen] = useState(false);
 
   const postsRef = useRef(posts);
   const postsLimitRef = useRef(postsLimit);
@@ -303,6 +329,7 @@ const SpacePage = ({
     const newListOfJustCreatedPosts = [createdPost, ...justCreatedPosts];
 
     setJustCreatedPosts(newListOfJustCreatedPosts);
+    setPostFormIsOpen(false);
     composePostsHistory([...newListOfJustCreatedPosts, ...posts]);
   };
 
@@ -379,44 +406,19 @@ const SpacePage = ({
             }}
           />
 
-          <StyledGrid>
-            <div>
-              {/* Spacebox Info Section */}
-              {spacebox && user && (
-                <StyledSpaceboxInfoSectionWrapper>
-                  <SpaceboxInfoSection
-                    authUserIsTheOwner={
-                      authUser && authUser.uid === spacebox.uid
-                    }
-                    history={history}
-                    location={location}
-                    page="space"
-                    spacebox={spacebox}
-                    user={user}
-                  />
-                </StyledSpaceboxInfoSectionWrapper>
-              )}
-
-              {/* Posts History */}
-              {posts.length > 0 && (
-                <StyledPostsHistoryWrapper>
-                  <PostsHistory
-                    history={postsHistory}
-                    spaceboxSlug={spacebox.slug}
-                  />
-                </StyledPostsHistoryWrapper>
-              )}
-            </div>
-
-            <div>
+          <StyledMainGrid>
+            <StyledLeftGrid>
               {/* New post form */}
-              {authUser && authUser.uid === spacebox.uid && (
-                <StyledPostFormWrapper>
-                  <Box padding="20px">
-                    <h2>
-                      <FormattedMessage id="pages.space.postForm.h2" />
-                    </h2>
+              <Transition
+                items={authUser && authUser.uid === spacebox.uid && postFormIsOpen}
+                from={{ transform: 'scale(0.1)' }}
+                enter={{ transform: 'scale(1)' }}
+                leave={{ display: 'none' }}
+                config={{ mass: 1, tension: 600, friction: 42 }}
 
+              >
+                {isOpen => isOpen && (transitionProps => (
+                  <Box fullWidth padding="20px" style={transitionProps}>
                     <PostForm
                       alertSetAction={alertSetAction}
                       firebase={firebase}
@@ -425,8 +427,8 @@ const SpacePage = ({
                       uid={authUser.uid}
                     />
                   </Box>
-                </StyledPostFormWrapper>
-              )}
+                ))}
+              </Transition>
 
               {/* Just created posts */}
               {justCreatedPosts.length > 0 && justCreatedPosts.map(justCreatedPost => (
@@ -434,12 +436,12 @@ const SpacePage = ({
                   items={justCreatedPost}
                   from={{ transform: 'scale(0.1)' }}
                   enter={{ transform: 'scale(1)' }}
-                  leave={{ opacity: '0' }}
+                  leave={{ display: 'none' }}
                   config={{ mass: 1, tension: 600, friction: 42 }}
                   key={justCreatedPost.createdAt}
                 >
                   {post => post && (transitionProps => (
-                    <StyledJustCreatedPostsWrapper style={transitionProps}>
+                    <div style={transitionProps}>
                       <Post
                         alertSetAction={alertSetAction}
                         authUser={authUser}
@@ -453,45 +455,40 @@ const SpacePage = ({
                         spacebox={spacebox}
                         user={user}
                       />
-                    </StyledJustCreatedPostsWrapper>
+                    </div>
                   ))}
                 </Transition>
               ))}
 
               {/* Post of location pathname */}
-              {postOfLocationPathname.slug && (
-                <Transition
-                  items={postOfLocationPathname}
-                  from={{ transform: 'scale(0.1)' }}
-                  enter={{ transform: 'scale(1)' }}
-                  leave={{ opacity: '0' }}
-                  config={{ mass: 1, tension: 600, friction: 42 }}
-                >
-                  {post => post && (transitionProps => (
-                    <StyledPostOfLocationPathnameWrapper
-                      key={postOfLocationPathname.createdAt}
-                      style={transitionProps}
-                    >
-                      <Post
-                        alertSetAction={alertSetAction}
-                        authUser={authUser}
-                        confirmationModalCloseAction={confirmationModalCloseAction}
-                        confirmationModalOpenAction={confirmationModalOpenAction}
-                        deletePostCallback={deletePostCallback}
-                        firebase={firebase}
-                        post={postOfLocationPathname}
-                        selected
-                        spacebox={spacebox}
-                        user={user}
-                      />
-                    </StyledPostOfLocationPathnameWrapper>
-                  ))}
-                </Transition>
-              )}
+              <Transition
+                items={postOfLocationPathname.slug}
+                from={{ transform: 'scale(0.1)' }}
+                enter={{ transform: 'scale(1)' }}
+                leave={{ display: 'none' }}
+                config={{ mass: 1, tension: 600, friction: 42 }}
+              >
+                {post => post && (transitionProps => (
+                  <div key={postOfLocationPathname.createdAt} style={transitionProps}>
+                    <Post
+                      alertSetAction={alertSetAction}
+                      authUser={authUser}
+                      confirmationModalCloseAction={confirmationModalCloseAction}
+                      confirmationModalOpenAction={confirmationModalOpenAction}
+                      deletePostCallback={deletePostCallback}
+                      firebase={firebase}
+                      post={postOfLocationPathname}
+                      selected
+                      spacebox={spacebox}
+                      user={user}
+                    />
+                  </div>
+                ))}
+              </Transition>
 
               {/* All posts except just created */}
               {posts.length > 0 && (
-                <StyledPostsWrapper>
+                <Fragment>
                   {posts.slice(0, postsLimit).map(post => (
                     post.slug !== postOfLocationPathname.slug && (
                       <Post
@@ -510,7 +507,7 @@ const SpacePage = ({
                       />
                     )
                   ))}
-                </StyledPostsWrapper>
+                </Fragment>
               )}
 
               {/* No posts message */}
@@ -527,8 +524,86 @@ const SpacePage = ({
                   </StyledNoPostsText>
                 </Box>
               )}
-            </div>
-          </StyledGrid>
+            </StyledLeftGrid>
+
+            <StyledRightGrid>
+              {/* Spacebox Info Section */}
+              {spacebox && user && <SpaceboxInfoBox spacebox={spacebox} />}
+
+              {/* Buttons */}
+              <StyledButtonsWrapper>
+                {authUser && authUser.uid === spacebox.uid && (
+                  <Button
+                    color="emerald"
+                    fullWidth
+                    onClick={() => setPostFormIsOpen(!postFormIsOpen)}
+                    size="large"
+                    styleType="filled"
+                    type="button"
+                  >
+                    {'pages.space.buttons.newPost'}
+                  </Button>
+                )}
+
+                {authUser.uid !== spacebox.uid && (
+                  <Button
+                    color="emerald"
+                    fullWidth
+                    size="large"
+                    styleType="filled"
+                    type="button"
+                  >
+                    {'pages.space.buttons.followSpacebox'}
+                  </Button>
+                )}
+
+                <Link to={{
+                  pathname: `${ROUTES.USER_BASE}/${user.slug}`,
+                  state: {
+                    user: {
+                      ...user,
+                      uid: spacebox.uid,
+                    },
+                  },
+                }}
+                >
+                  <Button
+                    fullWidth
+                    size="small"
+                    styleType="filled"
+                    type="button"
+                  >
+                    {authUser.uid === spacebox.uid
+                      ? 'pages.space.buttons.userProfileAuthUser'
+                      : 'pages.space.buttons.userProfile'
+                    }
+                  </Button>
+                </Link>
+
+                {authUser && authUser.uid === spacebox.uid && (
+                  <Link to={`${ROUTES.EDIT_SPACEBOX_BASE}/${spacebox.slug}`}>
+                    <Button
+                      color="royal"
+                      fullWidth
+                      size="small"
+                      styleType="filled"
+                      type="button"
+                    >
+                      {'pages.space.buttons.editSpacebox'}
+                    </Button>
+                  </Link>
+                )}
+              </StyledButtonsWrapper>
+
+              {/* Posts History */}
+              {posts.length > 0 && (
+                <PostsHistory
+                  history={postsHistory}
+                  spaceboxSlug={spacebox.slug}
+                />
+              )}
+            </StyledRightGrid>
+          </StyledMainGrid>
         </Fragment>
       )}
     </Fragment>

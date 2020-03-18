@@ -57,7 +57,7 @@ export default {
         hideCommentsText: 'Hide comments...',
       },
       postsHistory: {
-        boxCollapseTitle: '<h3>Posts history</h3>',
+        boxCollapseTitle: '<h3>History</h3>',
       },
       richTextEditor: {
         richUtilButton: {
@@ -77,14 +77,8 @@ export default {
       signInWithButton: {
         signInWithText: 'Sign in with {account}',
       },
-      spaceboxInfoSection: {
+      spaceboxInfoBox: {
         categoryTitle: 'Category: ',
-        buttons: {
-          editSpacebox: 'Edit Spacebox',
-          goBack: 'Go back',
-          goToSpacebox: 'Go to Spacebox',
-          userProfile: 'User\'s profile',
-        },
       },
       userProfileImage: {
         altImage: 'User profile image',
@@ -375,8 +369,12 @@ export default {
       },
       space: {
         title: '{title} - Spacebox',
-        postForm: {
-          h2: 'New post',
+        buttons: {
+          editSpacebox: 'Edit Spacebox',
+          followSpacebox: 'Follow',
+          newPost: 'Create a new post',
+          userProfile: 'Writer\'s profile',
+          userProfileAuthUser: 'My profile',
         },
         noPostsText: {
           authUserIsTheOwner: 'You haven\'t made any post yet.',
@@ -456,19 +454,13 @@ export default {
         hideCommentsText: 'Ocultar comentarios...',
       },
       postsHistory: {
-        boxCollapseTitle: '<h3>Historial de publicaciones</h3>',
+        boxCollapseTitle: '<h3>Historial</h3>',
       },
       signInWithButton: {
         signInWithText: 'Ingresar con {account}',
       },
-      spaceboxInfoSection: {
+      spaceboxInfoBox: {
         categoryTitle: 'Categoría: ',
-        buttons: {
-          editSpacebox: 'Editar Spacebox',
-          goBack: 'Volver',
-          goToSpacebox: 'Ir al Spacebox',
-          userProfile: 'Perfil del usuario',
-        },
       },
       userProfileImage: {
         altImage: 'Imagen de perfil del usuario',
@@ -759,8 +751,12 @@ export default {
       },
       space: {
         title: '{title} - Spacebox',
-        postForm: {
-          h2: 'Nueva publicación',
+        buttons: {
+          editSpacebox: 'Editar Spacebox',
+          followSpacebox: 'Seguir',
+          newPost: 'Nueva publicación',
+          userProfile: 'Perfil del escritor',
+          userProfileAuthUser: 'Mi perfil',
         },
         noPostsText: {
           authUserIsTheOwner: 'Aún no realizaste ninguna publicación.',

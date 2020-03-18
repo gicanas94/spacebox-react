@@ -78,13 +78,13 @@ const StyledIconsWrapper = styled.div`
   top: 33px;
 `;
 
-const StyledOpenedEyeIcon = styled(EyeOutline)`
+const StyledOpenEyeIcon = styled(EyeOutline)`
   color: ${({ theme }) => theme.components.input.status.default};
   cursor: pointer;
   width: 30px;
 `;
 
-const StyledClosedEyeIcon = styled(EyeOff2)`
+const StyledCloseEyeIcon = styled(EyeOff2)`
   color: ${({ theme }) => theme.components.input.status.default};
   cursor: pointer;
   width: 30px;
@@ -164,12 +164,12 @@ const Input = ({
   const initialInputTypeIsPassword = type === 'password';
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
-  const handleOpenedEyeIconClick = () => {
+  const handleOpenEyeIconClick = () => {
     setPasswordIsVisible(false);
     document.getElementById(inputId).type = 'password';
   };
 
-  const handleClosedEyeIconClick = () => {
+  const handleCloseEyeIconClick = () => {
     setPasswordIsVisible(true);
     document.getElementById(inputId).type = 'text';
   };
@@ -204,11 +204,11 @@ const Input = ({
           {initialInputTypeIsPassword && (
             <Fragment>
               {!passwordIsVisible && (
-                <StyledClosedEyeIcon onClick={handleClosedEyeIconClick} />
+                <StyledCloseEyeIcon onClick={handleCloseEyeIconClick} />
               )}
 
               {passwordIsVisible && (
-                <StyledOpenedEyeIcon onClick={handleOpenedEyeIconClick} />
+                <StyledOpenEyeIcon onClick={handleOpenEyeIconClick} />
               )}
             </Fragment>
           )}

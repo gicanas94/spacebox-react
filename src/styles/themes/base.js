@@ -362,7 +362,7 @@ export default {
         color: color.palette.ferrari,
       },
     },
-    spaceboxInfoSection: {
+    spaceboxInfoBox: {
       spaceboxCategory: {
         fontSize: font.size.s,
         titleFontWeight: font.weight.bold,

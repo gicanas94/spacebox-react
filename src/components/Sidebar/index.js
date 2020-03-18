@@ -23,7 +23,7 @@ const StyledLaptopView = styled.div`
   @media ${device.tablet} {
     display: flex;
     position: sticky;
-    top: 70px;
+    top: 75px;
   }
 
   @media ${device.laptop} {

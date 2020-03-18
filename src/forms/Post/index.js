@@ -92,6 +92,7 @@ const PostForm = ({
       }) => (
         <Form>
           <Input
+            autoFocus
             disabled={isSubmitting}
             error={errors.title && touched.title && errors.title}
             label="forms.post.labels.title"
