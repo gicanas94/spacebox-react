@@ -15,6 +15,10 @@ const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.global.textSelectionColor};
   }
 
+  .grecaptcha-badge {
+    filter: grayscale(100%);
+  }
+
   a, .linkStyle {
     color: ${({ theme }) => theme.htmlTags.a.color};
     cursor: pointer !important;

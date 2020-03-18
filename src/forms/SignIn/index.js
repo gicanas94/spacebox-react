@@ -3,7 +3,8 @@ import { Form, Formik } from 'formik';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
+import Recaptcha from 'react-recaptcha';
 import styled from 'styled-components';
 
 import Button from '../../components/Button';
@@ -36,12 +37,15 @@ const SignInForm = ({
   history,
   returnUrlIfUserNeedsToSignIn,
 }) => {
+  let recaptchaInstance;
+
   const SignInFormSchema = Yup.object().shape({
     email: Yup.string()
       .trim()
       .email('yup.emailInvalid')
       .required('yup.required'),
     password: Yup.string().trim().required('yup.required'),
+    recaptcha: Yup.string().required(),
   });
 
   const handleSubmit = (values, actions) => {
@@ -73,12 +77,17 @@ const SignInForm = ({
     })();
   };
 
+  useEffect(() => {
+    recaptchaInstance.execute();
+  }, []);
+
   return (
     <Formik
       initialValues={{
         email: '',
         password: '',
         rememberAccess: false,
+        recaptcha: '',
       }}
       onSubmit={handleSubmit}
       validationSchema={SignInFormSchema}
@@ -88,7 +97,7 @@ const SignInForm = ({
         handleBlur,
         handleChange,
         isSubmitting,
-        // setFieldValue,
+        setFieldValue,
         touched,
         values,
       }) => (
@@ -142,6 +151,15 @@ const SignInForm = ({
               <FormattedMessage id="forms.signIn.forgotPasswordLink" />
             </StyledLink>
           </StyledBottomWrapper>
+
+          <Recaptcha
+            ref={(event) => { recaptchaInstance = event; }}
+            sitekey="6LckUOIUAAAAAI_iOY8S2ibbmag3WQIN_LzNHE8d"
+            size="invisible"
+            verifyCallback={(response) => {
+              setFieldValue('recaptcha', response);
+            }}
+          />
         </Form>
       )}
     </Formik>
