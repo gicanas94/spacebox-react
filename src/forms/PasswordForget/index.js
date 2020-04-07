@@ -3,7 +3,8 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
+import Recaptcha from 'react-recaptcha';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
@@ -23,11 +24,14 @@ const StyledButtonWrapper = styled.div`
 `;
 
 const PasswordForgetForm = ({ alertSetAction, firebase, history }) => {
+  let recaptchaInstance;
+
   const PasswordForgetFormSchema = Yup.object().shape({
     email: Yup.string()
       .trim()
       .email('yup.emailInvalid')
       .required('yup.required'),
+    recaptcha: Yup.string().required(),
   });
 
   const handleSubmit = (values, actions) => {
@@ -56,9 +60,16 @@ const PasswordForgetForm = ({ alertSetAction, firebase, history }) => {
     })();
   };
 
+  useEffect(() => {
+    recaptchaInstance.execute();
+  }, []);
+
   return (
     <Formik
-      initialValues={{ email: '' }}
+      initialValues={{
+        email: '',
+        recaptcha: '',
+      }}
       onSubmit={handleSubmit}
       validationSchema={PasswordForgetFormSchema}
     >
@@ -67,6 +78,7 @@ const PasswordForgetForm = ({ alertSetAction, firebase, history }) => {
         handleBlur,
         handleChange,
         isSubmitting,
+        setFieldValue,
         touched,
         values,
       }) => (
@@ -106,6 +118,15 @@ const PasswordForgetForm = ({ alertSetAction, firebase, history }) => {
               {'forms.passwordForget.backButton'}
             </Button>
           </StyledButtonWrapper>
+
+          <Recaptcha
+            ref={(event) => { recaptchaInstance = event; }}
+            sitekey="6LckUOIUAAAAAI_iOY8S2ibbmag3WQIN_LzNHE8d"
+            size="invisible"
+            verifyCallback={(response) => {
+              setFieldValue('recaptcha', response);
+            }}
+          />
         </Form>
       )}
     </Formik>

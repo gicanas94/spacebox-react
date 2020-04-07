@@ -179,7 +179,6 @@ EditSpaceboxPage.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  authUser: state.authUser,
   isLoading: state.isLoading,
 });
 

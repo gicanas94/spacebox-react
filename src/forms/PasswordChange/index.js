@@ -1,7 +1,8 @@
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Recaptcha from 'react-recaptcha';
 import { useIntl } from 'react-intl';
 
 import Button from '../../components/Button';
@@ -16,6 +17,7 @@ const PasswordChangeForm = ({
 }) => {
   const intl = useIntl();
   const minimumPasswordCharacters = 6;
+  let recaptchaInstance;
 
   const PasswordChangeFormSchema = Yup.object().shape({
     password: Yup.string().trim().required('yup.required'),
@@ -30,6 +32,7 @@ const PasswordChangeForm = ({
       .trim()
       .required('yup.required')
       .oneOf([Yup.ref('passwordOne'), null], 'yup.passwordsMustMatch'),
+    recaptcha: Yup.string().required(),
   });
 
   const [currentPasswordAttemps, setCurrentPasswordAttemps] = useState(0);
@@ -94,12 +97,17 @@ const PasswordChangeForm = ({
     })();
   };
 
+  useEffect(() => {
+    recaptchaInstance.execute();
+  }, []);
+
   return (
     <Formik
       initialValues={{
         password: '',
         passwordOne: '',
         passwordTwo: '',
+        recaptcha: '',
       }}
       onSubmit={handleSubmit}
       validationSchema={PasswordChangeFormSchema}
@@ -109,6 +117,7 @@ const PasswordChangeForm = ({
         handleBlur,
         handleChange,
         isSubmitting,
+        setFieldValue,
         setStatus,
         status,
         touched,
@@ -180,6 +189,15 @@ const PasswordChangeForm = ({
           >
             {'forms.passwordChange.submitButton'}
           </Button>
+
+          <Recaptcha
+            ref={(event) => { recaptchaInstance = event; }}
+            sitekey="6LckUOIUAAAAAI_iOY8S2ibbmag3WQIN_LzNHE8d"
+            size="invisible"
+            verifyCallback={(response) => {
+              setFieldValue('recaptcha', response);
+            }}
+          />
         </Form>
       )}
     </Formik>

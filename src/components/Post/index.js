@@ -4,6 +4,7 @@ import {
   Comments,
   CommentAlt,
   Heart,
+  Link as LinkIcon,
   Trash,
 } from 'styled-icons/fa-solid';
 
@@ -13,14 +14,14 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { Transition } from 'react-spring/renderprops';
-import useStateWithCallback from 'use-state-with-callback';
 
 import Box from '../Box';
 import Comment from './Comment';
 import CommentForm from '../../forms/Comment';
+import PostLink from './PostLink';
 import { ROUTES } from '../../constants';
 import Tooltip from '../Tooltip';
-import { transition } from '../../styles';
+import { transition, transitionProps } from '../../styles';
 
 const StyledSelectedPostWrapper = styled.div`
   background: ${({ theme }) => theme.components.post.selected.backgroundBorder};
@@ -40,8 +41,23 @@ const StyledTitleAndDateWrapper = styled.div`
   margin-bottom: 25px;
 `;
 
+const StyledCopyPostLinkIcon = styled(LinkIcon)`
+  color: ${({ theme }) => theme.components.post.copyPostLinkIcon.color};
+  height: 22px;
+  margin-right: 10px;
+  min-height: 22px;
+  min-width: 22px;
+  width: 22px;
+`;
+
 const StyledTitle = styled.h3`
+  cursor: pointer;
   margin-bottom: 0;
+  transition: transform ${transition.speed.superfast} linear;
+
+  &:active {
+    transform: translateY(2px);
+  }
 `;
 
 const StyledContent = styled.p`
@@ -204,7 +220,6 @@ const Post = ({
   firebase,
   post,
   selected,
-  selectPostCallback,
   selectedBoxWrapperRoundedBorder,
   spacebox,
   user,
@@ -213,7 +228,9 @@ const Post = ({
   const [likeInProgress, setLikeInProgress] = useState(false);
   const [postLikes, setPostLikes] = useState(post.likes || []);
   const [postComments, setPostComments] = useState(post.comments || []);
-  const commentFormId = `comment-form_${post.slug}`;
+  const [commentFormIsVisible, setCommentFormIsVisible] = useState(false);
+  const [postLinkIsVisible, setPostLinkIsVisible] = useState(false);
+  const postLinkInputId = `post-link-textarea_${post.slug}`;
   const commentFormTextareaId = `comment-form-textarea_${post.slug}`;
 
   const returnUrlIfUserNeedsToSignIn = (
@@ -221,18 +238,6 @@ const Post = ({
   );
 
   const intl = useIntl();
-
-  const [
-    commentFormIsVisible,
-    setCommentFormIsVisible,
-  ] = useStateWithCallback(false, () => {
-    if (commentFormIsVisible) {
-      setTimeout(
-        () => document.getElementById(commentFormTextareaId).focus(),
-        500,
-      );
-    }
-  });
 
   const handleDeletePostIconClick = () => (
     new Promise((resolve, reject) => (
@@ -370,7 +375,7 @@ const Post = ({
       disabled={!authUser || !authUser.emailVerified}
       onClick={!authUser || !authUser.emailVerified
         ? null
-        : () => setCommentFormIsVisible(true)
+        : () => setCommentFormIsVisible(!commentFormIsVisible)
       }
     />
   );
@@ -394,11 +399,21 @@ const Post = ({
   const postBox = (
     <Box noBorder={selected} padding="20px">
       <StyledTitleAndDateWrapper>
-        <StyledTitle
-          className={!selected && 'linkStyle'}
-          onClick={() => selectPostCallback(post)}
-        >
+        <StyledTitle onClick={() => setPostLinkIsVisible(!postLinkIsVisible)}>
+          <StyledCopyPostLinkIcon
+            data-for={`copyPostLink-icon_${post.slug}`}
+            data-tip={intl.formatMessage({
+              id: 'components.post.iconsTooltips.copyPostLink',
+            })}
+          />
+
           {post.title}
+
+          <Tooltip
+            effect="solid"
+            id={`copyPostLink-icon_${post.slug}`}
+            place="right"
+          />
         </StyledTitle>
 
         <StyledCreatedAtDate>
@@ -426,6 +441,23 @@ const Post = ({
           </StyledLongDate>
         </StyledCreatedAtDate>
       </StyledTitleAndDateWrapper>
+
+      {postLinkIsVisible && (
+        <Transition
+          items={postLinkIsVisible}
+          {...transitionProps.components.post.postLink}
+        >
+          {postLink => postLink && (styleProps => (
+            <PostLink
+              inputId={postLinkInputId}
+              link={
+                `${window.location.origin}${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`
+              }
+              style={styleProps}
+            />
+          ))}
+        </Transition>
+      )}
 
       <StyledContent>
         {post.content}
@@ -515,16 +547,13 @@ const Post = ({
       </StyledActionsAndStatsWrapper>
 
       {authUser && authUser.emailVerified && commentFormIsVisible && (
-        <StyledCommentFormWrapper id={commentFormId}>
+        <StyledCommentFormWrapper>
           <Transition
             items={commentFormIsVisible}
-            from={{ marginTop: '-40px' }}
-            enter={{ marginTop: '0' }}
-            leave={{ marginTop: '-40px' }}
-            config={{ mass: 1, tension: 600, friction: 42 }}
+            {...transitionProps.forms.comment}
           >
-            {commentForm => commentForm && (transitionProps => (
-              <div style={transitionProps}>
+            {commentForm => commentForm && (styleProps => (
+              <div style={styleProps}>
                 <CommentForm
                   alertSetAction={alertSetAction}
                   authUser={authUser}
@@ -619,7 +648,6 @@ Post.propTypes = {
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   selected: PropTypes.bool,
-  selectPostCallback: PropTypes.func,
   selectedBoxWrapperRoundedBorder: PropTypes.bool,
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -627,7 +655,6 @@ Post.propTypes = {
 
 Post.defaultProps = {
   selected: false,
-  selectPostCallback: () => true,
   selectedBoxWrapperRoundedBorder: true,
 };
 

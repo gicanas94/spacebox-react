@@ -9,6 +9,7 @@ import {
   emojisNamesInEnglish,
   emojisNamesInSpanish,
 } from './emojisList';
+
 import { transition } from '../../styles';
 
 const StyledInput = styled.input`

@@ -343,12 +343,10 @@ CreateSpaceboxForm.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapStateToProps = state => ({ authUser: state.authUser });
-
 const mapDispatchToProps = { alertSetAction: alertSet };
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(null, mapDispatchToProps),
   withFirebase,
   withRouter,
 )(CreateSpaceboxForm);

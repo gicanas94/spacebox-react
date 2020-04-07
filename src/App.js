@@ -12,7 +12,7 @@ import Alert from './components/Alert';
 import { alertReset, confirmationModalClose } from './Redux/actions';
 import ConfirmationModal from './components/ConfirmationModal';
 import CreateSpaceboxPage from './pages/CreateSpacebox';
-import { device } from './styles';
+import { device, transitionProps } from './styles';
 import EditSpaceboxPage from './pages/EditSpacebox';
 import FaqPage from './pages/Faq';
 import Header from './components/Header';
@@ -73,49 +73,34 @@ const App = ({
       </StyledRoutesContainer>
     </div>
 
-    <Transition
-      items={alert}
-      from={{ marginTop: '-70px' }}
-      enter={{ marginTop: '0' }}
-      leave={{ marginTop: '-70px' }}
-      config={{ mass: 1, tension: 600, friction: 42 }}
-    >
-      {activeAlert => activeAlert && (transitionProps => (
+    <Transition items={alert} {...transitionProps.components.alert}>
+      {activeAlert => activeAlert && (styleProps => (
         <Alert
           message={activeAlert.message}
           onAlertCloseHandler={() => alertResetAction(null)}
-          style={transitionProps}
+          style={styleProps}
           type={activeAlert.type}
         />
       ))}
     </Transition>
 
-    <Transition
-      items={isLoading}
-      from={{ opacity: 1 }}
-      enter={{ opacity: 1 }}
-      leave={{ opacity: 0 }}
-      config={{ duration: 100 }}
-    >
-      {loading => loading && (transitionProps => (
-        <LoadingScreen style={transitionProps} />
+    <Transition items={isLoading} {...transitionProps.components.loadingScreen}>
+      {loading => loading && (styleProps => (
+        <LoadingScreen style={styleProps} />
       ))}
     </Transition>
 
     <Transition
       items={confirmationModal}
-      from={{ opacity: 1 }}
-      enter={{ opacity: 1 }}
-      leave={{ opacity: 0 }}
-      config={{ duration: 100 }}
+      {...transitionProps.components.loadingScreen}
     >
-      {modalContent => modalContent && (transitionProps => (
+      {modalContent => modalContent && (styleProps => (
         <ConfirmationModal
           buttonsContent={modalContent.buttonsContent}
           content={modalContent.content}
           onCloseHandler={() => confirmationModalCloseAction()}
           onConfirmHandler={() => modalContent.onConfirmHandler()}
-          style={transitionProps}
+          style={styleProps}
           title={modalContent.title}
         />
       ))}

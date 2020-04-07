@@ -10,7 +10,14 @@ import { Transition } from 'react-spring/renderprops';
 import { useIntl } from 'react-intl';
 
 import { appThemeSet } from '../../Redux/actions';
-import { device, keyframe, transition } from '../../styles';
+
+import {
+  device,
+  keyframe,
+  transition,
+  transitionProps,
+} from '../../styles';
+
 import largeLogo from '../../assets/images/logo-with-name.png';
 import Nav from './Nav';
 import { ROUTES } from '../../constants';
@@ -211,13 +218,10 @@ const Header = ({
 
           <Transition
             items={mobileNavIsOpen}
-            from={{ marginTop: `-${window.screen.height}px` }}
-            enter={{ marginTop: '0' }}
-            leave={{ marginTop: `-${window.screen.height}px` }}
-            config={{ mass: 1, tension: 600, friction: 42 }}
+            {...transitionProps.components.header.mobileNav}
           >
-            {navIsOpen => navIsOpen && (transitionProps => (
-              <StyledOverlay style={transitionProps}>
+            {navIsOpen => navIsOpen && (styleProps => (
+              <StyledOverlay style={styleProps}>
                 <StyledCloserOnClick onClick={() => setMobileNavIsOpen(false)} />
                 <StyledCrossIcon onClick={() => setMobileNavIsOpen(false)} />
 

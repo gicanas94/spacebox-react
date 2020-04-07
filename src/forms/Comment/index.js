@@ -207,6 +207,7 @@ const CommentForm = ({
           <StyledWrapper>
             <StyledTextareaAndSmileIconWrapper>
               <StyledTextarea
+                autoFocus
                 disabled={isSubmitting}
                 id={textareaId}
                 name="content"

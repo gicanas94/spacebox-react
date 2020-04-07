@@ -18,9 +18,9 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledInput = styled.input`
-  background-color: ${({ theme }) => theme.components.searchBar.bgColor};
-  border: ${({ theme }) => theme.components.searchBar.border};
-  color: ${({ theme }) => theme.components.searchBar.color};
+  background-color: ${({ theme }) => theme.components.header.searchBar.bgColor};
+  border: ${({ theme }) => theme.components.header.searchBar.border};
+  color: ${({ theme }) => theme.components.header.searchBar.color};
   height: 100%;
   padding: 5px 35px 0 7px;
   transition: width ${transition.speed.fast} linear;
@@ -37,7 +37,7 @@ const StyledInput = styled.input`
 `;
 
 const StyledSearchIcon = styled(SearchAlt)`
-  color: ${({ theme }) => theme.components.searchBar.searchIcon.color};
+  color: ${({ theme }) => theme.components.header.searchBar.searchIcon.color};
   cursor: pointer;
   position: absolute;
   right: 5px;

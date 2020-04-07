@@ -6,7 +6,8 @@ import { Form, Formik } from 'formik';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
+import Recaptcha from 'react-recaptcha';
 import styled from 'styled-components';
 
 import { alertSet } from '../../Redux/actions';
@@ -74,6 +75,7 @@ const SignUpForm = ({
   const minimumPasswordCharacters = 6;
   const minimumUsernameCharacters = 4;
   const maximumUsernameCharacters = 25;
+  let recaptchaInstance;
 
   const SignUpFormSchema = Yup.object().shape({
     email: Yup.string()
@@ -102,6 +104,7 @@ const SignUpForm = ({
         { characters: maximumUsernameCharacters },
       ))
       .required('yup.required'),
+    recaptcha: Yup.string().required(),
   });
 
   const handleSubmit = (values, actions) => {
@@ -150,6 +153,10 @@ const SignUpForm = ({
     })();
   };
 
+  useEffect(() => {
+    recaptchaInstance.execute();
+  }, []);
+
   return (
     <Formik
       initialValues={{
@@ -157,6 +164,7 @@ const SignUpForm = ({
         passwordOne: '',
         passwordTwo: '',
         username: '',
+        recaptcha: '',
       }}
       onSubmit={handleSubmit}
       validationSchema={SignUpFormSchema}
@@ -166,6 +174,7 @@ const SignUpForm = ({
         handleBlur,
         handleChange,
         isSubmitting,
+        setFieldValue,
         touched,
         values,
       }) => (
@@ -264,6 +273,15 @@ const SignUpForm = ({
               {'forms.signUp.submitButton'}
             </Button>
           </StyledBottomWrapper>
+
+          <Recaptcha
+            ref={(event) => { recaptchaInstance = event; }}
+            sitekey="6LckUOIUAAAAAI_iOY8S2ibbmag3WQIN_LzNHE8d"
+            size="invisible"
+            verifyCallback={(response) => {
+              setFieldValue('recaptcha', response);
+            }}
+          />
         </Form>
       )}
     </Formik>

@@ -98,16 +98,6 @@ export default {
       fontSize: font.size.s,
       fontWeight: font.weight.bold,
     },
-    comment: {
-      borderWidth: '2px',
-      createdAtDate: {
-        color: someThemeColors.darkGray,
-        fontSize: font.size.xxs,
-      },
-      username: {
-        fontWeight: font.weight.medium,
-      },
-    },
     confirmationModal: {
       bgColor1: color.palette.white,
       bgColor2: Color(
@@ -146,6 +136,15 @@ export default {
       laptopWidth: '70%',
       maxWidth: '1280px',
       mobileWidth: '100%',
+      searchBar: {
+        bgColor: someThemeColors.controls.bgColor,
+        // border: `2px solid ${someThemeColors.main}`,
+        border: 0,
+        color: someThemeColors.controls.color,
+        searchIcon: {
+          color: someThemeColors.main,
+        },
+      },
     },
     hr: {
       bgColor: color.palette.abalone,
@@ -182,7 +181,20 @@ export default {
       },
     },
     post: {
+      comment: {
+        borderWidth: '2px',
+        createdAtDate: {
+          color: someThemeColors.darkGray,
+          fontSize: font.size.xxs,
+        },
+        username: {
+          fontWeight: font.weight.medium,
+        },
+      },
       commentPostIcon: {
+        color: someThemeColors.mainIcons,
+      },
+      copyPostLinkIcon: {
         color: someThemeColors.mainIcons,
       },
       createdAtDate: {
@@ -202,6 +214,23 @@ export default {
       likePostIcon: {
         likeColor: color.palette.ferrari,
         noLikeColor: someThemeColors.mainIcons,
+      },
+      postLink: {
+        bgColor: color.palette.white,
+        // border: `2px dashed ${someThemeColors.main}`,
+        border: 0,
+        borderRadius: '2px',
+        boxShadow: `0 0 5px 1px ${someThemeColors.darkGray}`,
+        fontSize: font.size.xs,
+        input: {
+          bgColor: 'transparent',
+          border: 0,
+        },
+        label: {
+          bgColor: someThemeColors.main,
+          color: color.palette.white,
+          fontWeight: font.weight.bold,
+        },
       },
       seeOrHideComments: {
         color: someThemeColors.main,
@@ -252,34 +281,25 @@ export default {
         status: {
           active: {
             bgColor: someThemeColors.main,
-            border: '0',
+            border: 0,
             color: color.palette.white,
           },
           default: {
             bgColor: 'transparent',
-            border: '0',
+            border: 0,
             color: someThemeColors.controls.status.default,
           },
           disabled: {
             bgColor: 'transparent',
-            border: '0',
+            border: 0,
             color: someThemeColors.controls.status.disabled,
           },
           hover: {
             bgColor: 'transparent',
-            border: '0',
+            border: 0,
             color: someThemeColors.main,
           },
         },
-      },
-    },
-    searchBar: {
-      bgColor: someThemeColors.controls.bgColor,
-      // border: `2px solid ${someThemeColors.main}`,
-      border: '0',
-      color: someThemeColors.controls.color,
-      searchIcon: {
-        color: someThemeColors.main,
       },
     },
     select: {

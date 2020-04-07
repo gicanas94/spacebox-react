@@ -72,6 +72,11 @@ const StyledBox = styled.div`
     margin: ${margin};
   `}
 
+  ${({ minMaxHeight }) => minMaxHeight && `
+    min-height: ${minMaxHeight[0]};
+    max-height: ${minMaxHeight[1]} !important;
+  `}
+
   ${({ minMaxWidth }) => minMaxWidth && `
     min-width: ${minMaxWidth[0]};
     max-width: ${minMaxWidth[1]} !important;
@@ -147,6 +152,7 @@ Box.propTypes = {
   fullHeight: PropTypes.bool,
   fullWidth: PropTypes.bool,
   margin: PropTypes.string,
+  minMaxHeight: PropTypes.arrayOf(PropTypes.string),
   minMaxWidth: PropTypes.arrayOf(PropTypes.string),
   noBorder: PropTypes.bool,
   padding: PropTypes.string,
@@ -162,6 +168,7 @@ Box.defaultProps = {
   fullHeight: false,
   fullWidth: false,
   margin: undefined,
+  minMaxHeight: undefined,
   minMaxWidth: undefined,
   noBorder: false,
   padding: '25px',

@@ -23,7 +23,7 @@ import {
 
 import Box from '../../components/Box';
 import Button from '../../components/Button';
-import { device } from '../../styles';
+import { device, transitionProps } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
 import Post from '../../components/Post';
 import PostForm from '../../forms/Post';
@@ -78,12 +78,13 @@ const StyledRightGrid = styled.div`
 
   @media ${device.tablet} {
     order: 2;
-    position: sticky;
-    top: 75px;
+    // position: sticky;
+    // top: 70px;
   }
 
   @media ${device.laptop} {
     grid-gap: 20px;
+    // top: 75px;
   }
 `;
 
@@ -133,7 +134,6 @@ const SpacePage = ({
   const [postsLimit, _setPostsLimit] = useState(5);
   const [user, setUser] = useState(null);
   const [allTasksFinished, setAllTasksFinished] = useState(false);
-  const [selectedPost, setSelectedPost] = useState(null);
   const [justCreatedPosts, setJustCreatedPosts] = useState([]);
   const [postFormIsOpen, setPostFormIsOpen] = useState(false);
 
@@ -250,17 +250,8 @@ const SpacePage = ({
 
           documents.forEach(document => postsArray.push(document.data()));
 
-          if (selectedPost) {
-            const postsArrayWithoutSelectedPost = postsArray.filter(post => (
-              post.slug === selectedPost.slug
-            ));
-
-            setPosts(postsArrayWithoutSelectedPost);
-            resolve(postsArrayWithoutSelectedPost);
-          } else {
-            setPosts(postsArray);
-            resolve(postsArray);
-          }
+          setPosts(postsArray);
+          resolve(postsArray);
         })
         .catch(error => reject(error));
     })
@@ -298,11 +289,6 @@ const SpacePage = ({
   );
 
   const deletePostCallback = (deletedPost) => {
-    if (selectedPost && selectedPost.slug === deletedPost.slug) {
-      setSelectedPost(null);
-      history.push(`${ROUTES.SPACE_BASE}/${spacebox.slug}`);
-    }
-
     if (postOfLocationPathname.slug === deletedPost.slug) {
       setPostOfLocationPathname({});
       history.push(`${ROUTES.SPACE_BASE}/${spacebox.slug}`);
@@ -331,16 +317,6 @@ const SpacePage = ({
     setJustCreatedPosts(newListOfJustCreatedPosts);
     setPostFormIsOpen(false);
     composePostsHistory([...newListOfJustCreatedPosts, ...posts]);
-  };
-
-  const selectPostCallback = (post) => {
-    if ((selectedPost && selectedPost.slug === post.slug)) {
-      return;
-    }
-
-    history.push(`${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`);
-    setPostOfLocationPathname({});
-    setSelectedPost(post);
   };
 
   useEffect(() => {
@@ -401,7 +377,9 @@ const SpacePage = ({
             title={{
               id: 'pages.space.title',
               values: {
-                title: selectedPost ? selectedPost.title : spacebox.title,
+                title: postOfLocationPathname.slug
+                  ? postOfLocationPathname.title
+                  : spacebox.title,
               },
             }}
           />
@@ -411,14 +389,11 @@ const SpacePage = ({
               {/* New post form */}
               <Transition
                 items={authUser && authUser.uid === spacebox.uid && postFormIsOpen}
-                from={{ transform: 'scale(0.1)' }}
-                enter={{ transform: 'scale(1)' }}
-                leave={{ display: 'none' }}
-                config={{ mass: 1, tension: 600, friction: 42 }}
+                {...transitionProps.forms.post}
 
               >
-                {isOpen => isOpen && (transitionProps => (
-                  <Box fullWidth padding="20px" style={transitionProps}>
+                {isOpen => isOpen && (styleProps => (
+                  <Box fullWidth padding="20px" style={styleProps}>
                     <PostForm
                       alertSetAction={alertSetAction}
                       firebase={firebase}
@@ -434,14 +409,11 @@ const SpacePage = ({
               {justCreatedPosts.length > 0 && justCreatedPosts.map(justCreatedPost => (
                 <Transition
                   items={justCreatedPost}
-                  from={{ transform: 'scale(0.1)' }}
-                  enter={{ transform: 'scale(1)' }}
-                  leave={{ display: 'none' }}
-                  config={{ mass: 1, tension: 600, friction: 42 }}
                   key={justCreatedPost.createdAt}
+                  {...transitionProps.pages.space.justCreatedPost}
                 >
-                  {post => post && (transitionProps => (
-                    <div style={transitionProps}>
+                  {post => post && (styleProps => (
+                    <div style={styleProps}>
                       <Post
                         alertSetAction={alertSetAction}
                         authUser={authUser}
@@ -450,8 +422,6 @@ const SpacePage = ({
                         deletePostCallback={deletePostCallback}
                         firebase={firebase}
                         post={justCreatedPost}
-                        selected={selectedPost && selectedPost.slug === post.slug}
-                        selectPostCallback={selectPostCallback}
                         spacebox={spacebox}
                         user={user}
                       />
@@ -463,13 +433,10 @@ const SpacePage = ({
               {/* Post of location pathname */}
               <Transition
                 items={postOfLocationPathname.slug}
-                from={{ transform: 'scale(0.1)' }}
-                enter={{ transform: 'scale(1)' }}
-                leave={{ display: 'none' }}
-                config={{ mass: 1, tension: 600, friction: 42 }}
+                {...transitionProps.pages.space.postOfLocationPathname}
               >
-                {post => post && (transitionProps => (
-                  <div key={postOfLocationPathname.createdAt} style={transitionProps}>
+                {post => post && (styleProps => (
+                  <div key={postOfLocationPathname.createdAt} style={styleProps}>
                     <Post
                       alertSetAction={alertSetAction}
                       authUser={authUser}
@@ -500,8 +467,6 @@ const SpacePage = ({
                         firebase={firebase}
                         key={post.createdAt}
                         post={post}
-                        selected={selectedPost && selectedPost.slug === post.slug}
-                        selectPostCallback={selectPostCallback}
                         spacebox={spacebox}
                         user={user}
                       />
@@ -517,8 +482,8 @@ const SpacePage = ({
                     <FormattedMessage
                       id={
                         authUser && authUser.uid === spacebox.uid
-                          ? 'pages.space.noPostsText.authUserIsTheOwner'
-                          : 'pages.space.noPostsText.authUserIsNotTheOwner'
+                          ? 'pages.space.noPostsTextAuthUser'
+                          : 'pages.space.noPostsText'
                       }
                     />
                   </StyledNoPostsText>

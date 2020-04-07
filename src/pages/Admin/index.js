@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { /* Route, Switch, */ withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { alertSet, isLoadingSet } from '../../Redux/actions';
@@ -14,22 +14,45 @@ import Sidebar from '../../components/Sidebar';
 import { withAuthorization } from '../../Session';
 import { withFirebase } from '../../Firebase';
 
-const StyledGrid = styled.div`
+const StyledMainGrid = styled.div`
   align-items: start;
   display: grid;
   grid-gap: 10px;
   grid-template-columns: 1fr;
   margin: auto;
-  max-width: 900px;
   width: 100%;
 
   @media ${device.tablet} {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 250px 430px;
+    width: fit-content;
   }
 
   @media ${device.laptop} {
     grid-gap: 20px;
-    max-width: 910px;
+  }
+`;
+
+const StyledSidebarWrapper = styled.div`
+  @media ${device.tablet} {
+    position: sticky;
+    top: 70px;
+  }
+
+  @media ${device.laptop} {
+    top: 75px;
+  }
+`;
+
+const StyledContentGrid = styled.div`
+  align-items: start;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 1fr;
+  margin: 0;
+  width: 100%;
+
+  @media ${device.laptop} {
+    grid-gap: 20px;
   }
 `;
 
@@ -106,20 +129,27 @@ const AdminPage = ({
   return (
     <Fragment>
       {!isLoading && authUserIsAdmin && (
-        <StyledGrid>
+        <StyledMainGrid>
           <HelmetTitle title={{ id: 'pages.admin.title' }} />
 
-          <Sidebar content={sidebarContent} />
+          <StyledSidebarWrapper>
+            <Sidebar content={sidebarContent} />
+          </StyledSidebarWrapper>
 
-          <Box fullWidth margin="0">
-            <Switch>
-              <Route />
-              <Route />
-              <Route />
-              <Route />
-            </Switch>
-          </Box>
-        </StyledGrid>
+          <StyledContentGrid>
+            <Box fullWidth>
+
+            </Box>
+
+            <Box fullWidth>
+
+            </Box>
+
+            <Box fullWidth>
+
+            </Box>
+          </StyledContentGrid>
+        </StyledMainGrid>
       )}
     </Fragment>
   );
@@ -135,7 +165,6 @@ AdminPage.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  authUser: state.authUser,
   isLoading: state.isLoading,
 });
 

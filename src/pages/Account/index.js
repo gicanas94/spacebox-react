@@ -2,7 +2,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { alertSet, isLoadingSet } from '../../Redux/actions';
@@ -17,42 +17,45 @@ import Sidebar from '../../components/Sidebar';
 import { withAuthorization } from '../../Session';
 import { withFirebase } from '../../Firebase';
 
-const StyledGrid = styled.div`
+const StyledMainGrid = styled.div`
   align-items: start;
   display: grid;
   grid-gap: 10px;
   grid-template-columns: 1fr;
   margin: auto;
-  max-width: 900px;
   width: 100%;
 
-  .content {
-    & > div {
-      margin-bottom: 10px;
-    }
-
-    & > div:last-child {
-      margin-bottom: 0;
-    }
-  }
-
   @media ${device.tablet} {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 250px 430px;
+    width: fit-content;
   }
 
   @media ${device.laptop} {
     grid-gap: 20px;
-    max-width: 910px;
+  }
+`;
 
-    .content {
-      & > div {
-        margin-bottom: 20px;
-      }
+const StyledSidebarWrapper = styled.div`
+  @media ${device.tablet} {
+    position: sticky;
+    top: 70px;
+  }
 
-      & > div:last-child {
-        margin-bottom: 0;
-      }
-    }
+  @media ${device.laptop} {
+    top: 75px;
+  }
+`;
+
+const StyledContentGrid = styled.div`
+  align-items: start;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 1fr;
+  margin: 0;
+  width: 100%;
+
+  @media ${device.laptop} {
+    grid-gap: 20px;
   }
 `;
 
@@ -121,51 +124,52 @@ const AccountPage = ({
   }, []);
 
   return (
-    <StyledGrid>
-      <Fragment>
-        <HelmetTitle title={{ id: 'pages.account.title' }} />
+    <StyledMainGrid>
+      <HelmetTitle title={{ id: 'pages.account.title' }} />
+
+      <StyledSidebarWrapper>
         <Sidebar content={sidebarContent} />
+      </StyledSidebarWrapper>
 
-        <div className="content">
-          <Box fullWidth>
-            <h1>
-              <FormattedMessage id="pages.account.h1" />
-            </h1>
+      <StyledContentGrid>
+        <Box fullWidth>
+          <h1>
+            <FormattedMessage id="pages.account.h1" />
+          </h1>
 
-            <Box fullWidth id="general-settings" noBorder padding="0">
-              <GeneralSettingsSubpage
-                alertSetAction={alertSetAction}
-                authUser={authUser}
-                firebase={firebase}
-                isLoadingSetAction={isLoadingSetAction}
-              />
-            </Box>
-          </Box>
-
-          {authUserHasPassword && (
-            <Box fullWidth id="change-password">
-              <ChangePasswordSubpage
-                alertSetAction={alertSetAction}
-                authUser={authUser}
-                firebase={firebase}
-              />
-            </Box>
-          )}
-
-          <Box fullWidth id="login-management">
-            <LoginManagementSubpage
-              activeSignInMethods={activeSignInMethods}
+          <Box fullWidth id="general-settings" noBorder padding="0">
+            <GeneralSettingsSubpage
               alertSetAction={alertSetAction}
               authUser={authUser}
               firebase={firebase}
-              getSignInMethodsHandler={getSignInMethods}
-              isLoading={isLoading}
               isLoadingSetAction={isLoadingSetAction}
             />
           </Box>
-        </div>
-      </Fragment>
-    </StyledGrid>
+        </Box>
+
+        {authUserHasPassword && (
+          <Box fullWidth id="change-password">
+            <ChangePasswordSubpage
+              alertSetAction={alertSetAction}
+              authUser={authUser}
+              firebase={firebase}
+            />
+          </Box>
+        )}
+
+        <Box fullWidth id="login-management">
+          <LoginManagementSubpage
+            activeSignInMethods={activeSignInMethods}
+            alertSetAction={alertSetAction}
+            authUser={authUser}
+            firebase={firebase}
+            getSignInMethodsHandler={getSignInMethods}
+            isLoading={isLoading}
+            isLoadingSetAction={isLoadingSetAction}
+          />
+        </Box>
+      </StyledContentGrid>
+    </StyledMainGrid>
   );
 };
 
@@ -178,7 +182,6 @@ AccountPage.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  authUser: state.authUser,
   isLoading: state.isLoading,
 });
 

@@ -39,6 +39,9 @@ export default {
         comment: {
           postAuthor: 'Post author',
         },
+        postLink: {
+          label: 'Link',
+        },
         deletePost: {
           successAlertMessage: 'The post has been deleted.',
           confirmationModal: {
@@ -47,6 +50,7 @@ export default {
           },
         },
         iconsTooltips: {
+          copyPostLink: 'I want the post link!',
           needLoggedInToLike: 'You need to be logged in to like a post',
           needValidateEmailToLike: 'You need to validate your e-mail address to like a post',
           needLoggedInToComment: 'You need to be logged in to make a comment',
@@ -376,10 +380,8 @@ export default {
           userProfile: 'Writer\'s profile',
           userProfileAuthUser: 'My profile',
         },
-        noPostsText: {
-          authUserIsTheOwner: 'You haven\'t made any post yet.',
-          authUserIsNotTheOwner: 'The writer of this Spacebox hasn\'t made any post yet.',
-        },
+        noPostsText: 'The writer of this Spacebox hasn\'t made any post yet.',
+        noPostsTextAuthUser: 'You haven\'t made any post yet.',
         postNotFoundAlertMessage: 'We couldn\t find the post you wanted to see, but we send you to the Spacebox! it\'s something...',
         spaceboxNotFoundAlertMessage: 'We couldn\'t find the Spacebox you wanted to see so we send you to the home page. Sorry!',
       },
@@ -436,6 +438,9 @@ export default {
         comment: {
           postAuthor: 'Autor de la publicación',
         },
+        postLink: {
+          label: 'Enlace',
+        },
         deletePost: {
           successAlertMessage: 'La publicación fue eliminada.',
           confirmationModal: {
@@ -444,6 +449,7 @@ export default {
           },
         },
         iconsTooltips: {
+          copyPostLink: 'Link de la publicación',
           needLoggedInToLike: 'Debes ingresar a tu cuenta para indicar que te gusta una publicación',
           needValidateEmailToLike: 'Debes validar tu dirección correo electrónico para indicar que te gusta una publicación',
           needLoggedInToComment: 'Debes ingresar a tu cuenta para hacer un comentario',
@@ -542,7 +548,7 @@ export default {
           p: 'Ten en cuenta que si el título o la descripción de tu Spacebox es muy larga, no será mostrada completamente.',
         },
         step3: {
-          h2: 'Paso 3 3: categoría y visible',
+          h2: 'Paso 3: categoría y visible',
           p: 'Elige cuidadosamente la categoría de tu Spacebox, ya que en caso de que decidas que el mismo sea visible en la página de inicio, otros usuarios filtrarán por categoría para encontrar rápidamente lo que quieran leer.',
         },
       },
@@ -758,10 +764,8 @@ export default {
           userProfile: 'Perfil del escritor',
           userProfileAuthUser: 'Mi perfil',
         },
-        noPostsText: {
-          authUserIsTheOwner: 'Aún no realizaste ninguna publicación.',
-          authUserIsNotTheOwner: 'El escritor de este Spacebox aún no realizó ninguna publicación.',
-        },
+        noPostsText: 'El escritor de este Spacebox aún no realizó ninguna publicación.',
+        noPostsTextAuthUser: 'Aún no realizaste ninguna publicación.',
         postNotFoundAlertMessage: 'No pudimos encontrar la publicación que querías ver, pero te enviamos al Spacebox. Algo es algo...',
         spaceboxNotFoundAlertMessage: 'No pudimos encontrar el Spacebox que querías ver así que te enviamos a la página de inicio. ¡Lo sentimos!',
       },

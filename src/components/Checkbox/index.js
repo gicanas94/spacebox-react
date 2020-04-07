@@ -19,6 +19,7 @@ const StyledCheckbox = styled.span`
     color: ${theme.components.checkbox.status.checked};
 
     &::after {
+      color: ${theme.components.checkbox.status.checked} !important;
       content: '✔';
       font-size: ${theme.components.checkbox.checkboxContent.fontSize};
     }
