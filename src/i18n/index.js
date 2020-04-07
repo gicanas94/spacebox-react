@@ -50,7 +50,6 @@ export default {
           },
         },
         iconsTooltips: {
-          copyPostLink: 'I want the post link!',
           needLoggedInToLike: 'You need to be logged in to like a post',
           needValidateEmailToLike: 'You need to validate your e-mail address to like a post',
           needLoggedInToComment: 'You need to be logged in to make a comment',
@@ -449,7 +448,6 @@ export default {
           },
         },
         iconsTooltips: {
-          copyPostLink: 'Link de la publicación',
           needLoggedInToLike: 'Debes ingresar a tu cuenta para indicar que te gusta una publicación',
           needValidateEmailToLike: 'Debes validar tu dirección correo electrónico para indicar que te gusta una publicación',
           needLoggedInToComment: 'Debes ingresar a tu cuenta para hacer un comentario',

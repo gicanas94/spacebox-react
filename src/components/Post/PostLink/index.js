@@ -8,7 +8,7 @@ const StyledWrapper = styled.div`
   background-color: ${({ theme }) => theme.components.post.postLink.bgColor};
   border: ${({ theme }) => theme.components.post.postLink.border};
   border-radius: ${({ theme }) => theme.components.post.postLink.borderRadius};
-  box-shadow: ${({ theme }) => theme.components.post.postLink.boxShadow};
+  // box-shadow: ${({ theme }) => theme.components.post.postLink.boxShadow};
   display: flex;
   font-size: ${({ theme }) => theme.components.post.postLink.fontSize};
   height: 45px;
@@ -36,7 +36,7 @@ const StyledInput = styled.input`
   )};
   border: ${({ theme }) => theme.components.post.postLink.input.border};
   height: 100%;
-  padding: 0 10px;
+  padding-right: 10px;
   width: 100%;
 
   &:focus {

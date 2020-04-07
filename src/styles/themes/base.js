@@ -217,18 +217,18 @@ export default {
       },
       postLink: {
         bgColor: color.palette.white,
-        // border: `2px dashed ${someThemeColors.main}`,
-        border: 0,
+        border: `2px dashed ${someThemeColors.main}`,
+        // border: 0,
         borderRadius: '2px',
         boxShadow: `0 0 5px 1px ${someThemeColors.darkGray}`,
         fontSize: font.size.xs,
         input: {
-          bgColor: 'transparent',
+          bgColor: color.palette.white,
           border: 0,
         },
         label: {
-          bgColor: someThemeColors.main,
-          color: color.palette.white,
+          bgColor: color.palette.white,
+          color: someThemeColors.main,
           fontWeight: font.weight.bold,
         },
       },

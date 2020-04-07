@@ -397,23 +397,11 @@ const Post = ({
   );
 
   const postBox = (
-    <Box noBorder={selected} padding="20px">
+    <Box margin="0" noBorder={selected} padding="20px">
       <StyledTitleAndDateWrapper>
         <StyledTitle onClick={() => setPostLinkIsVisible(!postLinkIsVisible)}>
-          <StyledCopyPostLinkIcon
-            data-for={`copyPostLink-icon_${post.slug}`}
-            data-tip={intl.formatMessage({
-              id: 'components.post.iconsTooltips.copyPostLink',
-            })}
-          />
-
+          <StyledCopyPostLinkIcon />
           {post.title}
-
-          <Tooltip
-            effect="solid"
-            id={`copyPostLink-icon_${post.slug}`}
-            place="right"
-          />
         </StyledTitle>
 
         <StyledCreatedAtDate>
