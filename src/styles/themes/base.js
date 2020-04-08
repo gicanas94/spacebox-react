@@ -106,7 +106,8 @@ export default {
     },
     emojiPicker: {
       bgColor: color.palette.cloud,
-      boxShadow: `0 1px 7px 3px ${someThemeColors.darkGray}`,
+      border: `1px solid ${someThemeColors.darkGray}`,
+      boxShadow: `0 0 3px 1px ${someThemeColors.main}`,
       emojiHoverColor: Color(
         someThemeColors.main,
       ).lighten(0.7).hex(),
@@ -218,13 +219,10 @@ export default {
       postLink: {
         bgColor: color.palette.white,
         border: `2px dashed ${someThemeColors.main}`,
-        // border: 0,
         borderRadius: '2px',
-        boxShadow: `0 0 5px 1px ${someThemeColors.darkGray}`,
         fontSize: font.size.xs,
         input: {
           bgColor: color.palette.white,
-          border: 0,
         },
         label: {
           bgColor: color.palette.white,

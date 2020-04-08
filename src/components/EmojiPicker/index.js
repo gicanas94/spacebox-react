@@ -72,6 +72,8 @@ const StyledEmoji = styled.span`
 
 const StyledWrapper = styled.div`
   background-color: ${({ theme }) => theme.components.emojiPicker.bgColor};
+  border: ${({ theme }) => theme.components.emojiPicker.border};
+  // box-shadow: ${({ theme }) => theme.components.emojiPicker.boxShadow};
   display: flex;
   flex-direction: column;
   height: 270px;
