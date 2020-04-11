@@ -41,7 +41,7 @@ export default {
         warning: {
           bgColor: color.palette.tuscany,
           border: `1px solid ${Color(color.palette.tuscany).darken(0.2).hex()}`,
-          color: color.palette.cinnamon,
+          color: color.palette.gingerbread,
         },
       },
     },
@@ -129,6 +129,48 @@ export default {
         bgColor: 'transparent',
         borderBottom: `2px solid ${someThemeColors.darkGray}`,
         fontSize: font.size.s,
+      },
+    },
+    globalMessage: {
+      content: {
+        fontSize: font.size.xs,
+      },
+      link: {
+        fontSize: font.size.xs,
+        fontWeight: font.weight.bold,
+      },
+      reliefEffect: {
+        filter: 'blur(6px)',
+      },
+      title: {
+        fontSize: font.size.s,
+        fontWeight: font.weight.bold,
+      },
+      type: {
+        danger: {
+          bgColor: color.palette.salmon,
+          border: `1px solid ${Color(color.palette.salmon).darken(0.4).hex()}`,
+          color: color.palette.mahogany,
+          reliefEffectBorder: `5px solid ${Color(color.palette.salmon).darken(0.4).hex()}`,
+        },
+        info: {
+          bgColor: color.palette.sky,
+          border: `1px solid ${Color(color.palette.sky).darken(0.4).hex()}`,
+          color: color.palette.denim,
+          reliefEffectBorder: `5px solid ${Color(color.palette.sky).darken(0.4).hex()}`,
+        },
+        success: {
+          bgColor: color.palette.green,
+          border: `1px solid ${Color(color.palette.green).darken(0.4).hex()}`,
+          color: color.palette.tea,
+          reliefEffectBorder: `5px solid ${Color(color.palette.green).darken(0.4).hex()}`,
+        },
+        warning: {
+          bgColor: color.palette.tuscany,
+          border: `1px solid ${Color(color.palette.tuscany).darken(0.4).hex()}`,
+          color: color.palette.gingerbread,
+          reliefEffectBorder: `5px solid ${Color(color.palette.tuscany).darken(0.4).hex()}`,
+        },
       },
     },
     header: {

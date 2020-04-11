@@ -6,9 +6,9 @@ import GeneralSettingsForm from '../../../forms/GeneralSettings';
 
 const GeneralSettingsSubpage = ({ ...props }) => (
   <Fragment>
-    <h2>
-      <FormattedMessage id="pages.account.generalSettings.h2" />
-    </h2>
+    <h3>
+      <FormattedMessage id="pages.account.generalSettings.h3" />
+    </h3>
 
     <p>
       <FormattedMessage id="pages.account.generalSettings.subtitle" />

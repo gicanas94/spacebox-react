@@ -133,9 +133,9 @@ const AccountPage = ({
 
       <StyledContentGrid>
         <Box fullWidth>
-          <h1>
-            <FormattedMessage id="pages.account.h1" />
-          </h1>
+          <h2>
+            <FormattedMessage id="pages.account.h2" />
+          </h2>
 
           <Box fullWidth id="general-settings" noBorder padding="0">
             <GeneralSettingsSubpage

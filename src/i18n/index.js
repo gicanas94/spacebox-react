@@ -249,18 +249,18 @@ export default {
     pages: {
       account: {
         title: 'Account - Spacebox',
-        h1: 'Account',
+        h2: 'Account',
         generalSettings: {
-          h2: 'General settings',
+          h3: 'General settings',
           subtitle: 'Update your personal information.',
         },
         changePassword: {
-          h2: 'Change password',
+          h3: 'Change password',
           subtitle: 'Complete the following inputs to change your password.',
           reachedMaxCurrentPasswordAttempsSubtitle: 'Right now you can\'t change your password as you reached the limit of attempts to enter your current one, please try again later.',
         },
         loginManagement: {
-          h2: 'Login management',
+          h3: 'Login management',
           subtitle: 'Manage how you sign in and link your social media accounts.',
           buttons: {
             loading: '...',
@@ -300,6 +300,13 @@ export default {
             links: {
               listOfSpaceboxes: 'List of Spaceboxes',
               findSpacebox: 'Find Spacebox',
+            },
+          },
+          section3: {
+            heading: 'Global Messaging',
+            links: {
+              newGlobalMessage: 'New global message',
+              allGlobalMessages: 'List of global messages',
             },
           },
         },
@@ -632,18 +639,18 @@ export default {
     pages: {
       account: {
         title: 'Cuenta - Spacebox',
-        h1: 'Cuenta',
+        h2: 'Cuenta',
         generalSettings: {
-          h2: 'Ajustes generales',
+          h3: 'Ajustes generales',
           subtitle: 'Actualiza tu información personal.',
         },
         changePassword: {
-          h2: 'Cambiar contraseña',
+          h3: 'Cambiar contraseña',
           subtitle: 'Completa los siguientes campos para cambiar tu contraseña.',
           reachedMaxCurrentPasswordAttempsSubtitle: 'Ahora mismo no puedes cambiar tu contraseña ya que alcanzaste el límite de intentos para ingresar tu contraseña actual, por favor intenta más tarde.',
         },
         loginManagement: {
-          h2: 'Inicio de sesión',
+          h3: 'Inicio de sesión',
           subtitle: 'Administra cómo iniciar sesión y vincula tus cuentas de redes sociales.',
           buttons: {
             loading: '...',
@@ -674,15 +681,22 @@ export default {
           section1: {
             heading: 'Usuario(s)',
             links: {
-              listOfUsers: 'Listado de usuarios',
+              listOfUsers: 'Lista de usuarios',
               findUser: 'Buscar usuario',
             },
           },
           section2: {
             heading: 'Spacebox(es)',
             links: {
-              listOfSpaceboxes: 'Listado de Spaceboxes',
+              listOfSpaceboxes: 'Lista de Spaceboxes',
               findSpacebox: 'Buscar Spacebox',
+            },
+          },
+          section3: {
+            heading: 'Mensajes Globales',
+            links: {
+              newGlobalMessage: 'Crear mensaje global',
+              allGlobalMessages: 'Lista de mensajes globales',
             },
           },
         },

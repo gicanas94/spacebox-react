@@ -185,6 +185,17 @@ class Firebase {
   userRestrictedData = uid => (
     this.user(uid).collection('restricted').doc('data')
   );
+
+  // ---------------------------------------------------------------------------
+  // Global Messaging API ------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  globalMessage = () => this.db.collection('globalMessages').doc();
+
+  allGlobalMessages = () => this.db.collection('globalMessages');
+
+  allActiveGlobalMessages = () => (
+    this.db.collection('globalMessages').where('active', '==', true)
+  );
 }
 
 export default Firebase;

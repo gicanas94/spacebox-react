@@ -15,6 +15,7 @@ import CreateSpaceboxPage from './pages/CreateSpacebox';
 import { device, transitionProps } from './styles';
 import EditSpaceboxPage from './pages/EditSpacebox';
 import FaqPage from './pages/Faq';
+import GlobalMessaging from './components/GlobalMessaging';
 import Header from './components/Header';
 import HomePage from './pages/Home';
 import LoadingScreen from './components/LoadingScreen';
@@ -44,6 +45,7 @@ const StyledRoutesContainer = styled.div`
 const App = ({
   alert,
   alertResetAction,
+  appLocale,
   confirmationModal,
   confirmationModalCloseAction,
   isLoading,
@@ -53,6 +55,8 @@ const App = ({
       <Header />
 
       <StyledRoutesContainer>
+        <GlobalMessaging appLocale={appLocale} />
+
         <Switch>
           <Route component={AccountPage} path={ROUTES.ACCOUNT_BASE} />
           <Route component={AdminPage} path={ROUTES.ADMIN} />
@@ -92,7 +96,7 @@ const App = ({
 
     <Transition
       items={confirmationModal}
-      {...transitionProps.components.loadingScreen}
+      {...transitionProps.components.confirmationModal}
     >
       {modalContent => modalContent && (styleProps => (
         <ConfirmationModal
@@ -111,6 +115,7 @@ const App = ({
 App.propTypes = {
   alert: PropTypes.objectOf(PropTypes.any),
   alertResetAction: PropTypes.func.isRequired,
+  appLocale: PropTypes.string.isRequired,
   confirmationModal: PropTypes.objectOf(PropTypes.any),
   confirmationModalCloseAction: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
@@ -123,6 +128,7 @@ App.defaultProps = {
 
 const mapStateToProps = state => ({
   alert: state.alert,
+  appLocale: state.appLocale,
   confirmationModal: state.confirmationModal,
   isLoading: state.isLoading,
 });

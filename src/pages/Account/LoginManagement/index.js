@@ -192,9 +192,9 @@ const LoginManagementSubpage = ({
 
   return (
     <Fragment>
-      <h2>
-        <FormattedMessage id="pages.account.loginManagement.h2" />
-      </h2>
+      <h3>
+        <FormattedMessage id="pages.account.loginManagement.h3" />
+      </h3>
 
       <p>
         <FormattedMessage id="pages.account.loginManagement.subtitle" />

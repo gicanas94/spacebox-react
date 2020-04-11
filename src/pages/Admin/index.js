@@ -72,10 +72,12 @@ const AdminPage = ({
           {
             text: 'pages.admin.sidebarContent.section1.links.listOfUsers',
             to: '#',
+            visible: true,
           },
           {
             text: 'pages.admin.sidebarContent.section1.links.findUser',
             to: '#',
+            visible: true,
           },
         ],
         separator: true,
@@ -86,10 +88,28 @@ const AdminPage = ({
           {
             text: 'pages.admin.sidebarContent.section2.links.listOfSpaceboxes',
             to: '#',
+            visible: true,
           },
           {
             text: 'pages.admin.sidebarContent.section2.links.findSpacebox',
             to: '#',
+            visible: true,
+          },
+        ],
+        separator: true,
+      },
+      {
+        heading: 'pages.admin.sidebarContent.section3.heading',
+        links: [
+          {
+            text: 'pages.admin.sidebarContent.section3.links.newGlobalMessage',
+            to: '#',
+            visible: true,
+          },
+          {
+            text: 'pages.admin.sidebarContent.section3.links.allGlobalMessages',
+            to: '#',
+            visible: true,
           },
         ],
       },
@@ -137,15 +157,15 @@ const AdminPage = ({
           </StyledSidebarWrapper>
 
           <StyledContentGrid>
-            <Box fullWidth>
+            <Box fullWidth id="same as link">
 
             </Box>
 
-            <Box fullWidth>
+            <Box fullWidth id="same as link">
 
             </Box>
 
-            <Box fullWidth>
+            <Box fullWidth id="same as link">
 
             </Box>
           </StyledContentGrid>

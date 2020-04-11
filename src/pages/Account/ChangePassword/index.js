@@ -7,9 +7,9 @@ import PasswordChangeForm from '../../../forms/PasswordChange';
 
 const ChangePasswordSubpage = ({ alertSetAction, authUser, firebase }) => (
   <Fragment>
-    <h2>
-      <FormattedMessage id="pages.account.changePassword.h2" />
-    </h2>
+    <h3>
+      <FormattedMessage id="pages.account.changePassword.h3" />
+    </h3>
 
     {getCookie('reachedMaxCurrentPasswordAttemps', false)
       ? (

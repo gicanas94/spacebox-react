@@ -4,31 +4,45 @@ export const capitalizeEachStringWord = string => (
   string.replace(/\b\w/g, firstLetter => firstLetter.toUpperCase())
 );
 
-export const defineAppLocale = (locale) => {
-  if (locale) {
+export const defineAppLocale = (receivedLocale) => {
+  // 1. If this function receives an appLocale, set that one
+  if (receivedLocale) {
+    localStorage.setItem('appLocale', receivedLocale);
+    return receivedLocale;
+  }
+
+  // 2. Default language, just in case
+  let locale = SUPPORTED_LOCALES.EN;
+
+  // 3. Check if there is an appLocale inside LocalStorage
+  const localStorageLocale = localStorage.getItem('appLocale');
+
+  // 4. Is there is an appLocale inside LocalStorage and is valid, return that one
+  if (
+    localStorageLocale
+    && SUPPORTED_LOCALES[localStorageLocale.toUpperCase()]
+  ) {
+    return localStorageLocale;
+  }
+
+  // 5. Get navigator language
+  const navigatorLanguage = navigator.language || navigator.userLanguage;
+
+  // 6. If navigator language exists, check if we cover that language
+  if (navigatorLanguage) {
+    Object.keys(SUPPORTED_LOCALES).forEach((key) => {
+      if (navigatorLanguage.toLowerCase().includes(SUPPORTED_LOCALES[key])) {
+        locale = SUPPORTED_LOCALES[key];
+      }
+    });
+
     localStorage.setItem('appLocale', locale);
     return locale;
   }
 
-  const localStorageLocale = localStorage.getItem('appLocale');
-
-  if (localStorageLocale && SUPPORTED_LOCALES[
-    localStorageLocale.toUpperCase()
-  ]) {
-    return localStorageLocale;
-  }
-
-  const navigatorLanguage = navigator.language
-    || navigator.userLanguage
-    || SUPPORTED_LOCALES.EN;
-
-  if (navigatorLanguage.includes(SUPPORTED_LOCALES.ES)) {
-    localStorage.setItem('appLocale', SUPPORTED_LOCALES.ES);
-    return SUPPORTED_LOCALES.ES;
-  }
-
-  localStorage.setItem('appLocale', SUPPORTED_LOCALES.EN);
-  return SUPPORTED_LOCALES.EN;
+  // 7. This means that we don't cover the navigator language so we return EN
+  localStorage.setItem('appLocale', locale);
+  return locale;
 };
 
 export const getCookie = (cName, returnValue) => {

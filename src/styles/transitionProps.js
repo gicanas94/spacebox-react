@@ -30,6 +30,24 @@ export default {
         duration: 100,
       },
     },
+    globalMessage: {
+      postLink: {
+        from: {
+          marginTop: '-45px',
+        },
+        enter: {
+          marginTop: '0',
+        },
+        leave: {
+          marginTop: '-45px',
+        },
+        config: {
+          mass: 1,
+          tension: 600,
+          friction: 42,
+        },
+      },
+    },
     header: {
       mobileNav: {
         from: {
