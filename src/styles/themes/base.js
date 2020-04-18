@@ -415,6 +415,7 @@ export default {
         color: color.palette.white,
       },
       title: {
+        filterOnHover: 'blur(4px)',
         fontSize: font.size.xl,
         fontWeight: font.weight.bold,
       },
@@ -450,6 +451,7 @@ export default {
         fontSize: font.size.xxs,
         fontWeight: font.weight.bold,
       },
+      filter: 'blur(5px)',
     },
   },
   forms: {

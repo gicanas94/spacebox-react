@@ -119,9 +119,9 @@ const StyledSpacebox = styled.div`
     padding: 0;
 
     &:hover {
-      ${({ description }) => description && `
+      ${({ description, theme }) => description && `
         ${StyledTitle} {
-          filter: blur(4px);
+          filter: ${theme.components.spacebox.title.filterOnHover}
           opacity: 0.2;
         }
 

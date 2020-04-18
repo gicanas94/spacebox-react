@@ -175,7 +175,7 @@ const Header = ({
   const [mobileNavIsOpen, setMobileNavIsOpen] = useState(false);
   const intl = useIntl();
 
-  // const handleOnLogoClick = () => {
+  // const handleLogoClick = () => {
   //   themes.forEach((theme, index) => {
   //     if (theme.name === appTheme.name) {
   //       if (themes[index + 1]) {

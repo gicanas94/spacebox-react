@@ -16,7 +16,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .grecaptcha-badge {
-    filter: grayscale(100%);
     z-index: 2000;
   }
 

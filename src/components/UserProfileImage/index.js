@@ -114,7 +114,7 @@ const StyledImageWrapper = styled.div`
       }
 
       ${StyledImg} {
-        filter: blur(5px);
+        filter: ${({ theme }) => theme.components.userProfileImage.filter};
       }
     }
   }
