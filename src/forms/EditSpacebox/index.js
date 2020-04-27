@@ -3,6 +3,7 @@ import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 import Button from '../../components/Button';
 import { CATEGORIES, ROUTES } from '../../constants';
@@ -68,12 +69,9 @@ const StyledButtonsWrapper = styled.div`
   }
 `;
 
-const EditSpaceboxForm = ({
-  alertSetAction,
-  firebase,
-  history,
-  spacebox,
-}) => {
+const EditSpaceboxForm = ({ alertSetAction, firebase, spacebox }) => {
+  const history = useHistory();
+
   const EditSpaceboxFormSchema = Yup.object().shape({
     title: Yup.string().trim().required('yup.required'),
     description: Yup.string().trim().required('yup.required'),
@@ -261,7 +259,6 @@ const EditSpaceboxForm = ({
 EditSpaceboxForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

@@ -1,14 +1,14 @@
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import Recaptcha from 'react-recaptcha';
 import styled from 'styled-components';
 
 import Button from '../../components/Button';
-// import Checkbox from '../../components/Checkbox';
 import { ERRORS, ROUTES } from '../../constants';
 import Input from '../../components/Input';
 
@@ -31,13 +31,10 @@ const StyledBottomWrapper = styled.div`
   }
 `;
 
-const SignInForm = ({
-  alertSetAction,
-  firebase,
-  history,
-  returnUrlIfUserNeedsToSignIn,
-}) => {
+const SignInForm = ({ alertSetAction, firebase }) => {
   let recaptchaInstance;
+  const history = useHistory();
+  const location = useLocation();
 
   const SignInFormSchema = Yup.object().shape({
     email: Yup.string()
@@ -57,8 +54,14 @@ const SignInForm = ({
 
         await firebase.doSignInWithEmailAndPassword(email, password);
 
-        if (returnUrlIfUserNeedsToSignIn) {
-          history.push(returnUrlIfUserNeedsToSignIn);
+        if (location.search) {
+          const searchParams = queryString.parse(location.search);
+
+          if (searchParams.returnUrl) {
+            history.push(searchParams.returnUrl);
+          } else {
+            history.push(ROUTES.HOME);
+          }
         } else {
           history.push(ROUTES.HOME);
         }
@@ -130,22 +133,19 @@ const SignInForm = ({
             value={values.password}
           />
 
-          {/* <Checkbox
-            checked={values.rememberAccess}
-            disabled={isSubmitting}
-            label="forms.signIn.labels.rememberAccessCheckbox"
-            margin="0 0 25px 0"
-            onChangeHandler={() => setFieldValue(
-              'rememberAccess',
-              !values.rememberAccess,
-            )}
-            rounded
-          /> */}
-
           <StyledBottomWrapper>
             <Button disabled={isSubmitting} styleType="filled" type="submit">
               {'forms.signIn.submitButton'}
             </Button>
+
+            <StyledLink
+              to={{
+                pathname: ROUTES.SIGN_UP,
+                search: location.search ? location.search : null,
+              }}
+            >
+              <FormattedMessage id="forms.signIn.signUpLink" />
+            </StyledLink>
 
             <StyledLink to={ROUTES.PASSWORD_FORGET}>
               <FormattedMessage id="forms.signIn.forgotPasswordLink" />
@@ -169,12 +169,6 @@ const SignInForm = ({
 SignInForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-  returnUrlIfUserNeedsToSignIn: PropTypes.string,
-};
-
-SignInForm.defaultProps = {
-  returnUrlIfUserNeedsToSignIn: null,
 };
 
 export default SignInForm;

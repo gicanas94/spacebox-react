@@ -2,7 +2,6 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 
 import { alertSet } from '../../Redux/actions';
 import Box from '../../components/Box';
@@ -11,40 +10,17 @@ import SignInForm from '../../forms/SignIn';
 import SignInSocialMediaForm from '../../forms/SignInSocialMedia';
 import { withFirebase } from '../../Firebase';
 
-const SignInPage = ({
-  alertSetAction,
-  firebase,
-  history,
-}) => (
+const SignInPage = ({ alertSetAction, firebase }) => (
   <Box size="small">
     <HelmetTitle title={{ id: 'pages.signIn.title' }} />
-
-    <SignInForm
-      alertSetAction={alertSetAction}
-      firebase={firebase}
-      history={history}
-      returnUrlIfUserNeedsToSignIn={(
-        history.location.state
-        && history.location.state.returnUrlIfUserNeedsToSignIn
-      )}
-    />
-
-    <SignInSocialMediaForm
-      alertSetAction={alertSetAction}
-      firebase={firebase}
-      history={history}
-      returnUrlIfUserNeedsToSignIn={(
-        history.location.state
-        && history.location.state.returnUrlIfUserNeedsToSignIn
-      )}
-    />
+    <SignInForm alertSetAction={alertSetAction} firebase={firebase} />
+    <SignInSocialMediaForm alertSetAction={alertSetAction} firebase={firebase} />
   </Box>
 );
 
 SignInPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapDispatchToProps = { alertSetAction: alertSet };
@@ -52,5 +28,4 @@ const mapDispatchToProps = { alertSetAction: alertSet };
 export default compose(
   connect(null, mapDispatchToProps),
   withFirebase,
-  withRouter,
 )(SignInPage);

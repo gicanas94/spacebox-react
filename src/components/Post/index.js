@@ -11,6 +11,7 @@ import {
 import { FormattedRelativeTime, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import queryString from 'query-string';
 import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { Transition } from 'react-spring/renderprops';
@@ -233,9 +234,9 @@ const Post = ({
   const postLinkInputId = `post-link-textarea_${post.slug}`;
   const commentFormTextareaId = `comment-form-textarea_${post.slug}`;
 
-  const returnUrlIfUserNeedsToSignIn = (
-    `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`
-  );
+  const returnUrl = queryString.stringify({
+    returnUrl: `${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`,
+  });
 
   const intl = useIntl();
 
@@ -458,7 +459,7 @@ const Post = ({
               <Link
                 to={{
                   pathname: ROUTES.SIGN_IN,
-                  state: { returnUrlIfUserNeedsToSignIn },
+                  search: `${returnUrl}`,
                 }}
               >
                 {likePostIcon}
@@ -467,7 +468,7 @@ const Post = ({
               <Link
                 to={{
                   pathname: ROUTES.SIGN_IN,
-                  state: { returnUrlIfUserNeedsToSignIn },
+                  search: `${returnUrl}`,
                 }}
               >
                 {commentPostIcon}
@@ -480,7 +481,7 @@ const Post = ({
               <Link
                 to={{
                   pathname: ROUTES.VERIFY_EMAIL,
-                  state: { returnUrlIfUserNeedsToSignIn },
+                  search: `${returnUrl}`,
                 }}
               >
                 {likePostIcon}
@@ -489,7 +490,7 @@ const Post = ({
               <Link
                 to={{
                   pathname: ROUTES.VERIFY_EMAIL,
-                  state: { returnUrlIfUserNeedsToSignIn },
+                  search: `${returnUrl}`,
                 }}
               >
                 {commentPostIcon}

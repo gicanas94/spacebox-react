@@ -121,7 +121,7 @@ const StyledSpacebox = styled.div`
     &:hover {
       ${({ description, theme }) => description && `
         ${StyledTitle} {
-          filter: ${theme.components.spacebox.title.filterOnHover}
+          filter: ${theme.components.spacebox.title.filterOnHover};
           opacity: 0.2;
         }
 

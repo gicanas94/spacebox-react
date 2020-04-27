@@ -139,6 +139,7 @@ class Firebase {
           createdAt: document.data().createdAt,
           email: authUser.email,
           emailVerified: authUser.emailVerified,
+          followedSpaceboxes: document.data().followedSpaceboxes,
           language: document.data().language,
           profileImageUrl: document.data().profileImageUrl,
           providerData: authUser.providerData,

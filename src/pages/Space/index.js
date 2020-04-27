@@ -1,7 +1,15 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Link, withRouter } from 'react-router-dom';
+
+import {
+  Link,
+  useHistory,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
+
+import queryString from 'query-string';
 import PropTypes from 'prop-types';
 
 import React, {
@@ -121,10 +129,7 @@ const SpacePage = ({
   confirmationModalCloseAction,
   confirmationModalOpenAction,
   firebase,
-  history,
   isLoadingSetAction,
-  location,
-  match,
 }) => {
   // ----- Declarations --------------------------------------------------------
   const [spacebox, setSpacebox] = useState(null);
@@ -139,6 +144,10 @@ const SpacePage = ({
 
   const postsRef = useRef(posts);
   const postsLimitRef = useRef(postsLimit);
+
+  const history = useHistory();
+  const location = useLocation();
+  const params = useParams();
 
   const setPosts = (newListOfPosts) => {
     postsRef.current = newListOfPosts;
@@ -288,6 +297,14 @@ const SpacePage = ({
     })
   );
 
+  const handleFollowSpaceboxButtonClick = () => {
+    console.log('follow');
+  };
+
+  const handleUnfollowSpaceboxButtonClick = () => {
+    console.log('unfollow');
+  };
+
   const deletePostCallback = (deletedPost) => {
     if (postOfLocationPathname.slug === deletedPost.slug) {
       setPostOfLocationPathname({});
@@ -330,10 +347,10 @@ const SpacePage = ({
           setSpacebox(location.state.spacebox);
           spaceboxData = location.state.spacebox;
         } else {
-          spaceboxData = await getSpacebox(match.params.spaceboxSlug);
+          spaceboxData = await getSpacebox(params.spaceboxSlug);
         }
 
-        const postsData = await getPosts(match.params.spaceboxSlug);
+        const postsData = await getPosts(params.spaceboxSlug);
         await composePostsHistory(postsData);
         await getUser(spaceboxData.uid);
 
@@ -341,10 +358,10 @@ const SpacePage = ({
           window.addEventListener('scroll', getMorePostsIfScrollIsAtTheEnd);
         }
 
-        if (match.params.postSlug) {
+        if (params.postSlug) {
           await getPostOfLocationPathname(
             spaceboxData.slug,
-            match.params.postSlug,
+            params.postSlug,
           );
         } else {
           setAllTasksFinished(true);
@@ -367,6 +384,19 @@ const SpacePage = ({
       window.removeEventListener('scroll', getMorePostsIfScrollIsAtTheEnd);
     };
   }, []);
+
+  const followSpaceboxButton = (
+    <Button
+      color="emerald"
+      fullWidth
+      onClick={authUser ? handleFollowSpaceboxButtonClick : null}
+      size="large"
+      styleType="filled"
+      type="button"
+    >
+      {'pages.space.buttons.followSpacebox'}
+    </Button>
+  )
 
   return (
     <Fragment>
@@ -511,15 +541,39 @@ const SpacePage = ({
                 )}
 
                 {authUser.uid !== spacebox.uid && (
-                  <Button
-                    color="emerald"
-                    fullWidth
-                    size="large"
-                    styleType="filled"
-                    type="button"
-                  >
-                    {'pages.space.buttons.followSpacebox'}
-                  </Button>
+                  <Fragment>
+                    {authUser.followedSpaceboxes
+                      && authUser.followedSpaceboxes.includes(spacebox.slug) && (
+                      <Button
+                        color="emerald"
+                        fullWidth
+                        size="large"
+                        styleType="filled"
+                        type="button"
+                      >
+                        {'pages.space.buttons.unfollowSpacebox'}
+                      </Button>
+                    )}
+
+                    {
+                      ((authUser.followedSpaceboxes && !authUser.followedSpaceboxes.includes(spacebox.slug))
+                      || (authUser && !authUser.followedSpaceboxes))
+                      && followSpaceboxButton
+                    }
+
+                    {!authUser && (
+                      <Link
+                        to={{
+                          pathname: ROUTES.SIGN_IN,
+                          search: queryString.stringify({
+                            returnUrl: location.pathname,
+                          }),
+                        }}
+                      >
+                        {followSpaceboxButton}
+                      </Link>
+                    )}
+                  </Fragment>
                 )}
 
                 <Link to={{
@@ -581,10 +635,7 @@ SpacePage.propTypes = {
   confirmationModalCloseAction: PropTypes.func.isRequired,
   confirmationModalOpenAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoadingSetAction: PropTypes.func.isRequired,
-  location: PropTypes.objectOf(PropTypes.any).isRequired,
-  match: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = state => ({ authUser: state.authUser });
@@ -599,5 +650,4 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withFirebase,
-  withRouter,
 )(SpacePage);

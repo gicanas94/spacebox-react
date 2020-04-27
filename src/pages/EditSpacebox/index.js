@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Trash } from 'styled-icons/fa-solid';
-import { withRouter } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { alertSet, confirmationModalOpen, isLoadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
@@ -49,10 +49,8 @@ const EditSpaceboxPage = ({
   authUser,
   confirmationModalOpenAction,
   firebase,
-  history,
   isLoading,
   isLoadingSetAction,
-  match,
 }) => {
   const [spacebox, setSpacebox] = useState(null);
 
@@ -60,6 +58,9 @@ const EditSpaceboxPage = ({
     deleteSpaceboxInProgress,
     setDeleteSpaceboxInProgress,
   ] = useState(false);
+
+  const history = useHistory();
+  const params = useParams();
 
   useEffect(() => {
     (async () => {
@@ -73,7 +74,7 @@ const EditSpaceboxPage = ({
         data.forEach(document => userSpaceboxes.push(document.data()));
 
         const userSpaceboxToEdit = userSpaceboxes.filter(userSpacebox => (
-          userSpacebox.slug === match.params.spaceboxSlug
+          userSpacebox.slug === params.spaceboxSlug
         ))[0];
 
         if (userSpaceboxToEdit) {
@@ -158,7 +159,6 @@ const EditSpaceboxPage = ({
           <EditSpaceboxForm
             alertSetAction={alertSetAction}
             firebase={firebase}
-            history={history}
             spacebox={spacebox}
           />
         </Box>
@@ -172,10 +172,8 @@ EditSpaceboxPage.propTypes = {
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   confirmationModalOpenAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool.isRequired,
   isLoadingSetAction: PropTypes.func.isRequired,
-  match: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -194,5 +192,4 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withAuthorization(condition),
   withFirebase,
-  withRouter,
 )(EditSpaceboxPage);

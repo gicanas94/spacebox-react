@@ -1,17 +1,17 @@
 import _ from 'lodash';
+import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { defineAppLocale } from '../../utils';
 import { ERRORS, ROUTES } from '../../constants';
 import SignInWithButton from '../../components/SignInWithButton';
 
-const SignInSocialMedia = ({
-  alertSetAction,
-  firebase,
-  history,
-  returnUrlIfUserNeedsToSignIn,
-}) => {
+const SignInSocialMedia = ({ alertSetAction, firebase }) => {
+  const history = useHistory();
+  const location = useLocation();
+
   const handleSignInWithClick = (doSignInWith) => {
     (async () => {
       try {
@@ -35,8 +35,14 @@ const SignInSocialMedia = ({
           });
         }
 
-        if (returnUrlIfUserNeedsToSignIn) {
-          history.push(returnUrlIfUserNeedsToSignIn);
+        if (location.search) {
+          const searchParams = queryString.parse(location.search);
+
+          if (searchParams.returnUrl) {
+            history.push(searchParams.returnUrl);
+          } else {
+            history.push(ROUTES.HOME);
+          }
         } else {
           history.push(ROUTES.HOME);
         }
@@ -91,12 +97,6 @@ const SignInSocialMedia = ({
 SignInSocialMedia.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-  returnUrlIfUserNeedsToSignIn: PropTypes.string,
-};
-
-SignInSocialMedia.defaultProps = {
-  returnUrlIfUserNeedsToSignIn: null,
 };
 
 export default SignInSocialMedia;

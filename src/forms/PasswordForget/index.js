@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import Recaptcha from 'react-recaptcha';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { alertSet } from '../../Redux/actions';
 import Button from '../../components/Button';
@@ -23,8 +23,9 @@ const StyledButtonWrapper = styled.div`
   }
 `;
 
-const PasswordForgetForm = ({ alertSetAction, firebase, history }) => {
+const PasswordForgetForm = ({ alertSetAction, firebase }) => {
   let recaptchaInstance;
+  const history = useHistory();
 
   const PasswordForgetFormSchema = Yup.object().shape({
     email: Yup.string()
@@ -136,7 +137,6 @@ const PasswordForgetForm = ({ alertSetAction, firebase, history }) => {
 PasswordForgetForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapDispatchToProps = { alertSetAction: alertSet };
@@ -144,5 +144,4 @@ const mapDispatchToProps = { alertSetAction: alertSet };
 export default compose(
   connect(null, mapDispatchToProps),
   withFirebase,
-  withRouter,
 )(PasswordForgetForm);

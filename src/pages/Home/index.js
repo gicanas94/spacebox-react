@@ -1,6 +1,6 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -50,10 +50,10 @@ const HomePage = ({
   alertSetAction,
   authUser,
   firebase,
-  history,
   homepageSpaceboxesSetAction,
   spaceboxToSearch,
 }) => {
+  const history = useHistory();
   const intl = useIntl();
   const [componentIsMounted, setComponentIsMounted] = useState(true);
   const [gettingSpaceboxes, setGettingSpaceboxes] = useState(false);
@@ -181,7 +181,6 @@ HomePage.propTypes = {
   allSpaceboxes: PropTypes.arrayOf(PropTypes.object),
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   homepageSpaceboxesSetAction: PropTypes.func.isRequired,
   spaceboxToSearch: PropTypes.string,
 };
@@ -205,5 +204,4 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withFirebase,
-  withRouter,
 )(HomePage);

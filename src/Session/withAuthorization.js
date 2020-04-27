@@ -2,18 +2,15 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { ROUTES } from '../constants';
 import { withFirebase } from '../Firebase';
 
 const withAuthorization = condition => (Component) => {
-  const WithAuthorization = ({
-    authUser,
-    firebase,
-    history,
-    ...props
-  }) => {
+  const WithAuthorization = ({ authUser, firebase, ...props }) => {
+    const history = useHistory();
+
     useEffect(() => {
       const listener = firebase.onAuthUserListener(
         () => {
@@ -35,7 +32,6 @@ const withAuthorization = condition => (Component) => {
   WithAuthorization.propTypes = {
     authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
     firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-    history: PropTypes.objectOf(PropTypes.any).isRequired,
   };
 
   const mapStateToProps = state => ({ authUser: state.authUser });
@@ -43,7 +39,6 @@ const withAuthorization = condition => (Component) => {
   return compose(
     connect(mapStateToProps),
     withFirebase,
-    withRouter,
   )(WithAuthorization);
 };
 

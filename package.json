@@ -1,5 +1,5 @@
 {
-  "name": "Spacebox",
+  "name": "spacebox",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,6 +12,7 @@
     "if-emoji": "^0.1.0",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
+    "query-string": "^6.12.1",
     "react": "^16.13.0",
     "react-color": "^2.18.0",
     "react-dom": "^16.13.0",

@@ -1,7 +1,6 @@
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Cross } from 'styled-icons/icomoon';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu } from 'styled-icons/remix-fill';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -165,15 +164,10 @@ const StyledLaptopViewNavElementsWrapper = styled.div`
   }
 `;
 
-const Header = ({
-  // appTheme,
-  // appThemeSetAction,
-  authUser,
-  // history,
-  location,
-}) => {
+const Header = ({ /* appTheme, appThemeSetAction, */ authUser }) => {
   const [mobileNavIsOpen, setMobileNavIsOpen] = useState(false);
   const intl = useIntl();
+  const location = useLocation();
 
   // const handleLogoClick = () => {
   //   themes.forEach((theme, index) => {
@@ -230,7 +224,6 @@ const Header = ({
                     authUser={authUser}
                     buttonsPadding="10px 40px"
                     buttonsSize="headerOnMobile"
-                    location={location}
                     onNavItemClickHandler={setMobileNavIsOpen}
                   />
                 </StyledMobileViewNav>
@@ -265,7 +258,6 @@ const Header = ({
                 authUser={authUser}
                 buttonsPadding="0 7px"
                 buttonsSize="headerOnLaptop"
-                location={location}
                 onNavItemClickHandler={setMobileNavIsOpen}
               />
             </StyledLaptopViewNavElementsWrapper>
@@ -280,8 +272,6 @@ Header.propTypes = {
   // appTheme: PropTypes.oneOfType([PropTypes.any]).isRequired,
   // appThemeSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-  location: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -291,7 +281,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = { appThemeSetAction: appThemeSet };
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withRouter,
-)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

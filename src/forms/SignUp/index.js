@@ -4,7 +4,8 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import Recaptcha from 'react-recaptcha';
@@ -65,13 +66,10 @@ const StyledBottomWrapper = styled.div`
   }
 `;
 
-const SignUpForm = ({
-  alertSetAction,
-  authUser,
-  firebase,
-  history,
-}) => {
+const SignUpForm = ({ alertSetAction, authUser, firebase }) => {
   const intl = useIntl();
+  const history = useHistory();
+  const location = useLocation();
   const minimumPasswordCharacters = 6;
   const minimumUsernameCharacters = 4;
   const maximumUsernameCharacters = 25;
@@ -139,7 +137,17 @@ const SignUpForm = ({
           type: 'success',
         });
 
-        history.push(ROUTES.HOME);
+        if (location.search) {
+          const searchParams = queryString.parse(location.search);
+
+          if (searchParams.returnUrl) {
+            history.push(searchParams.returnUrl);
+          } else {
+            history.push(ROUTES.HOME);
+          }
+        } else {
+          history.push(ROUTES.HOME);
+        }
       } catch (error) {
         alertSetAction({
           message: error.message,
@@ -251,7 +259,7 @@ const SignUpForm = ({
               values={{
                 termsOfUseLink: (
                   <span>
-                    <Link to={ROUTES.TERMS_OF_USE}>
+                    <Link target="_blank" to={ROUTES.TERMS_OF_USE}>
                       <FormattedMessage id="forms.signUp.links.termsOfUse" />
                     </Link>
                   </span>
@@ -261,7 +269,12 @@ const SignUpForm = ({
           </StyledTermsOfUseNotice>
 
           <StyledBottomWrapper>
-            <StyledLink to={ROUTES.SIGN_IN}>
+            <StyledLink
+              to={{
+                pathname: ROUTES.SIGN_IN,
+                search: location.search ? location.search : null,
+              }}
+            >
               <FormattedMessage id="forms.signUp.links.signIn" />
             </StyledLink>
 
@@ -292,7 +305,6 @@ SignUpForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = state => ({ authUser: state.authUser });
@@ -302,5 +314,4 @@ const mapDispatchToProps = { alertSetAction: alertSet };
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withFirebase,
-  withRouter,
 )(SignUpForm);

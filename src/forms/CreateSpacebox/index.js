@@ -6,8 +6,8 @@ import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { withRouter } from 'react-router-dom';
 
 import { alertSet } from '../../Redux/actions';
 import { CATEGORIES, ROUTES } from '../../constants';
@@ -60,12 +60,8 @@ const StyledPageWrapper = styled.div`
   }
 `;
 
-const CreateSpaceboxForm = ({
-  alertSetAction,
-  authUser,
-  firebase,
-  history,
-}) => {
+const CreateSpaceboxForm = ({ alertSetAction, authUser, firebase }) => {
+  const history = useHistory();
   const intl = useIntl();
 
   const CreateSpaceboxFormSchema = [
@@ -340,7 +336,6 @@ CreateSpaceboxForm.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapDispatchToProps = { alertSetAction: alertSet };
@@ -348,5 +343,4 @@ const mapDispatchToProps = { alertSetAction: alertSet };
 export default compose(
   connect(null, mapDispatchToProps),
   withFirebase,
-  withRouter,
 )(CreateSpaceboxForm);

@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
-import { /* Route, Switch, */ withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 import { alertSet, isLoadingSet } from '../../Redux/actions';
 import Box from '../../components/Box';
@@ -60,7 +60,6 @@ const AdminPage = ({
   alertSetAction,
   authUser,
   firebase,
-  history,
   isLoading,
   isLoadingSetAction,
 }) => {
@@ -117,6 +116,7 @@ const AdminPage = ({
   );
 
   const [authUserIsAdmin, setAuthUserIsAdmin] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     (async () => {
@@ -179,7 +179,6 @@ AdminPage.propTypes = {
   alertSetAction: PropTypes.func.isRequired,
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool.isRequired,
   isLoadingSetAction: PropTypes.func.isRequired,
 };
@@ -199,5 +198,4 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withAuthorization(condition),
   withFirebase,
-  withRouter,
 )(AdminPage);

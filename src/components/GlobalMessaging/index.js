@@ -1,9 +1,8 @@
 import _ from 'lodash';
-import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { device } from '../../styles';
 import { getCookie, setCookie } from '../../utils';
@@ -22,8 +21,9 @@ const StyledGlobalMessagesWrapper = styled.div`
   }
 `;
 
-const GlobalMessaging = ({ appLocale, firebase, location }) => {
+const GlobalMessaging = ({ appLocale, firebase }) => {
   const [globalMessages, setGlobalMessages] = useState(null);
+  const location = useLocation();
 
   const onCloseGlobalMessageIconClickHandler = (globalMessageToDismiss) => {
     setCookie(
@@ -74,10 +74,6 @@ const GlobalMessaging = ({ appLocale, firebase, location }) => {
 GlobalMessaging.propTypes = {
   appLocale: PropTypes.string.isRequired,
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
-  location: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default compose(
-  withFirebase,
-  withRouter,
-)(GlobalMessaging);
+export default withFirebase(GlobalMessaging);

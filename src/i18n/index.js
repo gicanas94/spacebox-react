@@ -227,6 +227,7 @@ export default {
           passwordInput: 'Password',
           rememberAccessCheckbox: 'Remember this access',
         },
+        signUpLink: 'Want to sign up?',
         forgotPasswordLink: 'Forgot password?',
         submitButton: 'Sign in',
       },
@@ -382,6 +383,7 @@ export default {
         buttons: {
           editSpacebox: 'Edit Spacebox',
           followSpacebox: 'Follow',
+          unfollowSpacebox: 'Unfollow',
           newPost: 'Create a new post',
           userProfile: 'Writer\'s profile',
           userProfileAuthUser: 'My profile',
@@ -617,6 +619,7 @@ export default {
           passwordInput: 'Contraseña',
           rememberAccessCheckbox: 'Recordar este acceso',
         },
+        signUpLink: '¿Quieres registrarte?',
         forgotPasswordLink: '¿Olvidaste tu contraseña?',
         submitButton: 'Ingresar',
       },
@@ -772,6 +775,7 @@ export default {
         buttons: {
           editSpacebox: 'Editar Spacebox',
           followSpacebox: 'Seguir',
+          unfollowSpacebox: 'Dejar de seguir',
           newPost: 'Nueva publicación',
           userProfile: 'Perfil del escritor',
           userProfileAuthUser: 'Mi perfil',

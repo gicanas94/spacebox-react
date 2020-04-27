@@ -3,7 +3,7 @@ import { HashLink } from 'react-router-hash-link';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import Box from '../Box';
 import { device } from '../../styles';
@@ -79,7 +79,9 @@ const StyledLi = styled.li`
   }
 `;
 
-const Sidebar = ({ content, location }) => {
+const Sidebar = ({ content }) => {
+  const location = useLocation();
+
   const myContent = (
     <StyledSections>
       {content.map(section => (
@@ -132,7 +134,6 @@ const Sidebar = ({ content, location }) => {
 
 Sidebar.propTypes = {
   content: PropTypes.arrayOf(PropTypes.object).isRequired,
-  location: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withRouter(Sidebar);
+export default Sidebar;
