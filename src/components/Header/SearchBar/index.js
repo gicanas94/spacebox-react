@@ -64,7 +64,7 @@ const SearchBar = ({
       <StyledSearchIcon onClick={() => textInput.focus()} />
 
       <StyledInput
-        onChange={event => searchBarChangeAction(event.target.value)}
+        onChange={(event) => searchBarChangeAction(event.target.value)}
         placeholder={
           intl.formatMessage({ id: 'components.header.searchBar.placeholder' })
         }
@@ -89,7 +89,7 @@ SearchBar.defaultProps = {
   spaceboxToSearch: '',
 };
 
-const mapStateToProps = state => ({ spaceboxToSearch: state.spaceboxToSearch });
+const mapStateToProps = (state) => ({ spaceboxToSearch: state.spaceboxToSearch });
 
 const mapDispatchToProps = { searchBarChangeAction: searchBarChange };
 

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { defineAppLocale } from '../../utils';
@@ -58,7 +58,7 @@ const SignInSocialMedia = ({ alertSetAction, firebase }) => {
   };
 
   return (
-    <Fragment>
+    <>
       <SignInWithButton
         account="Google"
         fullWidth
@@ -90,7 +90,7 @@ const SignInSocialMedia = ({ alertSetAction, firebase }) => {
         rounded
         type="button"
       />
-    </Fragment>
+    </>
   );
 };
 

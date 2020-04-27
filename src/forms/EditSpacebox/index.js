@@ -78,7 +78,7 @@ const EditSpaceboxForm = ({ alertSetAction, firebase, spacebox }) => {
     category: Yup
       .string()
       .trim()
-      .oneOf(CATEGORIES.map(category => category.messageId), 'yup.required')
+      .oneOf(CATEGORIES.map((category) => category.messageId), 'yup.required')
       .required('yup.required'),
   });
 
@@ -114,7 +114,7 @@ const EditSpaceboxForm = ({ alertSetAction, firebase, spacebox }) => {
           type: 'danger',
         });
 
-        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
 
         actions.setSubmitting(false);
       }
@@ -239,7 +239,7 @@ const EditSpaceboxForm = ({ alertSetAction, firebase, spacebox }) => {
               styleType="unbordered"
               type="button"
             >
-              {'forms.editSpacebox.cancelButton'}
+              forms.editSpacebox.cancelButton
             </Button>
 
             <Button
@@ -247,7 +247,7 @@ const EditSpaceboxForm = ({ alertSetAction, firebase, spacebox }) => {
               styleType="bordered"
               type="submit"
             >
-              {'forms.editSpacebox.submitButton'}
+              forms.editSpacebox.submitButton
             </Button>
           </StyledButtonsWrapper>
         </Form>

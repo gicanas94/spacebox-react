@@ -1,6 +1,6 @@
 import { keyframes } from 'styled-components';
 
-const beat = scale => keyframes`
+const beat = (scale) => keyframes`
   0% {
     transform: scale(1);
   }
@@ -22,7 +22,7 @@ const beat = scale => keyframes`
   }
 `;
 
-const float = translateY => keyframes`
+const float = (translateY) => keyframes`
   0% {
     transform: translateY(${translateY[0]});
   }

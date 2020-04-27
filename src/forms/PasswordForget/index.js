@@ -54,7 +54,7 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
           type: 'danger',
         });
 
-        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
 
         actions.setSubmitting(false);
       }
@@ -105,7 +105,7 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
               styleType="bordered"
               type="submit"
             >
-              {'forms.passwordForget.submitButton'}
+              forms.passwordForget.submitButton
             </Button>
 
             <Button
@@ -116,7 +116,7 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
               styleType="unbordered"
               type="button"
             >
-              {'forms.passwordForget.backButton'}
+              forms.passwordForget.backButton
             </Button>
           </StyledButtonWrapper>
 

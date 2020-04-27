@@ -31,56 +31,56 @@ class Firebase {
   doCreateUserWithEmailAndPassword = (email, password) => (
     new Promise((resolve, reject) => (
       this.auth.createUserWithEmailAndPassword(email, password)
-        .then(createdAuthUser => resolve(createdAuthUser))
-        .catch(error => reject(error))
+        .then((createdAuthUser) => resolve(createdAuthUser))
+        .catch((error) => reject(error))
     ))
   );
 
-  doFetchSignInMethodsForEmail = email => (
+  doFetchSignInMethodsForEmail = (email) => (
     new Promise((resolve, reject) => (
       this.auth.fetchSignInMethodsForEmail(email)
-        .then(signInMethods => resolve(signInMethods))
-        .catch(error => reject(error))
+        .then((signInMethods) => resolve(signInMethods))
+        .catch((error) => reject(error))
     ))
   );
 
-  doLinkAndRetrieveDataWithCredential = credential => (
+  doLinkAndRetrieveDataWithCredential = (credential) => (
     new Promise((resolve, reject) => (
       this.auth.currentUser.linkAndRetrieveDataWithCredential(credential)
         .then(() => resolve())
-        .catch(error => reject(error))
+        .catch((error) => reject(error))
     ))
   );
 
-  doLinkWithPopup = provider => (
+  doLinkWithPopup = (provider) => (
     new Promise((resolve, reject) => (
       this.auth.currentUser.linkWithPopup(this[provider])
         .then(() => resolve())
-        .catch(error => reject(error))
+        .catch((error) => reject(error))
     ))
   );
 
-  doUnlink = providerId => (
+  doUnlink = (providerId) => (
     new Promise((resolve, reject) => (
       this.auth.currentUser.unlink(providerId)
         .then(() => resolve())
-        .catch(error => reject(error))
+        .catch((error) => reject(error))
     ))
   );
 
-  doPasswordReset = email => (
+  doPasswordReset = (email) => (
     new Promise((resolve, reject) => (
       this.auth.sendPasswordResetEmail(email)
         .then(() => resolve())
-        .catch(error => reject(error))
+        .catch((error) => reject(error))
     ))
   );
 
-  doPasswordUpdate = password => (
+  doPasswordUpdate = (password) => (
     new Promise((resolve, reject) => (
       this.auth.currentUser.updatePassword(password)
         .then(() => resolve())
-        .catch(error => reject(error))
+        .catch((error) => reject(error))
     ))
   );
 
@@ -90,39 +90,39 @@ class Firebase {
         url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
       })
         .then(() => resolve())
-        .catch(error => reject(error))
+        .catch((error) => reject(error))
     ))
   );
 
   doSignInWithEmailAndPassword = (email, password) => (
     new Promise((resolve, reject) => (
       this.auth.signInWithEmailAndPassword(email, password)
-        .then(authUser => resolve(authUser))
-        .catch(error => reject(error))
+        .then((authUser) => resolve(authUser))
+        .catch((error) => reject(error))
     ))
   );
 
   doSignInWithGoogle = () => (
     new Promise((resolve, reject) => (
       this.auth.signInWithPopup(this.googleProvider)
-        .then(socialAuthUser => resolve(socialAuthUser))
-        .catch(error => reject(error))
+        .then((socialAuthUser) => resolve(socialAuthUser))
+        .catch((error) => reject(error))
     ))
   );
 
   doSignInWithFacebook = () => (
     new Promise((resolve, reject) => (
       this.auth.signInWithPopup(this.facebookProvider)
-        .then(socialAuthUser => resolve(socialAuthUser))
-        .catch(error => reject(error))
+        .then((socialAuthUser) => resolve(socialAuthUser))
+        .catch((error) => reject(error))
     ))
   );
 
   doSignInWithTwitter = () => (
     new Promise((resolve, reject) => (
       this.auth.signInWithPopup(this.twitterProvider)
-        .then(socialAuthUser => resolve(socialAuthUser))
-        .catch(error => reject(error))
+        .then((socialAuthUser) => resolve(socialAuthUser))
+        .catch((error) => reject(error))
     ))
   );
 
@@ -133,7 +133,7 @@ class Firebase {
   // ---------------------------------------------------------------------------
   onAuthUserListener = (next, fallback) => this.auth.onAuthStateChanged((authUser) => {
     if (authUser) {
-      this.user(authUser.uid).onSnapshot(document => (
+      this.user(authUser.uid).onSnapshot((document) => (
         next({
           bio: document.data().bio,
           createdAt: document.data().createdAt,
@@ -156,7 +156,7 @@ class Firebase {
   // ---------------------------------------------------------------------------
   // Spacebox API --------------------------------------------------------------
   // ---------------------------------------------------------------------------
-  spacebox = sid => this.db.collection('spaceboxes').doc(sid);
+  spacebox = (sid) => this.db.collection('spaceboxes').doc(sid);
 
   allVisibleSpaceboxes = () => (
     this.db.collection('spaceboxes').where('visible', '==', true)
@@ -167,23 +167,23 @@ class Firebase {
   // ---------------------------------------------------------------------------
   post = (sid, pid) => this.spacebox(sid).collection('posts').doc(pid);
 
-  spaceboxPosts = sid => this.spacebox(sid).collection('posts');
+  spaceboxPosts = (sid) => this.spacebox(sid).collection('posts');
 
   // ---------------------------------------------------------------------------
   // User API ------------------------------------------------------------------
   // ---------------------------------------------------------------------------
-  user = uid => this.db.collection('users').doc(uid);
+  user = (uid) => this.db.collection('users').doc(uid);
 
   allUsers = () => this.db.collection('users');
 
-  userSpaceboxes = uid => (
+  userSpaceboxes = (uid) => (
     this.db.collection('spaceboxes').where('uid', '==', uid)
   );
 
   // ---------------------------------------------------------------------------
   // Restricted user data API --------------------------------------------------
   // ---------------------------------------------------------------------------
-  userRestrictedData = uid => (
+  userRestrictedData = (uid) => (
     this.user(uid).collection('restricted').doc('data')
   );
 

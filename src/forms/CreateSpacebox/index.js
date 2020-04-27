@@ -65,7 +65,7 @@ const CreateSpaceboxForm = ({ alertSetAction, authUser, firebase }) => {
   const intl = useIntl();
 
   const CreateSpaceboxFormSchema = [
-    {},
+    Yup.object().shape({}),
     Yup.object().shape({
       title: Yup.string().trim().required('yup.required'),
       description: Yup.string().required('yup.required'),
@@ -74,7 +74,7 @@ const CreateSpaceboxForm = ({ alertSetAction, authUser, firebase }) => {
       category: Yup
         .string()
         .trim()
-        .oneOf(CATEGORIES.map(category => category.messageId), 'yup.required')
+        .oneOf(CATEGORIES.map((category) => category.messageId), 'yup.required')
         .required('yup.required'),
     }),
   ];
@@ -114,7 +114,7 @@ const CreateSpaceboxForm = ({ alertSetAction, authUser, firebase }) => {
           type: 'danger',
         });
 
-        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
 
         actions.setSubmitting(false);
       }
@@ -294,8 +294,7 @@ const CreateSpaceboxForm = ({ alertSetAction, authUser, firebase }) => {
                   disabled={form.isSubmitting}
                   error={form.errors.category
                     && form.touched.category
-                    && form.errors.category
-                  }
+                    && form.errors.category}
                   label="forms.createSpacebox.labels.categorySelect"
                   margin="0 0 25px 0"
                   onChangeHandler={(category) => {

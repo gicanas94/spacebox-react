@@ -23,8 +23,8 @@ const StyledWrapper = styled.div`
 
   @media ${device.tablet} {
     background-color: ${({ theme }) => (
-      theme.components.confirmationModal.bgColor2
-    )};
+    theme.components.confirmationModal.bgColor2
+  )};
   }
 `;
 

@@ -8,8 +8,8 @@ import {
 
 import { ErrorOutline } from 'styled-icons/material';
 import PropTypes from 'prop-types';
-import { FormattedHTMLMessage, FormattedMessage } from 'react-intl';
-import React, { Fragment, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { keyframe, transition } from '../../styles';
@@ -69,26 +69,26 @@ const StyledRichUtilButton = styled.button`
 
   &:hover {
     background-color: ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.status.hover.bgColor
-    )};
+    theme.components.richTextEditor.richUtilButton.status.hover.bgColor
+  )};
     border ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.status.hover.border
-    )};
+    theme.components.richTextEditor.richUtilButton.status.hover.border
+  )};
     color: ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.status.hover.color
-    )};
+    theme.components.richTextEditor.richUtilButton.status.hover.color
+  )};
   }
 
   &.active {
     background-color: ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.status.active.bgColor
-    )};
+    theme.components.richTextEditor.richUtilButton.status.active.bgColor
+  )};
     border ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.status.active.border
-    )};
+    theme.components.richTextEditor.richUtilButton.status.active.border
+  )};
     color: ${({ theme }) => (
-      theme.components.richTextEditor.richUtilButton.status.active.color
-    )};
+    theme.components.richTextEditor.richUtilButton.status.active.color
+  )};
 `;
 
 const StyledEditorAndRichUtilsButtonsWrapper = styled.div`
@@ -145,20 +145,20 @@ const StyledWrapper = styled.div`
 
     ${StyledEditorAndRichUtilsButtonsWrapper} {
       border-color: ${(
-        theme.components.richTextEditor.status.disabled
-      )} !important;
+    theme.components.richTextEditor.status.disabled
+  )} !important;
     }
 
     ${StyledRichUtilButton} {
       background-color: ${(
-        theme.components.richTextEditor.richUtilButton.status.disabled.bgColor
-      )};
+    theme.components.richTextEditor.richUtilButton.status.disabled.bgColor
+  )};
       border ${(
-        theme.components.richTextEditor.richUtilButton.status.disabled.border
-      )};
+    theme.components.richTextEditor.richUtilButton.status.disabled.border
+  )};
       color: ${(
-        theme.components.richTextEditor.richUtilButton.status.disabled.color
-      )};
+    theme.components.richTextEditor.richUtilButton.status.disabled.color
+  )};
       cursor: default;
 
       &:active {
@@ -330,7 +330,7 @@ const RichTextEditor = ({
 
       <StyledEditorAndRichUtilsButtonsWrapper>
         <StyledRichUtilButtonsWrapper>
-          {inlineStyleButtons.map(inlineStyleButton => (
+          {inlineStyleButtons.map((inlineStyleButton) => (
             <StyledRichUtilButton
               className={
                 editorState.getCurrentInlineStyle().has(inlineStyleButton.style)
@@ -340,14 +340,22 @@ const RichTextEditor = ({
               data-style={inlineStyleButton.style}
               key={inlineStyleButton.style}
               onClick={!disabled && toggleInlineStyle}
-              onMouseDown={event => event.preventDefault()}
+              onMouseDown={(event) => event.preventDefault()}
               type="button"
             >
-              <FormattedHTMLMessage id={inlineStyleButton.value} />
+              <FormattedMessage
+                id={inlineStyleButton.value}
+                values={{
+                  b: (...chunks) => <b>{chunks}</b>,
+                  i: (...chunks) => <i>{chunks}</i>,
+                  u: (...chunks) => <u>{chunks}</u>,
+                  s: (...chunks) => <s>{chunks}</s>,
+                }}
+              />
             </StyledRichUtilButton>
           ))}
 
-          {blockTypeButtons.map(blockTypeButton => (
+          {blockTypeButtons.map((blockTypeButton) => (
             <StyledRichUtilButton
               className={
                 RichUtils.getCurrentBlockType(editorState) === blockTypeButton.block
@@ -357,10 +365,10 @@ const RichTextEditor = ({
               data-block={blockTypeButton.block}
               key={blockTypeButton.block}
               onClick={!disabled && toggleBlockType}
-              onMouseDown={event => event.preventDefault()}
+              onMouseDown={(event) => event.preventDefault()}
               type="button"
             >
-              <FormattedHTMLMessage id={blockTypeButton.value} />
+              <FormattedMessage id={blockTypeButton.value} />
             </StyledRichUtilButton>
           ))}
         </StyledRichUtilButtonsWrapper>
@@ -376,13 +384,13 @@ const RichTextEditor = ({
       </StyledEditorAndRichUtilsButtonsWrapper>
 
       {!disabled && error && (
-        <Fragment>
+        <>
           <StyledErrorIcon />
 
           <StyledErrorMessage>
             <FormattedMessage defaultMessage={error} id={error} />
           </StyledErrorMessage>
-        </Fragment>
+        </>
       )}
     </StyledWrapper>
   );

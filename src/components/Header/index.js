@@ -214,7 +214,7 @@ const Header = ({ /* appTheme, appThemeSetAction, */ authUser }) => {
             items={mobileNavIsOpen}
             {...transitionProps.components.header.mobileNav}
           >
-            {navIsOpen => navIsOpen && (styleProps => (
+            {(navIsOpen) => navIsOpen && ((styleProps) => (
               <StyledOverlay style={styleProps}>
                 <StyledCloserOnClick onClick={() => setMobileNavIsOpen(false)} />
                 <StyledCrossIcon onClick={() => setMobileNavIsOpen(false)} />
@@ -274,7 +274,7 @@ Header.propTypes = {
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   appTheme: state.appTheme,
   authUser: state.authUser,
 });

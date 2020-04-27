@@ -151,7 +151,7 @@ const CommentForm = ({
           type: 'danger',
         });
 
-        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
 
         actions.setSubmitting(false);
       } finally {
@@ -232,7 +232,7 @@ const CommentForm = ({
               styleType="filled"
               type="submit"
             >
-              {'forms.comment.submitButton'}
+              forms.comment.submitButton
             </Button>
           </StyledWrapper>
 

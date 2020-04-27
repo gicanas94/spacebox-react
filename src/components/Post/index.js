@@ -12,7 +12,7 @@ import { FormattedRelativeTime, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Transition } from 'react-spring/renderprops';
 
@@ -203,7 +203,7 @@ const StyledCommentsWrapper = styled.div`
 
 const StyledSeeOrHideCommentsSpan = styled.span`
   color: ${({ theme }) => theme.components.post.seeOrHideComments.color};
-  cursor: pointer
+  cursor: pointer;
   font-weight: ${({ theme }) => (
     theme.components.post.seeOrHideComments.fontWeight
   )};
@@ -223,7 +223,6 @@ const Post = ({
   selected,
   selectedBoxWrapperRoundedBorder,
   spacebox,
-  user,
 }) => {
   const [commentsLimit, setCommentsLimit] = useState(2);
   const [likeInProgress, setLikeInProgress] = useState(false);
@@ -295,7 +294,7 @@ const Post = ({
 
         if (userAlreadyLikeThePost) {
           const newPostLikes = postDocument.data().likes.filter(
-            like => like.uid === authUser.uid,
+            (like) => like.uid === authUser.uid,
           );
 
           setPostLikes(newPostLikes);
@@ -352,13 +351,11 @@ const Post = ({
           id: 'components.post.iconsTooltips.needLoggedInToLike',
         }) : intl.formatMessage({
           id: 'components.post.iconsTooltips.needValidateEmailToLike',
-        })
-      }
+        })}
       disabled={likeInProgress || !authUser || !authUser.emailVerified}
       onClick={likeInProgress || !authUser || !authUser.emailVerified
         ? null
-        : () => handleLikePostIconClick()
-      }
+        : () => handleLikePostIconClick()}
       role="button"
     />
   );
@@ -371,13 +368,11 @@ const Post = ({
           id: 'components.post.iconsTooltips.needLoggedInToComment',
         }) : intl.formatMessage({
           id: 'components.post.iconsTooltips.needValidateEmailToComment',
-        })
-      }
+        })}
       disabled={!authUser || !authUser.emailVerified}
       onClick={!authUser || !authUser.emailVerified
         ? null
-        : () => setCommentFormIsVisible(!commentFormIsVisible)
-      }
+        : () => setCommentFormIsVisible(!commentFormIsVisible)}
     />
   );
 
@@ -436,7 +431,7 @@ const Post = ({
           items={postLinkIsVisible}
           {...transitionProps.components.post.postLink}
         >
-          {postLink => postLink && (styleProps => (
+          {(postLink) => postLink && ((styleProps) => (
             <PostLink
               inputId={postLinkInputId}
               link={
@@ -455,7 +450,7 @@ const Post = ({
       <StyledActionsAndStatsWrapper>
         <StyledActions>
           {!authUser && (
-            <Fragment>
+            <>
               <Link
                 to={{
                   pathname: ROUTES.SIGN_IN,
@@ -473,11 +468,11 @@ const Post = ({
               >
                 {commentPostIcon}
               </Link>
-            </Fragment>
+            </>
           )}
 
           {authUser && !authUser.emailVerified && (
-            <Fragment>
+            <>
               <Link
                 to={{
                   pathname: ROUTES.VERIFY_EMAIL,
@@ -495,18 +490,18 @@ const Post = ({
               >
                 {commentPostIcon}
               </Link>
-            </Fragment>
+            </>
           )}
 
           {authUser && authUser.emailVerified && (
-            <Fragment>
+            <>
               {likePostIcon}
               {commentPostIcon}
-            </Fragment>
+            </>
           )}
 
           {authUser && authUser.uid === spacebox.uid && (
-            <Fragment>
+            <>
               {deletePostIcon}
 
               <Tooltip
@@ -514,23 +509,23 @@ const Post = ({
                 id={`trash-icon_${post.slug}`}
                 place="right"
               />
-            </Fragment>
+            </>
           )}
         </StyledActions>
 
         <StyledStats>
           {postLikes.length > 0 && (
-            <Fragment>
+            <>
               <StyledLikesStatIcon />
               {intl.formatNumber(postLikes.length)}
-            </Fragment>
+            </>
           )}
 
           {postComments.length > 0 && (
-            <Fragment>
+            <>
               <StyledCommentsStatIcon />
               {intl.formatNumber(postComments.length)}
-            </Fragment>
+            </>
           )}
         </StyledStats>
       </StyledActionsAndStatsWrapper>
@@ -541,7 +536,7 @@ const Post = ({
             items={commentFormIsVisible}
             {...transitionProps.forms.comment}
           >
-            {commentForm => commentForm && (styleProps => (
+            {(commentForm) => commentForm && ((styleProps) => (
               <div style={styleProps}>
                 <CommentForm
                   alertSetAction={alertSetAction}
@@ -561,15 +556,9 @@ const Post = ({
       {postComments.length > 0 && (
         <StyledCommentsWrapper>
           {_.orderBy(postComments, 'createdAt', 'desc')
-            .slice(0, commentsLimit).map(comment => (
-              <Comment
-                authUser={authUser}
-                comment={comment}
-                key={comment.slug}
-                postUid={post.uid}
-              />
-            ))
-          }
+            .slice(0, commentsLimit).map((comment) => (
+              <Comment comment={comment} key={comment.slug} postUid={post.uid} />
+            ))}
 
           {postComments.length > commentsLimit && (
             <StyledSeeOrHideCommentsSpan
@@ -597,7 +586,7 @@ const Post = ({
       )}
 
       {(!authUser || !authUser.emailVerified) && (
-        <Fragment>
+        <>
           <Tooltip
             effect="solid"
             id={`like-heart-icon_${post.slug}`}
@@ -609,13 +598,13 @@ const Post = ({
             id={`comment-icon_${post.slug}`}
             place="right"
           />
-        </Fragment>
+        </>
       )}
     </Box>
   );
 
   return (
-    <Fragment>
+    <>
       {selected
         ? (
           <StyledSelectedPostWrapper
@@ -623,9 +612,8 @@ const Post = ({
           >
             {postBox}
           </StyledSelectedPostWrapper>
-        ) : postBox
-      }
-    </Fragment>
+        ) : postBox}
+    </>
   );
 };
 
@@ -639,7 +627,6 @@ Post.propTypes = {
   selected: PropTypes.bool,
   selectedBoxWrapperRoundedBorder: PropTypes.bool,
   spacebox: PropTypes.objectOf(PropTypes.any).isRequired,
-  user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 Post.defaultProps = {

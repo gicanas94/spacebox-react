@@ -69,8 +69,8 @@ const StyledLi = styled.li`
 
     &.active {
       font-weight: ${({ theme }) => (
-        theme.components.sidebar.activeLink.fontWeight
-      )};
+    theme.components.sidebar.activeLink.fontWeight
+  )};
     }
 
     &.not-active {
@@ -84,14 +84,14 @@ const Sidebar = ({ content }) => {
 
   const myContent = (
     <StyledSections>
-      {content.map(section => (
+      {content.map((section) => (
         <Fragment key={section.heading}>
           <StyledHeading>
             <FormattedMessage id={section.heading} />
           </StyledHeading>
 
           <ul>
-            {section.links.map(link => (
+            {section.links.map((link) => (
               link.visible && (
                 <StyledLi key={link.text}>
                   <HashLink
@@ -116,7 +116,7 @@ const Sidebar = ({ content }) => {
   );
 
   return (
-    <Fragment>
+    <>
       <StyledMobileView>
         <Box fullWidth>
           {myContent}
@@ -128,7 +128,7 @@ const Sidebar = ({ content }) => {
           {myContent}
         </Box>
       </StyledLaptopView>
-    </Fragment>
+    </>
   );
 };
 

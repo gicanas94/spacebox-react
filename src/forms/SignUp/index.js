@@ -57,7 +57,7 @@ const StyledBottomWrapper = styled.div`
     align-items: flex-end;
     display: flex;
     flex-direction: row;
-    justify-content: space-between
+    justify-content: space-between;
 
     button {
       margin-bottom: 0;
@@ -154,7 +154,7 @@ const SignUpForm = ({ alertSetAction, authUser, firebase }) => {
           type: 'danger',
         });
 
-        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
 
         actions.setSubmitting(false);
       }
@@ -283,7 +283,7 @@ const SignUpForm = ({ alertSetAction, authUser, firebase }) => {
               styleType="filled"
               type="submit"
             >
-              {'forms.signUp.submitButton'}
+              forms.signUp.submitButton
             </Button>
           </StyledBottomWrapper>
 
@@ -307,7 +307,7 @@ SignUpForm.propTypes = {
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapStateToProps = state => ({ authUser: state.authUser });
+const mapStateToProps = (state) => ({ authUser: state.authUser });
 
 const mapDispatchToProps = { alertSetAction: alertSet };
 

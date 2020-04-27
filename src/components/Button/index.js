@@ -30,13 +30,13 @@ const StyledButton = styled.button`
   }) => styleType === 'bordered' && `
     background-color: transparent;
     border-color: ${
-      color ? colors.palette[color] : theme.components.button.status.default
-    };
+  color ? colors.palette[color] : theme.components.button.status.default
+};
     border-style: solid;
     border-width: ${theme.components.button.borderWidth};
     color: ${
-      color ? colors.palette[color] : theme.components.button.status.default
-    };
+  color ? colors.palette[color] : theme.components.button.status.default
+};
 
     ${disabled ? `
       border-color: ${disabled && theme.components.button.status.disabled};
@@ -46,19 +46,19 @@ const StyledButton = styled.button`
       &:focus,
       &:hover {
         background-color: ${!disabled && color
-          ? colors.palette[color]
-          : theme.components.button.status.default
-        };
+    ? colors.palette[color]
+    : theme.components.button.status.default
+};
         color: ${Color(
-          color ? colors.palette[color] : theme.components.button.status.default
-        ).isDark()
-          ? Color(
-              color ? colors.palette[color] : theme.components.button.status.default
-            ).lighten(0.8).hex()
-          : Color(
-            color ? colors.palette[color] : theme.components.button.status.default
-          ).darken(0.7).hex()
-        };
+    color ? colors.palette[color] : theme.components.button.status.default,
+  ).isDark()
+    ? Color(
+      color ? colors.palette[color] : theme.components.button.status.default,
+    ).lighten(0.8).hex()
+    : Color(
+      color ? colors.palette[color] : theme.components.button.status.default,
+    ).darken(0.7).hex()
+};
       }
     `}
   `}
@@ -70,21 +70,21 @@ const StyledButton = styled.button`
     theme,
   }) => styleType === 'filled' && `
     background-color: ${
-      color ? colors.palette[color] : theme.components.button.status.default
-    };
+  color ? colors.palette[color] : theme.components.button.status.default
+};
     border-color: transparent;
     border-style: solid;
     border-width: ${theme.components.button.borderWidth};
     color: ${Color(
-      color ? colors.palette[color] : theme.components.button.status.default
-    ).isDark()
-      ? Color(
-          color ? colors.palette[color] : theme.components.button.status.default
-        ).lighten(0.8).hex()
-      : Color(
-          color ? colors.palette[color] : theme.components.button.status.default
-        ).darken(0.7).hex()
-    };
+    color ? colors.palette[color] : theme.components.button.status.default,
+  ).isDark()
+    ? Color(
+      color ? colors.palette[color] : theme.components.button.status.default,
+    ).lighten(0.8).hex()
+    : Color(
+      color ? colors.palette[color] : theme.components.button.status.default,
+    ).darken(0.7).hex()
+};
 
     ${disabled ? `
       background-color: ${theme.components.button.status.disabled};
@@ -94,8 +94,8 @@ const StyledButton = styled.button`
       &:focus,
       &:hover {
         background-color: ${Color(
-          color ? colors.palette[color] : theme.components.button.status.default
-        ).darken(0.2).hex()};
+    color ? colors.palette[color] : theme.components.button.status.default,
+  ).darken(0.2).hex()};
       }
     `}
   `}
@@ -108,8 +108,8 @@ const StyledButton = styled.button`
   }) => styleType === 'unbordered' && `
     background-color: transparent;
     color: ${
-      color ? colors.palette[color] : theme.components.button.status.default
-    };
+  color ? colors.palette[color] : theme.components.button.status.default
+};
     border-color: transparent;
     border-style: solid;
     border-width: ${theme.components.button.borderWidth};
@@ -121,18 +121,18 @@ const StyledButton = styled.button`
       &:focus,
       &:hover {
         background-color: ${
-          color ? colors.palette[color] : theme.components.button.status.default
-        };
+  color ? colors.palette[color] : theme.components.button.status.default
+};
         color: ${Color(
-          color ? colors.palette[color] : theme.components.button.status.default
-        ).isDark()
-          ? Color(
-              color ? colors.palette[color] : theme.components.button.status.default
-            ).lighten(0.8).hex()
-          : Color(
-            color ? colors.palette[color] : theme.components.button.status.default
-          ).darken(0.7).hex()
-        };
+    color ? colors.palette[color] : theme.components.button.status.default,
+  ).isDark()
+    ? Color(
+      color ? colors.palette[color] : theme.components.button.status.default,
+    ).lighten(0.8).hex()
+    : Color(
+      color ? colors.palette[color] : theme.components.button.status.default,
+    ).darken(0.7).hex()
+};
       }
     `}
   `}
@@ -204,8 +204,7 @@ const Button = ({ children, dontTranslateChildren, ...props }) => (
     <StyledButtonText>
       {dontTranslateChildren
         ? children
-        : <FormattedMessage id={children} />
-      }
+        : <FormattedMessage id={children} />}
     </StyledButtonText>
   </StyledButton>
 );

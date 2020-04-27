@@ -1,8 +1,8 @@
 import Color from 'color';
-import { FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { KeyboardArrowUp } from 'styled-icons/material';
 import PropTypes from 'prop-types';
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { color, device, transition } from '../../styles';
@@ -128,18 +128,22 @@ const Box = ({
     <StyledBox collapsed={boxIsCollapsed} padding={padding} {...props}>
       {collapseTitle
         ? (
-          <Fragment>
+          <>
             <StyledCollapseTitle
               onClick={() => setBoxIsCollapsed(!boxIsCollapsed)}
             >
-              <FormattedHTMLMessage id={collapseTitle} />
+              <FormattedMessage
+                id={collapseTitle}
+                values={{
+                  h3: (...chunks) => <h3>{chunks}</h3>,
+                }}
+              />
               <StyledArrowIcon collapsed={boxIsCollapsed} />
             </StyledCollapseTitle>
 
             {!boxIsCollapsed && children}
-          </Fragment>
-        ) : children
-      }
+          </>
+        ) : children}
     </StyledBox>
   );
 };

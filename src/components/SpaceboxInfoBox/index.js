@@ -33,8 +33,8 @@ const StyledSpaceboxCategory = styled.div`
 
   span {
     font-weight: ${({ theme }) => (
-      theme.components.spaceboxInfoBox.spaceboxCategory.titleFontWeight
-    )};
+    theme.components.spaceboxInfoBox.spaceboxCategory.titleFontWeight
+  )};
   }
 `;
 

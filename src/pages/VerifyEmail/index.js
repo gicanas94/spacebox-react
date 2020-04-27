@@ -88,7 +88,7 @@ const VerifyEmailPage = ({ alertSetAction, authUser, firebase }) => {
               styleType="filled"
               type="submit"
             >
-              {'pages.verifyEmail.submitButton'}
+              pages.verifyEmail.submitButton
             </Button>
           </StyledButtonWrapper>
         </Box>
@@ -102,7 +102,7 @@ VerifyEmailPage.propTypes = {
   firebase: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const mapStateToProps = state => ({ authUser: state.authUser });
+const mapStateToProps = (state) => ({ authUser: state.authUser });
 
 const mapDispatchToProps = { alertSetAction: alertSet };
 

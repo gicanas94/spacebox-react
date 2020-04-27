@@ -2,7 +2,7 @@ import { FacebookSquare, Google, Twitter } from 'styled-icons/boxicons-logos';
 import { FormattedMessage } from 'react-intl';
 import { LockAlt } from 'styled-icons/boxicons-regular';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { device } from '../../../styles';
@@ -135,7 +135,7 @@ const LoginManagementSubpage = ({
       try {
         alertSetAction();
 
-        const providerToLink = signInMethods.filter(eachProvider => (
+        const providerToLink = signInMethods.filter((eachProvider) => (
           eachProvider.provider === provider
         ));
 
@@ -191,7 +191,7 @@ const LoginManagementSubpage = ({
   };
 
   return (
-    <Fragment>
+    <>
       <h3>
         <FormattedMessage id="pages.account.loginManagement.h3" />
       </h3>
@@ -214,8 +214,7 @@ const LoginManagementSubpage = ({
               <span>
                 {signInMethod.id === 'password'
                   ? <FormattedMessage id={signInMethod.displayName} />
-                  : signInMethod.displayName
-                }
+                  : signInMethod.displayName}
               </span>
             </StyledIconAndNameWrapper>
 
@@ -244,8 +243,7 @@ const LoginManagementSubpage = ({
                   signInMethod={signInMethod}
                   unlinkHandler={handleUnlink}
                 />
-              )
-            }
+              )}
 
             {signInMethods.length > index + 1 && (
               <Hr className="firstMediaQueryHr" />
@@ -253,7 +251,7 @@ const LoginManagementSubpage = ({
           </StyledSocialOption>
         );
       })}
-    </Fragment>
+    </>
   );
 };
 

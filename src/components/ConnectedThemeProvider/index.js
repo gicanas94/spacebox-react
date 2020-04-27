@@ -19,6 +19,6 @@ ConnectedIntlProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const mapStateToProps = state => ({ appTheme: state.appTheme });
+const mapStateToProps = (state) => ({ appTheme: state.appTheme });
 
 export default connect(mapStateToProps)(ConnectedIntlProvider);

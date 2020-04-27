@@ -2,7 +2,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Trash } from 'styled-icons/fa-solid';
 import { useHistory, useParams } from 'react-router-dom';
@@ -71,9 +71,9 @@ const EditSpaceboxPage = ({
         const userSpaceboxes = [];
         const data = await firebase.userSpaceboxes(authUser.uid).get();
 
-        data.forEach(document => userSpaceboxes.push(document.data()));
+        data.forEach((document) => userSpaceboxes.push(document.data()));
 
-        const userSpaceboxToEdit = userSpaceboxes.filter(userSpacebox => (
+        const userSpaceboxToEdit = userSpaceboxes.filter((userSpacebox) => (
           userSpacebox.slug === params.spaceboxSlug
         ))[0];
 
@@ -128,7 +128,7 @@ const EditSpaceboxPage = ({
   );
 
   return (
-    <Fragment>
+    <>
       {!isLoading && spacebox && (
         <Box size="medium">
           <HelmetTitle title={{ id: 'pages.editSpacebox.title' }} />
@@ -163,7 +163,7 @@ const EditSpaceboxPage = ({
           />
         </Box>
       )}
-    </Fragment>
+    </>
   );
 };
 
@@ -176,7 +176,7 @@ EditSpaceboxPage.propTypes = {
   isLoadingSetAction: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoading: state.isLoading,
 });
 
@@ -186,7 +186,7 @@ const mapDispatchToProps = {
   confirmationModalOpenAction: confirmationModalOpen,
 };
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser;
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

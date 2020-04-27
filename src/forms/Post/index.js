@@ -66,7 +66,7 @@ const PostForm = ({
           type: 'danger',
         });
 
-        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
 
         actions.setSubmitting(false);
       }
@@ -121,7 +121,7 @@ const PostForm = ({
 
           <StyledButtonsWrapper>
             <Button disabled={isSubmitting} styleType="filled" type="submit">
-              {'forms.post.submitButton'}
+              forms.post.submitButton
             </Button>
           </StyledButtonsWrapper>
         </Form>

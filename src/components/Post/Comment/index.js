@@ -95,8 +95,7 @@ const Comment = ({ comment, postUid }) => (
             {comment.user.uid === postUid
               ? (
                 <FormattedMessage id="components.post.comment.postAuthor" />
-              ) : comment.user.username
-            }
+              ) : comment.user.username}
           </StyledUsername>
         )}
         <span>{comment.content}</span>
@@ -132,7 +131,6 @@ const Comment = ({ comment, postUid }) => (
 );
 
 Comment.propTypes = {
-  authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
   comment: PropTypes.objectOf(PropTypes.any).isRequired,
   postUid: PropTypes.string.isRequired,
 };

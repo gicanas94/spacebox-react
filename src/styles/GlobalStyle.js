@@ -23,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.htmlTags.a.color};
     cursor: pointer !important;
     display: inline-block;
-    font-weight: ${({ theme }) => theme.htmlTags.a.fontWeight}
+    font-weight: ${({ theme }) => theme.htmlTags.a.fontWeight};
     text-decoration: none;
     transition: transform ${transition.speed.superfast} linear;
 

@@ -393,6 +393,9 @@ export default {
         postNotFoundAlertMessage: 'We couldn\t find the post you wanted to see, but we send you to the Spacebox! it\'s something...',
         spaceboxNotFoundAlertMessage: 'We couldn\'t find the Spacebox you wanted to see so we send you to the home page. Sorry!',
       },
+      test: {
+        testAlertMessage: '{value1}, {value2}, <b>{value3}</b>',
+      },
       verifyEmail: {
         title: 'Verify e-mail address - Spacebox',
         h1: 'Verify e-mail address',
@@ -468,6 +471,21 @@ export default {
       },
       postsHistory: {
         boxCollapseTitle: '<h3>Historial</h3>',
+      },
+      richTextEditor: {
+        richUtilButton: {
+          bold: '<b>B</b>',
+          italic: '<i>I</i>',
+          underline: '<u>U</u>',
+          strikethrough: '<s>S</s>',
+          highlight: 'resaltar',
+          h1: 'H1',
+          h2: 'H2',
+          h3: 'H3',
+          blockquote: 'cita',
+          ol: 'ol',
+          ul: 'ul',
+        },
       },
       signInWithButton: {
         signInWithText: 'Ingresar con {account}',
@@ -663,8 +681,8 @@ export default {
           signInMethods: {
             password: 'Contraseña',
           },
-          successLinkAlertMessage: '¡Felicitaciones! Acabas de vincular tu cuenta de {provider}',
-          successUnlinkAlertMessage: 'Tu cuenta de {provider} fue desvinculada.',
+          successLinkAlertMessage: '¡Felicitaciones! Acabas de vincular tu cuenta de <b>{provider}</b>',
+          successUnlinkAlertMessage: 'Tu cuenta de <b>{provider}</b> fue desvinculada.',
           successPasswordUnlinkAlertMessage: 'Tu contraseña fue desvinculada y eliminada.',
         },
         sidebarContent: {
@@ -784,6 +802,9 @@ export default {
         noPostsTextAuthUser: 'Aún no realizaste ninguna publicación.',
         postNotFoundAlertMessage: 'No pudimos encontrar la publicación que querías ver, pero te enviamos al Spacebox. Algo es algo...',
         spaceboxNotFoundAlertMessage: 'No pudimos encontrar el Spacebox que querías ver así que te enviamos a la página de inicio. ¡Lo sentimos!',
+      },
+      test: {
+        testAlertMessage: '{value1}, {value2}, <b>{value3}</b>',
       },
       verifyEmail: {
         title: 'Verificar dirección de correo electrónico - Spacebox',

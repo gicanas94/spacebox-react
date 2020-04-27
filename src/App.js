@@ -1,7 +1,7 @@
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { Transition } from 'react-spring/renderprops';
@@ -50,7 +50,7 @@ const App = ({
   confirmationModalCloseAction,
   isLoading,
 }) => (
-  <Fragment>
+  <>
     <div id="page-content">
       <Header />
 
@@ -78,38 +78,38 @@ const App = ({
     </div>
 
     <Transition items={alert} {...transitionProps.components.alert}>
-      {activeAlert => activeAlert && (styleProps => (
-        <Alert
-          message={activeAlert.message}
-          onAlertCloseHandler={() => alertResetAction(null)}
-          style={styleProps}
-          type={activeAlert.type}
-        />
-      ))}
+      {(activeAlert) => activeAlert
+        && ((styleProps) => (
+          <Alert
+            message={activeAlert.message}
+            onAlertCloseHandler={() => alertResetAction(null)}
+            style={styleProps}
+            type={activeAlert.type}
+          />
+        ))}
     </Transition>
 
     <Transition items={isLoading} {...transitionProps.components.loadingScreen}>
-      {loading => loading && (styleProps => (
-        <LoadingScreen style={styleProps} />
-      ))}
+      {(loading) => loading && ((styleProps) => <LoadingScreen style={styleProps} />)}
     </Transition>
 
     <Transition
       items={confirmationModal}
       {...transitionProps.components.confirmationModal}
     >
-      {modalContent => modalContent && (styleProps => (
-        <ConfirmationModal
-          buttonsContent={modalContent.buttonsContent}
-          content={modalContent.content}
-          onCloseHandler={() => confirmationModalCloseAction()}
-          onConfirmHandler={() => modalContent.onConfirmHandler()}
-          style={styleProps}
-          title={modalContent.title}
-        />
-      ))}
+      {(modalContent) => modalContent
+        && ((styleProps) => (
+          <ConfirmationModal
+            buttonsContent={modalContent.buttonsContent}
+            content={modalContent.content}
+            onCloseHandler={() => confirmationModalCloseAction()}
+            onConfirmHandler={() => modalContent.onConfirmHandler()}
+            style={styleProps}
+            title={modalContent.title}
+          />
+        ))}
     </Transition>
-  </Fragment>
+  </>
 );
 
 App.propTypes = {
@@ -126,7 +126,7 @@ App.defaultProps = {
   confirmationModal: null,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   alert: state.alert,
   appLocale: state.appLocale,
   confirmationModal: state.confirmationModal,

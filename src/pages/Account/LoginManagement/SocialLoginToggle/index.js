@@ -21,8 +21,7 @@ const SocialLoginToggle = ({
   >
     {isLoading
       ? 'pages.account.loginManagement.buttons.loading'
-      : 'pages.account.loginManagement.buttons.unlink'
-    }
+      : 'pages.account.loginManagement.buttons.unlink'}
   </Button>
 ) : (
   <Button
@@ -35,8 +34,7 @@ const SocialLoginToggle = ({
   >
     {isLoading
       ? 'pages.account.loginManagement.buttons.loading'
-      : 'pages.account.loginManagement.buttons.link'
-    }
+      : 'pages.account.loginManagement.buttons.link'}
   </Button>
 ));
 

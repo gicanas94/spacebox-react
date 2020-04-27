@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
@@ -147,7 +147,7 @@ const AdminPage = ({
   }, []);
 
   return (
-    <Fragment>
+    <>
       {!isLoading && authUserIsAdmin && (
         <StyledMainGrid>
           <HelmetTitle title={{ id: 'pages.admin.title' }} />
@@ -157,21 +157,15 @@ const AdminPage = ({
           </StyledSidebarWrapper>
 
           <StyledContentGrid>
-            <Box fullWidth id="same as link">
+            <Box fullWidth id="same as link" />
 
-            </Box>
+            <Box fullWidth id="same as link" />
 
-            <Box fullWidth id="same as link">
-
-            </Box>
-
-            <Box fullWidth id="same as link">
-
-            </Box>
+            <Box fullWidth id="same as link" />
           </StyledContentGrid>
         </StyledMainGrid>
       )}
-    </Fragment>
+    </>
   );
 };
 
@@ -183,7 +177,7 @@ AdminPage.propTypes = {
   isLoadingSetAction: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoading: state.isLoading,
 });
 
@@ -192,7 +186,7 @@ const mapDispatchToProps = {
   isLoadingSetAction: isLoadingSet,
 };
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser;
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

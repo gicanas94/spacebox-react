@@ -32,7 +32,7 @@ const GlobalMessaging = ({ appLocale, firebase }) => {
       new Date(new Date().getTime() + 30 * 86400000).toGMTString(),
     );
 
-    setGlobalMessages(globalMessages.filter(globalMessage => (
+    setGlobalMessages(globalMessages.filter((globalMessage) => (
       globalMessage.slug !== globalMessageToDismiss.slug
     )));
   };
@@ -41,7 +41,7 @@ const GlobalMessaging = ({ appLocale, firebase }) => {
     firebase.allActiveGlobalMessages().onSnapshot((documents) => {
       const array = [];
 
-      documents.forEach(document => array.push(document.data()));
+      documents.forEach((document) => array.push(document.data()));
 
       setGlobalMessages(array);
     });
@@ -49,8 +49,8 @@ const GlobalMessaging = ({ appLocale, firebase }) => {
 
   return (
     <StyledGlobalMessagesWrapper>
-      {globalMessages && globalMessages.map(gMessage => (
-        gMessage.pages.map(page => (
+      {globalMessages && globalMessages.map((gMessage) => (
+        gMessage.pages.map((page) => (
           ((_.startsWith(location.pathname, page) && page !== '/')
           || (page === '/' && location.pathname === '/')
           || page === '/*')

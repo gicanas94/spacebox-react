@@ -97,13 +97,13 @@ const AccountPage = ({
       firebase.doFetchSignInMethodsForEmail(authUser.email)
         .then((signInMethods) => {
           setAuthUserHasPassword(signInMethods.filter(
-            provider => provider === 'password',
+            (provider) => provider === 'password',
           ).length > 0);
 
           setActiveSignInMethods(signInMethods);
           resolve();
         })
-        .catch(error => reject(error));
+        .catch((error) => reject(error));
     })
   );
 
@@ -181,7 +181,7 @@ AccountPage.propTypes = {
   isLoadingSetAction: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoading: state.isLoading,
 });
 
@@ -190,7 +190,7 @@ const mapDispatchToProps = {
   isLoadingSetAction: isLoadingSet,
 };
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser;
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

@@ -1,14 +1,7 @@
 import _ from 'lodash';
 import { ErrorOutline, KeyboardArrowDown } from 'styled-icons/material';
 import PropTypes from 'prop-types';
-
-import React, {
-  Fragment,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
@@ -129,14 +122,14 @@ const StyledUl = styled.ul`
 
   ::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) => (
-      theme.components.select.ul.scrollBar.thumb.bgColor
-    )};
+    theme.components.select.ul.scrollBar.thumb.bgColor
+  )};
   }
 
   ::-webkit-scrollbar-track {
     background-color: ${({ theme }) => (
-      theme.components.select.ul.scrollBar.track.bgColor
-    )};
+    theme.components.select.ul.scrollBar.track.bgColor
+  )};
   }
 
   ${({ rounded, theme }) => rounded && `
@@ -201,7 +194,7 @@ const Select = ({
   const intl = useIntl();
 
   const translatedOptions = options.map(
-    option => ({
+    (option) => ({
       visibleText: intl.formatMessage({ id: option.messageId }),
       index: option.index,
     }),
@@ -212,7 +205,7 @@ const Select = ({
     if (listIsOpen) setListIsOpen(!listIsOpen);
   };
 
-  const handleKeydown = event => event.key === 'Escape' && closeList(event);
+  const handleKeydown = (event) => event.key === 'Escape' && closeList(event);
 
   const handleOptionClick = (optionIndex) => {
     setSelectedOption(options[optionIndex].messageId);
@@ -256,16 +249,15 @@ const Select = ({
         <StyledSelectedOption>
           {selectedOption
             ? intl.formatMessage({ id: selectedOption })
-            : '-'
-          }
+            : '-'}
         </StyledSelectedOption>
 
         {listIsOpen && (
           <StyledUl rounded={rounded}>
             {_.sortBy(
               translatedOptions,
-              translatedOption => translatedOption.visibleText,
-            ).map(option => (
+              (translatedOption) => translatedOption.visibleText,
+            ).map((option) => (
               <StyledLi
                 key={option.index}
                 onClick={!disabled ? () => handleOptionClick(option.index) : null}
@@ -280,13 +272,13 @@ const Select = ({
       {!disabled && <StyledArrowDownIcon />}
 
       {!disabled && error && (
-        <Fragment>
+        <>
           <StyledErrorIcon />
 
           <StyledErrorMessage>
             {intl.formatMessage({ id: error })}
           </StyledErrorMessage>
-        </Fragment>
+        </>
       )}
     </StyledWrapper>
   );

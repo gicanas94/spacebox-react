@@ -217,7 +217,7 @@ const UserProfileImage = ({
               styleType="unbordered"
               type="button"
             >
-              {'components.userProfileImage.removeImageButton'}
+              components.userProfileImage.removeImageButton
             </Button>
           )}
 

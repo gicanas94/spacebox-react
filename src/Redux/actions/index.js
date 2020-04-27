@@ -10,7 +10,7 @@ export const alertReset = () => (dispatch) => {
   dispatch({ type: 'ALERT_RESET' });
 };
 
-export const alertSet = alert => (dispatch) => {
+export const alertSet = (alert) => (dispatch) => {
   dispatch(alertReset());
 
   if (alert) {
@@ -25,22 +25,22 @@ export const alertSet = alert => (dispatch) => {
   }
 };
 
-export const appLocaleSet = locale => ({
+export const appLocaleSet = (locale) => ({
   type: 'APP_LOCALE_SET',
   locale,
 });
 
-export const appThemeSet = theme => ({
+export const appThemeSet = (theme) => ({
   type: 'APP_THEME_SET',
   theme,
 });
 
-export const authUserSet = authUser => ({
+export const authUserSet = (authUser) => ({
   type: 'AUTH_USER_SET',
   authUser,
 });
 
-export const confirmationModalOpen = content => ({
+export const confirmationModalOpen = (content) => ({
   type: 'CONFIRMATION_MODAL_OPEN',
   content,
 });
@@ -49,17 +49,17 @@ export const confirmationModalClose = () => ({
   type: 'CONFIRMATION_MODAL_CLOSE',
 });
 
-export const homepageSpaceboxesSet = spaceboxes => ({
+export const homepageSpaceboxesSet = (spaceboxes) => ({
   type: 'HOMEPAGE_SPACEBOXES_SET',
   spaceboxes,
 });
 
-export const isLoadingSet = isLoading => ({
+export const isLoadingSet = (isLoading) => ({
   type: 'IS_LOADING_SET',
   isLoading,
 });
 
-export const searchBarChange = draft => ({
+export const searchBarChange = (draft) => ({
   type: 'SEARCH_BAR_CHANGE',
   draft,
 });

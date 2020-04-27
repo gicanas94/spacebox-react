@@ -24,7 +24,7 @@ CreateSpaceboxPage.propTypes = {
   authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,
 };
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser;
 
 export default compose(
   withAuthorization(condition),

@@ -1,6 +1,5 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-// import ifEmoji from 'if-emoji';
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -65,8 +64,8 @@ const StyledEmoji = styled.span`
 
   &:hover {
     background-color: ${({ theme }) => (
-      theme.components.emojiPicker.emojiHoverColor
-    )};
+    theme.components.emojiPicker.emojiHoverColor
+  )};
   }
 `;
 
@@ -90,14 +89,14 @@ const StyledWrapper = styled.div`
 
     ::-webkit-scrollbar-thumb {
       background-color: ${({ theme }) => (
-        theme.components.emojiPicker.scrollBar.thumb.bgColor
-      )};
+    theme.components.emojiPicker.scrollBar.thumb.bgColor
+  )};
     }
 
     ::-webkit-scrollbar-track {
       background-color: ${({ theme }) => (
-        theme.components.emojiPicker.scrollBar.track.bgColor
-      )};
+    theme.components.emojiPicker.scrollBar.track.bgColor
+  )};
     }
   }
 
@@ -107,8 +106,8 @@ const StyledWrapper = styled.div`
     ${StyledEmojisWrapper} {
       ::-webkit-scrollbar-thumb {
         border-radius: ${(
-          theme.components.emojiPicker.scrollBar.thumb.borderRadius
-        )};
+    theme.components.emojiPicker.scrollBar.thumb.borderRadius
+  )};
       }
     }
 
@@ -183,7 +182,7 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
   );
 
   const searchContentElement = (
-    <Fragment>
+    <>
       <StyledLabel>
         <FormattedMessage
           id="components.emojiPicker.searchResultsLabel"
@@ -191,11 +190,11 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
       </StyledLabel>
 
       {emojisFound.map((emoji, index) => emojiElement(emoji, index))}
-    </Fragment>
+    </>
   );
 
   const recentlyUsedEmojisElement = (
-    <Fragment>
+    <>
       <StyledLabel>
         <FormattedMessage
           id="components.emojiPicker.recentlyUsedEmojisLabel"
@@ -203,11 +202,11 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
       </StyledLabel>
 
       {recentlyUsedEmojis.map((emoji, index) => emojiElement(emoji, index))}
-    </Fragment>
+    </>
   );
 
   const allEmojisElement = (
-    <Fragment>
+    <>
       <StyledLabel>
         <FormattedMessage
           id="components.emojiPicker.allEmojisLabel"
@@ -215,7 +214,7 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
       </StyledLabel>
 
       {emojis.map((emoji, index) => emojiElement(emoji, index))}
-    </Fragment>
+    </>
   );
 
   return (
@@ -233,20 +232,18 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
           ? (
             searchContentElement
           ) : (
-            <Fragment>
+            <>
               {recentlyUsedEmojis.length > 0
                 ? (
-                  <Fragment>
+                  <>
                     {recentlyUsedEmojisElement}
                     {allEmojisElement}
-                  </Fragment>
+                  </>
                 ) : (
                   allEmojisElement
-                )
-              }
-            </Fragment>
-          )
-        }
+                )}
+            </>
+          )}
       </StyledEmojisWrapper>
     </StyledWrapper>
   );

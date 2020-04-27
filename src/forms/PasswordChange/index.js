@@ -90,7 +90,7 @@ const PasswordChangeForm = ({
           });
         }
 
-        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
 
         actions.setSubmitting(false);
       }
@@ -187,7 +187,7 @@ const PasswordChangeForm = ({
             styleType="filled"
             type="submit"
           >
-            {'forms.passwordChange.submitButton'}
+            forms.passwordChange.submitButton
           </Button>
 
           <Recaptcha

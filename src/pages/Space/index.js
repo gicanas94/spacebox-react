@@ -3,20 +3,14 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
 import {
-  Link,
-  useHistory,
-  useLocation,
-  useParams,
+  Link, useHistory, useLocation, useParams,
 } from 'react-router-dom';
 
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 
 import React, {
-  Fragment,
-  useEffect,
-  useRef,
-  useState,
+  useEffect, useRef, useState,
 } from 'react';
 
 import styled from 'styled-components';
@@ -189,21 +183,19 @@ const SpacePage = ({
       );
     });
 
-    reversedPosts.map(post => (
-      Object.keys(postsHistoryObj).reverse().map(year => (
-        new Date(post.createdAt).getFullYear() === parseInt(year, 10) && (
-          Object.keys(postsHistoryObj[year]).map(month => (
-            new Date(post.createdAt).getMonth() === parseInt(month, 10) && (
-              postsHistoryObj[year][month].push(post)
-            )
-          ))
-        )
-      ))
-    ));
+    reversedPosts.map((post) => Object.keys(postsHistoryObj)
+      .reverse()
+      .map(
+        (year) => new Date(post.createdAt).getFullYear() === parseInt(year, 10)
+            && Object.keys(postsHistoryObj[year]).map(
+              (month) => new Date(post.createdAt).getMonth() === parseInt(month, 10)
+                && postsHistoryObj[year][month].push(post),
+            ),
+      ));
 
     setPostsHistory(postsHistoryObj);
 
-    return new Promise(resolve => resolve());
+    return new Promise((resolve) => resolve());
   };
 
   const getMorePostsIfScrollIsAtTheEnd = () => {
@@ -223,79 +215,84 @@ const SpacePage = ({
 
     const windowBottom = Math.round(windowHeight + window.pageYOffset);
 
-    return (windowBottom >= documentHeight) && (
-      postsRef.current.length === postsLimitRef.current
+    return (
+      windowBottom >= documentHeight
+      && (postsRef.current.length === postsLimitRef.current
         ? setPostsLimit(postsLimitRef.current + 1)
         : () => {
-          window.removeEventListener('scroll', getMorePostsIfScrollIsAtTheEnd);
-        }
+          window.removeEventListener(
+            'scroll',
+            getMorePostsIfScrollIsAtTheEnd,
+          );
+        })
     );
   };
 
   // ----- Async functions -----------------------------------------------------
 
-  const getSpacebox = spaceboxSlug => (
-    new Promise((resolve, reject) => {
-      firebase.spacebox(spaceboxSlug).get()
-        .then((document) => {
-          if (document.data()) {
-            setSpacebox(document.data());
-            resolve(document.data());
-          } else {
-            /* eslint-disable */
-            reject({ id: 'pages.space.spaceboxNotFoundAlertMessage' });
-            /* eslint-enable */
-          }
-        })
-        .catch(error => reject(error));
-    })
-  );
-
-  const getPosts = spaceboxSlug => (
-    new Promise((resolve, reject) => {
-      firebase.spaceboxPosts(spaceboxSlug).orderBy('createdAt', 'desc').get()
-        .then((documents) => {
-          const postsArray = [];
-
-          documents.forEach(document => postsArray.push(document.data()));
-
-          setPosts(postsArray);
-          resolve(postsArray);
-        })
-        .catch(error => reject(error));
-    })
-  );
-
-  const getUser = uid => (
-    new Promise((resolve, reject) => {
-      firebase.user(uid).get()
-        .then((document) => {
-          setUser(document.data());
+  const getSpacebox = (spaceboxSlug) => new Promise((resolve, reject) => {
+    firebase
+      .spacebox(spaceboxSlug)
+      .get()
+      .then((document) => {
+        if (document.data()) {
+          setSpacebox(document.data());
           resolve(document.data());
-        })
-        .catch(error => reject(error));
-    })
-  );
+        } else {
+          /* eslint-disable */
+          reject({ id: 'pages.space.spaceboxNotFoundAlertMessage' });
+          /* eslint-enable */
+        }
+      })
+      .catch((error) => reject(error));
+  });
 
-  const getPostOfLocationPathname = (spaceboxSlug, postSlug) => (
-    new Promise((resolve, reject) => {
-      firebase.post(spaceboxSlug, postSlug).get()
-        .then((document) => {
-          if (document.data()) {
-            setPostOfLocationPathname(document.data());
-            resolve(document.data());
-          } else {
-            history.push(`${ROUTES.SPACE_BASE}/${spaceboxSlug}`);
-            /* eslint-disable */
+  const getPosts = (spaceboxSlug) => new Promise((resolve, reject) => {
+    firebase
+      .spaceboxPosts(spaceboxSlug)
+      .orderBy('createdAt', 'desc')
+      .get()
+      .then((documents) => {
+        const postsArray = [];
+
+        documents.forEach((document) => postsArray.push(document.data()));
+
+        setPosts(postsArray);
+        resolve(postsArray);
+      })
+      .catch((error) => reject(error));
+  });
+
+  const getUser = (uid) => new Promise((resolve, reject) => {
+    firebase
+      .user(uid)
+      .get()
+      .then((document) => {
+        setUser(document.data());
+        resolve(document.data());
+      })
+      .catch((error) => reject(error));
+  });
+
+  const getPostOfLocationPathname = (spaceboxSlug, postSlug) => new Promise((resolve, reject) => {
+    firebase
+      .post(spaceboxSlug, postSlug)
+      .get()
+      .then((document) => {
+        if (document.data()) {
+          setPostOfLocationPathname(document.data());
+          resolve(document.data());
+        } else {
+          history.push(`${ROUTES.SPACE_BASE}/${spaceboxSlug}`);
+          /* eslint-disable */
             reject({ id: 'pages.space.postNotFoundAlertMessage' });
             /* eslint-enable */
-          }
+        }
 
-          setAllTasksFinished(true);
-        })
-        .catch(error => reject(error));
-    })
-  );
+        setAllTasksFinished(true);
+      })
+      .catch((error) => reject(error));
+  });
 
   const handleFollowSpaceboxButtonClick = () => {
     console.log('follow');
@@ -313,14 +310,14 @@ const SpacePage = ({
 
     if (justCreatedPosts.indexOf(deletedPost) !== -1) {
       const newListOfPosts = justCreatedPosts.filter(
-        post => post.slug !== deletedPost.slug,
+        (post) => post.slug !== deletedPost.slug,
       );
 
       setJustCreatedPosts(newListOfPosts);
       composePostsHistory([...newListOfPosts, ...posts]);
     } else {
       const newListOfPosts = posts.filter(
-        post => post.slug !== deletedPost.slug,
+        (post) => post.slug !== deletedPost.slug,
       );
 
       setPosts(newListOfPosts);
@@ -359,10 +356,7 @@ const SpacePage = ({
         }
 
         if (params.postSlug) {
-          await getPostOfLocationPathname(
-            spaceboxData.slug,
-            params.postSlug,
-          );
+          await getPostOfLocationPathname(spaceboxData.slug, params.postSlug);
         } else {
           setAllTasksFinished(true);
         }
@@ -394,14 +388,14 @@ const SpacePage = ({
       styleType="filled"
       type="button"
     >
-      {'pages.space.buttons.followSpacebox'}
+      pages.space.buttons.followSpacebox
     </Button>
-  )
+  );
 
   return (
-    <Fragment>
+    <>
       {allTasksFinished && (
-        <Fragment>
+        <>
           {/* Page title */}
           <HelmetTitle
             title={{
@@ -418,81 +412,103 @@ const SpacePage = ({
             <StyledLeftGrid>
               {/* New post form */}
               <Transition
-                items={authUser && authUser.uid === spacebox.uid && postFormIsOpen}
+                items={
+                  authUser && authUser.uid === spacebox.uid && postFormIsOpen
+                }
                 {...transitionProps.forms.post}
-
               >
-                {isOpen => isOpen && (styleProps => (
-                  <Box fullWidth padding="20px" style={styleProps}>
-                    <PostForm
-                      alertSetAction={alertSetAction}
-                      firebase={firebase}
-                      newPostCallback={newPostCallback}
-                      sid={spacebox.slug}
-                      uid={authUser.uid}
-                    />
-                  </Box>
-                ))}
+                {(isOpen) => isOpen
+                  && ((styleProps) => (
+                    <Box fullWidth padding="20px" style={styleProps}>
+                      <PostForm
+                        alertSetAction={alertSetAction}
+                        firebase={firebase}
+                        newPostCallback={newPostCallback}
+                        sid={spacebox.slug}
+                        uid={authUser.uid}
+                      />
+                    </Box>
+                  ))}
               </Transition>
 
               {/* Just created posts */}
-              {justCreatedPosts.length > 0 && justCreatedPosts.map(justCreatedPost => (
-                <Transition
-                  items={justCreatedPost}
-                  key={justCreatedPost.createdAt}
-                  {...transitionProps.pages.space.justCreatedPost}
-                >
-                  {post => post && (styleProps => (
-                    <div style={styleProps}>
-                      <Post
-                        alertSetAction={alertSetAction}
-                        authUser={authUser}
-                        confirmationModalCloseAction={confirmationModalCloseAction}
-                        confirmationModalOpenAction={confirmationModalOpenAction}
-                        deletePostCallback={deletePostCallback}
-                        firebase={firebase}
-                        post={justCreatedPost}
-                        spacebox={spacebox}
-                        user={user}
-                      />
-                    </div>
-                  ))}
-                </Transition>
-              ))}
+              {justCreatedPosts.length > 0
+                && justCreatedPosts.map((justCreatedPost) => (
+                  <Transition
+                    items={justCreatedPost}
+                    key={justCreatedPost.createdAt}
+                    {...transitionProps.pages.space.justCreatedPost}
+                  >
+                    {(post) => post
+                      && ((styleProps) => (
+                        <div style={styleProps}>
+                          <Post
+                            alertSetAction={alertSetAction}
+                            authUser={authUser}
+                            confirmationModalCloseAction={
+                              confirmationModalCloseAction
+                            }
+                            confirmationModalOpenAction={
+                              confirmationModalOpenAction
+                            }
+                            deletePostCallback={deletePostCallback}
+                            firebase={firebase}
+                            post={justCreatedPost}
+                            spacebox={spacebox}
+                            user={user}
+                          />
+                        </div>
+                      ))}
+                  </Transition>
+                ))}
 
               {/* Post of location pathname */}
               <Transition
                 items={postOfLocationPathname.slug}
                 {...transitionProps.pages.space.postOfLocationPathname}
               >
-                {post => post && (styleProps => (
-                  <div key={postOfLocationPathname.createdAt} style={styleProps}>
-                    <Post
-                      alertSetAction={alertSetAction}
-                      authUser={authUser}
-                      confirmationModalCloseAction={confirmationModalCloseAction}
-                      confirmationModalOpenAction={confirmationModalOpenAction}
-                      deletePostCallback={deletePostCallback}
-                      firebase={firebase}
-                      post={postOfLocationPathname}
-                      selected
-                      spacebox={spacebox}
-                      user={user}
-                    />
-                  </div>
-                ))}
+                {(post) => post
+                  && ((styleProps) => (
+                    <div
+                      key={postOfLocationPathname.createdAt}
+                      style={styleProps}
+                    >
+                      <Post
+                        alertSetAction={alertSetAction}
+                        authUser={authUser}
+                        confirmationModalCloseAction={
+                          confirmationModalCloseAction
+                        }
+                        confirmationModalOpenAction={
+                          confirmationModalOpenAction
+                        }
+                        deletePostCallback={deletePostCallback}
+                        firebase={firebase}
+                        post={postOfLocationPathname}
+                        selected
+                        spacebox={spacebox}
+                        user={user}
+                      />
+                    </div>
+                  ))}
               </Transition>
 
               {/* All posts except just created */}
               {posts.length > 0 && (
-                <Fragment>
-                  {posts.slice(0, postsLimit).map(post => (
-                    post.slug !== postOfLocationPathname.slug && (
+                <>
+                  {posts
+                    .slice(0, postsLimit)
+                    .map(
+                      (post) => post.slug !== postOfLocationPathname.slug && (
                       <Post
                         alertSetAction={alertSetAction}
                         authUser={authUser}
-                        confirmationModalCloseAction={confirmationModalCloseAction}
-                        confirmationModalOpenAction={confirmationModalOpenAction}
+                        confirmationModalCloseAction={
+                              confirmationModalCloseAction
+                            }
+                        confirmationModalOpenAction={
+                              confirmationModalOpenAction
+                            }
                         deletePostCallback={deletePostCallback}
                         firebase={firebase}
                         key={post.createdAt}
@@ -500,9 +516,9 @@ const SpacePage = ({
                         spacebox={spacebox}
                         user={user}
                       />
-                    )
-                  ))}
-                </Fragment>
+                      ),
+                    )}
+                </>
               )}
 
               {/* No posts message */}
@@ -536,30 +552,30 @@ const SpacePage = ({
                     styleType="filled"
                     type="button"
                   >
-                    {'pages.space.buttons.newPost'}
+                    pages.space.buttons.newPost
                   </Button>
                 )}
 
                 {authUser.uid !== spacebox.uid && (
-                  <Fragment>
+                  <>
                     {authUser.followedSpaceboxes
                       && authUser.followedSpaceboxes.includes(spacebox.slug) && (
-                      <Button
-                        color="emerald"
-                        fullWidth
-                        size="large"
-                        styleType="filled"
-                        type="button"
-                      >
-                        {'pages.space.buttons.unfollowSpacebox'}
-                      </Button>
+                        <Button
+                          color="emerald"
+                          fullWidth
+                          onClick={handleUnfollowSpaceboxButtonClick}
+                          size="large"
+                          styleType="filled"
+                          type="button"
+                        >
+                          pages.space.buttons.unfollowSpacebox
+                        </Button>
                     )}
 
-                    {
-                      ((authUser.followedSpaceboxes && !authUser.followedSpaceboxes.includes(spacebox.slug))
+                    {((authUser.followedSpaceboxes
+                      && !authUser.followedSpaceboxes.includes(spacebox.slug))
                       || (authUser && !authUser.followedSpaceboxes))
-                      && followSpaceboxButton
-                    }
+                      && followSpaceboxButton}
 
                     {!authUser && (
                       <Link
@@ -573,18 +589,19 @@ const SpacePage = ({
                         {followSpaceboxButton}
                       </Link>
                     )}
-                  </Fragment>
+                  </>
                 )}
 
-                <Link to={{
-                  pathname: `${ROUTES.USER_BASE}/${user.slug}`,
-                  state: {
-                    user: {
-                      ...user,
-                      uid: spacebox.uid,
+                <Link
+                  to={{
+                    pathname: `${ROUTES.USER_BASE}/${user.slug}`,
+                    state: {
+                      user: {
+                        ...user,
+                        uid: spacebox.uid,
+                      },
                     },
-                  },
-                }}
+                  }}
                 >
                   <Button
                     fullWidth
@@ -594,8 +611,7 @@ const SpacePage = ({
                   >
                     {authUser.uid === spacebox.uid
                       ? 'pages.space.buttons.userProfileAuthUser'
-                      : 'pages.space.buttons.userProfile'
-                    }
+                      : 'pages.space.buttons.userProfile'}
                   </Button>
                 </Link>
 
@@ -608,7 +624,7 @@ const SpacePage = ({
                       styleType="filled"
                       type="button"
                     >
-                      {'pages.space.buttons.editSpacebox'}
+                      pages.space.buttons.editSpacebox
                     </Button>
                   </Link>
                 )}
@@ -623,9 +639,9 @@ const SpacePage = ({
               )}
             </StyledRightGrid>
           </StyledMainGrid>
-        </Fragment>
+        </>
       )}
-    </Fragment>
+    </>
   );
 };
 
@@ -638,7 +654,7 @@ SpacePage.propTypes = {
   isLoadingSetAction: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({ authUser: state.authUser });
+const mapStateToProps = (state) => ({ authUser: state.authUser });
 
 const mapDispatchToProps = {
   alertSetAction: alertSet,

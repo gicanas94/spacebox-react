@@ -1,8 +1,7 @@
 import { SUPPORTED_LOCALES } from '../constants';
 
-export const capitalizeEachStringWord = string => (
-  string.replace(/\b\w/g, firstLetter => firstLetter.toUpperCase())
-);
+
+export const capitalizeEachStringWord = (string) => string.replace(/\b\w/g, (firstLetter) => firstLetter.toUpperCase());
 
 export const defineAppLocale = (receivedLocale) => {
   // 1. If this function receives an appLocale, set that one

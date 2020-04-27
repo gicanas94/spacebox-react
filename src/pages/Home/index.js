@@ -63,7 +63,7 @@ const HomePage = ({
     setGetAllVisibleSpaceboxesFailed,
   ] = useState(false);
 
-  const handleEditSpaceboxClick = spaceboxSlug => (
+  const handleEditSpaceboxClick = (spaceboxSlug) => (
     history.push(`${ROUTES.EDIT_SPACEBOX_BASE}/${spaceboxSlug}`)
   );
 
@@ -73,7 +73,7 @@ const HomePage = ({
     firebase.allVisibleSpaceboxes().onSnapshot((documents) => {
       const spaceboxes = [];
 
-      documents.forEach(document => spaceboxes.push(document.data()));
+      documents.forEach((document) => spaceboxes.push(document.data()));
 
       if (componentIsMounted) {
         homepageSpaceboxesSetAction(shuffleArray(spaceboxes));
@@ -104,8 +104,7 @@ const HomePage = ({
     <StyledWrapper>
       {spaceboxToSearch === ''
         ? <HelmetTitle title={{ id: 'pages.home.title.home' }} />
-        : <HelmetTitle title={{ id: 'pages.home.title.search' }} />
-      }
+        : <HelmetTitle title={{ id: 'pages.home.title.search' }} />}
 
       {spaceboxToSearch !== '' && (
         <Spacebox
@@ -170,8 +169,7 @@ const HomePage = ({
               />
             </StyledSpaceboxLink>
           )
-        ))
-      }
+        ))}
     </StyledWrapper>
   );
 };
@@ -190,7 +188,7 @@ HomePage.defaultProps = {
   spaceboxToSearch: '',
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   allSpaceboxes: state.homepageSpaceboxes.all && searchSpaceboxSelector(state),
   authUser: state.authUser,
   spaceboxToSearch: state.spaceboxToSearch,

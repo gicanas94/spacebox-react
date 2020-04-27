@@ -3,7 +3,7 @@ import { EyeOff2 } from 'styled-icons/evaicons-solid';
 import { EyeOutline } from 'styled-icons/evaicons-outline';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { keyframe, transition } from '../../styles';
@@ -202,7 +202,7 @@ const Input = ({
       {!disabled && (
         <StyledIconsWrapper>
           {initialInputTypeIsPassword && (
-            <Fragment>
+            <>
               {!passwordIsVisible && (
                 <StyledCloseEyeIcon onClick={handleCloseEyeIconClick} />
               )}
@@ -210,7 +210,7 @@ const Input = ({
               {passwordIsVisible && (
                 <StyledOpenEyeIcon onClick={handleOpenEyeIconClick} />
               )}
-            </Fragment>
+            </>
           )}
 
           {error && <StyledErrorIcon />}

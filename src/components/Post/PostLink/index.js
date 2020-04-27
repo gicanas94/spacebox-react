@@ -99,7 +99,7 @@ const PostLink = ({ inputId, link, ...props }) => {
           autoFocus
           id={inputId}
           name={inputId}
-          onClick={event => event.target.select()}
+          onClick={(event) => event.target.select()}
           readOnly
           type="text"
           value={link}

@@ -67,15 +67,15 @@ class Wizard extends Component {
     }
   };
 
-  nextStep = values => (
-    this.setState(prevState => ({
+  nextStep = (values) => (
+    this.setState((prevState) => ({
       page: prevState.page + 1,
       values,
     }))
   )
 
   previousStep = () => (
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       page: prevState.page - 1,
     }))
   )
@@ -92,7 +92,8 @@ class Wizard extends Component {
         initialValues={values}
         onSubmit={this.handleSubmit}
         validationSchema={validationSchema[page]}
-        render={({ isSubmitting }) => (
+      >
+        {({ isSubmitting }) => (
           <Form>
             {activePage}
 
@@ -106,20 +107,20 @@ class Wizard extends Component {
                   styleType="unbordered"
                   type="button"
                 >
-                  {'components.wizard.buttons.previousStep'}
+                  components.wizard.buttons.previousStep
                 </Button>
               )}
 
               {page === 0 && withStartPage && (
                 <Button styleType="bordered" type="submit">
-                  {'components.wizard.buttons.start'}
+                  components.wizard.buttons.start
                 </Button>
               )}
 
               {((!isLastPage && !withStartPage)
                 || (withStartPage && page > 0)) && (
                 <Button styleType="bordered" type="submit">
-                  {'components.wizard.buttons.nextStep'}
+                  components.wizard.buttons.nextStep
                 </Button>
               )}
 
@@ -129,13 +130,13 @@ class Wizard extends Component {
                   styleType="bordered"
                   type="submit"
                 >
-                  {'components.wizard.buttons.finish'}
+                  components.wizard.buttons.finish
                 </Button>
               )}
             </StyledButtonsWrapper>
           </Form>
         )}
-      />
+      </Formik>
     );
   }
 }

@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import Button from '../../Button';
@@ -30,17 +30,16 @@ const Nav = ({
         size={buttonsSize}
         styleType={location.pathname === ROUTES.HOME
           ? 'filled'
-          : 'unbordered'
-        }
+          : 'unbordered'}
         type="button"
       >
-        {'components.header.links.home'}
+        components.header.links.home
       </Button>
     </StyledNavItem>
   );
-  
+
   const AuthNav = () => (
-    <Fragment>
+    <>
       <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.CREATE_SPACEBOX}>
         <Button
           color="emerald"
@@ -49,14 +48,13 @@ const Nav = ({
           size={buttonsSize}
           styleType={location.pathname === ROUTES.CREATE_SPACEBOX
             ? 'filled'
-            : 'bordered'
-          }
+            : 'bordered'}
           type="button"
         >
-          {'components.header.links.createSpacebox'}
+          components.header.links.createSpacebox
         </Button>
       </StyledNavItem>
-  
+
       <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.ACCOUNT_BASE}>
         <Button
           color="flax"
@@ -65,14 +63,13 @@ const Nav = ({
           size={buttonsSize}
           styleType={location.pathname.startsWith(ROUTES.ACCOUNT_BASE)
             ? 'filled'
-            : 'unbordered'
-          }
+            : 'unbordered'}
           type="button"
         >
-          {'components.header.links.account'}
+          components.header.links.account
         </Button>
       </StyledNavItem>
-  
+
       <Button
         color="salmon"
         fullWidth
@@ -85,13 +82,13 @@ const Nav = ({
         styleType="unbordered"
         type="button"
       >
-        {'components.header.links.signOut'}
+        components.header.links.signOut
       </Button>
-    </Fragment>
+    </>
   );
-  
+
   const NonAuthNav = () => (
-    <Fragment>
+    <>
       <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.FAQ}>
         <Button
           color="flax"
@@ -100,14 +97,13 @@ const Nav = ({
           size={buttonsSize}
           styleType={location.pathname === ROUTES.FAQ
             ? 'filled'
-            : 'unbordered'
-          }
+            : 'unbordered'}
           type="button"
         >
-          {'components.header.links.faq'}
+          components.header.links.faq
         </Button>
       </StyledNavItem>
-  
+
       <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.SIGN_UP}>
         <Button
           color="babyBlue"
@@ -116,14 +112,13 @@ const Nav = ({
           size={buttonsSize}
           styleType={location.pathname === ROUTES.SIGN_UP
             ? 'filled'
-            : 'unbordered'
-          }
+            : 'unbordered'}
           type="button"
         >
-          {'components.header.links.signUp'}
+          components.header.links.signUp
         </Button>
       </StyledNavItem>
-  
+
       <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.SIGN_IN}>
         <Button
           color="emerald"
@@ -132,18 +127,17 @@ const Nav = ({
           size={buttonsSize}
           styleType={location.pathname === ROUTES.SIGN_IN
             ? 'filled'
-            : 'bordered'
-          }
+            : 'bordered'}
           type="button"
         >
-          {'components.header.links.signIn'}
+          components.header.links.signIn
         </Button>
       </StyledNavItem>
-    </Fragment>
+    </>
   );
 
   return (
-    <Fragment>
+    <>
       <CommonNav
         buttonsPadding={buttonsPadding}
         buttonsSize={buttonsSize}
@@ -165,9 +159,8 @@ const Nav = ({
             buttonsSize={buttonsSize}
             onNavItemClickHandler={onNavItemClickHandler}
           />
-        )
-      }
-    </Fragment>
+        )}
+    </>
   );
 };
 

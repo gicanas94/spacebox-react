@@ -2,7 +2,7 @@ import Color from 'color';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { Heart } from 'styled-icons/fa-solid';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import colors from '../../styles/color';
@@ -141,8 +141,8 @@ const StyledSpacebox = styled.div`
   ${({ informative, theme }) => informative && `
     background: linear-gradient(
       ${Color(
-        theme.components.spacebox.informative.bgColor,
-      ).lighten(0.3).hex()},
+    theme.components.spacebox.informative.bgColor,
+  ).lighten(0.3).hex()},
       ${Color(theme.components.spacebox.informative.bgColor).hex()}
     );
     border: ${theme.components.spacebox.informative.border};
@@ -159,15 +159,15 @@ const StyledSpacebox = styled.div`
 
   ${StyledBubble} {
     background-color: ${({ bgColor }) => (
-      Color(bgColor).isDark()
-        ? 'rgba(255, 255, 255, 0.7)'
-        : 'rgba(0, 0, 0, 0.5)'
-    )};
+    Color(bgColor).isDark()
+      ? 'rgba(255, 255, 255, 0.7)'
+      : 'rgba(0, 0, 0, 0.5)'
+  )};
     color: ${({ bgColor }) => (
-      Color(bgColor).isDark()
-        ? colors.palette.asphalt
-        : colors.palette.cloud
-    )};
+    Color(bgColor).isDark()
+      ? colors.palette.asphalt
+      : colors.palette.cloud
+  )};
   }
 
   ${StyledTitle} {
@@ -236,8 +236,7 @@ const Spacebox = ({
                 values={typeof title === 'object' ? title[1] : null}
               />
             )
-            : title
-          }
+            : title}
         </StyledTitle>
       )}
 
@@ -246,14 +245,14 @@ const Spacebox = ({
   );
 
   return (
-    <Fragment>
+    <>
       {authUserIsTheOwner
         ? (
           <StyledAuthUserIsTheOwnerWrapper rounded={rounded}>
             {box}
           </StyledAuthUserIsTheOwnerWrapper>
         ) : box}
-    </Fragment>
+    </>
   );
 };
 

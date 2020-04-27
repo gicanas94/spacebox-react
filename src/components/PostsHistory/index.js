@@ -48,18 +48,18 @@ const PostsHistory = ({ history, intl, spaceboxSlug }) => (
           {year}
         </StyledYearTitle>
 
-        {Object.keys(history[year]).map(month => (
+        {Object.keys(history[year]).map((month) => (
           <Fragment key={month}>
             <StyledMonthTitle>
               <FormattedDateParts
                 month="long"
                 value={new Date(0, month).toISOString()}
               >
-                {parts => parts[0].value.toUpperCase()}
+                {(parts) => parts[0].value.toUpperCase()}
               </FormattedDateParts>
             </StyledMonthTitle>
 
-            {history[year][month].map(post => (
+            {history[year][month].map((post) => (
               <StyledLink
                 key={post.createdAt}
                 target="_blank"

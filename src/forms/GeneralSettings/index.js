@@ -54,7 +54,7 @@ const GeneralSettingsForm = ({
     language: Yup
       .string()
       .trim()
-      .oneOf(_.map(LANGUAGES, category => category.messageId), 'yup.required')
+      .oneOf(_.map(LANGUAGES, (category) => category.messageId), 'yup.required')
       .required('yup.required'),
   });
 
@@ -84,7 +84,7 @@ const GeneralSettingsForm = ({
           type: 'danger',
         });
 
-        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
 
         actions.setSubmitting(false);
       } finally {
@@ -100,7 +100,7 @@ const GeneralSettingsForm = ({
         email: authUser.email,
         bio: authUser.bio || '',
         language: LANGUAGES.filter(
-          language => language.messageId.includes(`.${authUser.language}`),
+          (language) => language.messageId.includes(`.${authUser.language}`),
         )[0].messageId,
       }}
       onSubmit={handleSubmit}
@@ -186,7 +186,7 @@ const GeneralSettingsForm = ({
             />
 
             <Button disabled={isSubmitting} styleType="filled" type="submit">
-              {'forms.generalSettings.submitButton'}
+              forms.generalSettings.submitButton
             </Button>
           </StyledWrapper>
         </Form>

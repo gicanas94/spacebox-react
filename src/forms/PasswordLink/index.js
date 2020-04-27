@@ -85,7 +85,7 @@ const PasswordLinkForm = ({
           type: 'danger',
         });
 
-        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
 
         actions.setSubmitting(false);
 
@@ -159,7 +159,7 @@ const PasswordLinkForm = ({
               styleType="filled"
               type="submit"
             >
-              {'forms.passwordLink.submitButton'}
+              forms.passwordLink.submitButton
             </Button>
           </Form>
         )}

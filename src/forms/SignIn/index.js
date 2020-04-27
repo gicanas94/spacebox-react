@@ -73,7 +73,7 @@ const SignInForm = ({ alertSetAction, firebase }) => {
           type: 'danger',
         });
 
-        Object.keys(values).map(field => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
 
         actions.setSubmitting(false);
       }
@@ -135,7 +135,7 @@ const SignInForm = ({ alertSetAction, firebase }) => {
 
           <StyledBottomWrapper>
             <Button disabled={isSubmitting} styleType="filled" type="submit">
-              {'forms.signIn.submitButton'}
+              forms.signIn.submitButton
             </Button>
 
             <StyledLink

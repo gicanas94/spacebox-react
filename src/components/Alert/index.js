@@ -1,6 +1,6 @@
 import Color from 'color';
 import { Cross } from 'styled-icons/icomoon';
-import { FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -61,12 +61,14 @@ const Alert = ({ message, onAlertCloseHandler, ...props }) => (
       <StyledMessage>
         {message.id
           ? (
-            <FormattedHTMLMessage
+            <FormattedMessage
               id={message.id}
-              values={message.values}
+              values={{
+                ...message.values,
+                b: (...chunks) => <b>{chunks}</b>,
+              }}
             />
-          ) : message
-        }
+          ) : message}
       </StyledMessage>
 
       <StyledCrossIcon />

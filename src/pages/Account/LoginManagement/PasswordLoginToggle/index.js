@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import useStateWithCallback from 'use-state-with-callback';
 
@@ -33,7 +33,7 @@ const PasswordLoginToggle = ({
   });
 
   return (
-    <Fragment>
+    <>
       {isEnabled ? (
         <Button
           color="salmon"
@@ -44,8 +44,7 @@ const PasswordLoginToggle = ({
         >
           {isLoading
             ? 'pages.account.loginManagement.buttons.loading'
-            : 'pages.account.loginManagement.buttons.unlink'
-          }
+            : 'pages.account.loginManagement.buttons.unlink'}
         </Button>
       ) : (
         <Button
@@ -58,8 +57,7 @@ const PasswordLoginToggle = ({
         >
           {isLoading
             ? 'pages.account.loginManagement.buttons.loading'
-            : 'pages.account.loginManagement.buttons.link'
-          }
+            : 'pages.account.loginManagement.buttons.link'}
         </Button>
       )}
 
@@ -75,7 +73,7 @@ const PasswordLoginToggle = ({
           />
         </StyledPasswordLinkFormWrapper>
       )}
-    </Fragment>
+    </>
   );
 };
 

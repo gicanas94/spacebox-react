@@ -1,12 +1,12 @@
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import { getCookie } from '../../../utils';
 import PasswordChangeForm from '../../../forms/PasswordChange';
 
 const ChangePasswordSubpage = ({ alertSetAction, authUser, firebase }) => (
-  <Fragment>
+  <>
     <h3>
       <FormattedMessage id="pages.account.changePassword.h3" />
     </h3>
@@ -24,15 +24,14 @@ const ChangePasswordSubpage = ({ alertSetAction, authUser, firebase }) => (
             id="pages.account.changePassword.subtitle"
           />
         </p>
-      )
-    }
+      )}
 
     <PasswordChangeForm
       alertSetAction={alertSetAction}
       authUser={authUser}
       firebase={firebase}
     />
-  </Fragment>
+  </>
 );
 
 ChangePasswordSubpage.propTypes = {

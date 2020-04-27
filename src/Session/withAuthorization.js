@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { ROUTES } from '../constants';
 import { withFirebase } from '../Firebase';
 
-const withAuthorization = condition => (Component) => {
+const withAuthorization = (condition) => (Component) => {
   const WithAuthorization = ({ authUser, firebase, ...props }) => {
     const history = useHistory();
 
@@ -34,7 +34,7 @@ const withAuthorization = condition => (Component) => {
     firebase: PropTypes.objectOf(PropTypes.any).isRequired,
   };
 
-  const mapStateToProps = state => ({ authUser: state.authUser });
+  const mapStateToProps = (state) => ({ authUser: state.authUser });
 
   return compose(
     connect(mapStateToProps),
