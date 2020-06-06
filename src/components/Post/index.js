@@ -29,11 +29,11 @@ const StyledSelectedPostWrapper = styled.div`
   border: ${({ theme }) => theme.components.post.selected.border};
   padding: 5px;
 
-  ${({ selectedBoxWrapperRoundedBorder, theme }) => (
-    selectedBoxWrapperRoundedBorder && `
-      border-radius: ${theme.global.borderRadius};
+  ${({ selectedBoxWrapperRoundedBorder, theme }) =>
+    selectedBoxWrapperRoundedBorder &&
     `
-  )}
+      border-radius: ${theme.global.borderRadius};
+    `}
 `;
 
 const StyledTitleAndDateWrapper = styled.div`
@@ -74,24 +74,18 @@ const StyledCreatedAtDate = styled.div`
 `;
 
 const StyledDateFromNow = styled.span`
-  color: ${({ theme }) => (
-    theme.components.post.createdAtDate.dateFromNow.color
-  )};
-  font-size: ${({ theme }) => (
-    theme.components.post.createdAtDate.dateFromNow.fontSize
-  )};
-  font-weight: ${({ theme }) => (
-    theme.components.post.createdAtDate.dateFromNow.fontWeight
-  )};
+  color: ${({ theme }) =>
+    theme.components.post.createdAtDate.dateFromNow.color};
+  font-size: ${({ theme }) =>
+    theme.components.post.createdAtDate.dateFromNow.fontSize};
+  font-weight: ${({ theme }) =>
+    theme.components.post.createdAtDate.dateFromNow.fontWeight};
 `;
 
 const StyledLongDate = styled.span`
-  color: ${({ theme }) => (
-    theme.components.post.createdAtDate.longDate.color
-  )};
-  font-size: ${({ theme }) => (
-    theme.components.post.createdAtDate.longDate.fontSize
-  )};
+  color: ${({ theme }) => theme.components.post.createdAtDate.longDate.color};
+  font-size: ${({ theme }) =>
+    theme.components.post.createdAtDate.longDate.fontSize};
 `;
 
 const StyledActionsAndStatsWrapper = styled.div`
@@ -104,7 +98,7 @@ const StyledActions = styled.div`
   user-select: none;
 
   > * {
-    margin-right: 20px
+    margin-right: 20px;
   }
 
   > *:last-of-type {
@@ -141,15 +135,21 @@ const StyledLikePostIcon = styled(Heart)`
   min-width: 30px;
   width: 30px;
 
-  ${({ authUserLike, theme }) => authUserLike && `
+  ${({ authUserLike, theme }) =>
+    authUserLike &&
+    `
     color: ${theme.components.post.likePostIcon.likeColor};
   `}
 
-  ${({ authUserLike, theme }) => !authUserLike && `
+  ${({ authUserLike, theme }) =>
+    !authUserLike &&
+    `
     color: ${theme.components.post.likePostIcon.noLikeColor};
   `}
 
-  ${({ disabled }) => !disabled && `
+  ${({ disabled }) =>
+    !disabled &&
+    `
     transition: transform ${transition.speed.superfast} linear;
 
     &:active {
@@ -166,7 +166,9 @@ const StyledCommentPostIcon = styled(CommentAlt)`
   min-width: 28px;
   width: 28px;
 
-  ${({ disabled }) => !disabled && `
+  ${({ disabled }) =>
+    !disabled &&
+    `
     transition: transform ${transition.speed.superfast} linear;
 
     &:active {
@@ -204,9 +206,8 @@ const StyledCommentsWrapper = styled.div`
 const StyledSeeOrHideCommentsSpan = styled.span`
   color: ${({ theme }) => theme.components.post.seeOrHideComments.color};
   cursor: pointer;
-  font-weight: ${({ theme }) => (
-    theme.components.post.seeOrHideComments.fontWeight
-  )};
+  font-weight: ${({ theme }) =>
+    theme.components.post.seeOrHideComments.fontWeight};
 
   &:hover {
     text-decoration: underline;
@@ -239,8 +240,8 @@ const Post = ({
 
   const intl = useIntl();
 
-  const handleDeletePostIconClick = () => (
-    new Promise((resolve, reject) => (
+  const handleDeletePostIconClick = () =>
+    new Promise((resolve, reject) =>
       (async () => {
         try {
           alertSetAction();
@@ -252,7 +253,9 @@ const Post = ({
             const postDocument = await transaction.get(postRef);
 
             transaction.update(spaceboxRef, {
-              likes: spaceboxDocument.data().likes - postDocument.data().likes.length,
+              likes:
+                spaceboxDocument.data().likes -
+                postDocument.data().likes.length,
             });
 
             transaction.delete(postRef);
@@ -273,9 +276,8 @@ const Post = ({
             type: 'danger',
           });
         }
-      })()
-    ))
-  );
+      })(),
+    );
 
   const handleLikePostIconClick = () => {
     firebase.db.runTransaction(async (transaction) => {
@@ -288,35 +290,32 @@ const Post = ({
         const spaceboxDocument = await transaction.get(spaceboxRef);
         const postDocument = await transaction.get(postRef);
 
-        const userAlreadyLikeThePost = postDocument.data().likes.includes(
-          authUser.uid,
-        );
+        const userAlreadyLikeThePost = postDocument
+          .data()
+          .likes.includes(authUser.uid);
 
         if (userAlreadyLikeThePost) {
-          const newPostLikes = postDocument.data().likes.filter(
-            (like) => like.uid === authUser.uid,
-          );
+          const newPostLikes = postDocument
+            .data()
+            .likes.filter((like) => like.uid === authUser.uid);
 
           setPostLikes(newPostLikes);
 
           transaction.update(postRef, { likes: newPostLikes });
 
-          transaction.update(
-            spaceboxRef,
-            { likes: spaceboxDocument.data().likes -= 1 },
-          );
+          transaction.update(spaceboxRef, {
+            likes: (spaceboxDocument.data().likes -= 1),
+          });
         } else {
           setPostLikes([...postDocument.data().likes, authUser.uid]);
 
-          transaction.update(
-            postRef,
-            { likes: [...postDocument.data().likes, authUser.uid] },
-          );
+          transaction.update(postRef, {
+            likes: [...postDocument.data().likes, authUser.uid],
+          });
 
-          transaction.update(
-            spaceboxRef,
-            { likes: spaceboxDocument.data().likes += 1 },
-          );
+          transaction.update(spaceboxRef, {
+            likes: (spaceboxDocument.data().likes += 1),
+          });
         }
       } catch (error) {
         alertSetAction({
@@ -346,16 +345,21 @@ const Post = ({
     <StyledLikePostIcon
       authUserLike={authUser && postLikes.includes(authUser.uid)}
       data-for={`like-heart-icon_${post.slug}`}
-      data-tip={!authUser
-        ? intl.formatMessage({
-          id: 'components.post.iconsTooltips.needLoggedInToLike',
-        }) : intl.formatMessage({
-          id: 'components.post.iconsTooltips.needValidateEmailToLike',
-        })}
+      data-tip={
+        !authUser
+          ? intl.formatMessage({
+              id: 'components.post.iconsTooltips.needLoggedInToLike',
+            })
+          : intl.formatMessage({
+              id: 'components.post.iconsTooltips.needValidateEmailToLike',
+            })
+      }
       disabled={likeInProgress || !authUser || !authUser.emailVerified}
-      onClick={likeInProgress || !authUser || !authUser.emailVerified
-        ? null
-        : () => handleLikePostIconClick()}
+      onClick={
+        likeInProgress || !authUser || !authUser.emailVerified
+          ? null
+          : () => handleLikePostIconClick()
+      }
       role="button"
     />
   );
@@ -363,16 +367,21 @@ const Post = ({
   const commentPostIcon = (
     <StyledCommentPostIcon
       data-for={`comment-icon_${post.slug}`}
-      data-tip={!authUser
-        ? intl.formatMessage({
-          id: 'components.post.iconsTooltips.needLoggedInToComment',
-        }) : intl.formatMessage({
-          id: 'components.post.iconsTooltips.needValidateEmailToComment',
-        })}
+      data-tip={
+        !authUser
+          ? intl.formatMessage({
+              id: 'components.post.iconsTooltips.needLoggedInToComment',
+            })
+          : intl.formatMessage({
+              id: 'components.post.iconsTooltips.needValidateEmailToComment',
+            })
+      }
       disabled={!authUser || !authUser.emailVerified}
-      onClick={!authUser || !authUser.emailVerified
-        ? null
-        : () => setCommentFormIsVisible(!commentFormIsVisible)}
+      onClick={
+        !authUser || !authUser.emailVerified
+          ? null
+          : () => setCommentFormIsVisible(!commentFormIsVisible)
+      }
     />
   );
 
@@ -382,8 +391,9 @@ const Post = ({
       data-tip={intl.formatMessage({
         id: 'components.post.iconsTooltips.deletePost',
       })}
-      onClick={
-        () => !likeInProgress && confirmationModalOpenAction({
+      onClick={() =>
+        !likeInProgress &&
+        confirmationModalOpenAction({
           content: 'components.post.deletePost.confirmationModal.content',
           onConfirmHandler: handleDeletePostIconClick,
           title: 'components.post.deletePost.confirmationModal.title',
@@ -406,8 +416,8 @@ const Post = ({
               numeric="auto"
               updateIntervalInSeconds={1}
               value={
-                (new Date(post.createdAt).getTime() - new Date().getTime())
-                / 1000
+                (new Date(post.createdAt).getTime() - new Date().getTime()) /
+                1000
               }
             />
           </StyledDateFromNow>
@@ -431,21 +441,20 @@ const Post = ({
           items={postLinkIsVisible}
           {...transitionProps.components.post.postLink}
         >
-          {(postLink) => postLink && ((styleProps) => (
-            <PostLink
-              inputId={postLinkInputId}
-              link={
-                `${window.location.origin}${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`
-              }
-              style={styleProps}
-            />
-          ))}
+          {(postLink) =>
+            postLink &&
+            ((styleProps) => (
+              <PostLink
+                inputId={postLinkInputId}
+                link={`${window.location.origin}${ROUTES.SPACE_BASE}/${spacebox.slug}/${post.slug}`}
+                style={styleProps}
+              />
+            ))
+          }
         </Transition>
       )}
 
-      <StyledContent>
-        {post.content}
-      </StyledContent>
+      <StyledContent>{post.content}</StyledContent>
 
       <StyledActionsAndStatsWrapper>
         <StyledActions>
@@ -536,19 +545,22 @@ const Post = ({
             items={commentFormIsVisible}
             {...transitionProps.forms.comment}
           >
-            {(commentForm) => commentForm && ((styleProps) => (
-              <div style={styleProps}>
-                <CommentForm
-                  alertSetAction={alertSetAction}
-                  authUser={authUser}
-                  firebase={firebase}
-                  postCommentsChangeCallback={postCommentsChangeCallback}
-                  postSlug={post.slug}
-                  sid={post.sid}
-                  textareaId={commentFormTextareaId}
-                />
-              </div>
-            ))}
+            {(commentForm) =>
+              commentForm &&
+              ((styleProps) => (
+                <div style={styleProps}>
+                  <CommentForm
+                    alertSetAction={alertSetAction}
+                    authUser={authUser}
+                    firebase={firebase}
+                    postCommentsChangeCallback={postCommentsChangeCallback}
+                    postSlug={post.slug}
+                    sid={post.sid}
+                    textareaId={commentFormTextareaId}
+                  />
+                </div>
+              ))
+            }
           </Transition>
         </StyledCommentFormWrapper>
       )}
@@ -556,8 +568,13 @@ const Post = ({
       {postComments.length > 0 && (
         <StyledCommentsWrapper>
           {_.orderBy(postComments, 'createdAt', 'desc')
-            .slice(0, commentsLimit).map((comment) => (
-              <Comment comment={comment} key={comment.slug} postUid={post.uid} />
+            .slice(0, commentsLimit)
+            .map((comment) => (
+              <Comment
+                comment={comment}
+                key={comment.slug}
+                postUid={post.uid}
+              />
             ))}
 
           {postComments.length > commentsLimit && (
@@ -605,14 +622,15 @@ const Post = ({
 
   return (
     <>
-      {selected
-        ? (
-          <StyledSelectedPostWrapper
-            selectedBoxWrapperRoundedBorder={selectedBoxWrapperRoundedBorder}
-          >
-            {postBox}
-          </StyledSelectedPostWrapper>
-        ) : postBox}
+      {selected ? (
+        <StyledSelectedPostWrapper
+          selectedBoxWrapperRoundedBorder={selectedBoxWrapperRoundedBorder}
+        >
+          {postBox}
+        </StyledSelectedPostWrapper>
+      ) : (
+        postBox
+      )}
     </>
   );
 };

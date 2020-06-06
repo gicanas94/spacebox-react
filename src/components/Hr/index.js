@@ -5,11 +5,8 @@ import styled from 'styled-components';
 import colors from '../../styles/color';
 
 const StyledHr = styled.hr`
-  background-color: ${({ color, theme }) => (
-    color
-      ? colors.palette[color]
-      : theme.components.hr.bgColor
-  )};
+  background-color: ${({ color, theme }) =>
+    color ? colors.palette[color] : theme.components.hr.bgColor};
   border: 0;
   border-radius: ${({ theme }) => theme.global.borderRadius};
   display: block;
@@ -17,19 +14,27 @@ const StyledHr = styled.hr`
   margin: 0;
   width: 100%;
 
-  ${({ centered }) => centered && `
+  ${({ centered }) =>
+    centered &&
+    `
     margin-left: 25% !important;
   `}
 
-  ${({ height }) => height && `
+  ${({ height }) =>
+    height &&
+    `
     height: ${height};
   `}
 
-  ${({ margin }) => margin && `
+  ${({ margin }) =>
+    margin &&
+    `
     margin: ${margin};
   `}
 
-  ${({ width }) => width && `
+  ${({ width }) =>
+    width &&
+    `
     width: ${width};
   `}
 `;

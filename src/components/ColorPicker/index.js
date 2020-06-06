@@ -10,7 +10,9 @@ const StyledWrapper = styled.div`
   padding: 0;
   width: 100%;
 
-  ${({ margin }) => margin && `
+  ${({ margin }) =>
+    margin &&
+    `
     margin: ${margin};
   `}
 `;
@@ -23,13 +25,7 @@ const StyledLabel = styled.span`
   word-break: break-word;
 `;
 
-const ColorPicker = ({
-  color,
-  disabled,
-  label,
-  margin,
-  onChangeHandler,
-}) => (
+const ColorPicker = ({ color, disabled, label, margin, onChangeHandler }) => (
   <StyledWrapper margin={margin}>
     <StyledLabel>
       <FormattedMessage id={label} />

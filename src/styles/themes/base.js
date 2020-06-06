@@ -100,17 +100,13 @@ export default {
     },
     confirmationModal: {
       bgColor1: color.palette.white,
-      bgColor2: Color(
-        someThemeColors.main,
-      ).darken(0.7).alpha(0.7).string(),
+      bgColor2: Color(someThemeColors.main).darken(0.7).alpha(0.7).string(),
     },
     emojiPicker: {
       bgColor: color.palette.cloud,
       border: `1px solid ${someThemeColors.darkGray}`,
       boxShadow: `0 0 3px 1px ${someThemeColors.main}`,
-      emojiHoverColor: Color(
-        someThemeColors.main,
-      ).lighten(0.7).hex(),
+      emojiHoverColor: Color(someThemeColors.main).lighten(0.7).hex(),
       label: {
         color: someThemeColors.darkGray,
         fontSize: font.size.xs,
@@ -151,25 +147,33 @@ export default {
           bgColor: color.palette.salmon,
           border: `1px solid ${Color(color.palette.salmon).darken(0.4).hex()}`,
           color: color.palette.mahogany,
-          reliefEffectBorder: `5px solid ${Color(color.palette.salmon).darken(0.4).hex()}`,
+          reliefEffectBorder: `5px solid ${Color(color.palette.salmon)
+            .darken(0.4)
+            .hex()}`,
         },
         info: {
           bgColor: color.palette.sky,
           border: `1px solid ${Color(color.palette.sky).darken(0.4).hex()}`,
           color: color.palette.denim,
-          reliefEffectBorder: `5px solid ${Color(color.palette.sky).darken(0.4).hex()}`,
+          reliefEffectBorder: `5px solid ${Color(color.palette.sky)
+            .darken(0.4)
+            .hex()}`,
         },
         success: {
           bgColor: color.palette.green,
           border: `1px solid ${Color(color.palette.green).darken(0.4).hex()}`,
           color: color.palette.tea,
-          reliefEffectBorder: `5px solid ${Color(color.palette.green).darken(0.4).hex()}`,
+          reliefEffectBorder: `5px solid ${Color(color.palette.green)
+            .darken(0.4)
+            .hex()}`,
         },
         warning: {
           bgColor: color.palette.tuscany,
           border: `1px solid ${Color(color.palette.tuscany).darken(0.4).hex()}`,
           color: color.palette.gingerbread,
-          reliefEffectBorder: `5px solid ${Color(color.palette.tuscany).darken(0.4).hex()}`,
+          reliefEffectBorder: `5px solid ${Color(color.palette.tuscany)
+            .darken(0.4)
+            .hex()}`,
         },
       },
     },
@@ -213,9 +217,7 @@ export default {
       },
     },
     loadingScreen: {
-      bgColor: Color(
-        someThemeColors.main,
-      ).darken(0.7).alpha(0.7).string(),
+      bgColor: Color(someThemeColors.main).darken(0.7).alpha(0.7).string(),
       heartColor: color.palette.white,
       text: {
         color: color.palette.white,
@@ -441,9 +443,10 @@ export default {
       fontWeight: font.weight.regular,
     },
     userProfileImage: {
-      actionsWrapperBgColor: Color(
-        someThemeColors.main,
-      ).darken(0.9).alpha(0.7).string(),
+      actionsWrapperBgColor: Color(someThemeColors.main)
+        .darken(0.9)
+        .alpha(0.7)
+        .string(),
       bgColor: Color(someThemeColors.main).lighten(0.6).hex(),
       border: `2px solid ${someThemeColors.main}`,
       errorMessage: {
@@ -485,9 +488,7 @@ export default {
   },
   global: {
     borderRadius: '4px',
-    textSelectionColor: Color(
-      someThemeColors.main,
-    ).lighten(0.5).hex(),
+    textSelectionColor: Color(someThemeColors.main).lighten(0.5).hex(),
   },
   htmlTags: {
     a: {

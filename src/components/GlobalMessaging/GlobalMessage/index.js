@@ -59,9 +59,8 @@ const StyledIconWrapper = styled.div`
 
 const StyledTitle = styled.p`
   font-size: ${({ theme }) => theme.components.globalMessage.title.fontSize};
-  font-weight: ${({ theme }) => (
-    theme.components.globalMessage.title.fontWeight
-  )};
+  font-weight: ${({ theme }) =>
+    theme.components.globalMessage.title.fontWeight};
   margin-bottom: 0;
 `;
 
@@ -77,9 +76,7 @@ const StyledLinkWrapper = styled.div`
 
 const StyledLink = styled.a`
   font-size: ${({ theme }) => theme.components.globalMessage.link.fontSize};
-  font-weight: ${({ theme }) => (
-    theme.components.globalMessage.link.fontWeight
-  )};
+  font-weight: ${({ theme }) => theme.components.globalMessage.link.fontWeight};
   line-height: 1;
   margin-top: 15px;
   width: fit-content;
@@ -92,11 +89,15 @@ const StyledWrapper = styled.div`
   padding: 15px;
   position: relative;
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-radius: ${theme.global.borderRadius};
   `}
 
-  ${({ type, theme }) => type && `
+  ${({ type, theme }) =>
+    type &&
+    `
     background: linear-gradient(
       ${theme.components.globalMessage.type[type].bgColor},
       ${Color(theme.components.globalMessage.type[type].bgColor).darken(0.2)}

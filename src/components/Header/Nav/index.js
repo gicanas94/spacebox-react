@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import Button from '../../Button';
 import { ROUTES } from '../../../constants';
-import { withFirebase } from '../../../Firebase';
+import { withFirebase } from '../../../firebase';
 
 const StyledNavItem = styled(Link)`
   text-decoration: none !important;
@@ -22,15 +22,16 @@ const Nav = ({
   const location = useLocation();
 
   const CommonNav = () => (
-    <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.HOME}>
+    <StyledNavItem
+      onClick={() => onNavItemClickHandler(false)}
+      to={ROUTES.HOME}
+    >
       <Button
         color="punch"
         fullWidth
         padding={buttonsPadding}
         size={buttonsSize}
-        styleType={location.pathname === ROUTES.HOME
-          ? 'filled'
-          : 'unbordered'}
+        styleType={location.pathname === ROUTES.HOME ? 'filled' : 'unbordered'}
         type="button"
       >
         components.header.links.home
@@ -40,30 +41,38 @@ const Nav = ({
 
   const AuthNav = () => (
     <>
-      <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.CREATE_SPACEBOX}>
+      <StyledNavItem
+        onClick={() => onNavItemClickHandler(false)}
+        to={ROUTES.CREATE_SPACEBOX}
+      >
         <Button
           color="emerald"
           fullWidth
           padding={buttonsPadding}
           size={buttonsSize}
-          styleType={location.pathname === ROUTES.CREATE_SPACEBOX
-            ? 'filled'
-            : 'bordered'}
+          styleType={
+            location.pathname === ROUTES.CREATE_SPACEBOX ? 'filled' : 'bordered'
+          }
           type="button"
         >
           components.header.links.createSpacebox
         </Button>
       </StyledNavItem>
 
-      <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.ACCOUNT_BASE}>
+      <StyledNavItem
+        onClick={() => onNavItemClickHandler(false)}
+        to={ROUTES.ACCOUNT_BASE}
+      >
         <Button
           color="flax"
           fullWidth
           padding={buttonsPadding}
           size={buttonsSize}
-          styleType={location.pathname.startsWith(ROUTES.ACCOUNT_BASE)
-            ? 'filled'
-            : 'unbordered'}
+          styleType={
+            location.pathname.startsWith(ROUTES.ACCOUNT_BASE)
+              ? 'filled'
+              : 'unbordered'
+          }
           type="button"
         >
           components.header.links.account
@@ -89,45 +98,52 @@ const Nav = ({
 
   const NonAuthNav = () => (
     <>
-      <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.FAQ}>
+      <StyledNavItem
+        onClick={() => onNavItemClickHandler(false)}
+        to={ROUTES.FAQ}
+      >
         <Button
           color="flax"
           fullWidth
           padding={buttonsPadding}
           size={buttonsSize}
-          styleType={location.pathname === ROUTES.FAQ
-            ? 'filled'
-            : 'unbordered'}
+          styleType={location.pathname === ROUTES.FAQ ? 'filled' : 'unbordered'}
           type="button"
         >
           components.header.links.faq
         </Button>
       </StyledNavItem>
 
-      <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.SIGN_UP}>
+      <StyledNavItem
+        onClick={() => onNavItemClickHandler(false)}
+        to={ROUTES.SIGN_UP}
+      >
         <Button
           color="babyBlue"
           fullWidth
           padding={buttonsPadding}
           size={buttonsSize}
-          styleType={location.pathname === ROUTES.SIGN_UP
-            ? 'filled'
-            : 'unbordered'}
+          styleType={
+            location.pathname === ROUTES.SIGN_UP ? 'filled' : 'unbordered'
+          }
           type="button"
         >
           components.header.links.signUp
         </Button>
       </StyledNavItem>
 
-      <StyledNavItem onClick={() => onNavItemClickHandler(false)} to={ROUTES.SIGN_IN}>
+      <StyledNavItem
+        onClick={() => onNavItemClickHandler(false)}
+        to={ROUTES.SIGN_IN}
+      >
         <Button
           color="emerald"
           fullWidth
           padding={buttonsPadding}
           size={buttonsSize}
-          styleType={location.pathname === ROUTES.SIGN_IN
-            ? 'filled'
-            : 'bordered'}
+          styleType={
+            location.pathname === ROUTES.SIGN_IN ? 'filled' : 'bordered'
+          }
           type="button"
         >
           components.header.links.signIn
@@ -144,22 +160,21 @@ const Nav = ({
         onNavItemClickHandler={onNavItemClickHandler}
       />
 
-      {authUser
-        ? (
-          <AuthNav
-            authUser={authUser}
-            buttonsPadding={buttonsPadding}
-            buttonsSize={buttonsSize}
-            firebase={firebase}
-            onNavItemClickHandler={onNavItemClickHandler}
-          />
-        ) : (
-          <NonAuthNav
-            buttonsPadding={buttonsPadding}
-            buttonsSize={buttonsSize}
-            onNavItemClickHandler={onNavItemClickHandler}
-          />
-        )}
+      {authUser ? (
+        <AuthNav
+          authUser={authUser}
+          buttonsPadding={buttonsPadding}
+          buttonsSize={buttonsSize}
+          firebase={firebase}
+          onNavItemClickHandler={onNavItemClickHandler}
+        />
+      ) : (
+        <NonAuthNav
+          buttonsPadding={buttonsPadding}
+          buttonsSize={buttonsSize}
+          onNavItemClickHandler={onNavItemClickHandler}
+        />
+      )}
     </>
   );
 };

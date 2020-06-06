@@ -24,13 +24,7 @@ const StyledButtonsWrapper = styled.div`
   }
 `;
 
-const PostForm = ({
-  alertSetAction,
-  newPostCallback,
-  firebase,
-  sid,
-  uid,
-}) => {
+const PostForm = ({ alertSetAction, newPostCallback, firebase, sid, uid }) => {
   const PostFormSchema = Yup.object().shape({
     title: Yup.string().trim().required('yup.required'),
     content: Yup.string().trim().required('yup.required'),
@@ -66,7 +60,9 @@ const PostForm = ({
           type: 'danger',
         });
 
-        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) =>
+          actions.setFieldTouched(field, false),
+        );
 
         actions.setSubmitting(false);
       }

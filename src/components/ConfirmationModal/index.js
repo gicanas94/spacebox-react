@@ -9,9 +9,8 @@ import { device } from '../../styles';
 
 const StyledWrapper = styled.div`
   align-items: center;
-  background-color: ${({ theme }) => (
-    theme.components.confirmationModal.bgColor1
-  )};
+  background-color: ${({ theme }) =>
+    theme.components.confirmationModal.bgColor1};
   display: flex;
   height: 100%;
   justify-content: center;
@@ -22,9 +21,8 @@ const StyledWrapper = styled.div`
   z-index: 1300;
 
   @media ${device.tablet} {
-    background-color: ${({ theme }) => (
-    theme.components.confirmationModal.bgColor2
-  )};
+    background-color: ${({ theme }) =>
+      theme.components.confirmationModal.bgColor2};
   }
 `;
 

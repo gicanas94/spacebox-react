@@ -50,22 +50,21 @@ const StyledLabelAndInputWrapper = styled.div`
 
 const StyledLabel = styled.label`
   align-items: center;
-  background-color: ${({ theme }) => (
-    theme.components.post.postLink.label.bgColor
-  )};
+  background-color: ${({ theme }) =>
+    theme.components.post.postLink.label.bgColor};
   display: flex;
   color: ${({ theme }) => theme.components.post.postLink.label.color};
   cursor: pointer;
-  font-weight: ${({ theme }) => theme.components.post.postLink.label.fontWeight};
+  font-weight: ${({ theme }) =>
+    theme.components.post.postLink.label.fontWeight};
   height: 100%;
   padding: 0 10px;
   z-index: 3;
 `;
 
 const StyledInput = styled.input`
-  background-color: ${({ theme }) => (
-    theme.components.post.postLink.input.bgColor
-  )};
+  background-color: ${({ theme }) =>
+    theme.components.post.postLink.input.bgColor};
   border: 0;
   border: ${({ theme }) => theme.components.post.postLink.input.border};
   height: 100%;

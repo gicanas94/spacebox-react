@@ -10,11 +10,7 @@ import { ERRORS } from '../../constants';
 import Input from '../../components/Input';
 import { setCookie, getCookie } from '../../utils';
 
-const PasswordChangeForm = ({
-  alertSetAction,
-  authUser,
-  firebase,
-}) => {
+const PasswordChangeForm = ({ alertSetAction, authUser, firebase }) => {
   const intl = useIntl();
   const minimumPasswordCharacters = 6;
   let recaptchaInstance;
@@ -24,10 +20,13 @@ const PasswordChangeForm = ({
     passwordOne: Yup.string()
       .trim()
       .required('yup.required')
-      .min(minimumPasswordCharacters, intl.formatMessage(
-        { id: 'yup.minimumCharacters' },
-        { characters: minimumPasswordCharacters },
-      )),
+      .min(
+        minimumPasswordCharacters,
+        intl.formatMessage(
+          { id: 'yup.minimumCharacters' },
+          { characters: minimumPasswordCharacters },
+        ),
+      ),
     passwordTwo: Yup.string()
       .trim()
       .required('yup.required')
@@ -78,7 +77,8 @@ const PasswordChangeForm = ({
 
             alertSetAction({
               message: {
-                id: 'forms.passwordChange.reachedMaxCurrentPasswordAttempsAlertMessage',
+                id:
+                  'forms.passwordChange.reachedMaxCurrentPasswordAttempsAlertMessage',
               },
               type: 'danger',
             });
@@ -90,7 +90,9 @@ const PasswordChangeForm = ({
           });
         }
 
-        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) =>
+          actions.setFieldTouched(field, false),
+        );
 
         actions.setSubmitting(false);
       }
@@ -127,9 +129,7 @@ const PasswordChangeForm = ({
           <Input
             disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
             error={
-              errors.passwordOne
-              && touched.passwordOne
-              && errors.passwordOne
+              errors.passwordOne && touched.passwordOne && errors.passwordOne
             }
             label="forms.passwordChange.labels.passwordOneInput"
             margin="0 0 25px 0"
@@ -145,9 +145,7 @@ const PasswordChangeForm = ({
           <Input
             disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
             error={
-              errors.passwordTwo
-              && touched.passwordTwo
-              && errors.passwordTwo
+              errors.passwordTwo && touched.passwordTwo && errors.passwordTwo
             }
             label="forms.passwordChange.labels.passwordTwoInput"
             margin="0 0 25px 0"
@@ -163,9 +161,9 @@ const PasswordChangeForm = ({
           <Input
             disabled={isSubmitting || reachedMaxCurrentPasswordAttemps}
             error={
-              (errors.password && touched.password && errors.password)
-              || (status && status.currentPasswordIsWrong)
-              || (status && status.reachedMaxCurrentPasswordAttemps)
+              (errors.password && touched.password && errors.password) ||
+              (status && status.currentPasswordIsWrong) ||
+              (status && status.reachedMaxCurrentPasswordAttemps)
             }
             label="forms.passwordChange.labels.passwordInput"
             margin="0 0 25px 0"
@@ -191,7 +189,9 @@ const PasswordChangeForm = ({
           </Button>
 
           <Recaptcha
-            ref={(event) => { recaptchaInstance = event; }}
+            ref={(event) => {
+              recaptchaInstance = event;
+            }}
             sitekey="6LckUOIUAAAAAI_iOY8S2ibbmag3WQIN_LzNHE8d"
             size="invisible"
             verifyCallback={(response) => {

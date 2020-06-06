@@ -6,7 +6,7 @@ import React from 'react';
 import Box from '../../components/Box';
 import CreateSpaceboxForm from '../../forms/CreateSpacebox';
 import HelmetTitle from '../../components/HelmetTitle';
-import { withAuthorization, withEmailVerification } from '../../Session';
+import { withAuthorization, withEmailVerification } from '../../session';
 
 const CreateSpaceboxPage = ({ authUser }) => (
   <Box size="medium">

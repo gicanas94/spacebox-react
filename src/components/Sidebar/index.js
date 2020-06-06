@@ -68,9 +68,8 @@ const StyledLi = styled.li`
     word-break: break-word;
 
     &.active {
-      font-weight: ${({ theme }) => (
-    theme.components.sidebar.activeLink.fontWeight
-  )};
+      font-weight: ${({ theme }) =>
+        theme.components.sidebar.activeLink.fontWeight};
     }
 
     &.not-active {
@@ -91,22 +90,23 @@ const Sidebar = ({ content }) => {
           </StyledHeading>
 
           <ul>
-            {section.links.map((link) => (
-              link.visible && (
-                <StyledLi key={link.text}>
-                  <HashLink
-                    className={
-                      location.pathname + location.hash === link.to
-                        ? 'active'
-                        : 'not-active'
-                    }
-                    to={link.to}
-                  >
-                    <FormattedMessage id={link.text} />
-                  </HashLink>
-                </StyledLi>
-              )
-            ))}
+            {section.links.map(
+              (link) =>
+                link.visible && (
+                  <StyledLi key={link.text}>
+                    <HashLink
+                      className={
+                        location.pathname + location.hash === link.to
+                          ? 'active'
+                          : 'not-active'
+                      }
+                      to={link.to}
+                    >
+                      <FormattedMessage id={link.text} />
+                    </HashLink>
+                  </StyledLi>
+                ),
+            )}
           </ul>
 
           {section.separator && <Hr margin="15px 0" />}
@@ -118,9 +118,7 @@ const Sidebar = ({ content }) => {
   return (
     <>
       <StyledMobileView>
-        <Box fullWidth>
-          {myContent}
-        </Box>
+        <Box fullWidth>{myContent}</Box>
       </StyledMobileView>
 
       <StyledLaptopView>

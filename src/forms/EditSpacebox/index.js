@@ -75,10 +75,12 @@ const EditSpaceboxForm = ({ alertSetAction, firebase, spacebox }) => {
   const EditSpaceboxFormSchema = Yup.object().shape({
     title: Yup.string().trim().required('yup.required'),
     description: Yup.string().trim().required('yup.required'),
-    category: Yup
-      .string()
+    category: Yup.string()
       .trim()
-      .oneOf(CATEGORIES.map((category) => category.messageId), 'yup.required')
+      .oneOf(
+        CATEGORIES.map((category) => category.messageId),
+        'yup.required',
+      )
       .required('yup.required'),
   });
 
@@ -104,17 +106,18 @@ const EditSpaceboxForm = ({ alertSetAction, firebase, spacebox }) => {
           type: 'success',
         });
 
-        history.push(
-          `${ROUTES.SPACE_BASE}/${spacebox.slug}`,
-          { spacebox: { ...spacebox, ...updatedSpacebox } },
-        );
+        history.push(`${ROUTES.SPACE_BASE}/${spacebox.slug}`, {
+          spacebox: { ...spacebox, ...updatedSpacebox },
+        });
       } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
 
-        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) =>
+          actions.setFieldTouched(field, false),
+        );
 
         actions.setSubmitting(false);
       }
@@ -189,9 +192,7 @@ const EditSpaceboxForm = ({ alertSetAction, firebase, spacebox }) => {
             <Input
               disabled={isSubmitting}
               error={
-                errors.description
-                && touched.description
-                && errors.description
+                errors.description && touched.description && errors.description
               }
               label="forms.editSpacebox.labels.descriptionInput"
               name="description"
@@ -222,10 +223,7 @@ const EditSpaceboxForm = ({ alertSetAction, firebase, spacebox }) => {
               disabled={isSubmitting}
               label="forms.editSpacebox.labels.visibleCheckbox"
               name="visible"
-              onChangeHandler={() => setFieldValue(
-                'visible',
-                !values.visible,
-              )}
+              onChangeHandler={() => setFieldValue('visible', !values.visible)}
               rounded
             />
           </StyledWrapper>
@@ -242,11 +240,7 @@ const EditSpaceboxForm = ({ alertSetAction, firebase, spacebox }) => {
               forms.editSpacebox.cancelButton
             </Button>
 
-            <Button
-              disabled={isSubmitting}
-              styleType="bordered"
-              type="submit"
-            >
+            <Button disabled={isSubmitting} styleType="bordered" type="submit">
               forms.editSpacebox.submitButton
             </Button>
           </StyledButtonsWrapper>

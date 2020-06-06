@@ -8,14 +8,9 @@ import styled from 'styled-components';
 import { Transition } from 'react-spring/renderprops';
 import { useIntl } from 'react-intl';
 
-import { appThemeSet } from '../../Redux/actions';
+import { appThemeSet } from '../../redux/actions';
 
-import {
-  device,
-  keyframe,
-  transition,
-  transitionProps,
-} from '../../styles';
+import { device, keyframe, transition, transitionProps } from '../../styles';
 
 import largeLogo from '../../assets/images/logo-with-name.png';
 import Nav from './Nav';
@@ -139,7 +134,9 @@ const StyledLaptopView = styled.div`
 `;
 
 const StyledLargeLogoLink = styled(StyledLogoLink)`
-  // animation: ${keyframe.float(['1px', '-2px'])} ${transition.speed.ultraslow} ease-in-out infinite;
+  // animation: ${keyframe.float(['1px', '-2px'])} ${
+  transition.speed.ultraslow
+} ease-in-out infinite;
   margin-right: 25px;
 `;
 
@@ -214,21 +211,26 @@ const Header = ({ /* appTheme, appThemeSetAction, */ authUser }) => {
             items={mobileNavIsOpen}
             {...transitionProps.components.header.mobileNav}
           >
-            {(navIsOpen) => navIsOpen && ((styleProps) => (
-              <StyledOverlay style={styleProps}>
-                <StyledCloserOnClick onClick={() => setMobileNavIsOpen(false)} />
-                <StyledCrossIcon onClick={() => setMobileNavIsOpen(false)} />
-
-                <StyledMobileViewNav>
-                  <Nav
-                    authUser={authUser}
-                    buttonsPadding="10px 40px"
-                    buttonsSize="headerOnMobile"
-                    onNavItemClickHandler={setMobileNavIsOpen}
+            {(navIsOpen) =>
+              navIsOpen &&
+              ((styleProps) => (
+                <StyledOverlay style={styleProps}>
+                  <StyledCloserOnClick
+                    onClick={() => setMobileNavIsOpen(false)}
                   />
-                </StyledMobileViewNav>
-              </StyledOverlay>
-            ))}
+                  <StyledCrossIcon onClick={() => setMobileNavIsOpen(false)} />
+
+                  <StyledMobileViewNav>
+                    <Nav
+                      authUser={authUser}
+                      buttonsPadding="10px 40px"
+                      buttonsSize="headerOnMobile"
+                      onNavItemClickHandler={setMobileNavIsOpen}
+                    />
+                  </StyledMobileViewNav>
+                </StyledOverlay>
+              ))
+            }
           </Transition>
 
           {!mobileNavIsOpen && (

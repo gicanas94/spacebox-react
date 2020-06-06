@@ -38,23 +38,31 @@ const GeneralSettingsForm = ({
   const GeneralSettingsFormSchema = Yup.object().shape({
     username: Yup.string()
       .trim()
-      .min(minimumUsernameCharacters, intl.formatMessage(
-        { id: 'yup.minimumCharacters' },
-        { characters: minimumUsernameCharacters },
-      ))
-      .max(maximumUsernameCharacters, intl.formatMessage(
-        { id: 'yup.maximumCharacters' },
-        { characters: maximumUsernameCharacters },
-      ))
+      .min(
+        minimumUsernameCharacters,
+        intl.formatMessage(
+          { id: 'yup.minimumCharacters' },
+          { characters: minimumUsernameCharacters },
+        ),
+      )
+      .max(
+        maximumUsernameCharacters,
+        intl.formatMessage(
+          { id: 'yup.maximumCharacters' },
+          { characters: maximumUsernameCharacters },
+        ),
+      )
       .required('yup.required'),
     email: Yup.string()
       .trim()
       .email('yup.emailInvalid')
       .required('yup.required'),
-    language: Yup
-      .string()
+    language: Yup.string()
       .trim()
-      .oneOf(_.map(LANGUAGES, (category) => category.messageId), 'yup.required')
+      .oneOf(
+        _.map(LANGUAGES, (category) => category.messageId),
+        'yup.required',
+      )
       .required('yup.required'),
   });
 
@@ -84,7 +92,9 @@ const GeneralSettingsForm = ({
           type: 'danger',
         });
 
-        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) =>
+          actions.setFieldTouched(field, false),
+        );
 
         actions.setSubmitting(false);
       } finally {
@@ -99,8 +109,8 @@ const GeneralSettingsForm = ({
         username: authUser.username,
         email: authUser.email,
         bio: authUser.bio || '',
-        language: LANGUAGES.filter(
-          (language) => language.messageId.includes(`.${authUser.language}`),
+        language: LANGUAGES.filter((language) =>
+          language.messageId.includes(`.${authUser.language}`),
         )[0].messageId,
       }}
       onSubmit={handleSubmit}

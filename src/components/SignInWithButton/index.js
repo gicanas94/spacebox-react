@@ -29,7 +29,9 @@ const StyledButton = styled.button`
   user-select: none;
   width: 270px;
 
-  ${({ account }) => account === 'Facebook' && `
+  ${({ account }) =>
+    account === 'Facebook' &&
+    `
     background-color: #3b5998;
     color: #ffffff;
 
@@ -39,7 +41,9 @@ const StyledButton = styled.button`
     }
   `}
 
-  ${({ account }) => (account === 'Google') && `
+  ${({ account }) =>
+    account === 'Google' &&
+    `
     background-color: #db4437;
     color: #ffffff;
 
@@ -49,7 +53,9 @@ const StyledButton = styled.button`
     }
   `}
 
-  ${({ account }) => account === 'Twitter' && `
+  ${({ account }) =>
+    account === 'Twitter' &&
+    `
     background-color: #00acee;
     color: #ffffff;
 
@@ -59,15 +65,21 @@ const StyledButton = styled.button`
     }
   `}
 
-  ${({ fullWidth }) => fullWidth && `
+  ${({ fullWidth }) =>
+    fullWidth &&
+    `
     width: 100%;
   `}
 
-  ${({ margin }) => margin && `
+  ${({ margin }) =>
+    margin &&
+    `
     margin: ${margin};
   `}
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-radius: ${theme.global.borderRadius};
   `}
 

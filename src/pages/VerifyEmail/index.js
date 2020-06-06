@@ -6,13 +6,13 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { alertSet } from '../../Redux/actions';
+import { alertSet } from '../../redux/actions';
 import Box from '../../components/Box';
 import Button from '../../components/Button';
 import HelmetTitle from '../../components/HelmetTitle';
 import { ROUTES } from '../../constants';
 import { setCookie, getCookie } from '../../utils';
-import { withFirebase } from '../../Firebase';
+import { withFirebase } from '../../firebase';
 
 const StyledButtonWrapper = styled.div`
   display: flex;
@@ -54,45 +54,39 @@ const VerifyEmailPage = ({ alertSetAction, authUser, firebase }) => {
     })();
   };
 
-  return (
-    !authUser
-    || (authUser && authUser.emailVerified)
-      ? <Redirect to={ROUTES.HOME} />
-      : (
-        <Box size="small">
-          <HelmetTitle title={{ id: 'pages.verifyEmail.title' }} />
+  return !authUser || (authUser && authUser.emailVerified) ? (
+    <Redirect to={ROUTES.HOME} />
+  ) : (
+    <Box size="small">
+      <HelmetTitle title={{ id: 'pages.verifyEmail.title' }} />
 
-          <h1>
-            <FormattedMessage id="pages.verifyEmail.h1" />
-          </h1>
+      <h1>
+        <FormattedMessage id="pages.verifyEmail.h1" />
+      </h1>
 
-          <p>
-            <FormattedMessage id="pages.verifyEmail.p1" />
-          </p>
+      <p>
+        <FormattedMessage id="pages.verifyEmail.p1" />
+      </p>
 
-          <p>
-            <FormattedMessage id="pages.verifyEmail.p2" />
-            <StyledEmail>{authUser.email}</StyledEmail>
-          </p>
+      <p>
+        <FormattedMessage id="pages.verifyEmail.p2" />
+        <StyledEmail>{authUser.email}</StyledEmail>
+      </p>
 
-          <StyledButtonWrapper>
-            <Button
-              disabled={
-                (
-                  emailSent
-                  || getCookie('verificationEmailSentRecently', false)
-                )
-              }
-              fullWidth
-              onClick={handleClick}
-              styleType="filled"
-              type="submit"
-            >
-              pages.verifyEmail.submitButton
-            </Button>
-          </StyledButtonWrapper>
-        </Box>
-      )
+      <StyledButtonWrapper>
+        <Button
+          disabled={
+            emailSent || getCookie('verificationEmailSentRecently', false)
+          }
+          fullWidth
+          onClick={handleClick}
+          styleType="filled"
+          type="submit"
+        >
+          pages.verifyEmail.submitButton
+        </Button>
+      </StyledButtonWrapper>
+    </Box>
   );
 };
 

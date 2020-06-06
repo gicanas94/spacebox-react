@@ -11,13 +11,13 @@ import React, { useEffect } from 'react';
 import Recaptcha from 'react-recaptcha';
 import styled from 'styled-components';
 
-import { alertSet } from '../../Redux/actions';
+import { alertSet } from '../../redux/actions';
 import Button from '../../components/Button';
 import { defineAppLocale } from '../../utils';
 import { device } from '../../styles';
 import Input from '../../components/Input';
 import { ROUTES } from '../../constants';
-import { withFirebase } from '../../Firebase';
+import { withFirebase } from '../../firebase';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -83,24 +83,33 @@ const SignUpForm = ({ alertSetAction, authUser, firebase }) => {
     passwordOne: Yup.string()
       .trim()
       .required('yup.required')
-      .min(minimumPasswordCharacters, intl.formatMessage(
-        { id: 'yup.minimumCharacters' },
-        { characters: minimumPasswordCharacters },
-      )),
+      .min(
+        minimumPasswordCharacters,
+        intl.formatMessage(
+          { id: 'yup.minimumCharacters' },
+          { characters: minimumPasswordCharacters },
+        ),
+      ),
     passwordTwo: Yup.string()
       .trim()
       .required('yup.required')
       .oneOf([Yup.ref('passwordOne'), null], 'yup.passwordsMustMatch'),
     username: Yup.string()
       .trim()
-      .min(minimumUsernameCharacters, intl.formatMessage(
-        { id: 'yup.minimumCharacters' },
-        { characters: minimumUsernameCharacters },
-      ))
-      .max(maximumUsernameCharacters, intl.formatMessage(
-        { id: 'yup.maximumCharacters' },
-        { characters: maximumUsernameCharacters },
-      ))
+      .min(
+        minimumUsernameCharacters,
+        intl.formatMessage(
+          { id: 'yup.minimumCharacters' },
+          { characters: minimumUsernameCharacters },
+        ),
+      )
+      .max(
+        maximumUsernameCharacters,
+        intl.formatMessage(
+          { id: 'yup.maximumCharacters' },
+          { characters: maximumUsernameCharacters },
+        ),
+      )
       .required('yup.required'),
     recaptcha: Yup.string().required(),
   });
@@ -154,7 +163,9 @@ const SignUpForm = ({ alertSetAction, authUser, firebase }) => {
           type: 'danger',
         });
 
-        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) =>
+          actions.setFieldTouched(field, false),
+        );
 
         actions.setSubmitting(false);
       }
@@ -219,9 +230,7 @@ const SignUpForm = ({ alertSetAction, authUser, firebase }) => {
             <Input
               disabled={isSubmitting}
               error={
-                errors.passwordOne
-                && touched.passwordOne
-                && errors.passwordOne
+                errors.passwordOne && touched.passwordOne && errors.passwordOne
               }
               label="forms.signUp.labels.passwordOneInput"
               margin="0 0 25px 0"
@@ -237,9 +246,7 @@ const SignUpForm = ({ alertSetAction, authUser, firebase }) => {
             <Input
               disabled={isSubmitting}
               error={
-                errors.passwordTwo
-                && touched.passwordTwo
-                && errors.passwordTwo
+                errors.passwordTwo && touched.passwordTwo && errors.passwordTwo
               }
               label="forms.signUp.labels.passwordTwoInput"
               margin="0 0 25px 0"
@@ -288,7 +295,9 @@ const SignUpForm = ({ alertSetAction, authUser, firebase }) => {
           </StyledBottomWrapper>
 
           <Recaptcha
-            ref={(event) => { recaptchaInstance = event; }}
+            ref={(event) => {
+              recaptchaInstance = event;
+            }}
             sitekey="6LckUOIUAAAAAI_iOY8S2ibbmag3WQIN_LzNHE8d"
             size="invisible"
             verifyCallback={(response) => {

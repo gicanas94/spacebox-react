@@ -5,11 +5,4 @@ import keyframe from './keyframe';
 import transition from './transition';
 import transitionProps from './transitionProps';
 
-export {
-  color,
-  device,
-  font,
-  keyframe,
-  transition,
-  transitionProps,
-};
+export { color, device, font, keyframe, transition, transitionProps };

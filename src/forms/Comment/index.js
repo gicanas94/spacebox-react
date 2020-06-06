@@ -44,9 +44,8 @@ const StyledTextarea = styled.textarea`
   border: 0;
   border-color: ${({ theme }) => theme.forms.comment.textarea.status.default};
   border-style: solid;
-  border-bottom-width: ${({ theme }) => (
-    theme.forms.comment.textarea.borderBottomWidth
-  )};
+  border-bottom-width: ${({ theme }) =>
+    theme.forms.comment.textarea.borderBottomWidth};
   height: 40px;
   padding: 5px;
   resize: none;
@@ -58,7 +57,9 @@ const StyledTextarea = styled.textarea`
     outline: none;
   }
 
-  ${({ disabled, theme }) => disabled && `
+  ${({ disabled, theme }) =>
+    disabled &&
+    `
     border-color: ${theme.forms.comment.textarea.status.disabled} !important;
     color: ${theme.forms.comment.textarea.status.disabled} !important;
 
@@ -117,12 +118,15 @@ const CommentForm = ({
 
   const handleSubmit = (values, actions) => {
     const createdComment = {
-      bgColor: color.specific.commentBgColor[
-        Math.floor(Math.random() * color.specific.commentBgColor.length)
-      ],
+      bgColor:
+        color.specific.commentBgColor[
+          Math.floor(Math.random() * color.specific.commentBgColor.length)
+        ],
       content: values.content.trim(),
       createdAt: new Date().toISOString(),
-      slug: `${_.kebabCase(values.content)}-${Math.floor(Math.random() * 10000)}`,
+      slug: `${_.kebabCase(values.content)}-${Math.floor(
+        Math.random() * 10000,
+      )}`,
     };
 
     (async () => {
@@ -138,9 +142,9 @@ const CommentForm = ({
           username: authUser.username,
         };
 
-        await postRef.update(
-          { comments: [...post.data().comments, createdComment] },
-        );
+        await postRef.update({
+          comments: [...post.data().comments, createdComment],
+        });
 
         postCommentsChangeCallback(createdComment, 'add');
         actions.resetForm();
@@ -151,7 +155,9 @@ const CommentForm = ({
           type: 'danger',
         });
 
-        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) =>
+          actions.setFieldTouched(field, false),
+        );
 
         actions.setSubmitting(false);
       } finally {
@@ -197,12 +203,7 @@ const CommentForm = ({
       onSubmit={handleSubmit}
       validationSchema={CommentFormSchema}
     >
-      {({
-        handleBlur,
-        handleChange,
-        isSubmitting,
-        values,
-      }) => (
+      {({ handleBlur, handleChange, isSubmitting, values }) => (
         <Form>
           <StyledWrapper>
             <StyledTextareaAndSmileIconWrapper>
@@ -220,9 +221,10 @@ const CommentForm = ({
               />
 
               <StyledSmileIcon
-                onClick={() => (
-                  !isSubmitting && setEmojiPickerIsVisible(!emojiPickerIsVisible)
-                )}
+                onClick={() =>
+                  !isSubmitting &&
+                  setEmojiPickerIsVisible(!emojiPickerIsVisible)
+                }
               />
             </StyledTextareaAndSmileIconWrapper>
 

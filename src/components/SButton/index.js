@@ -12,8 +12,6 @@ const StyledWrapper = styled.div`
   height: 150px;
 `;
 
-const SButton = () => (
-  <StyledWrapper />
-);
+const SButton = () => <StyledWrapper />;
 
 export default SButton;

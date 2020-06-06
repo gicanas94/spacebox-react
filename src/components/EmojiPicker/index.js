@@ -12,16 +12,13 @@ import {
 import { transition } from '../../styles';
 
 const StyledInput = styled.input`
-  background-color: ${({ theme }) => (
-    theme.components.emojiPicker.searchInput.bgColor
-  )};
+  background-color: ${({ theme }) =>
+    theme.components.emojiPicker.searchInput.bgColor};
   border: 0;
-  border-bottom: ${({ theme }) => (
-    theme.components.emojiPicker.searchInput.borderBottom
-  )};
-  font-size: ${({ theme }) => (
-    theme.components.emojiPicker.searchInput.fontSize
-  )};
+  border-bottom: ${({ theme }) =>
+    theme.components.emojiPicker.searchInput.borderBottom};
+  font-size: ${({ theme }) =>
+    theme.components.emojiPicker.searchInput.fontSize};
   // margin: 0 5px;
   padding-bottom: 2px;
   width: -webkit-fill-available;
@@ -63,9 +60,8 @@ const StyledEmoji = styled.span`
   }
 
   &:hover {
-    background-color: ${({ theme }) => (
-    theme.components.emojiPicker.emojiHoverColor
-  )};
+    background-color: ${({ theme }) =>
+      theme.components.emojiPicker.emojiHoverColor};
   }
 `;
 
@@ -88,26 +84,24 @@ const StyledWrapper = styled.div`
     }
 
     ::-webkit-scrollbar-thumb {
-      background-color: ${({ theme }) => (
-    theme.components.emojiPicker.scrollBar.thumb.bgColor
-  )};
+      background-color: ${({ theme }) =>
+        theme.components.emojiPicker.scrollBar.thumb.bgColor};
     }
 
     ::-webkit-scrollbar-track {
-      background-color: ${({ theme }) => (
-    theme.components.emojiPicker.scrollBar.track.bgColor
-  )};
+      background-color: ${({ theme }) =>
+        theme.components.emojiPicker.scrollBar.track.bgColor};
     }
   }
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-radius: ${theme.global.borderRadius};
 
     ${StyledEmojisWrapper} {
       ::-webkit-scrollbar-thumb {
-        border-radius: ${(
-    theme.components.emojiPicker.scrollBar.thumb.borderRadius
-  )};
+        border-radius: ${theme.components.emojiPicker.scrollBar.thumb.borderRadius};
       }
     }
 
@@ -125,9 +119,8 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
     JSON.parse(localStorage.getItem('recentlyUsedEmojis')) || [],
   );
 
-  const emojisNames = intl.locale === 'es'
-    ? emojisNamesInSpanish
-    : emojisNamesInEnglish;
+  const emojisNames =
+    intl.locale === 'es' ? emojisNamesInSpanish : emojisNamesInEnglish;
 
   const handleInputChange = (event) => {
     setSearchContent(event.target.value);
@@ -135,9 +128,9 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
     const foundEmojis = [];
 
     for (let i = 0; i < emojisNames.length; i += 1) {
-      if (emojisNames[i].toUpperCase().includes(
-        event.target.value.toUpperCase(),
-      )) {
+      if (
+        emojisNames[i].toUpperCase().includes(event.target.value.toUpperCase())
+      ) {
         foundEmojis.push(emojis[i]);
       }
     }
@@ -184,9 +177,7 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
   const searchContentElement = (
     <>
       <StyledLabel>
-        <FormattedMessage
-          id="components.emojiPicker.searchResultsLabel"
-        />
+        <FormattedMessage id="components.emojiPicker.searchResultsLabel" />
       </StyledLabel>
 
       {emojisFound.map((emoji, index) => emojiElement(emoji, index))}
@@ -196,9 +187,7 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
   const recentlyUsedEmojisElement = (
     <>
       <StyledLabel>
-        <FormattedMessage
-          id="components.emojiPicker.recentlyUsedEmojisLabel"
-        />
+        <FormattedMessage id="components.emojiPicker.recentlyUsedEmojisLabel" />
       </StyledLabel>
 
       {recentlyUsedEmojis.map((emoji, index) => emojiElement(emoji, index))}
@@ -208,9 +197,7 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
   const allEmojisElement = (
     <>
       <StyledLabel>
-        <FormattedMessage
-          id="components.emojiPicker.allEmojisLabel"
-        />
+        <FormattedMessage id="components.emojiPicker.allEmojisLabel" />
       </StyledLabel>
 
       {emojis.map((emoji, index) => emojiElement(emoji, index))}
@@ -221,29 +208,27 @@ const EmojiPicker = ({ callback, rounded, ...props }) => {
     <StyledWrapper rounded={rounded} {...props}>
       <StyledInput
         onChange={handleInputChange}
-        placeholder={intl.formatMessage(
-          { id: 'components.emojiPicker.searchInputPlaceholder' },
-        )}
+        placeholder={intl.formatMessage({
+          id: 'components.emojiPicker.searchInputPlaceholder',
+        })}
         type="text"
       />
 
       <StyledEmojisWrapper>
-        {searchContent
-          ? (
-            searchContentElement
-          ) : (
-            <>
-              {recentlyUsedEmojis.length > 0
-                ? (
-                  <>
-                    {recentlyUsedEmojisElement}
-                    {allEmojisElement}
-                  </>
-                ) : (
-                  allEmojisElement
-                )}
-            </>
-          )}
+        {searchContent ? (
+          searchContentElement
+        ) : (
+          <>
+            {recentlyUsedEmojis.length > 0 ? (
+              <>
+                {recentlyUsedEmojisElement}
+                {allEmojisElement}
+              </>
+            ) : (
+              allEmojisElement
+            )}
+          </>
+        )}
       </StyledEmojisWrapper>
     </StyledWrapper>
   );

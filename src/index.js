@@ -7,8 +7,8 @@ import * as serviceWorker from './serviceWorker';
 import App from './App';
 import ConnectedIntlProvider from './components/ConnectedIntlProvider';
 import ConnectedThemeProvider from './components/ConnectedThemeProvider';
-import Firebase, { FirebaseContext } from './Firebase';
-import store from './Redux/store';
+import Firebase, { FirebaseContext } from './firebase';
+import store from './redux/store';
 
 ReactDOM.render(
   <Provider store={store}>

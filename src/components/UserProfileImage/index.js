@@ -14,16 +14,15 @@ const StyledWrapper = styled.div`
   width: 100%;
 
   &::before {
-    content: "";
+    content: '';
     display: block;
     padding-top: 100%;
   }
 `;
 
 const StyledActionsWrapper = styled.div`
-  background-color: ${({ theme }) => (
-    theme.components.userProfileImage.actionsWrapperBgColor
-  )};
+  background-color: ${({ theme }) =>
+    theme.components.userProfileImage.actionsWrapperBgColor};
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -89,12 +88,10 @@ const StyledErrorIcon = styled(ErrorOutline)`
 
 const StyledErrorMessage = styled.div`
   color: ${({ theme }) => theme.components.userProfileImage.errorMessage.color};
-  font-size: ${({ theme }) => (
-    theme.components.userProfileImage.errorMessage.fontSize
-  )};
-  font-weight: ${({ theme }) => (
-    theme.components.userProfileImage.errorMessage.fontWeight
-  )};
+  font-size: ${({ theme }) =>
+    theme.components.userProfileImage.errorMessage.fontSize};
+  font-weight: ${({ theme }) =>
+    theme.components.userProfileImage.errorMessage.fontWeight};
   padding-top: 5px;
 `;
 
@@ -119,7 +116,9 @@ const StyledImageWrapper = styled.div`
     }
   }
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-radius: ${theme.global.borderRadius};
 
     ${StyledActionsWrapper} {
@@ -145,7 +144,9 @@ const UserProfileImage = ({
   const uploadImageAndUpdateUser = async (image) => {
     try {
       isLoadingSetAction(true);
-      const storageRef = firebase.storage.ref(`user-profile-images/${authUser.uid}`);
+      const storageRef = firebase.storage.ref(
+        `user-profile-images/${authUser.uid}`,
+      );
       await storageRef.put(image);
       const imageUrl = await storageRef.getDownloadURL();
       await firebase.user(authUser.uid).update({ profileImageUrl: imageUrl });
@@ -163,7 +164,9 @@ const UserProfileImage = ({
     try {
       isLoadingSetAction(true);
       await firebase.user(authUser.uid).update({ profileImageUrl: null });
-      const storageRef = firebase.storage.ref(`user-profile-images/${authUser.uid}`);
+      const storageRef = firebase.storage.ref(
+        `user-profile-images/${authUser.uid}`,
+      );
       await storageRef.delete();
     } catch (error) {
       if (error.code !== 'storage/object-not-found') {
@@ -199,13 +202,11 @@ const UserProfileImage = ({
             type="button"
           >
             <StyledLabel htmlFor="file">
-              {intl.formatMessage(
-                {
-                  id: authUser.profileImageUrl
-                    ? 'components.userProfileImage.changeImageButton'
-                    : 'components.userProfileImage.uploadNewImageButton',
-                },
-              )}
+              {intl.formatMessage({
+                id: authUser.profileImageUrl
+                  ? 'components.userProfileImage.changeImageButton'
+                  : 'components.userProfileImage.uploadNewImageButton',
+              })}
             </StyledLabel>
           </Button>
 
@@ -231,9 +232,9 @@ const UserProfileImage = ({
         </StyledActionsWrapper>
 
         <StyledImg
-          alt={intl.formatMessage(
-            { id: 'components.userProfileImage.altImage' },
-          )}
+          alt={intl.formatMessage({
+            id: 'components.userProfileImage.altImage',
+          })}
           src={authUser.profileImageUrl || defaultUserImage}
         />
       </StyledImageWrapper>

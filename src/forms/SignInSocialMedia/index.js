@@ -48,9 +48,10 @@ const SignInSocialMedia = ({ alertSetAction, firebase }) => {
         }
       } catch (error) {
         alertSetAction({
-          message: error.code === ERRORS.FIREBASE.ACCOUNT_EXISTS.CODE
-            ? { id: ERRORS.FIREBASE.ACCOUNT_EXISTS.MESSAGE }
-            : error.message,
+          message:
+            error.code === ERRORS.FIREBASE.ACCOUNT_EXISTS.CODE
+              ? { id: ERRORS.FIREBASE.ACCOUNT_EXISTS.MESSAGE }
+              : error.message,
           type: 'danger',
         });
       }
@@ -63,9 +64,7 @@ const SignInSocialMedia = ({ alertSetAction, firebase }) => {
         account="Google"
         fullWidth
         margin="0 0 10px 0"
-        onClick={() => handleSignInWithClick(
-          firebase.doSignInWithGoogle,
-        )}
+        onClick={() => handleSignInWithClick(firebase.doSignInWithGoogle)}
         rounded
         type="button"
       />
@@ -74,9 +73,7 @@ const SignInSocialMedia = ({ alertSetAction, firebase }) => {
         account="Facebook"
         fullWidth
         margin="0 0 10px 0"
-        onClick={() => handleSignInWithClick(
-          firebase.doSignInWithFacebook,
-        )}
+        onClick={() => handleSignInWithClick(firebase.doSignInWithFacebook)}
         rounded
         type="button"
       />
@@ -84,9 +81,7 @@ const SignInSocialMedia = ({ alertSetAction, firebase }) => {
       <SignInWithButton
         account="Twitter"
         fullWidth
-        onClick={() => handleSignInWithClick(
-          firebase.doSignInWithTwitter,
-        )}
+        onClick={() => handleSignInWithClick(firebase.doSignInWithTwitter)}
         rounded
         type="button"
       />

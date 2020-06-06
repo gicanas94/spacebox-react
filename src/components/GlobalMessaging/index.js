@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { device } from '../../styles';
 import { getCookie, setCookie } from '../../utils';
 import GlobalMessage from './GlobalMessage';
-import { withFirebase } from '../../Firebase';
+import { withFirebase } from '../../firebase';
 
 const StyledGlobalMessagesWrapper = styled.div`
   & > * {
@@ -32,9 +32,11 @@ const GlobalMessaging = ({ appLocale, firebase }) => {
       new Date(new Date().getTime() + 30 * 86400000).toGMTString(),
     );
 
-    setGlobalMessages(globalMessages.filter((globalMessage) => (
-      globalMessage.slug !== globalMessageToDismiss.slug
-    )));
+    setGlobalMessages(
+      globalMessages.filter(
+        (globalMessage) => globalMessage.slug !== globalMessageToDismiss.slug,
+      ),
+    );
   };
 
   useEffect(() => {
@@ -49,24 +51,25 @@ const GlobalMessaging = ({ appLocale, firebase }) => {
 
   return (
     <StyledGlobalMessagesWrapper>
-      {globalMessages && globalMessages.map((gMessage) => (
-        gMessage.pages.map((page) => (
-          ((_.startsWith(location.pathname, page) && page !== '/')
-          || (page === '/' && location.pathname === '/')
-          || page === '/*')
-          && !getCookie(`globalMessageDismissed-${gMessage.slug}`)
-          && (
-            <GlobalMessage
-              appLocale={appLocale}
-              globalMessage={gMessage}
-              key={gMessage.slug}
-              onCloseGlobalMessageIconClickHandler={
-                onCloseGlobalMessageIconClickHandler
-              }
-            />
-          )
-        ))
-      ))}
+      {globalMessages &&
+        globalMessages.map((gMessage) =>
+          gMessage.pages.map(
+            (page) =>
+              ((_.startsWith(location.pathname, page) && page !== '/') ||
+                (page === '/' && location.pathname === '/') ||
+                page === '/*') &&
+              !getCookie(`globalMessageDismissed-${gMessage.slug}`) && (
+                <GlobalMessage
+                  appLocale={appLocale}
+                  globalMessage={gMessage}
+                  key={gMessage.slug}
+                  onCloseGlobalMessageIconClickHandler={
+                    onCloseGlobalMessageIconClickHandler
+                  }
+                />
+              ),
+          ),
+        )}
     </StyledGlobalMessagesWrapper>
   );
 };

@@ -27,22 +27,20 @@ const StyledArrowIcon = styled(KeyboardArrowUp)`
 `;
 
 const StyledBox = styled.div`
-  background-color: ${({ bgColor, theme }) => (
-    bgColor
-      ? color.palette[bgColor]
-      : theme.components.box.bgColor
-  )};
-  border-color: ${({ bgColor, theme }) => (
+  background-color: ${({ bgColor, theme }) =>
+    bgColor ? color.palette[bgColor] : theme.components.box.bgColor};
+  border-color: ${({ bgColor, theme }) =>
     bgColor
       ? Color(color.palette[bgColor]).darken(0.2).hex()
-      : theme.components.box.borderColor
-  )};
+      : theme.components.box.borderColor};
   border-style: solid;
   border-width: ${({ theme }) => theme.components.box.borderWidth};
   margin: auto;
   position: relative;
 
-  ${({ collapsed, padding }) => !collapsed && `
+  ${({ collapsed, padding }) =>
+    !collapsed &&
+    `
     padding: ${padding};
 
     ${StyledCollapseTitle} {
@@ -50,7 +48,9 @@ const StyledBox = styled.div`
     }
   `}
 
-  ${({ collapsed, padding }) => collapsed && `
+  ${({ collapsed, padding }) =>
+    collapsed &&
+    `
     ${StyledCollapseTitle} {
       padding: ${padding};
     }
@@ -60,37 +60,53 @@ const StyledBox = styled.div`
     }
   `}
 
-  ${({ fullHeight }) => fullHeight && `
+  ${({ fullHeight }) =>
+    fullHeight &&
+    `
     height: 100%;
   `}
 
-  ${({ fullWidth }) => fullWidth && `
+  ${({ fullWidth }) =>
+    fullWidth &&
+    `
     width: 100%;
   `}
 
-  ${({ margin }) => margin && `
+  ${({ margin }) =>
+    margin &&
+    `
     margin: ${margin};
   `}
 
-  ${({ minMaxHeight }) => minMaxHeight && `
+  ${({ minMaxHeight }) =>
+    minMaxHeight &&
+    `
     min-height: ${minMaxHeight[0]};
     max-height: ${minMaxHeight[1]} !important;
   `}
 
-  ${({ minMaxWidth }) => minMaxWidth && `
+  ${({ minMaxWidth }) =>
+    minMaxWidth &&
+    `
     min-width: ${minMaxWidth[0]};
     max-width: ${minMaxWidth[1]} !important;
   `}
 
-  ${({ noBorder }) => noBorder && `
+  ${({ noBorder }) =>
+    noBorder &&
+    `
     border-width: 0;
   `}
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-radius: ${theme.global.borderRadius};
   `}
 
-  ${({ size }) => size === 'small' && `
+  ${({ size }) =>
+    size === 'small' &&
+    `
     width: 100%;
 
     @media ${device.mobileL} {
@@ -98,7 +114,9 @@ const StyledBox = styled.div`
     }
   `}
 
-  ${({ size }) => size === 'medium' && `
+  ${({ size }) =>
+    size === 'medium' &&
+    `
     width: 100%;
 
     @media ${device.tablet} {
@@ -106,7 +124,9 @@ const StyledBox = styled.div`
     }
   `}
 
-  ${({ size }) => size === 'large' && `
+  ${({ size }) =>
+    size === 'large' &&
+    `
     width: 100%;
 
     @media ${device.laptop} {
@@ -115,35 +135,30 @@ const StyledBox = styled.div`
   `}
 `;
 
-const Box = ({
-  children,
-  collapsed,
-  collapseTitle,
-  padding,
-  ...props
-}) => {
+const Box = ({ children, collapsed, collapseTitle, padding, ...props }) => {
   const [boxIsCollapsed, setBoxIsCollapsed] = useState(collapsed);
 
   return (
     <StyledBox collapsed={boxIsCollapsed} padding={padding} {...props}>
-      {collapseTitle
-        ? (
-          <>
-            <StyledCollapseTitle
-              onClick={() => setBoxIsCollapsed(!boxIsCollapsed)}
-            >
-              <FormattedMessage
-                id={collapseTitle}
-                values={{
-                  h3: (...chunks) => <h3>{chunks}</h3>,
-                }}
-              />
-              <StyledArrowIcon collapsed={boxIsCollapsed} />
-            </StyledCollapseTitle>
+      {collapseTitle ? (
+        <>
+          <StyledCollapseTitle
+            onClick={() => setBoxIsCollapsed(!boxIsCollapsed)}
+          >
+            <FormattedMessage
+              id={collapseTitle}
+              values={{
+                h3: (...chunks) => <h3>{chunks}</h3>,
+              }}
+            />
+            <StyledArrowIcon collapsed={boxIsCollapsed} />
+          </StyledCollapseTitle>
 
-            {!boxIsCollapsed && children}
-          </>
-        ) : children}
+          {!boxIsCollapsed && children}
+        </>
+      ) : (
+        children
+      )}
     </StyledBox>
   );
 };

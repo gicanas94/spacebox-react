@@ -4,7 +4,6 @@ export default {
       '#e3a9a9, #e3c4a9, #e3dea9, #a9e3b9, #a9e0e3, #a9ace3, #e3a9d6',
   },
   palette: {
-
     // Blues
     azure: '#0080fe',
     airForce: '#598baf',

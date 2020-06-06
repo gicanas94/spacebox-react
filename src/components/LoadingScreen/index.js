@@ -19,7 +19,8 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledHeart = styled.div`
-  animation: ${keyframe.beat(1.07)} 1s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+  animation: ${keyframe.beat(1.07)} 1s infinite
+    cubic-bezier(0.215, 0.61, 0.355, 1);
   height: 150px !important;
   opacity: 1;
   position: relative;
@@ -39,7 +40,7 @@ const StyledHeart = styled.div`
   div::after,
   div::before {
     background: ${({ theme }) => theme.components.loadingScreen.heartColor};
-    content: "";
+    content: '';
     display: block;
     height: 60px;
     position: absolute;
@@ -79,7 +80,9 @@ const LoadingScreen = ({ ...props }) => {
         <FormattedMessage id="components.loadingScreen.text" />
       </StyledText>
 
-      <StyledHeart><div /></StyledHeart>
+      <StyledHeart>
+        <div />
+      </StyledHeart>
     </StyledWrapper>
   );
 };

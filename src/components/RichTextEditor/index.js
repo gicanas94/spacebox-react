@@ -18,9 +18,8 @@ const StyledLabel = styled.label`
   color: ${({ theme }) => theme.components.richTextEditor.status.default};
   display: block;
   font-size: ${({ theme }) => theme.components.richTextEditor.label.fontSize};
-  font-weight: ${({ theme }) => (
-    theme.components.richTextEditor.label.fontWeight
-  )};
+  font-weight: ${({ theme }) =>
+    theme.components.richTextEditor.label.fontWeight};
   overflow: hidden;
   padding-bottom: 2px;
   text-overflow: ellipsis;
@@ -42,19 +41,15 @@ const StyledRichUtilButtonsWrapper = styled.div`
 `;
 
 const StyledRichUtilButton = styled.button`
-  background-color: ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.status.default.bgColor
-  )};
-  border ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.status.default.border
-  )};
+  background-color: ${({ theme }) =>
+    theme.components.richTextEditor.richUtilButton.status.default.bgColor};
+  border ${({ theme }) =>
+    theme.components.richTextEditor.richUtilButton.status.default.border};
   cursor: pointer;
-  color: ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.status.default.color
-  )};
-  font-size: ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.fontSize
-  )};
+  color: ${({ theme }) =>
+    theme.components.richTextEditor.richUtilButton.status.default.color};
+  font-size: ${({ theme }) =>
+    theme.components.richTextEditor.richUtilButton.fontSize};
   line-height: 1;
   padding: 6px 10px 5px 10px;
   transition: all ${transition.speed.superfast} linear;
@@ -68,38 +63,30 @@ const StyledRichUtilButton = styled.button`
   }
 
   &:hover {
-    background-color: ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.status.hover.bgColor
-  )};
-    border ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.status.hover.border
-  )};
-    color: ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.status.hover.color
-  )};
+    background-color: ${({ theme }) =>
+      theme.components.richTextEditor.richUtilButton.status.hover.bgColor};
+    border ${({ theme }) =>
+      theme.components.richTextEditor.richUtilButton.status.hover.border};
+    color: ${({ theme }) =>
+      theme.components.richTextEditor.richUtilButton.status.hover.color};
   }
 
   &.active {
-    background-color: ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.status.active.bgColor
-  )};
-    border ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.status.active.border
-  )};
-    color: ${({ theme }) => (
-    theme.components.richTextEditor.richUtilButton.status.active.color
-  )};
+    background-color: ${({ theme }) =>
+      theme.components.richTextEditor.richUtilButton.status.active.bgColor};
+    border ${({ theme }) =>
+      theme.components.richTextEditor.richUtilButton.status.active.border};
+    color: ${({ theme }) =>
+      theme.components.richTextEditor.richUtilButton.status.active.color};
 `;
 
 const StyledEditorAndRichUtilsButtonsWrapper = styled.div`
   background-color: ${({ theme }) => theme.components.richTextEditor.bgColor};
   border: 0;
-  border-bottom-width: ${({ theme }) => (
-    theme.components.richTextEditor.borderBottomWidth
-  )};
-  border-color: ${({ theme }) => (
-    theme.components.richTextEditor.status.default
-  )};
+  border-bottom-width: ${({ theme }) =>
+    theme.components.richTextEditor.borderBottomWidth};
+  border-color: ${({ theme }) =>
+    theme.components.richTextEditor.status.default};
   border-style: solid;
   transition: border ${transition.speed.superfast} linear;
 
@@ -125,12 +112,10 @@ const StyledErrorIcon = styled(ErrorOutline)`
 
 const StyledErrorMessage = styled.div`
   color: ${({ theme }) => theme.components.richTextEditor.status.error};
-  font-size: ${({ theme }) => (
-    theme.components.richTextEditor.errorMessage.fontSize
-  )};
-  font-weight: ${({ theme }) => (
-    theme.components.richTextEditor.errorMessage.fontWeight
-  )};
+  font-size: ${({ theme }) =>
+    theme.components.richTextEditor.errorMessage.fontSize};
+  font-weight: ${({ theme }) =>
+    theme.components.richTextEditor.errorMessage.fontWeight};
   padding-top: 5px;
 `;
 
@@ -138,27 +123,21 @@ const StyledWrapper = styled.div`
   overflow: hidden;
   position: relative;
 
-  ${({ disabled, theme }) => disabled && `
+  ${({ disabled, theme }) =>
+    disabled &&
+    `
     ${StyledLabel} {
       color: ${theme.components.richTextEditor.status.disabled} !important;
     }
 
     ${StyledEditorAndRichUtilsButtonsWrapper} {
-      border-color: ${(
-    theme.components.richTextEditor.status.disabled
-  )} !important;
+      border-color: ${theme.components.richTextEditor.status.disabled} !important;
     }
 
     ${StyledRichUtilButton} {
-      background-color: ${(
-    theme.components.richTextEditor.richUtilButton.status.disabled.bgColor
-  )};
-      border ${(
-    theme.components.richTextEditor.richUtilButton.status.disabled.border
-  )};
-      color: ${(
-    theme.components.richTextEditor.richUtilButton.status.disabled.color
-  )};
+      background-color: ${theme.components.richTextEditor.richUtilButton.status.disabled.bgColor};
+      border ${theme.components.richTextEditor.richUtilButton.status.disabled.border};
+      color: ${theme.components.richTextEditor.richUtilButton.status.disabled.color};
       cursor: default;
 
       &:active {
@@ -181,7 +160,9 @@ const StyledWrapper = styled.div`
     }
   `}
 
-  ${({ error, theme }) => error && `
+  ${({ error, theme }) =>
+    error &&
+    `
     ${StyledLabel} {
       color: ${theme.components.richTextEditor.status.error};
     }
@@ -191,11 +172,15 @@ const StyledWrapper = styled.div`
     }
   `}
 
-  ${({ margin }) => margin && `
+  ${({ margin }) =>
+    margin &&
+    `
     margin: ${margin};
   `}
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     ${StyledEditorAndRichUtilsButtonsWrapper} {
       border-top-left-radius: ${theme.global.borderRadius};
       border-top-right-radius: ${theme.global.borderRadius};
@@ -206,7 +191,9 @@ const StyledWrapper = styled.div`
     }
   `}
 
-  ${({ success, theme }) => success && `
+  ${({ success, theme }) =>
+    success &&
+    `
     ${StyledLabel} {
       color: ${theme.components.richTextEditor.status.success};
     }
@@ -217,13 +204,7 @@ const StyledWrapper = styled.div`
   `}
 `;
 
-const RichTextEditor = ({
-  disabled,
-  error,
-  label,
-  name,
-  ...props
-}) => {
+const RichTextEditor = ({ disabled, error, label, name, ...props }) => {
   const richTextEditorId = `richTextEditor-component_${name}`;
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -244,9 +225,10 @@ const RichTextEditor = ({
   };
 
   const keyBindingFn = (event) => {
-    if (KeyBindingUtil.hasCommandModifier(event)
-      && event.shiftKey
-      && event.key === 'x'
+    if (
+      KeyBindingUtil.hasCommandModifier(event) &&
+      event.shiftKey &&
+      event.key === 'x'
     ) {
       return 'strikethrough';
     }
@@ -358,7 +340,8 @@ const RichTextEditor = ({
           {blockTypeButtons.map((blockTypeButton) => (
             <StyledRichUtilButton
               className={
-                RichUtils.getCurrentBlockType(editorState) === blockTypeButton.block
+                RichUtils.getCurrentBlockType(editorState) ===
+                blockTypeButton.block
                   ? 'active'
                   : null
               }

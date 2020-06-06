@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 
-import { appLocaleSet, authUserSet } from '../Redux/actions';
+import { appLocaleSet, authUserSet } from '../redux/actions';
 import { defineAppLocale } from '../utils';
-import { withFirebase } from '../Firebase';
+import { withFirebase } from '../firebase';
 
 // const ls = new SecureLS();
 

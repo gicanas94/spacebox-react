@@ -45,7 +45,8 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${({ theme }) => theme.htmlTags.blockquote.bgColor};
     border: 0;
     border-color: ${({ theme }) => theme.htmlTags.blockquote.borderLeftColor};
-    border-left-width: ${({ theme }) => theme.htmlTags.blockquote.borderLeftWidth};
+    border-left-width: ${({ theme }) =>
+      theme.htmlTags.blockquote.borderLeftWidth};
     border-style: solid;
     color: ${({ theme }) => theme.htmlTags.blockquote.textColor};
     font-family: Arial;

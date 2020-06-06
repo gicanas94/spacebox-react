@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { alertSet, isLoadingSet } from '../../Redux/actions';
+import { alertSet, isLoadingSet } from '../../redux/actions';
 import Box from '../../components/Box';
 import ChangePasswordSubpage from './ChangePassword';
 import { device } from '../../styles';
@@ -14,8 +14,8 @@ import HelmetTitle from '../../components/HelmetTitle';
 import LoginManagementSubpage from './LoginManagement';
 import { ROUTES } from '../../constants';
 import Sidebar from '../../components/Sidebar';
-import { withAuthorization } from '../../Session';
-import { withFirebase } from '../../Firebase';
+import { withAuthorization } from '../../session';
+import { withFirebase } from '../../firebase';
 
 const StyledMainGrid = styled.div`
   align-items: start;
@@ -92,20 +92,21 @@ const AccountPage = ({
     },
   ];
 
-  const getSignInMethods = () => (
+  const getSignInMethods = () =>
     new Promise((resolve, reject) => {
-      firebase.doFetchSignInMethodsForEmail(authUser.email)
+      firebase
+        .doFetchSignInMethodsForEmail(authUser.email)
         .then((signInMethods) => {
-          setAuthUserHasPassword(signInMethods.filter(
-            (provider) => provider === 'password',
-          ).length > 0);
+          setAuthUserHasPassword(
+            signInMethods.filter((provider) => provider === 'password').length >
+              0,
+          );
 
           setActiveSignInMethods(signInMethods);
           resolve();
         })
         .catch((error) => reject(error));
-    })
-  );
+    });
 
   useEffect(() => {
     (async () => {

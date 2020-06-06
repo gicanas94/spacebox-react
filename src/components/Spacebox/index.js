@@ -36,14 +36,13 @@ const StyledTitle = styled.div`
 const StyledDescription = styled.div`
   display: -webkit-box;
   font-size: ${({ theme }) => theme.components.spacebox.description.fontSize};
-  font-weight: ${({ theme }) => (
-    theme.components.spacebox.description.fontWeight
-  )};
+  font-weight: ${({ theme }) =>
+    theme.components.spacebox.description.fontWeight};
   line-height: 1.2em;
   margin-bottom: -4px;
   overflow: hidden;
   transition: opacity ${transition.speed.superfast} linear,
-              visibility ${transition.speed.superfast} linear;
+    visibility ${transition.speed.superfast} linear;
   width: 100%;
   word-break: break-word;
   -webkit-box-orient: vertical;
@@ -71,9 +70,8 @@ const StyledBubblesWrapper = styled.div`
 `;
 
 const StyledBubble = styled.div`
-  border-radius: ${({ theme }) => (
-    theme.components.spacebox.bubble.borderRadius
-  )};
+  border-radius: ${({ theme }) =>
+    theme.components.spacebox.bubble.borderRadius};
   display: block;
   font-size: ${({ theme }) => theme.components.spacebox.bubble.fontSize};
   font-weight: ${({ theme }) => theme.components.spacebox.bubble.fontWeight};
@@ -99,11 +97,10 @@ const StyledSpacebox = styled.div`
       ${Color(bgColor).hex()}
     )
   `};
-  border-color: ${({ bgColor }) => (
+  border-color: ${({ bgColor }) =>
     Color(bgColor).isDark()
       ? Color(bgColor).lighten(0.3).hex()
-      : Color(bgColor).darken(0.3).hex()
-  )};
+      : Color(bgColor).darken(0.3).hex()};
   border-style: solid;
   border-width: ${({ theme }) => theme.components.spacebox.borderWidth};
   display: flex;
@@ -119,7 +116,9 @@ const StyledSpacebox = styled.div`
     padding: 0;
 
     &:hover {
-      ${({ description, theme }) => description && `
+      ${({ description, theme }) =>
+        description &&
+        `
         ${StyledTitle} {
           filter: ${theme.components.spacebox.title.filterOnHover};
           opacity: 0.2;
@@ -133,41 +132,45 @@ const StyledSpacebox = styled.div`
     }
   }
 
-  ${({ authUserIsTheOwner, theme }) => authUserIsTheOwner && `
+  ${({ authUserIsTheOwner, theme }) =>
+    authUserIsTheOwner &&
+    `
     border: ${theme.components.spacebox.authUserIsTheOwner.border};
     height: 208px;
   `}
 
-  ${({ informative, theme }) => informative && `
+  ${({ informative, theme }) =>
+    informative &&
+    `
     background: linear-gradient(
-      ${Color(
-    theme.components.spacebox.informative.bgColor,
-  ).lighten(0.3).hex()},
+      ${Color(theme.components.spacebox.informative.bgColor)
+        .lighten(0.3)
+        .hex()},
       ${Color(theme.components.spacebox.informative.bgColor).hex()}
     );
     border: ${theme.components.spacebox.informative.border};
     color: ${theme.components.spacebox.informative.color};
   `}
 
-  ${({ order }) => order && `
+  ${({ order }) =>
+    order &&
+    `
     order: ${order};
   `}
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-radius: ${theme.global.borderRadius};
   `}
 
   ${StyledBubble} {
-    background-color: ${({ bgColor }) => (
-    Color(bgColor).isDark()
-      ? 'rgba(255, 255, 255, 0.7)'
-      : 'rgba(0, 0, 0, 0.5)'
-  )};
-    color: ${({ bgColor }) => (
-    Color(bgColor).isDark()
-      ? colors.palette.asphalt
-      : colors.palette.cloud
-  )};
+    background-color: ${({ bgColor }) =>
+      Color(bgColor).isDark()
+        ? 'rgba(255, 255, 255, 0.7)'
+        : 'rgba(0, 0, 0, 0.5)'};
+    color: ${({ bgColor }) =>
+      Color(bgColor).isDark() ? colors.palette.asphalt : colors.palette.cloud};
   }
 
   ${StyledTitle} {
@@ -180,13 +183,14 @@ const StyledSpacebox = styled.div`
 `;
 
 const StyledAuthUserIsTheOwnerWrapper = styled.div`
-  background: ${({ theme }) => (
-    theme.components.spacebox.authUserIsTheOwner.backgroundBorder
-  )};
+  background: ${({ theme }) =>
+    theme.components.spacebox.authUserIsTheOwner.backgroundBorder};
   border: ${({ theme }) => theme.components.spacebox.authUserIsTheOwner.border};
   padding: 5px;
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-radius: ${theme.global.borderRadius};
   `}
 `;
@@ -229,14 +233,14 @@ const Spacebox = ({
 
       {title && (
         <StyledTitle>
-          {informative
-            ? (
-              <FormattedMessage
-                id={typeof title === 'object' ? title[0] : title}
-                values={typeof title === 'object' ? title[1] : null}
-              />
-            )
-            : title}
+          {informative ? (
+            <FormattedMessage
+              id={typeof title === 'object' ? title[0] : title}
+              values={typeof title === 'object' ? title[1] : null}
+            />
+          ) : (
+            title
+          )}
         </StyledTitle>
       )}
 
@@ -246,12 +250,13 @@ const Spacebox = ({
 
   return (
     <>
-      {authUserIsTheOwner
-        ? (
-          <StyledAuthUserIsTheOwnerWrapper rounded={rounded}>
-            {box}
-          </StyledAuthUserIsTheOwnerWrapper>
-        ) : box}
+      {authUserIsTheOwner ? (
+        <StyledAuthUserIsTheOwnerWrapper rounded={rounded}>
+          {box}
+        </StyledAuthUserIsTheOwnerWrapper>
+      ) : (
+        box
+      )}
     </>
   );
 };
@@ -267,10 +272,7 @@ Spacebox.propTypes = {
   onEditSpaceboxClickHandler: PropTypes.func,
   order: PropTypes.number,
   rounded: PropTypes.bool,
-  title: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array,
-  ]),
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 };
 
 Spacebox.defaultProps = {

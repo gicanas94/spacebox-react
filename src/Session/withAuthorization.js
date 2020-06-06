@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { ROUTES } from '../constants';
-import { withFirebase } from '../Firebase';
+import { withFirebase } from '../firebase';
 
 const withAuthorization = (condition) => (Component) => {
   const WithAuthorization = ({ authUser, firebase, ...props }) => {
@@ -24,9 +24,9 @@ const withAuthorization = (condition) => (Component) => {
       return () => listener();
     }, []);
 
-    return condition(authUser)
-      ? <Component authUser={authUser} {...props} />
-      : null;
+    return condition(authUser) ? (
+      <Component authUser={authUser} {...props} />
+    ) : null;
   };
 
   WithAuthorization.propTypes = {
@@ -36,10 +36,7 @@ const withAuthorization = (condition) => (Component) => {
 
   const mapStateToProps = (state) => ({ authUser: state.authUser });
 
-  return compose(
-    connect(mapStateToProps),
-    withFirebase,
-  )(WithAuthorization);
+  return compose(connect(mapStateToProps), withFirebase)(WithAuthorization);
 };
 
 export default withAuthorization;

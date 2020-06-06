@@ -5,7 +5,7 @@ import { SearchAlt } from 'styled-icons/boxicons-regular';
 import styled from 'styled-components';
 
 import { device, transition } from '../../../styles';
-import { searchBarChange } from '../../../Redux/actions';
+import { searchBarChange } from '../../../redux/actions';
 
 const StyledWrapper = styled.div`
   height: auto;
@@ -31,7 +31,9 @@ const StyledInput = styled.input`
     width: 210px;
   }
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-radius: ${theme.global.borderRadius};
   `}
 `;
@@ -65,10 +67,12 @@ const SearchBar = ({
 
       <StyledInput
         onChange={(event) => searchBarChangeAction(event.target.value)}
-        placeholder={
-          intl.formatMessage({ id: 'components.header.searchBar.placeholder' })
-        }
-        ref={(input) => { textInput = input; }}
+        placeholder={intl.formatMessage({
+          id: 'components.header.searchBar.placeholder',
+        })}
+        ref={(input) => {
+          textInput = input;
+        }}
         type="text"
         value={spaceboxToSearch}
         {...props}
@@ -89,7 +93,9 @@ SearchBar.defaultProps = {
   spaceboxToSearch: '',
 };
 
-const mapStateToProps = (state) => ({ spaceboxToSearch: state.spaceboxToSearch });
+const mapStateToProps = (state) => ({
+  spaceboxToSearch: state.spaceboxToSearch,
+});
 
 const mapDispatchToProps = { searchBarChangeAction: searchBarChange };
 

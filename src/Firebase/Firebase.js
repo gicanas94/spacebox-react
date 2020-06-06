@@ -28,139 +28,139 @@ class Firebase {
   // ---------------------------------------------------------------------------
   // Auth API ------------------------------------------------------------------
   // ---------------------------------------------------------------------------
-  doCreateUserWithEmailAndPassword = (email, password) => (
-    new Promise((resolve, reject) => (
-      this.auth.createUserWithEmailAndPassword(email, password)
+  doCreateUserWithEmailAndPassword = (email, password) =>
+    new Promise((resolve, reject) =>
+      this.auth
+        .createUserWithEmailAndPassword(email, password)
         .then((createdAuthUser) => resolve(createdAuthUser))
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
-  doFetchSignInMethodsForEmail = (email) => (
-    new Promise((resolve, reject) => (
-      this.auth.fetchSignInMethodsForEmail(email)
+  doFetchSignInMethodsForEmail = (email) =>
+    new Promise((resolve, reject) =>
+      this.auth
+        .fetchSignInMethodsForEmail(email)
         .then((signInMethods) => resolve(signInMethods))
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
-  doLinkAndRetrieveDataWithCredential = (credential) => (
-    new Promise((resolve, reject) => (
-      this.auth.currentUser.linkAndRetrieveDataWithCredential(credential)
+  doLinkAndRetrieveDataWithCredential = (credential) =>
+    new Promise((resolve, reject) =>
+      this.auth.currentUser
+        .linkAndRetrieveDataWithCredential(credential)
         .then(() => resolve())
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
-  doLinkWithPopup = (provider) => (
-    new Promise((resolve, reject) => (
-      this.auth.currentUser.linkWithPopup(this[provider])
+  doLinkWithPopup = (provider) =>
+    new Promise((resolve, reject) =>
+      this.auth.currentUser
+        .linkWithPopup(this[provider])
         .then(() => resolve())
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
-  doUnlink = (providerId) => (
-    new Promise((resolve, reject) => (
-      this.auth.currentUser.unlink(providerId)
+  doUnlink = (providerId) =>
+    new Promise((resolve, reject) =>
+      this.auth.currentUser
+        .unlink(providerId)
         .then(() => resolve())
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
-  doPasswordReset = (email) => (
-    new Promise((resolve, reject) => (
-      this.auth.sendPasswordResetEmail(email)
+  doPasswordReset = (email) =>
+    new Promise((resolve, reject) =>
+      this.auth
+        .sendPasswordResetEmail(email)
         .then(() => resolve())
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
-  doPasswordUpdate = (password) => (
-    new Promise((resolve, reject) => (
-      this.auth.currentUser.updatePassword(password)
+  doPasswordUpdate = (password) =>
+    new Promise((resolve, reject) =>
+      this.auth.currentUser
+        .updatePassword(password)
         .then(() => resolve())
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
-  doSendEmailVerification = () => (
-    new Promise((resolve, reject) => (
-      this.auth.currentUser.sendEmailVerification({
-        url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
-      })
+  doSendEmailVerification = () =>
+    new Promise((resolve, reject) =>
+      this.auth.currentUser
+        .sendEmailVerification({
+          url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
+        })
         .then(() => resolve())
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
-  doSignInWithEmailAndPassword = (email, password) => (
-    new Promise((resolve, reject) => (
-      this.auth.signInWithEmailAndPassword(email, password)
+  doSignInWithEmailAndPassword = (email, password) =>
+    new Promise((resolve, reject) =>
+      this.auth
+        .signInWithEmailAndPassword(email, password)
         .then((authUser) => resolve(authUser))
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
-  doSignInWithGoogle = () => (
-    new Promise((resolve, reject) => (
-      this.auth.signInWithPopup(this.googleProvider)
+  doSignInWithGoogle = () =>
+    new Promise((resolve, reject) =>
+      this.auth
+        .signInWithPopup(this.googleProvider)
         .then((socialAuthUser) => resolve(socialAuthUser))
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
-  doSignInWithFacebook = () => (
-    new Promise((resolve, reject) => (
-      this.auth.signInWithPopup(this.facebookProvider)
+  doSignInWithFacebook = () =>
+    new Promise((resolve, reject) =>
+      this.auth
+        .signInWithPopup(this.facebookProvider)
         .then((socialAuthUser) => resolve(socialAuthUser))
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
-  doSignInWithTwitter = () => (
-    new Promise((resolve, reject) => (
-      this.auth.signInWithPopup(this.twitterProvider)
+  doSignInWithTwitter = () =>
+    new Promise((resolve, reject) =>
+      this.auth
+        .signInWithPopup(this.twitterProvider)
         .then((socialAuthUser) => resolve(socialAuthUser))
-        .catch((error) => reject(error))
-    ))
-  );
+        .catch((error) => reject(error)),
+    );
 
   doSignOut = () => this.auth.signOut();
 
   // ---------------------------------------------------------------------------
   // Merge database user and auth user -----------------------------------------
   // ---------------------------------------------------------------------------
-  onAuthUserListener = (next, fallback) => this.auth.onAuthStateChanged((authUser) => {
-    if (authUser) {
-      this.user(authUser.uid).onSnapshot((document) => (
-        next({
-          bio: document.data().bio,
-          createdAt: document.data().createdAt,
-          email: authUser.email,
-          emailVerified: authUser.emailVerified,
-          followedSpaceboxes: document.data().followedSpaceboxes,
-          language: document.data().language,
-          profileImageUrl: document.data().profileImageUrl,
-          providerData: authUser.providerData,
-          slug: document.data().slug,
-          uid: authUser.uid,
-          username: document.data().username,
-        })
-      ));
-    } else {
-      fallback();
-    }
-  });
+  onAuthUserListener = (next, fallback) =>
+    this.auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        this.user(authUser.uid).onSnapshot((document) =>
+          next({
+            bio: document.data().bio,
+            createdAt: document.data().createdAt,
+            email: authUser.email,
+            emailVerified: authUser.emailVerified,
+            followedSpaceboxes: document.data().followedSpaceboxes,
+            language: document.data().language,
+            profileImageUrl: document.data().profileImageUrl,
+            providerData: authUser.providerData,
+            slug: document.data().slug,
+            uid: authUser.uid,
+            username: document.data().username,
+          }),
+        );
+      } else {
+        fallback();
+      }
+    });
 
   // ---------------------------------------------------------------------------
   // Spacebox API --------------------------------------------------------------
   // ---------------------------------------------------------------------------
   spacebox = (sid) => this.db.collection('spaceboxes').doc(sid);
 
-  allVisibleSpaceboxes = () => (
-    this.db.collection('spaceboxes').where('visible', '==', true)
-  );
+  allVisibleSpaceboxes = () =>
+    this.db.collection('spaceboxes').where('visible', '==', true);
 
   // ---------------------------------------------------------------------------
   // Post API ------------------------------------------------------------------
@@ -176,16 +176,14 @@ class Firebase {
 
   allUsers = () => this.db.collection('users');
 
-  userSpaceboxes = (uid) => (
-    this.db.collection('spaceboxes').where('uid', '==', uid)
-  );
+  userSpaceboxes = (uid) =>
+    this.db.collection('spaceboxes').where('uid', '==', uid);
 
   // ---------------------------------------------------------------------------
   // Restricted user data API --------------------------------------------------
   // ---------------------------------------------------------------------------
-  userRestrictedData = (uid) => (
-    this.user(uid).collection('restricted').doc('data')
-  );
+  userRestrictedData = (uid) =>
+    this.user(uid).collection('restricted').doc('data');
 
   // ---------------------------------------------------------------------------
   // Global Messaging API ------------------------------------------------------
@@ -194,9 +192,8 @@ class Firebase {
 
   allGlobalMessages = () => this.db.collection('globalMessages');
 
-  allActiveGlobalMessages = () => (
-    this.db.collection('globalMessages').where('active', '==', true)
-  );
+  allActiveGlobalMessages = () =>
+    this.db.collection('globalMessages').where('active', '==', true);
 }
 
 export default Firebase;

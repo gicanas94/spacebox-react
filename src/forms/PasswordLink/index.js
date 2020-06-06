@@ -47,10 +47,13 @@ const PasswordLinkForm = ({
     passwordOne: Yup.string()
       .trim()
       .required('yup.required')
-      .min(minimumPasswordCharacters, intl.formatMessage(
-        { id: 'yup.minimumCharacters' },
-        { characters: minimumPasswordCharacters },
-      )),
+      .min(
+        minimumPasswordCharacters,
+        intl.formatMessage(
+          { id: 'yup.minimumCharacters' },
+          { characters: minimumPasswordCharacters },
+        ),
+      ),
     passwordTwo: Yup.string()
       .trim()
       .required('yup.required')
@@ -85,7 +88,9 @@ const PasswordLinkForm = ({
           type: 'danger',
         });
 
-        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) =>
+          actions.setFieldTouched(field, false),
+        );
 
         actions.setSubmitting(false);
 
@@ -119,9 +124,9 @@ const PasswordLinkForm = ({
               <Input
                 disabled={isSubmitting}
                 error={
+                  errors.passwordOne &&
+                  touched.passwordOne &&
                   errors.passwordOne
-                  && touched.passwordOne
-                  && errors.passwordOne
                 }
                 label="forms.passwordLink.labels.passwordOneInput"
                 name="passwordOne"
@@ -136,9 +141,9 @@ const PasswordLinkForm = ({
               <Input
                 disabled={isSubmitting}
                 error={
+                  errors.passwordTwo &&
+                  touched.passwordTwo &&
                   errors.passwordTwo
-                  && touched.passwordTwo
-                  && errors.passwordTwo
                 }
                 label="forms.passwordLink.labels.passwordTwoInput"
                 name="passwordTwo"

@@ -135,9 +135,9 @@ const LoginManagementSubpage = ({
       try {
         alertSetAction();
 
-        const providerToLink = signInMethods.filter((eachProvider) => (
-          eachProvider.provider === provider
-        ));
+        const providerToLink = signInMethods.filter(
+          (eachProvider) => eachProvider.provider === provider,
+        );
 
         await firebase.doLinkWithPopup(provider);
         isLoadingSetAction(true);
@@ -172,9 +172,10 @@ const LoginManagementSubpage = ({
 
         alertSetAction({
           message: {
-            id: providerId === 'password'
-              ? 'pages.account.loginManagement.successPasswordUnlinkAlertMessage'
-              : 'pages.account.loginManagement.successUnlinkAlertMessage',
+            id:
+              providerId === 'password'
+                ? 'pages.account.loginManagement.successPasswordUnlinkAlertMessage'
+                : 'pages.account.loginManagement.successUnlinkAlertMessage',
             values: { provider: providerId },
           },
           type: 'success',
@@ -200,28 +201,28 @@ const LoginManagementSubpage = ({
         <FormattedMessage id="pages.account.loginManagement.subtitle" />
       </p>
 
-      {activeSignInMethods && signInMethods.map((signInMethod, index) => {
-        const onlyOneLeft = activeSignInMethods.length === 1;
-        const isEnabled = activeSignInMethods.includes(
-          signInMethod.id,
-        );
+      {activeSignInMethods &&
+        signInMethods.map((signInMethod, index) => {
+          const onlyOneLeft = activeSignInMethods.length === 1;
+          const isEnabled = activeSignInMethods.includes(signInMethod.id);
 
-        return (
-          <StyledSocialOption key={signInMethod.id}>
-            <StyledIconAndNameWrapper>
-              {signInMethod.icon()}
+          return (
+            <StyledSocialOption key={signInMethod.id}>
+              <StyledIconAndNameWrapper>
+                {signInMethod.icon()}
 
-              <span>
-                {signInMethod.id === 'password'
-                  ? <FormattedMessage id={signInMethod.displayName} />
-                  : signInMethod.displayName}
-              </span>
-            </StyledIconAndNameWrapper>
+                <span>
+                  {signInMethod.id === 'password' ? (
+                    <FormattedMessage id={signInMethod.displayName} />
+                  ) : (
+                    signInMethod.displayName
+                  )}
+                </span>
+              </StyledIconAndNameWrapper>
 
-            <Hr className="secondMediaQueryHr" />
+              <Hr className="secondMediaQueryHr" />
 
-            {signInMethod.id === 'password'
-              ? (
+              {signInMethod.id === 'password' ? (
                 <PasswordLoginToggle
                   alertSetAction={alertSetAction}
                   authUserEmail={authUser.email}
@@ -245,12 +246,12 @@ const LoginManagementSubpage = ({
                 />
               )}
 
-            {signInMethods.length > index + 1 && (
-              <Hr className="firstMediaQueryHr" />
-            )}
-          </StyledSocialOption>
-        );
-      })}
+              {signInMethods.length > index + 1 && (
+                <Hr className="firstMediaQueryHr" />
+              )}
+            </StyledSocialOption>
+          );
+        })}
     </>
   );
 };

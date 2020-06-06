@@ -8,10 +8,10 @@ import Recaptcha from 'react-recaptcha';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
-import { alertSet } from '../../Redux/actions';
+import { alertSet } from '../../redux/actions';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
-import { withFirebase } from '../../Firebase';
+import { withFirebase } from '../../firebase';
 
 const StyledButtonWrapper = styled.div`
   display: flex;
@@ -54,7 +54,9 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
           type: 'danger',
         });
 
-        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) =>
+          actions.setFieldTouched(field, false),
+        );
 
         actions.setSubmitting(false);
       }
@@ -121,7 +123,9 @@ const PasswordForgetForm = ({ alertSetAction, firebase }) => {
           </StyledButtonWrapper>
 
           <Recaptcha
-            ref={(event) => { recaptchaInstance = event; }}
+            ref={(event) => {
+              recaptchaInstance = event;
+            }}
             sitekey="6LckUOIUAAAAAI_iOY8S2ibbmag3WQIN_LzNHE8d"
             size="invisible"
             verifyCallback={(response) => {

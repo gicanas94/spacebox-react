@@ -67,13 +67,16 @@ const SignInForm = ({ alertSetAction, firebase }) => {
         }
       } catch (error) {
         alertSetAction({
-          message: error.code === ERRORS.FIREBASE.ACCOUNT_EXISTS.CODE
-            ? { id: ERRORS.FIREBASE.ACCOUNT_EXISTS.MESSAGE }
-            : error.message,
+          message:
+            error.code === ERRORS.FIREBASE.ACCOUNT_EXISTS.CODE
+              ? { id: ERRORS.FIREBASE.ACCOUNT_EXISTS.MESSAGE }
+              : error.message,
           type: 'danger',
         });
 
-        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) =>
+          actions.setFieldTouched(field, false),
+        );
 
         actions.setSubmitting(false);
       }
@@ -153,7 +156,9 @@ const SignInForm = ({ alertSetAction, firebase }) => {
           </StyledBottomWrapper>
 
           <Recaptcha
-            ref={(event) => { recaptchaInstance = event; }}
+            ref={(event) => {
+              recaptchaInstance = event;
+            }}
             sitekey="6LckUOIUAAAAAI_iOY8S2ibbmag3WQIN_LzNHE8d"
             size="invisible"
             verifyCallback={(response) => {

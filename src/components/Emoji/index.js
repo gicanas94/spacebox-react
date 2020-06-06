@@ -9,11 +9,7 @@ const StyledSpan = styled.span`
   font-size: ${({ fontSize }) => fontSize};
 `;
 
-const Emoji = ({
-  fontSize,
-  label,
-  emoji,
-}) => {
+const Emoji = ({ fontSize, label, emoji }) => {
   const intl = useIntl();
   const finalLabel = capitalizeEachStringWord(
     intl.formatMessage({ id: label }),

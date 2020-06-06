@@ -7,42 +7,35 @@ import Box from '../Box';
 
 const StyledSpaceboxTitle = styled.h1`
   color: inherit;
-  font-size: ${({ theme }) => (
-    theme.components.spaceboxInfoBox.spaceboxTitle.fontSize
-  )};
-  font-weight: ${({ theme }) => (
-    theme.components.spaceboxInfoBox.spaceboxTitle.fontWeight
-  )};
+  font-size: ${({ theme }) =>
+    theme.components.spaceboxInfoBox.spaceboxTitle.fontSize};
+  font-weight: ${({ theme }) =>
+    theme.components.spaceboxInfoBox.spaceboxTitle.fontWeight};
   line-height: 1;
 `;
 
 const StyledSpaceboxDescription = styled.h2`
   color: inherit;
-  font-size: ${({ theme }) => (
-    theme.components.spaceboxInfoBox.spaceboxDescription.fontSize
-  )};
+  font-size: ${({ theme }) =>
+    theme.components.spaceboxInfoBox.spaceboxDescription.fontSize};
   font-weight: inherit;
 `;
 
 const StyledSpaceboxCategory = styled.div`
-  font-size: ${({ theme }) => (
-    theme.components.spaceboxInfoBox.spaceboxCategory.fontSize
-  )};
+  font-size: ${({ theme }) =>
+    theme.components.spaceboxInfoBox.spaceboxCategory.fontSize};
   line-height: 1;
   margin-bottom: 0;
 
   span {
-    font-weight: ${({ theme }) => (
-    theme.components.spaceboxInfoBox.spaceboxCategory.titleFontWeight
-  )};
+    font-weight: ${({ theme }) =>
+      theme.components.spaceboxInfoBox.spaceboxCategory.titleFontWeight};
   }
 `;
 
 const SpaceboxInfoBox = ({ spacebox }) => (
   <Box margin="0" padding="15px">
-    <StyledSpaceboxTitle>
-      {spacebox.title}
-    </StyledSpaceboxTitle>
+    <StyledSpaceboxTitle>{spacebox.title}</StyledSpaceboxTitle>
 
     <StyledSpaceboxDescription>
       {spacebox.description}

@@ -23,9 +23,8 @@ const StyledLabel = styled.label`
 const StyledSimulatedSelect = styled.div`
   background-color: ${({ theme }) => theme.components.select.bgColor};
   border: 0;
-  border-bottom-width: ${({ theme }) => (
-    theme.components.select.borderBottomWidth
-  )};
+  border-bottom-width: ${({ theme }) =>
+    theme.components.select.borderBottomWidth};
   border-color: ${({ theme }) => theme.components.select.status.default};
   border-style: solid;
   cursor: pointer;
@@ -36,7 +35,9 @@ const StyledSimulatedSelect = styled.div`
   width: 100%;
   z-index: 100;
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-top-left-radius: ${theme.global.borderRadius};
     border-top-right-radius: ${theme.global.borderRadius};
   `}
@@ -59,7 +60,9 @@ const StyledArrowDownIcon = styled(KeyboardArrowDown)`
 const StyledWrapper = styled.div`
   position: relative;
 
-  ${({ disabled, theme }) => disabled && `
+  ${({ disabled, theme }) =>
+    disabled &&
+    `
     ${StyledLabel},
     ${StyledSelectedOption} {
       color: ${theme.components.select.status.disabled} !important
@@ -72,7 +75,9 @@ const StyledWrapper = styled.div`
     }
   `}
 
-  ${({ error, theme }) => error && `
+  ${({ error, theme }) =>
+    error &&
+    `
     ${StyledLabel},
     ${StyledArrowDownIcon} {
       color: ${theme.components.select.status.error};
@@ -83,11 +88,15 @@ const StyledWrapper = styled.div`
     }
   `}
 
-  ${({ margin }) => margin && `
+  ${({ margin }) =>
+    margin &&
+    `
     margin: ${margin};
   `}
 
-  ${({ success, theme }) => success && `
+  ${({ success, theme }) =>
+    success &&
+    `
     ${StyledLabel},
     ${StyledArrowDownIcon} {
       color: ${theme.components.select.status.success};
@@ -121,18 +130,18 @@ const StyledUl = styled.ul`
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) => (
-    theme.components.select.ul.scrollBar.thumb.bgColor
-  )};
+    background-color: ${({ theme }) =>
+      theme.components.select.ul.scrollBar.thumb.bgColor};
   }
 
   ::-webkit-scrollbar-track {
-    background-color: ${({ theme }) => (
-    theme.components.select.ul.scrollBar.track.bgColor
-  )};
+    background-color: ${({ theme }) =>
+      theme.components.select.ul.scrollBar.track.bgColor};
   }
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-bottom-left-radius: ${theme.global.borderRadius};
     border-bottom-right-radius: ${theme.global.borderRadius};
 
@@ -173,7 +182,8 @@ const StyledErrorIcon = styled(ErrorOutline)`
 const StyledErrorMessage = styled.div`
   color: ${({ theme }) => theme.components.select.status.error};
   font-size: ${({ theme }) => theme.components.select.errorMessage.fontSize};
-  font-weight: ${({ theme }) => theme.components.select.errorMessage.fontWeight};
+  font-weight: ${({ theme }) =>
+    theme.components.select.errorMessage.fontWeight};
   padding-top: 5px;
 `;
 
@@ -193,12 +203,10 @@ const Select = ({
   const wrapperRef = useRef();
   const intl = useIntl();
 
-  const translatedOptions = options.map(
-    (option) => ({
-      visibleText: intl.formatMessage({ id: option.messageId }),
-      index: option.index,
-    }),
-  );
+  const translatedOptions = options.map((option) => ({
+    visibleText: intl.formatMessage({ id: option.messageId }),
+    index: option.index,
+  }));
 
   const closeList = (event) => {
     if (wrapperRef.current.contains(event.target)) return;
@@ -247,9 +255,7 @@ const Select = ({
         />
 
         <StyledSelectedOption>
-          {selectedOption
-            ? intl.formatMessage({ id: selectedOption })
-            : '-'}
+          {selectedOption ? intl.formatMessage({ id: selectedOption }) : '-'}
         </StyledSelectedOption>
 
         {listIsOpen && (
@@ -260,7 +266,9 @@ const Select = ({
             ).map((option) => (
               <StyledLi
                 key={option.index}
-                onClick={!disabled ? () => handleOptionClick(option.index) : null}
+                onClick={
+                  !disabled ? () => handleOptionClick(option.index) : null
+                }
               >
                 {option.visibleText}
               </StyledLi>

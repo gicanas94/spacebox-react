@@ -21,7 +21,9 @@ const StyledAlert = styled.div`
   width: 100%;
   z-index: 1500;
 
-  ${({ type, theme }) => type && `
+  ${({ type, theme }) =>
+    type &&
+    `
     background: linear-gradient(
       ${theme.components.alert.type[type].bgColor},
       ${Color(theme.components.alert.type[type].bgColor).darken(0.05)}
@@ -29,7 +31,9 @@ const StyledAlert = styled.div`
     color: ${theme.components.alert.type[type].color};
   `}
 
-  ${({ withBorder, type, theme }) => withBorder && `
+  ${({ withBorder, type, theme }) =>
+    withBorder &&
+    `
     border-bottom: ${theme.components.alert.type[type].border};
   `}
 `;
@@ -59,16 +63,17 @@ const Alert = ({ message, onAlertCloseHandler, ...props }) => (
   <StyledAlert onClick={onAlertCloseHandler} {...props}>
     <StyledWrapper>
       <StyledMessage>
-        {message.id
-          ? (
-            <FormattedMessage
-              id={message.id}
-              values={{
-                ...message.values,
-                b: (...chunks) => <b>{chunks}</b>,
-              }}
-            />
-          ) : message}
+        {message.id ? (
+          <FormattedMessage
+            id={message.id}
+            values={{
+              ...message.values,
+              b: (...chunks) => <b>{chunks}</b>,
+            }}
+          />
+        ) : (
+          message
+        )}
       </StyledMessage>
 
       <StyledCrossIcon />

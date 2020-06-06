@@ -18,7 +18,9 @@ const StyledLabel = styled.label`
   transition: color ${transition.speed.superfast} linear;
   white-space: nowrap;
 
-  ${({ disabled, theme }) => disabled && `
+  ${({ disabled, theme }) =>
+    disabled &&
+    `
     color: ${theme.components.input.status.disabled} !important;
   `}
 `;
@@ -26,9 +28,8 @@ const StyledLabel = styled.label`
 const StyledTextarea = styled.textarea`
   background-color: ${({ theme }) => theme.components.input.bgColor};
   border: 0;
-  border-bottom-width: ${({ theme }) => (
-    theme.components.input.borderBottomWidth
-  )};
+  border-bottom-width: ${({ theme }) =>
+    theme.components.input.borderBottomWidth};
   border-color: ${({ theme }) => theme.components.input.status.default};
   border-style: solid;
   padding: 10px;
@@ -40,7 +41,9 @@ const StyledTextarea = styled.textarea`
     outline: none;
   }
 
-  ${({ disabled, theme }) => disabled && `
+  ${({ disabled, theme }) =>
+    disabled &&
+    `
     color: ${theme.components.input.status.disabled} !important;
     border-color: ${theme.components.input.status.disabled} !important;
 
@@ -57,7 +60,9 @@ const StyledTextarea = styled.textarea`
     }
   `}
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-top-left-radius: ${theme.global.borderRadius};
     border-top-right-radius: ${theme.global.borderRadius};
   `}
@@ -83,7 +88,9 @@ const StyledWrapper = styled.div`
   overflow: hidden;
   position: relative;
 
-  ${({ error, theme }) => error && `
+  ${({ error, theme }) =>
+    error &&
+    `
     ${StyledLabel} {
       color: ${theme.components.input.status.error};
     }
@@ -93,11 +100,15 @@ const StyledWrapper = styled.div`
     }
   `}
 
-  ${({ margin }) => margin && `
+  ${({ margin }) =>
+    margin &&
+    `
     margin: ${margin};
   `}
 
-  ${({ success, theme }) => success && `
+  ${({ success, theme }) =>
+    success &&
+    `
     ${StyledLabel} {
       color: ${theme.components.input.status.success};
     }

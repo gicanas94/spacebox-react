@@ -11,18 +11,15 @@ import Tooltip from '../Tooltip';
 
 const StyledYearTitle = styled.div`
   font-size: ${({ theme }) => theme.components.postsHistory.yearTitle.fontSize};
-  font-weight: ${({ theme }) => (
-    theme.components.postsHistory.yearTitle.fontWeight
-  )};
+  font-weight: ${({ theme }) =>
+    theme.components.postsHistory.yearTitle.fontWeight};
 `;
 
 const StyledMonthTitle = styled.div`
-  font-size: ${({ theme }) => (
-    theme.components.postsHistory.monthTitle.fontSize
-  )};
-  font-weight: ${({ theme }) => (
-    theme.components.postsHistory.monthTitle.fontWeight
-  )};
+  font-size: ${({ theme }) =>
+    theme.components.postsHistory.monthTitle.fontSize};
+  font-weight: ${({ theme }) =>
+    theme.components.postsHistory.monthTitle.fontWeight};
   margin-left: 10px;
   margin-top: 5px;
 `;
@@ -42,60 +39,55 @@ const PostsHistory = ({ history, intl, spaceboxSlug }) => (
     margin="0"
     padding="15px"
   >
-    {Object.keys(history).reverse().map((year, index) => (
-      <Fragment key={year}>
-        <StyledYearTitle>
-          {year}
-        </StyledYearTitle>
+    {Object.keys(history)
+      .reverse()
+      .map((year, index) => (
+        <Fragment key={year}>
+          <StyledYearTitle>{year}</StyledYearTitle>
 
-        {Object.keys(history[year]).map((month) => (
-          <Fragment key={month}>
-            <StyledMonthTitle>
-              <FormattedDateParts
-                month="long"
-                value={new Date(0, month).toISOString()}
-              >
-                {(parts) => parts[0].value.toUpperCase()}
-              </FormattedDateParts>
-            </StyledMonthTitle>
+          {Object.keys(history[year]).map((month) => (
+            <Fragment key={month}>
+              <StyledMonthTitle>
+                <FormattedDateParts
+                  month="long"
+                  value={new Date(0, month).toISOString()}
+                >
+                  {(parts) => parts[0].value.toUpperCase()}
+                </FormattedDateParts>
+              </StyledMonthTitle>
 
-            {history[year][month].map((post) => (
-              <StyledLink
-                key={post.createdAt}
-                target="_blank"
-                to={`${ROUTES.SPACE_BASE}/${spaceboxSlug}/${post.slug}`}
-              >
-                <span
-                  data-for={(post.createdAt + 1).toString()}
-                  data-tip={`${intl.formatDate(
-                    post.createdAt,
-                    {
+              {history[year][month].map((post) => (
+                <StyledLink
+                  key={post.createdAt}
+                  target="_blank"
+                  to={`${ROUTES.SPACE_BASE}/${spaceboxSlug}/${post.slug}`}
+                >
+                  <span
+                    data-for={(post.createdAt + 1).toString()}
+                    data-tip={`${intl.formatDate(post.createdAt, {
                       day: 'numeric',
                       month: 'long',
                       weekday: 'long',
                       year: 'numeric',
-                    },
-                  )} - ${intl.formatTime(post.createdAt)}`}
-                >
-                  {post.title}
-                </span>
+                    })} - ${intl.formatTime(post.createdAt)}`}
+                  >
+                    {post.title}
+                  </span>
 
-                <Tooltip
-                  effect="solid"
-                  delayShow={500}
-                  id={(post.createdAt + 1).toString()}
-                  place="right"
-                />
-              </StyledLink>
-            ))}
-          </Fragment>
-        ))}
+                  <Tooltip
+                    effect="solid"
+                    delayShow={500}
+                    id={(post.createdAt + 1).toString()}
+                    place="right"
+                  />
+                </StyledLink>
+              ))}
+            </Fragment>
+          ))}
 
-        {Object.keys(history).length > (index + 1) && (
-          <Hr margin="10px 0" />
-        )}
-      </Fragment>
-    ))}
+          {Object.keys(history).length > index + 1 && <Hr margin="10px 0" />}
+        </Fragment>
+      ))}
   </Box>
 );
 

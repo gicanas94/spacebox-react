@@ -9,7 +9,7 @@ import { Transition } from 'react-spring/renderprops';
 import AccountPage from './pages/Account';
 import AdminPage from './pages/Admin';
 import Alert from './components/Alert';
-import { alertReset, confirmationModalClose } from './Redux/actions';
+import { alertReset, confirmationModalClose } from './redux/actions';
 import ConfirmationModal from './components/ConfirmationModal';
 import CreateSpaceboxPage from './pages/CreateSpacebox';
 import { device, transitionProps } from './styles';
@@ -28,7 +28,7 @@ import SpacePage from './pages/Space';
 import TestPage from './pages/Test';
 import UserPage from './pages/User';
 import VerifyEmailPage from './pages/VerifyEmail';
-import { withAuthentication } from './Session';
+import { withAuthentication } from './session';
 
 const StyledRoutesContainer = styled.div`
   margin: auto;
@@ -78,27 +78,32 @@ const App = ({
     </div>
 
     <Transition items={alert} {...transitionProps.components.alert}>
-      {(activeAlert) => activeAlert
-        && ((styleProps) => (
+      {(activeAlert) =>
+        activeAlert &&
+        ((styleProps) => (
           <Alert
             message={activeAlert.message}
             onAlertCloseHandler={() => alertResetAction(null)}
             style={styleProps}
             type={activeAlert.type}
           />
-        ))}
+        ))
+      }
     </Transition>
 
     <Transition items={isLoading} {...transitionProps.components.loadingScreen}>
-      {(loading) => loading && ((styleProps) => <LoadingScreen style={styleProps} />)}
+      {(loading) =>
+        loading && ((styleProps) => <LoadingScreen style={styleProps} />)
+      }
     </Transition>
 
     <Transition
       items={confirmationModal}
       {...transitionProps.components.confirmationModal}
     >
-      {(modalContent) => modalContent
-        && ((styleProps) => (
+      {(modalContent) =>
+        modalContent &&
+        ((styleProps) => (
           <ConfirmationModal
             buttonsContent={modalContent.buttonsContent}
             content={modalContent.content}
@@ -107,7 +112,8 @@ const App = ({
             style={styleProps}
             title={modalContent.title}
           />
-        ))}
+        ))
+      }
     </Transition>
   </>
 );

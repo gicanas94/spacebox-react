@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 
-import { alertSet } from '../../Redux/actions';
+import { alertSet } from '../../redux/actions';
 import { CATEGORIES, ROUTES } from '../../constants';
 import Checkbox from '../../components/Checkbox';
 import ColorPicker from '../../components/ColorPicker';
@@ -17,7 +17,7 @@ import { device } from '../../styles';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
 import Spacebox from '../../components/Spacebox';
-import { withFirebase } from '../../Firebase';
+import { withFirebase } from '../../firebase';
 import Textarea from '../../components/Textarea';
 import Wizard from '../../components/Wizard';
 
@@ -71,10 +71,12 @@ const CreateSpaceboxForm = ({ alertSetAction, authUser, firebase }) => {
       description: Yup.string().required('yup.required'),
     }),
     Yup.object().shape({
-      category: Yup
-        .string()
+      category: Yup.string()
         .trim()
-        .oneOf(CATEGORIES.map((category) => category.messageId), 'yup.required')
+        .oneOf(
+          CATEGORIES.map((category) => category.messageId),
+          'yup.required',
+        )
         .required('yup.required'),
     }),
   ];
@@ -104,17 +106,18 @@ const CreateSpaceboxForm = ({ alertSetAction, authUser, firebase }) => {
           type: 'success',
         });
 
-        history.push(
-          `${ROUTES.SPACE_BASE}/${createdSpacebox.slug}`,
-          { spacebox: createdSpacebox },
-        );
+        history.push(`${ROUTES.SPACE_BASE}/${createdSpacebox.slug}`, {
+          spacebox: createdSpacebox,
+        });
       } catch (error) {
         alertSetAction({
           message: error.message,
           type: 'danger',
         });
 
-        Object.keys(values).map((field) => actions.setFieldTouched(field, false));
+        Object.keys(values).map((field) =>
+          actions.setFieldTouched(field, false),
+        );
 
         actions.setSubmitting(false);
       }
@@ -223,9 +226,7 @@ const CreateSpaceboxForm = ({ alertSetAction, authUser, firebase }) => {
                 <Input
                   disabled={form.isSubmitting}
                   error={
-                    form.errors.title
-                    && form.touched.title
-                    && form.errors.title
+                    form.errors.title && form.touched.title && form.errors.title
                   }
                   label="forms.createSpacebox.labels.titleInput"
                   margin="0 0 25px 0"
@@ -245,9 +246,9 @@ const CreateSpaceboxForm = ({ alertSetAction, authUser, firebase }) => {
                 <Textarea
                   disabled={form.isSubmitting}
                   error={
+                    form.errors.description &&
+                    form.touched.description &&
                     form.errors.description
-                    && form.touched.description
-                    && form.errors.description
                   }
                   label="forms.createSpacebox.labels.descriptionInput"
                   name="description"
@@ -292,9 +293,11 @@ const CreateSpaceboxForm = ({ alertSetAction, authUser, firebase }) => {
               {({ form }) => (
                 <Select
                   disabled={form.isSubmitting}
-                  error={form.errors.category
-                    && form.touched.category
-                    && form.errors.category}
+                  error={
+                    form.errors.category &&
+                    form.touched.category &&
+                    form.errors.category
+                  }
                   label="forms.createSpacebox.labels.categorySelect"
                   margin="0 0 25px 0"
                   onChangeHandler={(category) => {
@@ -316,10 +319,9 @@ const CreateSpaceboxForm = ({ alertSetAction, authUser, firebase }) => {
                   disabled={form.isSubmitting}
                   label="forms.createSpacebox.labels.visibleCheckbox"
                   name="visible"
-                  onChangeHandler={() => form.setFieldValue(
-                    'visible',
-                    !form.values.visible,
-                  )}
+                  onChangeHandler={() =>
+                    form.setFieldValue('visible', !form.values.visible)
+                  }
                   rounded
                 />
               )}

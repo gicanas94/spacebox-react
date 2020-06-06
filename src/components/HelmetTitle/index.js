@@ -5,7 +5,11 @@ import React from 'react';
 
 const HelmetTitle = ({ title }) => (
   <FormattedMessage id={title.id} values={title.values}>
-    {(formattedTitle) => <Helmet><title>{formattedTitle}</title></Helmet>}
+    {(formattedTitle) => (
+      <Helmet>
+        <title>{formattedTitle}</title>
+      </Helmet>
+    )}
   </FormattedMessage>
 );
 

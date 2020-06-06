@@ -11,20 +11,15 @@ const ChangePasswordSubpage = ({ alertSetAction, authUser, firebase }) => (
       <FormattedMessage id="pages.account.changePassword.h3" />
     </h3>
 
-    {getCookie('reachedMaxCurrentPasswordAttemps', false)
-      ? (
-        <p>
-          <FormattedMessage
-            id="pages.account.changePassword.reachedMaxCurrentPasswordAttempsSubtitle"
-          />
-        </p>
-      ) : (
-        <p>
-          <FormattedMessage
-            id="pages.account.changePassword.subtitle"
-          />
-        </p>
-      )}
+    {getCookie('reachedMaxCurrentPasswordAttemps', false) ? (
+      <p>
+        <FormattedMessage id="pages.account.changePassword.reachedMaxCurrentPasswordAttempsSubtitle" />
+      </p>
+    ) : (
+      <p>
+        <FormattedMessage id="pages.account.changePassword.subtitle" />
+      </p>
+    )}
 
     <PasswordChangeForm
       alertSetAction={alertSetAction}

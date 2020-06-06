@@ -3,18 +3,21 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { alertSet } from '../../Redux/actions';
+import { alertSet } from '../../redux/actions';
 import Box from '../../components/Box';
 import HelmetTitle from '../../components/HelmetTitle';
 import SignInForm from '../../forms/SignIn';
 import SignInSocialMediaForm from '../../forms/SignInSocialMedia';
-import { withFirebase } from '../../Firebase';
+import { withFirebase } from '../../firebase';
 
 const SignInPage = ({ alertSetAction, firebase }) => (
   <Box size="small">
     <HelmetTitle title={{ id: 'pages.signIn.title' }} />
     <SignInForm alertSetAction={alertSetAction} firebase={firebase} />
-    <SignInSocialMediaForm alertSetAction={alertSetAction} firebase={firebase} />
+    <SignInSocialMediaForm
+      alertSetAction={alertSetAction}
+      firebase={firebase}
+    />
   </Box>
 );
 

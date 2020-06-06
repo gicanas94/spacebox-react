@@ -7,13 +7,17 @@ import styled from 'styled-components';
 import { Trash } from 'styled-icons/fa-solid';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { alertSet, confirmationModalOpen, isLoadingSet } from '../../Redux/actions';
+import {
+  alertSet,
+  confirmationModalOpen,
+  isLoadingSet,
+} from '../../redux/actions';
 import Box from '../../components/Box';
 import EditSpaceboxForm from '../../forms/EditSpacebox';
 import HelmetTitle from '../../components/HelmetTitle';
 import { ROUTES } from '../../constants';
-import { withAuthorization } from '../../Session';
-import { withFirebase } from '../../Firebase';
+import { withAuthorization } from '../../session';
+import { withFirebase } from '../../firebase';
 
 const StyledTitleAndDeleteSpaceboxWrapper = styled.div`
   align-items: center;
@@ -27,15 +31,12 @@ const StyledTitleAndDeleteSpaceboxWrapper = styled.div`
 `;
 
 const StyledDeleteSpacebox = styled.span`
-  color: ${({ theme }) => (
-    theme.pages.editSpacebox.deleteSpacebox.color
-  )} !important;
-  font-size: ${({ theme }) => (
-    theme.pages.editSpacebox.deleteSpacebox.fontSize
-  )} !important;
-  font-weight: ${({ theme }) => (
-    theme.pages.editSpacebox.deleteSpacebox.fontWeight
-  )} !important;
+  color: ${({ theme }) =>
+    theme.pages.editSpacebox.deleteSpacebox.color} !important;
+  font-size: ${({ theme }) =>
+    theme.pages.editSpacebox.deleteSpacebox.fontSize} !important;
+  font-weight: ${({ theme }) =>
+    theme.pages.editSpacebox.deleteSpacebox.fontWeight} !important;
   text-align: right;
 `;
 
@@ -54,10 +55,9 @@ const EditSpaceboxPage = ({
 }) => {
   const [spacebox, setSpacebox] = useState(null);
 
-  const [
-    deleteSpaceboxInProgress,
-    setDeleteSpaceboxInProgress,
-  ] = useState(false);
+  const [deleteSpaceboxInProgress, setDeleteSpaceboxInProgress] = useState(
+    false,
+  );
 
   const history = useHistory();
   const params = useParams();
@@ -73,9 +73,9 @@ const EditSpaceboxPage = ({
 
         data.forEach((document) => userSpaceboxes.push(document.data()));
 
-        const userSpaceboxToEdit = userSpaceboxes.filter((userSpacebox) => (
-          userSpacebox.slug === params.spaceboxSlug
-        ))[0];
+        const userSpaceboxToEdit = userSpaceboxes.filter(
+          (userSpacebox) => userSpacebox.slug === params.spaceboxSlug,
+        )[0];
 
         if (userSpaceboxToEdit) {
           setSpacebox(userSpaceboxToEdit);
@@ -95,8 +95,8 @@ const EditSpaceboxPage = ({
     })();
   }, []);
 
-  const handleDeleteSpaceboxClick = () => (
-    new Promise((resolve, reject) => (
+  const handleDeleteSpaceboxClick = () =>
+    new Promise((resolve, reject) =>
       (async () => {
         try {
           alertSetAction();
@@ -123,9 +123,8 @@ const EditSpaceboxPage = ({
             type: 'danger',
           });
         }
-      })()
-    ))
-  );
+      })(),
+    );
 
   return (
     <>
@@ -140,19 +139,21 @@ const EditSpaceboxPage = ({
 
             <StyledDeleteSpacebox
               className="linkStyle"
-              onClick={() => confirmationModalOpenAction({
-                buttonsAreDisabled: deleteSpaceboxInProgress,
-                content: 'pages.editSpacebox.deleteSpacebox.confirmationModal.content',
-                onConfirmHandler: handleDeleteSpaceboxClick,
-                title: 'pages.editSpacebox.deleteSpacebox.confirmationModal.title',
-              })}
+              onClick={() =>
+                confirmationModalOpenAction({
+                  buttonsAreDisabled: deleteSpaceboxInProgress,
+                  content:
+                    'pages.editSpacebox.deleteSpacebox.confirmationModal.content',
+                  onConfirmHandler: handleDeleteSpaceboxClick,
+                  title:
+                    'pages.editSpacebox.deleteSpacebox.confirmationModal.title',
+                })
+              }
               tabIndex="0"
             >
               <StyledTrashIcon />
 
-              <FormattedMessage
-                id="pages.editSpacebox.deleteSpacebox.triggerElementText"
-              />
+              <FormattedMessage id="pages.editSpacebox.deleteSpacebox.triggerElementText" />
             </StyledDeleteSpacebox>
           </StyledTitleAndDeleteSpaceboxWrapper>
 

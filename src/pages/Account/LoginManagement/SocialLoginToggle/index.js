@@ -10,33 +10,34 @@ const SocialLoginToggle = ({
   onlyOneLeft,
   signInMethod,
   unlinkHandler,
-}) => (isEnabled ? (
-  <Button
-    color="salmon"
-    disabled={onlyOneLeft || isLoading}
-    onClick={() => unlinkHandler(signInMethod.id)}
-    size="small"
-    styleType="unbordered"
-    type="button"
-  >
-    {isLoading
-      ? 'pages.account.loginManagement.buttons.loading'
-      : 'pages.account.loginManagement.buttons.unlink'}
-  </Button>
-) : (
-  <Button
-    color="green"
-    disabled={isLoading}
-    onClick={() => linkHandler(signInMethod.provider)}
-    size="small"
-    styleType="bordered"
-    type="button"
-  >
-    {isLoading
-      ? 'pages.account.loginManagement.buttons.loading'
-      : 'pages.account.loginManagement.buttons.link'}
-  </Button>
-));
+}) =>
+  isEnabled ? (
+    <Button
+      color="salmon"
+      disabled={onlyOneLeft || isLoading}
+      onClick={() => unlinkHandler(signInMethod.id)}
+      size="small"
+      styleType="unbordered"
+      type="button"
+    >
+      {isLoading
+        ? 'pages.account.loginManagement.buttons.loading'
+        : 'pages.account.loginManagement.buttons.unlink'}
+    </Button>
+  ) : (
+    <Button
+      color="green"
+      disabled={isLoading}
+      onClick={() => linkHandler(signInMethod.provider)}
+      size="small"
+      styleType="bordered"
+      type="button"
+    >
+      {isLoading
+        ? 'pages.account.loginManagement.buttons.loading'
+        : 'pages.account.loginManagement.buttons.link'}
+    </Button>
+  );
 
 SocialLoginToggle.propTypes = {
   isEnabled: PropTypes.bool.isRequired,

@@ -5,20 +5,20 @@ import { Redirect } from 'react-router-dom';
 
 import { ROUTES } from '../constants';
 
-const needsEmailVerification = (authUser) => (
-  authUser
-  && !authUser.emailVerified
-  && authUser.providerData
+const needsEmailVerification = (authUser) =>
+  authUser &&
+  !authUser.emailVerified &&
+  authUser.providerData
     .map((provider) => provider.providerId)
-    .includes('password')
-);
+    .includes('password');
 
 const withEmailVerification = (Component) => {
-  const WithEmailVerification = ({ authUser, ...props }) => (
-    needsEmailVerification(authUser)
-      ? <Redirect to={ROUTES.VERIFY_EMAIL} />
-      : <Component authUser={authUser} {...props} />
-  );
+  const WithEmailVerification = ({ authUser, ...props }) =>
+    needsEmailVerification(authUser) ? (
+      <Redirect to={ROUTES.VERIFY_EMAIL} />
+    ) : (
+      <Component authUser={authUser} {...props} />
+    );
 
   WithEmailVerification.propTypes = {
     authUser: PropTypes.oneOfType([PropTypes.any]).isRequired,

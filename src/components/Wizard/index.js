@@ -14,7 +14,9 @@ const StyledButtonsWrapper = styled.div`
   button {
     width: 100%;
 
-    ${({ page }) => page > 0 && `
+    ${({ page }) =>
+      page > 0 &&
+      `
       &:last-of-type {
         margin-bottom: 25px;
       }
@@ -67,18 +69,16 @@ class Wizard extends Component {
     }
   };
 
-  nextStep = (values) => (
+  nextStep = (values) =>
     this.setState((prevState) => ({
       page: prevState.page + 1,
       values,
-    }))
-  )
+    }));
 
-  previousStep = () => (
+  previousStep = () =>
     this.setState((prevState) => ({
       page: prevState.page - 1,
-    }))
-  )
+    }));
 
   render() {
     const { children, validationSchema, withStartPage } = this.props;
@@ -117,8 +117,8 @@ class Wizard extends Component {
                 </Button>
               )}
 
-              {((!isLastPage && !withStartPage)
-                || (withStartPage && page > 0)) && (
+              {((!isLastPage && !withStartPage) ||
+                (withStartPage && page > 0)) && (
                 <Button styleType="bordered" type="submit">
                   components.wizard.buttons.nextStep
                 </Button>

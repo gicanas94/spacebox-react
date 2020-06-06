@@ -14,7 +14,9 @@ const StyledCheckbox = styled.span`
   margin-right: 10px;
   width: 30px;
 
-  ${({ checked, theme }) => checked && `
+  ${({ checked, theme }) =>
+    checked &&
+    `
     border-color: ${theme.components.checkbox.status.checked};
     color: ${theme.components.checkbox.status.checked};
 
@@ -25,7 +27,9 @@ const StyledCheckbox = styled.span`
     }
   `}
 
-  ${({ rounded, theme }) => rounded && `
+  ${({ rounded, theme }) =>
+    rounded &&
+    `
     border-radius: ${theme.global.borderRadius};
   `}
 `;
@@ -42,7 +46,9 @@ const StyledWrapper = styled.div`
   position: relative;
   user-select: none;
 
-  ${({ disabled, theme }) => disabled && `
+  ${({ disabled, theme }) =>
+    disabled &&
+    `
     ${StyledCheckbox} {
       border-color: ${theme.components.checkbox.status.disabled};
       color: ${theme.components.checkbox.status.disabled};
@@ -53,7 +59,9 @@ const StyledWrapper = styled.div`
     }
   `}
 
-  ${({ error, theme }) => error && `
+  ${({ error, theme }) =>
+    error &&
+    `
     ${StyledCheckbox} {
       border-color: ${theme.components.checkbox.status.error};
     }
@@ -63,7 +71,9 @@ const StyledWrapper = styled.div`
     }
   `}
 
-  ${({ margin }) => margin && `
+  ${({ margin }) =>
+    margin &&
+    `
     margin: ${margin};
   `}
 `;

@@ -5,14 +5,14 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
-import { alertSet, isLoadingSet } from '../../Redux/actions';
+import { alertSet, isLoadingSet } from '../../redux/actions';
 import Box from '../../components/Box';
 import { device } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
 import { ROUTES } from '../../constants';
 import Sidebar from '../../components/Sidebar';
-import { withAuthorization } from '../../Session';
-import { withFirebase } from '../../Firebase';
+import { withAuthorization } from '../../session';
+import { withFirebase } from '../../firebase';
 
 const StyledMainGrid = styled.div`
   align-items: start;
@@ -63,57 +63,55 @@ const AdminPage = ({
   isLoading,
   isLoadingSetAction,
 }) => {
-  const sidebarContent = (
-    [
-      {
-        heading: 'pages.admin.sidebarContent.section1.heading',
-        links: [
-          {
-            text: 'pages.admin.sidebarContent.section1.links.listOfUsers',
-            to: '#',
-            visible: true,
-          },
-          {
-            text: 'pages.admin.sidebarContent.section1.links.findUser',
-            to: '#',
-            visible: true,
-          },
-        ],
-        separator: true,
-      },
-      {
-        heading: 'pages.admin.sidebarContent.section2.heading',
-        links: [
-          {
-            text: 'pages.admin.sidebarContent.section2.links.listOfSpaceboxes',
-            to: '#',
-            visible: true,
-          },
-          {
-            text: 'pages.admin.sidebarContent.section2.links.findSpacebox',
-            to: '#',
-            visible: true,
-          },
-        ],
-        separator: true,
-      },
-      {
-        heading: 'pages.admin.sidebarContent.section3.heading',
-        links: [
-          {
-            text: 'pages.admin.sidebarContent.section3.links.newGlobalMessage',
-            to: '#',
-            visible: true,
-          },
-          {
-            text: 'pages.admin.sidebarContent.section3.links.allGlobalMessages',
-            to: '#',
-            visible: true,
-          },
-        ],
-      },
-    ]
-  );
+  const sidebarContent = [
+    {
+      heading: 'pages.admin.sidebarContent.section1.heading',
+      links: [
+        {
+          text: 'pages.admin.sidebarContent.section1.links.listOfUsers',
+          to: '#',
+          visible: true,
+        },
+        {
+          text: 'pages.admin.sidebarContent.section1.links.findUser',
+          to: '#',
+          visible: true,
+        },
+      ],
+      separator: true,
+    },
+    {
+      heading: 'pages.admin.sidebarContent.section2.heading',
+      links: [
+        {
+          text: 'pages.admin.sidebarContent.section2.links.listOfSpaceboxes',
+          to: '#',
+          visible: true,
+        },
+        {
+          text: 'pages.admin.sidebarContent.section2.links.findSpacebox',
+          to: '#',
+          visible: true,
+        },
+      ],
+      separator: true,
+    },
+    {
+      heading: 'pages.admin.sidebarContent.section3.heading',
+      links: [
+        {
+          text: 'pages.admin.sidebarContent.section3.links.newGlobalMessage',
+          to: '#',
+          visible: true,
+        },
+        {
+          text: 'pages.admin.sidebarContent.section3.links.allGlobalMessages',
+          to: '#',
+          visible: true,
+        },
+      ],
+    },
+  ];
 
   const [authUserIsAdmin, setAuthUserIsAdmin] = useState(false);
   const history = useHistory();
@@ -124,9 +122,9 @@ const AdminPage = ({
         alertSetAction();
         isLoadingSetAction(true);
 
-        const userRestrictedData = await firebase.userRestrictedData(
-          authUser.uid,
-        ).get();
+        const userRestrictedData = await firebase
+          .userRestrictedData(authUser.uid)
+          .get();
 
         if (userRestrictedData.data().isAdmin) {
           setAuthUserIsAdmin(true);
