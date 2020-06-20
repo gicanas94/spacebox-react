@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
-import { keyframe, transition } from '../../styles';
+import { keyframes, transitions } from '../../styles';
 
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.components.select.status.default};
@@ -16,7 +16,7 @@ const StyledLabel = styled.label`
   overflow: hidden;
   padding-bottom: 2px;
   text-overflow: ellipsis;
-  transition: color ${transition.speed.superfast} linear;
+  transition: color ${transitions.speed.superfast} linear;
   white-space: nowrap;
 `;
 
@@ -31,7 +31,7 @@ const StyledSimulatedSelect = styled.div`
   height: 45px;
   line-height: 45px;
   position: relative;
-  transition: border ${transition.speed.superfast} linear;
+  transition: border ${transitions.speed.superfast} linear;
   width: 100%;
   z-index: 100;
 
@@ -170,7 +170,7 @@ const StyledLi = styled.li`
 `;
 
 const StyledErrorIcon = styled(ErrorOutline)`
-  animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
+  animation: ${transitions.speed.normal} infinite ${keyframes.beat(1.1)};
   color: ${({ theme }) => theme.components.select.status.error};
   position: absolute;
   right: 40px;

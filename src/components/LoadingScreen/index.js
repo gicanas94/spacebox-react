@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { keyframe } from '../../styles';
+import { keyframes } from '../../styles';
 
 const StyledWrapper = styled.div`
   align-items: center;
@@ -19,7 +19,7 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledHeart = styled.div`
-  animation: ${keyframe.beat(1.07)} 1s infinite
+  animation: ${keyframes.beat(1.07)} 1s infinite
     cubic-bezier(0.215, 0.61, 0.355, 1);
   height: 150px !important;
   opacity: 1;

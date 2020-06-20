@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { color, device, transition } from '../../styles';
+import { colors, devices, transitions } from '../../styles';
 
 const StyledCollapseTitle = styled.div`
   align-items: center;
@@ -22,16 +22,16 @@ const StyledCollapseTitle = styled.div`
 const StyledArrowIcon = styled(KeyboardArrowUp)`
   color: ${({ theme }) => theme.components.box.arrowIcon.color};
   height: 30px;
-  transition: transform ${transition.speed.superfast} linear;
+  transition: transform ${transitions.speed.superfast} linear;
   width: 30px;
 `;
 
 const StyledBox = styled.div`
   background-color: ${({ bgColor, theme }) =>
-    bgColor ? color.palette[bgColor] : theme.components.box.bgColor};
+    bgColor ? colors.palette[bgColor] : theme.components.box.bgColor};
   border-color: ${({ bgColor, theme }) =>
     bgColor
-      ? Color(color.palette[bgColor]).darken(0.2).hex()
+      ? Color(colors.palette[bgColor]).darken(0.2).hex()
       : theme.components.box.borderColor};
   border-style: solid;
   border-width: ${({ theme }) => theme.components.box.borderWidth};
@@ -109,7 +109,7 @@ const StyledBox = styled.div`
     `
     width: 100%;
 
-    @media ${device.mobileL} {
+    @media ${devices.mobileL} {
       width: 350px;
     }
   `}
@@ -119,7 +119,7 @@ const StyledBox = styled.div`
     `
     width: 100%;
 
-    @media ${device.tablet} {
+    @media ${devices.tablet} {
       width: 700px;
     }
   `}
@@ -129,7 +129,7 @@ const StyledBox = styled.div`
     `
     width: 100%;
 
-    @media ${device.laptop} {
+    @media ${devices.laptop} {
       max-width: 1050px;
     }
   `}

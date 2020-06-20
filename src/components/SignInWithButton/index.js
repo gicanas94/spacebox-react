@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { transition } from '../../styles';
+import { transitions } from '../../styles';
 
 const StyledButton = styled.button`
   align-items: center;
@@ -25,7 +25,7 @@ const StyledButton = styled.button`
   line-height: 1;
   padding: 0 15px;
   padding-left: 13px;
-  transition: all ${transition.speed.superfast} linear;
+  transition: all ${transitions.speed.superfast} linear;
   user-select: none;
   width: 270px;
 

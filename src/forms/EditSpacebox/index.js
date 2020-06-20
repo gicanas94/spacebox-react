@@ -9,7 +9,7 @@ import Button from '../../components/Button';
 import { CATEGORIES, ROUTES } from '../../constants';
 import Checkbox from '../../components/Checkbox';
 import ColorPicker from '../../components/ColorPicker';
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import Hr from '../../components/Hr';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
@@ -33,7 +33,7 @@ const StyledWrapper = styled.div`
     }
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     grid-template-columns: repeat(2, 1fr);
   }
 `;
@@ -50,7 +50,7 @@ const StyledButtonsWrapper = styled.div`
     margin-bottom: 25px;
   }
 
-  @media ${device.mobileL} {
+  @media ${devices.mobileL} {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -64,7 +64,7 @@ const StyledButtonsWrapper = styled.div`
     }
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     justify-content: space-between;
   }
 `;

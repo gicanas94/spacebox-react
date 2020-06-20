@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { transition } from '../../../styles';
+import { transitions } from '../../../styles';
 
 const StyledReliefEffect = styled.div`
   bottom: -5px;
@@ -32,7 +32,7 @@ const StyledCloseGlobalMessageIcon = styled(Cross)`
   position: absolute;
   right: 15px;
   top: 15px;
-  transition: transform ${transition.speed.superfast} linear;
+  transition: transform ${transitions.speed.superfast} linear;
   width: 20px;
 
   &:active {

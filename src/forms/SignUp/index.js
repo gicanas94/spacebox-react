@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import { alertSet } from '../../redux/actions';
 import Button from '../../components/Button';
 import { defineAppLocale } from '../../utils';
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import Input from '../../components/Input';
 import { ROUTES } from '../../constants';
 import { withFirebase } from '../../firebase';
@@ -25,7 +25,7 @@ const StyledGrid = styled.div`
   grid-template-columns: 1fr;
   width: inherit;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, auto);
   }
@@ -53,7 +53,7 @@ const StyledBottomWrapper = styled.div`
     width: 100%;
   }
 
-  @media ${device.mobileL} {
+  @media ${devices.mobileL} {
     align-items: flex-end;
     display: flex;
     flex-direction: row;

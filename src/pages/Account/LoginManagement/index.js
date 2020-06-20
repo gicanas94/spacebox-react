@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { device } from '../../../styles';
+import { devices } from '../../../styles';
 import Hr from '../../../components/Hr';
 import PasswordLoginToggle from './PasswordLoginToggle';
 import SocialLoginToggle from './SocialLoginToggle';
@@ -36,7 +36,7 @@ const StyledSocialOption = styled.div`
     width: 100%;
   }
 
-  @media ${device.mobileL} {
+  @media ${devices.mobileL} {
     flex-direction: row;
     margin-bottom: 25px;
 
@@ -73,7 +73,7 @@ const StyledIconAndNameWrapper = styled.div`
     width: 30px;
   }
 
-  @media ${device.mobileL} {
+  @media ${devices.mobileL} {
     justify-content: flex-start;
   }
 `;

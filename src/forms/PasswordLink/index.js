@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
 import Button from '../../components/Button';
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import Input from '../../components/Input';
 
 const StyledWrapper = styled.div`
@@ -18,7 +18,7 @@ const StyledNewPasswordWrapper = styled.div`
     margin-bottom: 25px;
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     display: flex;
 
     & > div:first-of-type {

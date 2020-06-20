@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 import React from 'react';
 import styled from 'styled-components';
 
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import Emoji from '../../components/Emoji';
 import HelmetTitle from '../../components/HelmetTitle';
 
@@ -15,7 +15,7 @@ const StyledWrapper = styled.div`
   margin: auto;
   width: 80%;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     flex-direction: row;
     width: 435px;
   }
@@ -26,7 +26,7 @@ const StyledContent = styled.p`
   margin-bottom: 0;
   margin-top: 25px;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     margin-left: 25px;
     margin-top: 0;
   }

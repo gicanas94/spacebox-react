@@ -6,7 +6,7 @@ import { useIntl } from 'react-intl';
 
 import Button from '../Button';
 import defaultUserImage from '../../assets/images/default-user-image.png';
-import { device, keyframe, transition } from '../../styles';
+import { devices, keyframes, transitions } from '../../styles';
 
 const StyledWrapper = styled.div`
   overflow: hidden;
@@ -30,11 +30,11 @@ const StyledActionsWrapper = styled.div`
   justify-content: center;
   opacity: 1;
   position: absolute;
-  transition: opacity ${transition.speed.superfast} linear;
+  transition: opacity ${transitions.speed.superfast} linear;
   width: 100%;
   z-index: 100;
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     opacity: 0;
   }
 
@@ -64,10 +64,10 @@ const StyledFileInput = styled.input`
 
 const StyledImg = styled.img`
   height: 100%;
-  transition: filter ${transition.speed.superfast} linear;
+  transition: filter ${transitions.speed.superfast} linear;
   width: 100%;
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     filter: none;
   }
 `;
@@ -80,7 +80,7 @@ const StyledErrorWrapper = styled.div`
 `;
 
 const StyledErrorIcon = styled(ErrorOutline)`
-  animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
+  animation: ${transitions.speed.normal} infinite ${keyframes.beat(1.1)};
   color: ${({ theme }) => theme.components.userProfileImage.errorMessage.color};
   margin-right: 7px;
   width: 30px;
@@ -104,7 +104,7 @@ const StyledImageWrapper = styled.div`
   top: 0;
   width: 100%;
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     &:hover {
       ${StyledActionsWrapper} {
         opacity: 1;

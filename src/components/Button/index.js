@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import colors from '../../styles/color';
-import { transition } from '../../styles';
+import { colors, transitions } from '../../styles';
 
 const StyledButton = styled.button`
   align-items: center;
@@ -18,7 +17,7 @@ const StyledButton = styled.button`
   line-height: 1;
   overflow: hidden;
   position: relative;
-  transition: all ${transition.speed.superfast} linear;
+  transition: all ${transitions.speed.superfast} linear;
   user-select: none;
   width: fit-content;
 

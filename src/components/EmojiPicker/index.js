@@ -3,13 +3,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import {
-  emojis,
-  emojisNamesInEnglish,
-  emojisNamesInSpanish,
-} from './emojisList';
-
-import { transition } from '../../styles';
+import { emojis, emojisNamesInEnglish, emojisNamesInSpanish } from './list';
+import { transitions } from '../../styles';
 
 const StyledInput = styled.input`
   background-color: ${({ theme }) =>
@@ -52,7 +47,7 @@ const StyledEmoji = styled.span`
   display: inline-flex;
   height: 40px;
   justify-content: center;
-  transition: transform ${transition.speed.superfast} linear;
+  transition: transform ${transitions.speed.superfast} linear;
   width: 40px;
 
   &:active {

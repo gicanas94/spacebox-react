@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 
 import { alertSet, isLoadingSet } from '../../redux/actions';
 import Box from '../../components/Box';
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
 import { ROUTES } from '../../constants';
 import Sidebar from '../../components/Sidebar';
@@ -22,23 +22,23 @@ const StyledMainGrid = styled.div`
   margin: auto;
   width: 100%;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     grid-template-columns: 250px 430px;
     width: fit-content;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     grid-gap: 20px;
   }
 `;
 
 const StyledSidebarWrapper = styled.div`
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     position: sticky;
     top: 70px;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     top: 75px;
   }
 `;
@@ -51,7 +51,7 @@ const StyledContentGrid = styled.div`
   margin: 0;
   width: 100%;
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     grid-gap: 20px;
   }
 `;

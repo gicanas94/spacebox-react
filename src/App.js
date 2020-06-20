@@ -12,7 +12,7 @@ import Alert from './components/Alert';
 import { alertReset, confirmationModalClose } from './redux/actions';
 import ConfirmationModal from './components/ConfirmationModal';
 import CreateSpaceboxPage from './pages/CreateSpacebox';
-import { device, transitionProps } from './styles';
+import { devices, transitionProps } from './styles';
 import EditSpaceboxPage from './pages/EditSpacebox';
 import FaqPage from './pages/Faq';
 import GlobalMessaging from './components/GlobalMessaging';
@@ -36,7 +36,7 @@ const StyledRoutesContainer = styled.div`
   padding: 10px;
   width: ${({ theme }) => theme.components.app.mobileWidth};
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     padding: 20px 0;
     width: ${({ theme }) => theme.components.app.laptopWidth};
   }

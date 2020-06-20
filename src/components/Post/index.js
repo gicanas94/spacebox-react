@@ -22,7 +22,7 @@ import CommentForm from '../../forms/Comment';
 import PostLink from './PostLink';
 import { ROUTES } from '../../constants';
 import Tooltip from '../Tooltip';
-import { transition, transitionProps } from '../../styles';
+import { transitions, transitionProps } from '../../styles';
 
 const StyledSelectedPostWrapper = styled.div`
   background: ${({ theme }) => theme.components.post.selected.backgroundBorder};
@@ -54,7 +54,7 @@ const StyledCopyPostLinkIcon = styled(LinkIcon)`
 const StyledTitle = styled.h3`
   cursor: pointer;
   margin-bottom: 0;
-  transition: transform ${transition.speed.superfast} linear;
+  transition: transform ${transitions.speed.superfast} linear;
 
   &:active {
     transform: translateY(2px);
@@ -150,7 +150,7 @@ const StyledLikePostIcon = styled(Heart)`
   ${({ disabled }) =>
     !disabled &&
     `
-    transition: transform ${transition.speed.superfast} linear;
+    transition: transform ${transitions.speed.superfast} linear;
 
     &:active {
       transform: translateY(2px);
@@ -169,7 +169,7 @@ const StyledCommentPostIcon = styled(CommentAlt)`
   ${({ disabled }) =>
     !disabled &&
     `
-    transition: transform ${transition.speed.superfast} linear;
+    transition: transform ${transitions.speed.superfast} linear;
 
     &:active {
       transform: translateY(2px);
@@ -184,7 +184,7 @@ const StyledDeletePostIcon = styled(Trash)`
   min-width: 28px;
   height: 30px;
   width: 28px;
-  transition: transform ${transition.speed.superfast} linear;
+  transition: transform ${transitions.speed.superfast} linear;
 
   &:active {
     transform: translateY(2px);

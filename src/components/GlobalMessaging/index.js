@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import { getCookie, setCookie } from '../../utils';
 import GlobalMessage from './GlobalMessage';
 import { withFirebase } from '../../firebase';
@@ -14,7 +14,7 @@ const StyledGlobalMessagesWrapper = styled.div`
     margin-bottom: 10px;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     & > * {
       margin-bottom: 20px;
     }

@@ -79,3 +79,33 @@ export const shuffleArray = (array) => {
 
   return shuffledArray;
 };
+
+export const composeListOfEmojis = async () => {
+  const apiKey = process.env.REACT_APP_OPEN_EMOJI_API_KEY;
+
+  const categoriesResponse = await fetch(
+    `https://emoji-api.com/categories?access_key=${apiKey}`,
+  );
+
+  const categories = await categoriesResponse.json();
+  const listOfEmojis = Array.from({ length: categories.length }, () => []);
+
+  await Promise.all(
+    categories.map(async (category, index) => {
+      const emojisPerCategoryResponse = await fetch(
+        `https://emoji-api.com/categories/${category.slug}?access_key=${apiKey}`,
+      );
+
+      const emojisPerCategory = await emojisPerCategoryResponse.json();
+
+      if (emojisPerCategory) {
+        emojisPerCategory.forEach((emoji) =>
+          listOfEmojis[index].push(emoji.character),
+        );
+      }
+    }),
+  );
+
+  // eslint-disable-next-line no-console
+  console.log(JSON.stringify(listOfEmojis));
+};

@@ -1,8 +1,8 @@
-import color from './color';
-import device from './device';
-import font from './font';
-import keyframe from './keyframe';
-import transition from './transition';
+import colors from './colors';
+import devices from './devices';
+import fonts from './fonts';
+import keyframes from './keyframes';
+import transitions from './transitions';
 import transitionProps from './transitionProps';
 
-export { color, device, font, keyframe, transition, transitionProps };
+export { colors, devices, fonts, keyframes, transitions, transitionProps };

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 
-import { transition } from '../../styles';
+import { transitions } from '../../styles';
 
 const StyledReactTooltipWrapper = styled.div`
   div {
@@ -10,7 +10,7 @@ const StyledReactTooltipWrapper = styled.div`
     font-size: ${({ theme }) => theme.components.tooltip.fontSize};
     font-weight: ${({ theme }) => theme.components.tooltip.fontWeight};
     padding: 7px;
-    transition: opacity ${transition.speed.fast} linear;
+    transition: opacity ${transitions.speed.fast} linear;
 
     &.show {
       opacity: 0.8;

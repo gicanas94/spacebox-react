@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { keyframe, transition } from '../../styles';
+import { keyframes, transitions } from '../../styles';
 
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.components.input.status.default};
@@ -15,7 +15,7 @@ const StyledLabel = styled.label`
   overflow: hidden;
   padding-bottom: 2px;
   text-overflow: ellipsis;
-  transition: color ${transition.speed.superfast} linear;
+  transition: color ${transitions.speed.superfast} linear;
   white-space: nowrap;
 
   ${({ disabled, theme }) =>
@@ -34,7 +34,7 @@ const StyledTextarea = styled.textarea`
   border-style: solid;
   padding: 10px;
   resize: none;
-  transition: border ${transition.speed.superfast} linear;
+  transition: border ${transitions.speed.superfast} linear;
   width: 100%;
 
   &:focus {
@@ -69,7 +69,7 @@ const StyledTextarea = styled.textarea`
 `;
 
 const StyledErrorIcon = styled(ErrorOutline)`
-  animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
+  animation: ${transitions.speed.normal} infinite ${keyframes.beat(1.1)};
   background-color: ${({ theme }) => theme.components.input.bgColor};
   bottom: 34px;
   color: ${({ theme }) => theme.components.input.status.error};

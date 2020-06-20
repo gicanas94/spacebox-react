@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { keyframe, transition } from '../../styles';
+import { keyframes, transitions } from '../../styles';
 
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.components.input.status.default};
@@ -16,7 +16,7 @@ const StyledLabel = styled.label`
   overflow: hidden;
   padding-bottom: 2px;
   text-overflow: ellipsis;
-  transition: color ${transition.speed.superfast} linear;
+  transition: color ${transitions.speed.superfast} linear;
   white-space: nowrap;
 
   ${({ disabled, theme }) =>
@@ -36,7 +36,7 @@ const StyledInput = styled.input`
   padding: 0 10px;
   padding-top: 5px;
   height: 45px;
-  transition: border ${transition.speed.superfast} linear;
+  transition: border ${transitions.speed.superfast} linear;
   width: 100%;
 
   &:focus {
@@ -96,7 +96,7 @@ const StyledCloseEyeIcon = styled(EyeOff2)`
 `;
 
 const StyledErrorIcon = styled(ErrorOutline)`
-  animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
+  animation: ${transitions.speed.normal} infinite ${keyframes.beat(1.1)};
   color: ${({ theme }) => theme.components.input.status.error};
   margin-left: 5px;
   width: 30px;

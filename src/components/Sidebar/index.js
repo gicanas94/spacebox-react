@@ -6,13 +6,13 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 
 import Box from '../Box';
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import Hr from '../Hr';
 
 const StyledMobileView = styled.div`
   display: flex;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     display: none;
   }
 `;
@@ -20,13 +20,13 @@ const StyledMobileView = styled.div`
 const StyledLaptopView = styled.div`
   display: none;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     display: flex;
     position: sticky;
     top: 75px;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     top: 80px;
   }
 `;
@@ -41,7 +41,7 @@ const StyledSections = styled.div`
     width: 100px;
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     overflow: hidden;
 
     hr {

@@ -7,7 +7,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Button from '../../components/Button';
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
 
@@ -16,7 +16,7 @@ const StyledButtonsWrapper = styled.div`
     width: 100%;
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     button {
       margin: 0 0 0 auto;
       width: fit-content;

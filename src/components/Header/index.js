@@ -10,7 +10,7 @@ import { useIntl } from 'react-intl';
 
 import { appThemeSet } from '../../redux/actions';
 
-import { device, keyframe, transition, transitionProps } from '../../styles';
+import { devices, keyframes, transitions, transitionProps } from '../../styles';
 
 import largeLogo from '../../assets/images/logo-with-name.png';
 import Nav from './Nav';
@@ -34,7 +34,7 @@ const StyledHeader = styled.header`
   padding: 10px;
   width: ${({ theme }) => theme.components.header.mobileWidth};
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     padding: 10px 0;
     width: ${({ theme }) => theme.components.header.laptopWidth};
   }
@@ -49,7 +49,7 @@ const StyledMobileView = styled.div`
     height: 40px;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     display: none;
   }
 `;
@@ -80,7 +80,7 @@ const StyledOverlay = styled.div`
   top: 0;
   width: 100%;
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     display: none;
   }
 `;
@@ -128,14 +128,14 @@ const StyledLaptopView = styled.div`
     height: 25px;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     display: flex;
   }
 `;
 
 const StyledLargeLogoLink = styled(StyledLogoLink)`
-  // animation: ${keyframe.float(['1px', '-2px'])} ${
-  transition.speed.ultraslow
+  // animation: ${keyframes.float(['1px', '-2px'])} ${
+  transitions.speed.ultraslow
 } ease-in-out infinite;
   margin-right: 25px;
 `;

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import Box from '../Box';
 import Button from '../Button';
-import { device } from '../../styles';
+import { devices } from '../../styles';
 
 const StyledWrapper = styled.div`
   align-items: center;
@@ -20,7 +20,7 @@ const StyledWrapper = styled.div`
   width: 100%;
   z-index: 1300;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     background-color: ${({ theme }) =>
       theme.components.confirmationModal.bgColor2};
   }
@@ -36,7 +36,7 @@ const StyledCloserOnClick = styled.div`
 const StyledBox = styled(Box)`
   width: 90%;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     width: 400px;
   }
 `;
@@ -58,7 +58,7 @@ const StyledButtonsWrapper = styled.div`
     margin-bottom: 25px;
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -72,7 +72,7 @@ const StyledButtonsWrapper = styled.div`
     }
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     justify-content: space-between;
   }
 `;

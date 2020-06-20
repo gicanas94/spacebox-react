@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { alertSet, isLoadingSet } from '../../redux/actions';
 import Box from '../../components/Box';
 import ChangePasswordSubpage from './ChangePassword';
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import GeneralSettingsSubpage from './GeneralSettings';
 import HelmetTitle from '../../components/HelmetTitle';
 import LoginManagementSubpage from './LoginManagement';
@@ -25,23 +25,23 @@ const StyledMainGrid = styled.div`
   margin: auto;
   width: 100%;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     grid-template-columns: 250px 430px;
     width: fit-content;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     grid-gap: 20px;
   }
 `;
 
 const StyledSidebarWrapper = styled.div`
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     position: sticky;
     top: 70px;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     top: 75px;
   }
 `;
@@ -54,7 +54,7 @@ const StyledContentGrid = styled.div`
   margin: 0;
   width: 100%;
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     grid-gap: 20px;
   }
 `;

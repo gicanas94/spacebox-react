@@ -21,7 +21,7 @@ import {
 
 import Box from '../../components/Box';
 import Button from '../../components/Button';
-import { device, transitionProps } from '../../styles';
+import { devices, transitionProps } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
 import Post from '../../components/Post';
 import PostForm from '../../forms/Post';
@@ -38,11 +38,11 @@ const StyledMainGrid = styled.div`
   margin: auto;
   width: 100%;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     grid-template-columns: 1fr 270px;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     grid-gap: 20px;
   }
 `;
@@ -56,11 +56,11 @@ const StyledLeftGrid = styled.div`
   order: 2;
   width: 100%;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     order: 1;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     grid-gap: 20px;
   }
 `;
@@ -74,13 +74,13 @@ const StyledRightGrid = styled.div`
   order: 1;
   width: 100%;
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     order: 2;
     // position: sticky;
     // top: 70px;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     grid-gap: 20px;
     // top: 75px;
   }
@@ -97,7 +97,7 @@ const StyledButtonsWrapper = styled.div`
     margin-bottom: 10px;
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     > * {
       margin-bottom: 20px;
     }

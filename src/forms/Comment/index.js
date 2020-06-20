@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
 import Button from '../../components/Button';
-import { color, device, transition } from '../../styles';
+import { colors, devices, transitions } from '../../styles';
 import EmojiPicker from '../../components/EmojiPicker';
 
 const StyledWrapper = styled.div`
@@ -22,7 +22,7 @@ const StyledWrapper = styled.div`
     width: 100%;
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     flex-direction: row;
 
     button {
@@ -49,7 +49,7 @@ const StyledTextarea = styled.textarea`
   height: 40px;
   padding: 5px;
   resize: none;
-  transition: border ${transition.speed.superfast} linear;
+  transition: border ${transitions.speed.superfast} linear;
   width: 100%;
 
   &:focus {
@@ -84,14 +84,14 @@ const StyledSmileIcon = styled(Smile)`
   margin-left: 10px;
   min-height: 28px;
   min-width: 28px;
-  transition: transform ${transition.speed.superfast} linear;
+  transition: transform ${transitions.speed.superfast} linear;
   width: 28px;
 
   &:active {
     transform: translateY(2px);
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     margin: 0 15px;
   }
 `;
@@ -119,8 +119,8 @@ const CommentForm = ({
   const handleSubmit = (values, actions) => {
     const createdComment = {
       bgColor:
-        color.specific.commentBgColor[
-          Math.floor(Math.random() * color.specific.commentBgColor.length)
+        colors.specific.commentBgColor[
+          Math.floor(Math.random() * colors.specific.commentBgColor.length)
         ],
       content: values.content.trim(),
       createdAt: new Date().toISOString(),

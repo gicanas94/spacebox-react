@@ -13,14 +13,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ROUTES } from '../../../constants';
-import { transition } from '../../../styles';
+import { transitions } from '../../../styles';
 
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
   opacity: 0.7;
-  transition: all ${transition.speed.superfast} linear;
+  transition: all ${transitions.speed.superfast} linear;
 
   ${({ isPostAuthor }) =>
     isPostAuthor &&

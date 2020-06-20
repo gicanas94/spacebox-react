@@ -13,7 +13,7 @@ import { alertSet } from '../../redux/actions';
 import { CATEGORIES, ROUTES } from '../../constants';
 import Checkbox from '../../components/Checkbox';
 import ColorPicker from '../../components/ColorPicker';
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
 import Spacebox from '../../components/Spacebox';
@@ -43,7 +43,7 @@ const StyledPageWrapper = styled.div`
     }
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     align-items: center;
     flex-direction: row;
     max-width: 100%;

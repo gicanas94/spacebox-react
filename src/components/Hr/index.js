@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import colors from '../../styles/color';
+import { colors } from '../../styles';
 
 const StyledHr = styled.hr`
   background-color: ${({ color, theme }) =>

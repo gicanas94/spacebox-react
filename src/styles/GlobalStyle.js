@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { transition } from '.';
+import { transitions } from '.';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -25,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
     display: inline-block;
     font-weight: ${({ theme }) => theme.htmlTags.a.fontWeight};
     text-decoration: none;
-    transition: transform ${transition.speed.superfast} linear;
+    transition: transform ${transitions.speed.superfast} linear;
 
     &:focus {
       outline: none;

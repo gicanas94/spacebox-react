@@ -1,20 +1,20 @@
 import Color from 'color';
 
-import { color, font } from '..';
+import { colors, fonts } from '..';
 
 const someThemeColors = {
-  main: color.palette.mulberry,
-  mainText: color.palette.anchor,
-  darkGray: color.palette.lava,
-  mainIcons: color.palette.harborGray,
+  main: colors.palette.mulberry,
+  mainText: colors.palette.anchor,
+  darkGray: colors.palette.lava,
+  mainIcons: colors.palette.harborGray,
   controls: {
-    bgColor: color.palette.cloud,
-    color: color.palette.anchor,
+    bgColor: colors.palette.cloud,
+    color: colors.palette.anchor,
     status: {
-      default: color.palette.lava,
-      disabled: color.palette.pearlRiver,
-      error: color.palette.chili,
-      success: color.palette.green,
+      default: colors.palette.lava,
+      disabled: colors.palette.pearlRiver,
+      error: colors.palette.chili,
+      success: colors.palette.green,
     },
   },
 };
@@ -23,25 +23,27 @@ export default {
   name: 'base',
   components: {
     alert: {
-      fontWeight: font.weight.medium,
+      fontWeight: fonts.weight.medium,
       laptopWidth: '70%',
       maxWidth: '1280px',
       mobileWidth: '100%',
       type: {
         danger: {
-          bgColor: color.palette.salmon,
-          border: `1px solid ${Color(color.palette.salmon).darken(0.2).hex()}`,
-          color: color.palette.mahogany,
+          bgColor: colors.palette.salmon,
+          border: `1px solid ${Color(colors.palette.salmon).darken(0.2).hex()}`,
+          color: colors.palette.mahogany,
         },
         success: {
-          bgColor: color.palette.green,
-          border: `1px solid ${Color(color.palette.green).darken(0.2).hex()}`,
-          color: color.palette.tea,
+          bgColor: colors.palette.green,
+          border: `1px solid ${Color(colors.palette.green).darken(0.2).hex()}`,
+          color: colors.palette.tea,
         },
         warning: {
-          bgColor: color.palette.tuscany,
-          border: `1px solid ${Color(color.palette.tuscany).darken(0.2).hex()}`,
-          color: color.palette.gingerbread,
+          bgColor: colors.palette.tuscany,
+          border: `1px solid ${Color(colors.palette.tuscany)
+            .darken(0.2)
+            .hex()}`,
+          color: colors.palette.gingerbread,
         },
       },
     },
@@ -54,8 +56,8 @@ export default {
       arrowIcon: {
         color: someThemeColors.mainIcons,
       },
-      bgColor: color.palette.white,
-      borderColor: color.palette.abalone,
+      bgColor: colors.palette.white,
+      borderColor: colors.palette.abalone,
       borderWidth: '1px',
     },
     button: {
@@ -65,15 +67,15 @@ export default {
         disabled: someThemeColors.controls.status.disabled,
       },
       filter: 'none',
-      fontSize: font.size.m,
-      fontWeight: font.weight.bold,
+      fontSize: fonts.size.m,
+      fontWeight: fonts.weight.bold,
       size: {
         headerOnLaptop: {
-          fontSize: font.size.sm,
+          fontSize: fonts.size.sm,
           height: '35px',
         },
         headerOnMobile: {
-          fontSize: font.size.xxl,
+          fontSize: fonts.size.xxl,
           height: 'auto',
         },
       },
@@ -84,7 +86,7 @@ export default {
         fontSize: '1.2em',
       },
       label: {
-        fontSize: font.size.s,
+        fontSize: fonts.size.s,
       },
       status: {
         checked: someThemeColors.controls.status.success,
@@ -95,22 +97,22 @@ export default {
     },
     colorPicker: {
       color: someThemeColors.darkGray,
-      fontSize: font.size.s,
-      fontWeight: font.weight.bold,
+      fontSize: fonts.size.s,
+      fontWeight: fonts.weight.bold,
     },
     confirmationModal: {
-      bgColor1: color.palette.white,
+      bgColor1: colors.palette.white,
       bgColor2: Color(someThemeColors.main).darken(0.7).alpha(0.7).string(),
     },
     emojiPicker: {
-      bgColor: color.palette.cloud,
+      bgColor: colors.palette.cloud,
       border: `1px solid ${someThemeColors.darkGray}`,
       boxShadow: `0 0 3px 1px ${someThemeColors.main}`,
       emojiHoverColor: Color(someThemeColors.main).lighten(0.7).hex(),
       label: {
         color: someThemeColors.darkGray,
-        fontSize: font.size.xs,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.xs,
+        fontWeight: fonts.weight.bold,
       },
       scrollBar: {
         thumb: {
@@ -124,62 +126,64 @@ export default {
       searchInput: {
         bgColor: 'transparent',
         borderBottom: `2px solid ${someThemeColors.darkGray}`,
-        fontSize: font.size.s,
+        fontSize: fonts.size.s,
       },
     },
     globalMessage: {
       content: {
-        fontSize: font.size.xs,
+        fontSize: fonts.size.xs,
       },
       link: {
-        fontSize: font.size.xs,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.xs,
+        fontWeight: fonts.weight.bold,
       },
       reliefEffect: {
         filter: 'blur(6px)',
       },
       title: {
-        fontSize: font.size.s,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.s,
+        fontWeight: fonts.weight.bold,
       },
       type: {
         danger: {
-          bgColor: color.palette.salmon,
-          border: `1px solid ${Color(color.palette.salmon).darken(0.4).hex()}`,
-          color: color.palette.mahogany,
-          reliefEffectBorder: `5px solid ${Color(color.palette.salmon)
+          bgColor: colors.palette.salmon,
+          border: `1px solid ${Color(colors.palette.salmon).darken(0.4).hex()}`,
+          color: colors.palette.mahogany,
+          reliefEffectBorder: `5px solid ${Color(colors.palette.salmon)
             .darken(0.4)
             .hex()}`,
         },
         info: {
-          bgColor: color.palette.sky,
-          border: `1px solid ${Color(color.palette.sky).darken(0.4).hex()}`,
-          color: color.palette.denim,
-          reliefEffectBorder: `5px solid ${Color(color.palette.sky)
+          bgColor: colors.palette.sky,
+          border: `1px solid ${Color(colors.palette.sky).darken(0.4).hex()}`,
+          color: colors.palette.denim,
+          reliefEffectBorder: `5px solid ${Color(colors.palette.sky)
             .darken(0.4)
             .hex()}`,
         },
         success: {
-          bgColor: color.palette.green,
-          border: `1px solid ${Color(color.palette.green).darken(0.4).hex()}`,
-          color: color.palette.tea,
-          reliefEffectBorder: `5px solid ${Color(color.palette.green)
+          bgColor: colors.palette.green,
+          border: `1px solid ${Color(colors.palette.green).darken(0.4).hex()}`,
+          color: colors.palette.tea,
+          reliefEffectBorder: `5px solid ${Color(colors.palette.green)
             .darken(0.4)
             .hex()}`,
         },
         warning: {
-          bgColor: color.palette.tuscany,
-          border: `1px solid ${Color(color.palette.tuscany).darken(0.4).hex()}`,
-          color: color.palette.gingerbread,
-          reliefEffectBorder: `5px solid ${Color(color.palette.tuscany)
+          bgColor: colors.palette.tuscany,
+          border: `1px solid ${Color(colors.palette.tuscany)
+            .darken(0.4)
+            .hex()}`,
+          color: colors.palette.gingerbread,
+          reliefEffectBorder: `5px solid ${Color(colors.palette.tuscany)
             .darken(0.4)
             .hex()}`,
         },
       },
     },
     header: {
-      bgColor: color.palette.asphalt,
-      color: color.palette.cloud,
+      bgColor: colors.palette.asphalt,
+      color: colors.palette.cloud,
       laptopWidth: '70%',
       maxWidth: '1280px',
       mobileWidth: '100%',
@@ -194,7 +198,7 @@ export default {
       },
     },
     hr: {
-      bgColor: color.palette.abalone,
+      bgColor: colors.palette.abalone,
       height: '2px',
     },
     input: {
@@ -202,12 +206,12 @@ export default {
       borderBottomWidth: '2px',
       color: someThemeColors.controls.color,
       errorMessage: {
-        fontSize: font.size.xxs,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.xxs,
+        fontWeight: fonts.weight.bold,
       },
       label: {
-        fontSize: font.size.s,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.s,
+        fontWeight: fonts.weight.bold,
       },
       status: {
         default: someThemeColors.controls.status.default,
@@ -218,11 +222,11 @@ export default {
     },
     loadingScreen: {
       bgColor: Color(someThemeColors.main).darken(0.7).alpha(0.7).string(),
-      heartColor: color.palette.white,
+      heartColor: colors.palette.white,
       text: {
-        color: color.palette.white,
+        color: colors.palette.white,
         fontSize: '50px',
-        fontWeight: font.weight.bold,
+        fontWeight: fonts.weight.bold,
       },
     },
     post: {
@@ -230,10 +234,10 @@ export default {
         borderWidth: '2px',
         createdAtDate: {
           color: someThemeColors.darkGray,
-          fontSize: font.size.xxs,
+          fontSize: fonts.size.xxs,
         },
         username: {
-          fontWeight: font.weight.medium,
+          fontWeight: fonts.weight.medium,
         },
       },
       commentPostIcon: {
@@ -245,59 +249,59 @@ export default {
       createdAtDate: {
         dateFromNow: {
           color: someThemeColors.main,
-          fontSize: font.size.s,
-          fontWeight: font.weight.bold,
+          fontSize: fonts.size.s,
+          fontWeight: fonts.weight.bold,
         },
         longDate: {
           color: someThemeColors.darkGray,
-          fontSize: font.size.xxs,
+          fontSize: fonts.size.xxs,
         },
       },
       deletePostIcon: {
         color: someThemeColors.mainIcons,
       },
       likePostIcon: {
-        likeColor: color.palette.ferrari,
+        likeColor: colors.palette.ferrari,
         noLikeColor: someThemeColors.mainIcons,
       },
       postLink: {
-        bgColor: color.palette.white,
+        bgColor: colors.palette.white,
         border: `2px dashed ${someThemeColors.main}`,
         borderRadius: '2px',
-        fontSize: font.size.xs,
+        fontSize: fonts.size.xs,
         input: {
-          bgColor: color.palette.white,
+          bgColor: colors.palette.white,
         },
         label: {
-          bgColor: color.palette.white,
+          bgColor: colors.palette.white,
           color: someThemeColors.main,
-          fontWeight: font.weight.bold,
+          fontWeight: fonts.weight.bold,
         },
       },
       seeOrHideComments: {
         color: someThemeColors.main,
-        fontWeight: font.weight.medium,
+        fontWeight: fonts.weight.medium,
       },
       selected: {
-        backgroundBorder: `linear-gradient(${color.gradient.pastelRainbow})`,
+        backgroundBorder: `linear-gradient(${colors.gradient.pastelRainbow})`,
         border: '1px solid rgba(0, 0, 0, 0.5)',
       },
       stats: {
         color: someThemeColors.darkGray,
-        fontSize: font.size.s,
+        fontSize: fonts.size.s,
       },
     },
     postsHistory: {
       link: {
-        fontSize: font.size.s,
+        fontSize: fonts.size.s,
       },
       monthTitle: {
-        fontSize: font.size.l,
-        fontWeight: font.weight.thin,
+        fontSize: fonts.size.l,
+        fontWeight: fonts.weight.thin,
       },
       yearTitle: {
-        fontSize: font.size.l,
-        fontWeight: font.weight.light,
+        fontSize: fonts.size.l,
+        fontWeight: fonts.weight.light,
       },
     },
     richTextEditor: {
@@ -305,12 +309,12 @@ export default {
       borderBottomWidth: '2px',
       color: someThemeColors.controls.color,
       errorMessage: {
-        fontSize: font.size.xxs,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.xxs,
+        fontWeight: fonts.weight.bold,
       },
       label: {
-        fontSize: font.size.s,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.s,
+        fontWeight: fonts.weight.bold,
       },
       status: {
         default: someThemeColors.controls.status.default,
@@ -319,12 +323,12 @@ export default {
         success: someThemeColors.controls.status.success,
       },
       richUtilButton: {
-        fontSize: font.size.xs,
+        fontSize: fonts.size.xs,
         status: {
           active: {
             bgColor: someThemeColors.main,
             border: 0,
-            color: color.palette.white,
+            color: colors.palette.white,
           },
           default: {
             bgColor: 'transparent',
@@ -349,12 +353,12 @@ export default {
       borderBottomWidth: '2px',
       color: someThemeColors.controls.color,
       errorMessage: {
-        fontSize: font.size.xxs,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.xxs,
+        fontWeight: fonts.weight.bold,
       },
       label: {
-        fontSize: font.size.s,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.s,
+        fontWeight: fonts.weight.bold,
       },
       li: {
         hoverColor: Color(someThemeColors.main).lighten(0.7).hex(),
@@ -381,66 +385,66 @@ export default {
     },
     sidebar: {
       activeLink: {
-        fontWeight: font.weight.bold,
+        fontWeight: fonts.weight.bold,
       },
       heading: {
-        fontWeight: font.weight.bold,
+        fontWeight: fonts.weight.bold,
       },
       link: {
-        fontSize: font.size.s,
-        fontWeight: font.weight.regular,
+        fontSize: fonts.size.s,
+        fontWeight: fonts.weight.regular,
       },
     },
     signInWithButton: {
       filter: 'none',
-      fontSize: font.size.m,
-      fontWeight: font.weight.medium,
+      fontSize: fonts.size.m,
+      fontWeight: fonts.weight.medium,
     },
     spacebox: {
       authUserIsTheOwner: {
-        backgroundBorder: `linear-gradient(${color.gradient.pastelRainbow})`,
+        backgroundBorder: `linear-gradient(${colors.gradient.pastelRainbow})`,
         border: '1px solid rgba(0, 0, 0, 0.5)',
       },
       borderWidth: '2px',
       bubble: {
         borderRadius: '3px',
-        fontSize: font.size.xxs,
-        fontWeight: font.weight.medium,
+        fontSize: fonts.size.xxs,
+        fontWeight: fonts.weight.medium,
       },
       description: {
-        fontSize: font.size.s,
-        fontWeight: font.weight.medium,
+        fontSize: fonts.size.s,
+        fontWeight: fonts.weight.medium,
       },
       informative: {
-        bgColor: color.palette.asphalt,
+        bgColor: colors.palette.asphalt,
         border: '3px solid transparent',
-        color: color.palette.white,
+        color: colors.palette.white,
       },
       title: {
         filterOnHover: 'blur(4px)',
-        fontSize: font.size.xl,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.xl,
+        fontWeight: fonts.weight.bold,
       },
       totalLikesHeartIcon: {
-        color: color.palette.ferrari,
+        color: colors.palette.ferrari,
       },
     },
     spaceboxInfoBox: {
       spaceboxCategory: {
-        fontSize: font.size.s,
-        titleFontWeight: font.weight.bold,
+        fontSize: fonts.size.s,
+        titleFontWeight: fonts.weight.bold,
       },
       spaceboxDescription: {
-        fontSize: font.size.s,
+        fontSize: fonts.size.s,
       },
       spaceboxTitle: {
-        fontWeight: font.weight.bold,
-        fontSize: font.size.m,
+        fontWeight: fonts.weight.bold,
+        fontSize: fonts.size.m,
       },
     },
     tooltip: {
-      fontSize: font.size.xs,
-      fontWeight: font.weight.regular,
+      fontSize: fonts.size.xs,
+      fontWeight: fonts.weight.regular,
     },
     userProfileImage: {
       actionsWrapperBgColor: Color(someThemeColors.main)
@@ -451,8 +455,8 @@ export default {
       border: `2px solid ${someThemeColors.main}`,
       errorMessage: {
         color: someThemeColors.controls.status.error,
-        fontSize: font.size.xxs,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.xxs,
+        fontWeight: fonts.weight.bold,
       },
       filter: 'blur(5px)',
     },
@@ -473,16 +477,16 @@ export default {
     },
     signIn: {
       forgotPasswordLink: {
-        fontSize: font.size.s,
+        fontSize: fonts.size.s,
       },
     },
     signUp: {
       signInLink: {
-        fontSize: font.size.s,
+        fontSize: fonts.size.s,
       },
       termsOfUseNotice: {
         color: someThemeColors.darkGray,
-        fontSize: font.size.s,
+        fontSize: fonts.size.s,
       },
     },
   },
@@ -493,48 +497,48 @@ export default {
   htmlTags: {
     a: {
       color: someThemeColors.main,
-      fontWeight: font.weight.medium,
+      fontWeight: fonts.weight.medium,
     },
     blockquote: {
-      bgColor: color.palette.cloud,
+      bgColor: colors.palette.cloud,
       borderLeftColor: someThemeColors.main,
       borderLeftWidth: '8px',
-      mainText: color.palette.seal,
-      textFontSize: font.size.m,
+      mainText: colors.palette.seal,
+      textFontSize: fonts.size.m,
       quoteColor: someThemeColors.main,
       quoteFontSize: '4rem',
     },
     body: {
       background: `linear-gradient(
-        ${color.palette.cloud},
-        ${Color(color.palette.frenchRose).lighten(0.55).hex()}
+        ${colors.palette.cloud},
+        ${Color(colors.palette.frenchRose).lighten(0.55).hex()}
       )`,
       // background: 'black',
       color: someThemeColors.mainText,
       filter: 'none',
-      fontFamily: font.family.AlegreyaSans,
-      fontSize: font.size.sm,
+      fontFamily: fonts.family.AlegreyaSans,
+      fontSize: fonts.size.sm,
     },
     h: {
       color: someThemeColors.main,
     },
     h1: {
-      fontSize: font.size.l,
+      fontSize: fonts.size.l,
     },
     h2: {
-      fontSize: font.size.lm,
+      fontSize: fonts.size.lm,
     },
     h3: {
-      fontSize: font.size.m,
+      fontSize: fonts.size.m,
     },
     h4: {
-      fontSize: font.size.sm,
+      fontSize: fonts.size.sm,
     },
     h5: {
-      fontSize: font.size.sm,
+      fontSize: fonts.size.sm,
     },
     h6: {
-      fontSize: font.size.sm,
+      fontSize: fonts.size.sm,
     },
     input: {
       color: someThemeColors.controls.color,
@@ -546,20 +550,20 @@ export default {
   pages: {
     editSpacebox: {
       deleteSpacebox: {
-        color: color.palette.salmon,
-        fontSize: font.size.xs,
-        fontWeight: font.weight.bold,
+        color: colors.palette.salmon,
+        fontSize: fonts.size.xs,
+        fontWeight: fonts.weight.bold,
       },
     },
     notFound: {
       content: {
-        fontSize: font.size.l,
-        fontWeight: font.weight.bold,
+        fontSize: fonts.size.l,
+        fontWeight: fonts.weight.bold,
       },
     },
     verifyEmail: {
       email: {
-        fontWeight: font.weight.bold,
+        fontWeight: fonts.weight.bold,
       },
     },
   },

@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import colors from '../../styles/color';
-import { device, transition } from '../../styles';
+import { colors, devices, transitions } from '../../styles';
 
 const StyledTitle = styled.div`
   display: -webkit-box;
@@ -17,15 +16,15 @@ const StyledTitle = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: uppercase;
-  transition: blur ${transition.speed.superfast} linear,
-              opacity ${transition.speed.superfast} linear;
+  transition: blur ${transitions.speed.superfast} linear,
+              opacity ${transitions.speed.superfast} linear;
   width: 100%;
   word-break: break-word;
   word-spacing: 5px;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     bottom: 12px;
     padding: 0 12px;
     position: absolute;
@@ -41,14 +40,14 @@ const StyledDescription = styled.div`
   line-height: 1.2em;
   margin-bottom: -4px;
   overflow: hidden;
-  transition: opacity ${transition.speed.superfast} linear,
-    visibility ${transition.speed.superfast} linear;
+  transition: opacity ${transitions.speed.superfast} linear,
+    visibility ${transitions.speed.superfast} linear;
   width: 100%;
   word-break: break-word;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     bottom: 12px;
     opacity: 0;
     padding: 0 12px;
@@ -64,7 +63,7 @@ const StyledBubblesWrapper = styled.div`
   white-space: nowrap;
   width: 100%;
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     padding: 10px 10px 0 10px;
   }
 `;
@@ -112,7 +111,7 @@ const StyledSpacebox = styled.div`
   position: relative;
   width: 100%;
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     padding: 0;
 
     &:hover {

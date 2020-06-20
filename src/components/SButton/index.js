@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { color, keyframe } from '../../styles';
+import { colors, keyframes } from '../../styles';
 
 const StyledWrapper = styled.div`
-  animation: ${keyframe.gradient()} 15s infinite;
-  background: linear-gradient(45deg, ${color.gradient.pastelRainbow});
+  animation: ${keyframes.gradient()} 15s infinite;
+  background: linear-gradient(45deg, ${colors.gradient.pastelRainbow});
   background-repeat: no-repeat;
   background-size: 300%;
   width: 150px;

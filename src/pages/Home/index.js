@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
 import { alertSet, homepageSpaceboxesSet } from '../../redux/actions';
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import HelmetTitle from '../../components/HelmetTitle';
 import { ROUTES } from '../../constants';
 import searchSpaceboxSelector from '../../redux/selectors';
@@ -21,20 +21,20 @@ const StyledWrapper = styled.div`
   grid-template-columns: 1fr;
   width: 100%;
 
-  @media ${device.mobileL} {
+  @media ${devices.mobileL} {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     grid-gap: 20px;
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @media ${device.laptopL} {
+  @media ${devices.laptopL} {
     grid-template-columns: repeat(4, 1fr);
   }
 `;

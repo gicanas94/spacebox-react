@@ -12,7 +12,7 @@ import { FormattedMessage } from 'react-intl';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { keyframe, transition } from '../../styles';
+import { keyframes, transitions } from '../../styles';
 
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.components.richTextEditor.status.default};
@@ -23,7 +23,7 @@ const StyledLabel = styled.label`
   overflow: hidden;
   padding-bottom: 2px;
   text-overflow: ellipsis;
-  transition: color ${transition.speed.superfast} linear;
+  transition: color ${transitions.speed.superfast} linear;
   white-space: nowrap;
 `;
 
@@ -52,7 +52,7 @@ const StyledRichUtilButton = styled.button`
     theme.components.richTextEditor.richUtilButton.fontSize};
   line-height: 1;
   padding: 6px 10px 5px 10px;
-  transition: all ${transition.speed.superfast} linear;
+  transition: all ${transitions.speed.superfast} linear;
 
   &:active {
     transform: translateY(2px);
@@ -88,7 +88,7 @@ const StyledEditorAndRichUtilsButtonsWrapper = styled.div`
   border-color: ${({ theme }) =>
     theme.components.richTextEditor.status.default};
   border-style: solid;
-  transition: border ${transition.speed.superfast} linear;
+  transition: border ${transitions.speed.superfast} linear;
 
   .DraftEditor-root {
     padding: 10px;
@@ -101,7 +101,7 @@ const StyledEditorAndRichUtilsButtonsWrapper = styled.div`
 `;
 
 const StyledErrorIcon = styled(ErrorOutline)`
-  animation: ${transition.speed.normal} infinite ${keyframe.beat(1.1)};
+  animation: ${transitions.speed.normal} infinite ${keyframes.beat(1.1)};
   background-color: ${({ theme }) => theme.components.richTextEditor.bgColor};
   bottom: 34px;
   color: ${({ theme }) => theme.components.richTextEditor.status.error};

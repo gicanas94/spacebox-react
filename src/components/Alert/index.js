@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { device } from '../../styles';
+import { devices } from '../../styles';
 
 const StyledAlert = styled.div`
   cursor: pointer;
@@ -45,7 +45,7 @@ const StyledWrapper = styled.div`
   max-width: ${({ theme }) => theme.components.alert.maxWidth};
   width: ${({ theme }) => theme.components.alert.mobileWidth};
 
-  @media ${device.laptop} {
+  @media ${devices.laptop} {
     width: ${({ theme }) => theme.components.alert.laptopWidth};
   }
 `;

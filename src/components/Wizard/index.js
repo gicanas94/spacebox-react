@@ -4,7 +4,7 @@ import { Form, Formik } from 'formik';
 import styled from 'styled-components';
 
 import Button from '../Button';
-import { device } from '../../styles';
+import { devices } from '../../styles';
 import Hr from '../Hr';
 
 const StyledButtonsWrapper = styled.div`
@@ -23,7 +23,7 @@ const StyledButtonsWrapper = styled.div`
     `}
   }
 
-  @media ${device.mobileL} {
+  @media ${devices.mobileL} {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -34,7 +34,7 @@ const StyledButtonsWrapper = styled.div`
     }
   }
 
-  @media ${device.tablet} {
+  @media ${devices.tablet} {
     justify-content: center;
 
     button:first-of-type {
