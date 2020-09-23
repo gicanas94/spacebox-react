@@ -1,0 +1,11 @@
+TAREAS PENDIENTES DE SPACEBOX
+
+- Rediseñar y mejorar EmojiPicker e implementarlo a Input y Textarea
+- Crear componente List
+- Permitir Redux DevTools solo en ambiente local
+- Revisar autentificación
+- Desarrollar GlobalMessageForm
+- Crear componente diclaimer de reCAPTCHA
+- Pensar lógica para seguir un Spacebox
+- Overflow del nav
+- Retomar el componente RichTextEditor
